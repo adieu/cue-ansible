@@ -1,0 +1,32 @@
+
+---
+module: digital_ocean_domain
+short_description: Create/delete a DNS domain in DigitalOcean
+description:
+     - Create/delete a DNS domain in DigitalOcean.
+version_added: "1.6"
+author: "Michael Gregson (@mgregson)"
+options:
+  state:
+    description:
+     - Indicate desired state of the target.
+    default: present
+    choices: ['present', 'absent']
+  id:
+    description:
+     - Numeric, the droplet id you want to operate on.
+    aliases: ['droplet_id']
+  name:
+    description:
+     - String, this is the name of the droplet - must be formatted by hostname rules, or the name of a SSH key, or the name of a domain.
+  ip:
+    description:
+     - An 'A' record for '@' ($ORIGIN) will be created with the value 'ip'.  'ip' is an IP version 4 address.
+extends_documentation_fragment: digital_ocean.documentation
+notes:
+  - Environment variables DO_OAUTH_TOKEN can be used for the oauth_token.
+  - As of Ansible 1.9.5 and 2.0, Version 2 of the DigitalOcean API is used, this removes C(client_id) and C(api_key) options in favor of C(oauth_token).
+  - If you are running Ansible 1.9.4 or earlier you might not be able to use the included version of this module as the API version used has been retired.
+
+requirements:
+  - "python >= 2.6"

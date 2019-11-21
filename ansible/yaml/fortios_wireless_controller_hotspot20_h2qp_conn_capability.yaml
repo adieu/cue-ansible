@@ -1,0 +1,158 @@
+
+---
+module: fortios_wireless_controller_hotspot20_h2qp_conn_capability
+short_description: Configure connection capability in Fortinet's FortiOS and FortiGate.
+description:
+    - This module is able to configure a FortiGate or FortiOS (FOS) device by allowing the
+      user to set and modify wireless_controller_hotspot20 feature and h2qp_conn_capability category.
+      Examples include all parameters and values need to be adjusted to datasources before usage.
+      Tested with FOS v6.0.5
+version_added: "2.9"
+author:
+    - Miguel Angel Munoz (@mamunozgonzalez)
+    - Nicolas Thomas (@thomnico)
+notes:
+    - Requires fortiosapi library developed by Fortinet
+    - Run as a local_action in your playbook
+requirements:
+    - fortiosapi>=0.9.8
+options:
+    host:
+        description:
+            - FortiOS or FortiGate IP address.
+        type: str
+        required: false
+    username:
+        description:
+            - FortiOS or FortiGate username.
+        type: str
+        required: false
+    password:
+        description:
+            - FortiOS or FortiGate password.
+        type: str
+        default: ""
+    vdom:
+        description:
+            - Virtual domain, among those defined previously. A vdom is a
+              virtual instance of the FortiGate that can be configured and
+              used as a different unit.
+        type: str
+        default: root
+    https:
+        description:
+            - Indicates if the requests towards FortiGate must use HTTPS protocol.
+        type: bool
+        default: true
+    ssl_verify:
+        description:
+            - Ensures FortiGate certificate must be verified by a proper CA.
+        type: bool
+        default: true
+    state:
+        description:
+            - Indicates whether to create or remove the object.
+        type: str
+        required: true
+        choices:
+            - present
+            - absent
+    wireless_controller_hotspot20_h2qp_conn_capability:
+        description:
+            - Configure connection capability.
+        default: null
+        type: dict
+        suboptions:
+            esp_port:
+                description:
+                    - Set ESP port service (used by IPsec VPNs) status.
+                type: str
+                choices:
+                    - closed
+                    - open
+                    - unknown
+            ftp_port:
+                description:
+                    - Set FTP port service status.
+                type: str
+                choices:
+                    - closed
+                    - open
+                    - unknown
+            http_port:
+                description:
+                    - Set HTTP port service status.
+                type: str
+                choices:
+                    - closed
+                    - open
+                    - unknown
+            icmp_port:
+                description:
+                    - Set ICMP port service status.
+                type: str
+                choices:
+                    - closed
+                    - open
+                    - unknown
+            ikev2_port:
+                description:
+                    - Set IKEv2 port service for IPsec VPN status.
+                type: str
+                choices:
+                    - closed
+                    - open
+                    - unknown
+            ikev2_xx_port:
+                description:
+                    - Set UDP port 4500 (which may be used by IKEv2 for IPsec VPN) service status.
+                type: str
+                choices:
+                    - closed
+                    - open
+                    - unknown
+            name:
+                description:
+                    - Connection capability name.
+                required: true
+                type: str
+            pptp_vpn_port:
+                description:
+                    - Set Point to Point Tunneling Protocol (PPTP) VPN port service status.
+                type: str
+                choices:
+                    - closed
+                    - open
+                    - unknown
+            ssh_port:
+                description:
+                    - Set SSH port service status.
+                type: str
+                choices:
+                    - closed
+                    - open
+                    - unknown
+            tls_port:
+                description:
+                    - Set TLS VPN (HTTPS) port service status.
+                type: str
+                choices:
+                    - closed
+                    - open
+                    - unknown
+            voip_tcp_port:
+                description:
+                    - Set VoIP TCP port service status.
+                type: str
+                choices:
+                    - closed
+                    - open
+                    - unknown
+            voip_udp_port:
+                description:
+                    - Set VoIP UDP port service status.
+                type: str
+                choices:
+                    - closed
+                    - open
+                    - unknown

@@ -1,0 +1,53 @@
+
+
+module: aws_netapp_cvs_active_directory
+
+short_description: NetApp AWS CloudVolumes Service Manage Active Directory.
+extends_documentation_fragment:
+    - netapp.awscvs
+version_added: '2.9'
+author: NetApp Ansible Team (@carchi8py) <ng-ansibleteam@netapp.com>
+description:
+    - Create, Update, Delete ActiveDirectory on AWS Cloud Volumes Service.
+
+options:
+  state:
+     description:
+         - Whether the specified ActiveDirectory should exist or not.
+     choices: ['present', 'absent']
+     required: true
+     type: str
+
+  region:
+    description:
+    - The region to which the Active Directory credentials are associated.
+    required: true
+    type: str
+
+  domain:
+    description:
+    - Name of the Active Directory domain
+    required: true
+    type: str
+
+  DNS:
+    description:
+    - DNS server address for the Active Directory domain
+    - Required when C(state=present)
+    - Required when C(state=present), to modify ActiveDirectory properties.
+    type: str
+
+  netBIOS:
+    description:
+    - NetBIOS name of the server.
+    type: str
+
+  username:
+    description:
+    - Username of the Active Directory domain administrator
+    type: str
+
+  password:
+    description:
+    - Password of the Active Directory domain administrator
+    type: str

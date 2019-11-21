@@ -1,0 +1,60 @@
+
+
+module: k8s_auth
+
+short_description: Authenticate to Kubernetes clusters which require an explicit login step
+
+version_added: "2.8"
+
+author: KubeVirt Team (@kubevirt)
+
+description:
+  - "This module handles authenticating to Kubernetes clusters requiring I(explicit) authentication procedures,
+    meaning ones where a client logs in (obtains an authentication token), performs API operations using said
+    token and then logs out (revokes the token). An example of a Kubernetes distribution requiring this module
+    is OpenShift."
+  - "On the other hand a popular configuration for username+password authentication is one utilizing HTTP Basic
+    Auth, which does not involve any additional login/logout steps (instead login credentials can be attached
+    to each and every API call performed) and as such is handled directly by the C(k8s) module (and other
+    resource–specific modules) by utilizing the C(host), C(username) and C(password) parameters. Please
+    consult your preferred module's documentation for more details."
+
+options:
+  state:
+    description:
+    - If set to I(present) connect to the API server using the URL specified in C(host) and attempt to log in.
+    - If set to I(absent) attempt to log out by revoking the authentication token specified in C(api_key).
+    default: present
+    choices:
+    - present
+    - absent
+  host:
+    description:
+    - Provide a URL for accessing the API server.
+    required: true
+  username:
+    description:
+    - Provide a username for authenticating with the API server.
+  password:
+    description:
+    - Provide a password for authenticating with the API server.
+  ca_cert:
+    description:
+    - "Path to a CA certificate file used to verify connection to the API server. The full certificate chain
+      must be provided to avoid certificate validation errors."
+    aliases: [ ssl_ca_cert ]
+  validate_certs:
+    description:
+    - "Whether or not to verify the API server's SSL certificates."
+    type: bool
+    default: true
+    aliases: [ verify_ssl ]
+  api_key:
+    description:
+    - When C(state) is set to I(absent), this specifies the token to revoke.
+
+requirements:
+  - python >= 2.7
+  - urllib3
+  - requests
+  - requests-oauthlib

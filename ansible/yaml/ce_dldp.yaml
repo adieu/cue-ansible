@@ -1,0 +1,48 @@
+
+---
+
+module: ce_dldp
+version_added: "2.4"
+short_description: Manages global DLDP configuration on HUAWEI CloudEngine switches.
+description:
+    - Manages global DLDP configuration on HUAWEI CloudEngine switches.
+author:
+    - Zhijin Zhou (@QijunPan)
+notes:
+    - The relevant configurations will be deleted if DLDP is disabled using enable=disable.
+    - When using auth_mode=none, it will restore the default DLDP authentication mode. By default,
+      DLDP packets are not authenticated.
+    - By default, the working mode of DLDP is enhance, so you are advised to use work_mode=enhance to restore default
+      DLDP working mode.
+    - The default interval for sending Advertisement packets is 5 seconds, so you are advised to use time_interval=5 to
+      restore default DLDP interval.
+    - This module requires the netconf system service be enabled on the remote device being managed.
+    - Recommended connection is C(netconf).
+    - This module also works with C(local) connections for legacy playbooks.
+options:
+    enable:
+        description:
+            - Set global DLDP enable state.
+        choices: ['enable', 'disable']
+    work_mode:
+        description:
+            - Set global DLDP work-mode.
+        choices: ['enhance', 'normal']
+    time_internal:
+        description:
+            - Specifies the interval for sending Advertisement packets.
+              The value is an integer ranging from 1 to 100, in seconds.
+              The default interval for sending Advertisement packets is 5 seconds.
+    auth_mode:
+        description:
+            - Specifies authentication algorithm of DLDP.
+        choices: ['md5', 'simple', 'sha', 'hmac-sha256', 'none']
+    auth_pwd:
+        description:
+            - Specifies authentication password.
+              The value is a string of 1 to 16 case-sensitive plaintexts or 24/32/48/108/128 case-sensitive encrypted
+              characters. The string excludes a question mark (?).
+    reset:
+        description:
+            - Specify whether reset DLDP state of disabled interfaces.
+        choices: ['enable', 'disable']

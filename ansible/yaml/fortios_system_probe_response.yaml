@@ -1,0 +1,96 @@
+
+---
+module: fortios_system_probe_response
+short_description: Configure system probe response in Fortinet's FortiOS and FortiGate.
+description:
+    - This module is able to configure a FortiGate or FortiOS (FOS) device by allowing the
+      user to set and modify system feature and probe_response category.
+      Examples include all parameters and values need to be adjusted to datasources before usage.
+      Tested with FOS v6.0.5
+version_added: "2.9"
+author:
+    - Miguel Angel Munoz (@mamunozgonzalez)
+    - Nicolas Thomas (@thomnico)
+notes:
+    - Requires fortiosapi library developed by Fortinet
+    - Run as a local_action in your playbook
+requirements:
+    - fortiosapi>=0.9.8
+options:
+    host:
+        description:
+            - FortiOS or FortiGate IP address.
+        type: str
+        required: false
+    username:
+        description:
+            - FortiOS or FortiGate username.
+        type: str
+        required: false
+    password:
+        description:
+            - FortiOS or FortiGate password.
+        type: str
+        default: ""
+    vdom:
+        description:
+            - Virtual domain, among those defined previously. A vdom is a
+              virtual instance of the FortiGate that can be configured and
+              used as a different unit.
+        type: str
+        default: root
+    https:
+        description:
+            - Indicates if the requests towards FortiGate must use HTTPS protocol.
+        type: bool
+        default: true
+    ssl_verify:
+        description:
+            - Ensures FortiGate certificate must be verified by a proper CA.
+        type: bool
+        default: true
+    system_probe_response:
+        description:
+            - Configure system probe response.
+        default: null
+        type: dict
+        suboptions:
+            http_probe_value:
+                description:
+                    - Value to respond to the monitoring server.
+                type: str
+            mode:
+                description:
+                    - SLA response mode.
+                type: str
+                choices:
+                    - none
+                    - http-probe
+                    - twamp
+            password:
+                description:
+                    - Twamp respondor password in authentication mode
+                type: str
+            port:
+                description:
+                    - Port number to response.
+                type: int
+            security_mode:
+                description:
+                    - Twamp respondor security mode.
+                type: str
+                choices:
+                    - none
+                    - authentication
+            timeout:
+                description:
+                    - An inactivity timer for a twamp test session.
+                type: int
+            ttl_mode:
+                description:
+                    - Mode for TWAMP packet TTL modification.
+                type: str
+                choices:
+                    - reinit
+                    - decrease
+                    - retain

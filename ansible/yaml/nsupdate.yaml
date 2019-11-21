@@ -1,0 +1,64 @@
+
+---
+module: nsupdate
+
+short_description: Manage DNS records.
+description:
+    - Create, update and remove DNS records using DDNS updates
+version_added: "2.3"
+requirements:
+  - dnspython
+author: "Loic Blot (@nerzhul)"
+options:
+    state:
+        description:
+            - Manage DNS record.
+        choices: ['present', 'absent']
+        default: 'present'
+    server:
+        description:
+            - Apply DNS modification on this server.
+        required: true
+    port:
+        description:
+            - Use this TCP port when connecting to C(server).
+        default: 53
+        version_added: 2.5
+    key_name:
+        description:
+            - Use TSIG key name to authenticate against DNS C(server)
+    key_secret:
+        description:
+            - Use TSIG key secret, associated with C(key_name), to authenticate against C(server)
+    key_algorithm:
+        description:
+            - Specify key algorithm used by C(key_secret).
+        choices: ['HMAC-MD5.SIG-ALG.REG.INT', 'hmac-md5', 'hmac-sha1', 'hmac-sha224', 'hmac-sha256', 'hmac-sha384',
+                  'hmac-sha512']
+        default: 'hmac-md5'
+    zone:
+        description:
+            - DNS record will be modified on this C(zone).
+            - When omitted DNS will be queried to attempt finding the correct zone.
+            - Starting with Ansible 2.7 this parameter is optional.
+    record:
+        description:
+            - Sets the DNS record to modify. When zone is omitted this has to be absolute (ending with a dot).
+        required: true
+    type:
+        description:
+            - Sets the record type.
+        default: 'A'
+    ttl:
+        description:
+            - Sets the record TTL.
+        default: 3600
+    value:
+        description:
+            - Sets the record value.
+    protocol:
+        description:
+            - Sets the transport protocol (TCP or UDP). TCP is the recommended and a more robust option.
+        default: 'tcp'
+        choices: ['tcp', 'udp']
+        version_added: 2.8

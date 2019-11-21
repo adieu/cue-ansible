@@ -1,0 +1,97 @@
+
+---
+module: fortios_vpn_certificate_ocsp_server
+short_description: OCSP server configuration in Fortinet's FortiOS and FortiGate.
+description:
+    - This module is able to configure a FortiGate or FortiOS (FOS) device by allowing the
+      user to set and modify vpn_certificate feature and ocsp_server category.
+      Examples include all parameters and values need to be adjusted to datasources before usage.
+      Tested with FOS v6.0.5
+version_added: "2.9"
+author:
+    - Miguel Angel Munoz (@mamunozgonzalez)
+    - Nicolas Thomas (@thomnico)
+notes:
+    - Requires fortiosapi library developed by Fortinet
+    - Run as a local_action in your playbook
+requirements:
+    - fortiosapi>=0.9.8
+options:
+    host:
+        description:
+            - FortiOS or FortiGate IP address.
+        type: str
+        required: false
+    username:
+        description:
+            - FortiOS or FortiGate username.
+        type: str
+        required: false
+    password:
+        description:
+            - FortiOS or FortiGate password.
+        type: str
+        default: ""
+    vdom:
+        description:
+            - Virtual domain, among those defined previously. A vdom is a
+              virtual instance of the FortiGate that can be configured and
+              used as a different unit.
+        type: str
+        default: root
+    https:
+        description:
+            - Indicates if the requests towards FortiGate must use HTTPS protocol.
+        type: bool
+        default: true
+    ssl_verify:
+        description:
+            - Ensures FortiGate certificate must be verified by a proper CA.
+        type: bool
+        default: true
+    state:
+        description:
+            - Indicates whether to create or remove the object.
+        type: str
+        required: true
+        choices:
+            - present
+            - absent
+    vpn_certificate_ocsp_server:
+        description:
+            - OCSP server configuration.
+        default: null
+        type: dict
+        suboptions:
+            cert:
+                description:
+                    - OCSP server certificate. Source vpn.certificate.remote.name vpn.certificate.ca.name.
+                type: str
+            name:
+                description:
+                    - OCSP server entry name.
+                required: true
+                type: str
+            secondary_cert:
+                description:
+                    - Secondary OCSP server certificate. Source vpn.certificate.remote.name vpn.certificate.ca.name.
+                type: str
+            secondary_url:
+                description:
+                    - Secondary OCSP server URL.
+                type: str
+            source_ip:
+                description:
+                    - Source IP address for communications to the OCSP server.
+                type: str
+            unavail_action:
+                description:
+                    - Action when server is unavailable (revoke the certificate or ignore the result of the check).
+                type: str
+                choices:
+                    - revoke
+                    - ignore
+            url:
+                description:
+                    - OCSP server URL.
+                type: str

@@ -1,0 +1,59 @@
+
+---
+module: proxysql_scheduler
+version_added: "2.3"
+author: "Ben Mildren (@bmildren)"
+short_description: Adds or removes schedules from proxysql admin interface.
+description:
+   - The M(proxysql_scheduler) module adds or removes schedules using the
+     proxysql admin interface.
+options:
+  active:
+    description:
+      - A schedule with I(active) set to C(False) will be tracked in the
+        database, but will be never loaded in the in-memory data structures.
+    default: True
+    type: bool
+  interval_ms:
+    description:
+      - How often (in millisecond) the job will be started. The minimum value
+        for I(interval_ms) is 100 milliseconds.
+    default: 10000
+  filename:
+    description:
+      - Full path of the executable to be executed.
+    required: True
+  arg1:
+    description:
+      - Argument that can be passed to the job.
+  arg2:
+    description:
+      - Argument that can be passed to the job.
+  arg3:
+    description:
+      - Argument that can be passed to the job.
+  arg4:
+    description:
+      - Argument that can be passed to the job.
+  arg5:
+    description:
+      - Argument that can be passed to the job.
+  comment:
+    description:
+      - Text field that can be used for any purposed defined by the user.
+  state:
+    description:
+      - When C(present) - adds the schedule, when C(absent) - removes the
+        schedule.
+    choices: [ "present", "absent" ]
+    default: present
+  force_delete:
+    description:
+      - By default we avoid deleting more than one schedule in a single batch,
+        however if you need this behaviour and you're not concerned about the
+        schedules deleted, you can set I(force_delete) to C(True).
+    default: False
+    type: bool
+extends_documentation_fragment:
+  - proxysql.managing_config
+  - proxysql.connectivity

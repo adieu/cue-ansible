@@ -1,0 +1,40 @@
+
+module: office_365_connector_card
+short_description: Use webhooks to create Connector Card messages within an Office 365 group
+description:
+  - Creates Connector Card messages through
+  - Office 365 Connectors U(https://dev.outlook.com/Connectors)
+version_added: "2.4"
+author: "Marc Sensenich (@marc-sensenich)"
+notes:
+  - This module is not idempotent, therefore if the same task is run twice
+    there will be two Connector Cards created
+options:
+  webhook:
+    description:
+      - The webhook URL is given to you when you create a new Connector.
+    required: true
+  summary:
+    description:
+      - A string used for summarizing card content.
+      - This will be shown as the message subject.
+      - This is required if the text parameter isn't populated.
+  color:
+    description:
+      - Accent color used for branding or indicating status in the card.
+  title:
+    description:
+      - A title for the Connector message. Shown at the top of the message.
+  text:
+    description:
+      - The main text of the card.
+      - This will be rendered below the sender information and optional title,
+      - and above any sections or actions present.
+  actions:
+    description:
+      - This array of objects will power the action links
+      - found at the bottom of the card.
+  sections:
+    description:
+      - Contains a list of sections to display in the card.
+      - For more information see https://dev.outlook.com/Connectors/reference.

@@ -1,0 +1,117 @@
+
+---
+module: fortios_webfilter_fortiguard
+short_description: Configure FortiGuard Web Filter service in Fortinet's FortiOS and FortiGate.
+description:
+    - This module is able to configure a FortiGate or FortiOS (FOS) device by allowing the
+      user to set and modify webfilter feature and fortiguard category.
+      Examples include all parameters and values need to be adjusted to datasources before usage.
+      Tested with FOS v6.0.5
+version_added: "2.8"
+author:
+    - Miguel Angel Munoz (@mamunozgonzalez)
+    - Nicolas Thomas (@thomnico)
+notes:
+    - Requires fortiosapi library developed by Fortinet
+    - Run as a local_action in your playbook
+requirements:
+    - fortiosapi>=0.9.8
+options:
+    host:
+        description:
+            - FortiOS or FortiGate IP address.
+        type: str
+        required: false
+    username:
+        description:
+            - FortiOS or FortiGate username.
+        type: str
+        required: false
+    password:
+        description:
+            - FortiOS or FortiGate password.
+        type: str
+        default: ""
+    vdom:
+        description:
+            - Virtual domain, among those defined previously. A vdom is a
+              virtual instance of the FortiGate that can be configured and
+              used as a different unit.
+        type: str
+        default: root
+    https:
+        description:
+            - Indicates if the requests towards FortiGate must use HTTPS protocol.
+        type: bool
+        default: true
+    ssl_verify:
+        description:
+            - Ensures FortiGate certificate must be verified by a proper CA.
+        type: bool
+        default: true
+        version_added: 2.9
+    webfilter_fortiguard:
+        description:
+            - Configure FortiGuard Web Filter service.
+        default: null
+        type: dict
+        suboptions:
+            cache_mem_percent:
+                description:
+                    - Maximum percentage of available memory allocated to caching (1 - 15%).
+                type: int
+            cache_mode:
+                description:
+                    - Cache entry expiration mode.
+                type: str
+                choices:
+                    - ttl
+                    - db-ver
+            cache_prefix_match:
+                description:
+                    - Enable/disable prefix matching in the cache.
+                type: str
+                choices:
+                    - enable
+                    - disable
+            close_ports:
+                description:
+                    - Close ports used for HTTP/HTTPS override authentication and disable user overrides.
+                type: str
+                choices:
+                    - enable
+                    - disable
+            ovrd_auth_https:
+                description:
+                    - Enable/disable use of HTTPS for override authentication.
+                type: str
+                choices:
+                    - enable
+                    - disable
+            ovrd_auth_port:
+                description:
+                    - Port to use for FortiGuard Web Filter override authentication.
+                type: int
+            ovrd_auth_port_http:
+                description:
+                    - Port to use for FortiGuard Web Filter HTTP override authentication
+                type: int
+            ovrd_auth_port_https:
+                description:
+                    - Port to use for FortiGuard Web Filter HTTPS override authentication.
+                type: int
+            ovrd_auth_port_warning:
+                description:
+                    - Port to use for FortiGuard Web Filter Warning override authentication.
+                type: int
+            request_packet_size_limit:
+                description:
+                    - Limit size of URL request packets sent to FortiGuard server (0 for default).
+                type: int
+            warn_auth_https:
+                description:
+                    - Enable/disable use of HTTPS for warning and authentication.
+                type: str
+                choices:
+                    - enable
+                    - disable

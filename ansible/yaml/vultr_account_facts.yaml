@@ -1,0 +1,13 @@
+
+---
+module: vultr_account_facts
+short_description: Gather facts about the Vultr account.
+description:
+  - Gather facts about account balance, charges and payments.
+version_added: "2.5"
+deprecated:
+  removed_in: "2.12"
+  why: Transformed into an info module.
+  alternative: Use M(vultr_account_info) instead.
+author: "René Moser (@resmo)"
+extends_documentation_fragment: vultr

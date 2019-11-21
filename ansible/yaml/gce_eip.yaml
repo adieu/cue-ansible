@@ -1,0 +1,28 @@
+
+module: gce_eip
+version_added: "2.3"
+short_description: Create or Destroy Global or Regional External IP addresses.
+description:
+    - Create (reserve) or Destroy (release) Regional or Global IP Addresses. See
+      U(https://cloud.google.com/compute/docs/configure-instance-ip-addresses#reserve_new_static) for more on reserving static addresses.
+requirements:
+  - "python >= 2.6"
+  - "apache-libcloud >= 0.19.0"
+notes:
+  - Global addresses can only be used with Global Forwarding Rules.
+author:
+  - "Tom Melendez (@supertom) <tom@supertom.com>"
+options:
+  name:
+    description:
+       - Name of Address.
+    required: true
+  region:
+    description:
+       - Region to create the address in. Set to 'global' to create a global address.
+    required: true
+  state:
+    description: The state the address should be in. C(present) or C(absent) are the only valid options.
+    default: present
+    required: false
+    choices: [present, absent]

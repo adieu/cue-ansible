@@ -1,0 +1,46 @@
+
+---
+module: ce_mlag_interface
+version_added: "2.4"
+short_description: Manages MLAG interfaces on HUAWEI CloudEngine switches.
+description:
+    - Manages MLAG interface attributes on HUAWEI CloudEngine switches.
+author:
+    - Li Yanfeng (@QijunPan)
+notes:
+    - This module requires the netconf system service be enabled on the remote device being managed.
+    - Recommended connection is C(netconf).
+    - This module also works with C(local) connections for legacy playbooks.
+options:
+    eth_trunk_id:
+        description:
+            - Name of the local M-LAG interface. The value is ranging from 0 to 511.
+    dfs_group_id:
+        description:
+            - ID of a DFS group.The value is 1.
+        default: present
+    mlag_id:
+        description:
+            - ID of the M-LAG. The value is an integer that ranges from 1 to 2048.
+    mlag_system_id:
+        description:
+            - M-LAG global LACP system MAC address. The value is a string of 0 to 255 characters. The default value
+              is the MAC address of the Ethernet port of MPU.
+    mlag_priority_id:
+        description:
+            - M-LAG global LACP system priority. The value is an integer ranging from 0 to 65535.
+              The default value is 32768.
+    interface:
+        description:
+            - Name of the interface that enters the Error-Down state when the peer-link fails.
+              The value is a string of 1 to 63 characters.
+    mlag_error_down:
+        description:
+            - Configure the interface on the slave device to enter the Error-Down state.
+        choices: ['enable','disable']
+    state:
+        description:
+            - Specify desired state of the resource.
+        default: present
+        choices: ['present','absent']
+

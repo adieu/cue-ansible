@@ -1,0 +1,32 @@
+
+---
+module: bigmon_chain
+author: "Ted (@tedelhourani)"
+short_description: Create and remove a bigmon inline service chain.
+description:
+    - Create and remove a bigmon inline service chain.
+version_added: "2.3"
+options:
+  name:
+    description:
+     - The name of the chain.
+    required: true
+  state:
+    description:
+     - Whether the service chain should be present or absent.
+    default: present
+    choices: ['present', 'absent']
+  controller:
+    description:
+     - The controller IP address.
+    required: true
+  validate_certs:
+    description:
+      - If C(false), SSL certificates will not be validated. This should only be used
+        on personally controlled devices using self-signed certificates.
+    required: false
+    default: true
+    type: bool
+  access_token:
+    description:
+     - Bigmon access token. If this isn't set, the environment variable C(BIGSWITCH_ACCESS_TOKEN) is used.

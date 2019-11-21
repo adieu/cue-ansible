@@ -1,0 +1,25 @@
+
+---
+module: nginx_status_facts
+deprecated:
+  removed_in: '2.13'
+  why: Deprecated in favour of C(_info) module.
+  alternative: Use M(nginx_status_info) instead.
+short_description: Retrieve nginx status facts.
+description:
+  - Gathers facts from nginx from an URL having C(stub_status) enabled.
+version_added: "2.3"
+author: "René Moser (@resmo)"
+options:
+  url:
+    description:
+      - URL of the nginx status.
+    required: true
+  timeout:
+    description:
+      - HTTP connection timeout in seconds.
+    required: false
+    default: 10
+
+notes:
+  - See http://nginx.org/en/docs/http/ngx_http_stub_status_module.html for more information.

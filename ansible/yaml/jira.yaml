@@ -1,0 +1,114 @@
+
+module: jira
+version_added: "1.6"
+short_description: create and modify issues in a JIRA instance
+description:
+  - Create and modify issues in a JIRA instance.
+
+options:
+  uri:
+    required: true
+    description:
+      - Base URI for the JIRA instance.
+
+  operation:
+    required: true
+    aliases: [ command ]
+    choices: [ create, comment, edit, fetch, transition , link ]
+    description:
+      - The operation to perform.
+
+  username:
+    required: true
+    description:
+      - The username to log-in with.
+
+  password:
+    required: true
+    description:
+      - The password to log-in with.
+
+  project:
+    required: false
+    description:
+      - The project for this operation. Required for issue creation.
+
+  summary:
+    required: false
+    description:
+     - The issue summary, where appropriate.
+
+  description:
+    required: false
+    description:
+     - The issue description, where appropriate.
+
+  issuetype:
+    required: false
+    description:
+     - The issue type, for issue creation.
+
+  issue:
+    required: false
+    description:
+     - An existing issue key to operate on.
+
+  comment:
+    required: false
+    description:
+     - The comment text to add.
+
+  status:
+    required: false
+    description:
+     - The desired status; only relevant for the transition operation.
+
+  assignee:
+    required: false
+    description:
+     - Sets the assignee on create or transition operations. Note not all transitions will allow this.
+
+  linktype:
+    required: false
+    version_added: 2.3
+    description:
+     - Set type of link, when action 'link' selected.
+
+  inwardissue:
+    required: false
+    version_added: 2.3
+    description:
+     - Set issue from which link will be created.
+
+  outwardissue:
+    required: false
+    version_added: 2.3
+    description:
+     - Set issue to which link will be created.
+
+  fields:
+    required: false
+    description:
+     - This is a free-form data structure that can contain arbitrary data. This is passed directly to the JIRA REST API
+       (possibly after merging with other required data, as when passed to create). See examples for more information,
+       and the JIRA REST API for the structure required for various fields.
+
+  timeout:
+    required: false
+    version_added: 2.3
+    description:
+      - Set timeout, in seconds, on requests to JIRA API.
+    default: 10
+
+  validate_certs:
+    required: false
+    version_added: 2.5
+    description:
+      - Require valid SSL certificates (set to `false` if you'd like to use self-signed certificates)
+    default: true
+    type: bool
+
+notes:
+  - "Currently this only works with basic-auth."
+
+author: "Steve Smith (@tarka)"

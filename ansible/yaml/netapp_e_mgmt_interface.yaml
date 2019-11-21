@@ -1,0 +1,131 @@
+
+---
+module: netapp_e_mgmt_interface
+short_description: NetApp E-Series management interface configuration
+description:
+    - Configure the E-Series management interfaces
+version_added: '2.7'
+author:
+    - Michael Price (@lmprice)
+    - Nathan Swartz (@ndswartz)
+extends_documentation_fragment:
+    - netapp.eseries
+options:
+    state:
+        description:
+            - Enable or disable IPv4 network interface configuration.
+            - Either IPv4 or IPv6 must be enabled otherwise error will occur.
+            - Only required when enabling or disabling IPv4 network interface
+        choices:
+            - enable
+            - disable
+        required: no
+        aliases:
+            - enable_interface
+    controller:
+        description:
+            - The controller that owns the port you want to configure.
+            - Controller names are represented alphabetically, with the first controller as A,
+             the second as B, and so on.
+            - Current hardware models have either 1 or 2 available controllers, but that is not a guaranteed hard
+             limitation and could change in the future.
+        required: yes
+        choices:
+            - A
+            - B
+    name:
+        description:
+            - The port to modify the configuration for.
+            - The list of choices is not necessarily comprehensive. It depends on the number of ports
+              that are present in the system.
+            - The name represents the port number (typically from left to right on the controller),
+              beginning with a value of 1.
+            - Mutually exclusive with I(channel).
+        aliases:
+            - port
+            - iface
+    channel:
+        description:
+            - The port to modify the configuration for.
+            - The channel represents the port number (typically from left to right on the controller),
+              beginning with a value of 1.
+            - Mutually exclusive with I(name).
+    address:
+        description:
+            - The IPv4 address to assign to the interface.
+            - Should be specified in xx.xx.xx.xx form.
+            - Mutually exclusive with I(config_method=dhcp)
+        required: no
+    subnet_mask:
+        description:
+            - The subnet mask to utilize for the interface.
+            - Should be specified in xx.xx.xx.xx form.
+            - Mutually exclusive with I(config_method=dhcp)
+        required: no
+    gateway:
+        description:
+            - The IPv4 gateway address to utilize for the interface.
+            - Should be specified in xx.xx.xx.xx form.
+            - Mutually exclusive with I(config_method=dhcp)
+        required: no
+    config_method:
+        description:
+            - The configuration method type to use for network interface ports.
+            - dhcp is mutually exclusive with I(address), I(subnet_mask), and I(gateway).
+        choices:
+            - dhcp
+            - static
+        required: no
+    dns_config_method:
+        description:
+            - The configuration method type to use for DNS services.
+            - dhcp is mutually exclusive with I(dns_address), and I(dns_address_backup).
+        choices:
+            - dhcp
+            - static
+        required: no
+    dns_address:
+        description:
+            - Primary IPv4 DNS server address
+        required: no
+    dns_address_backup:
+        description:
+            - Backup IPv4 DNS server address
+            - Queried when primary DNS server fails
+        required: no
+    ntp_config_method:
+        description:
+            - The configuration method type to use for NTP services.
+            - disable is mutually exclusive with I(ntp_address) and I(ntp_address_backup).
+            - dhcp is mutually exclusive with I(ntp_address) and I(ntp_address_backup).
+        choices:
+            - disable
+            - dhcp
+            - static
+        required: no
+    ntp_address:
+        description:
+            - Primary IPv4 NTP server address
+        required: no
+    ntp_address_backup:
+        description:
+            - Backup IPv4 NTP server address
+            - Queried when primary NTP server fails
+        required: no
+    ssh:
+        type: bool
+        description:
+            - Enable ssh access to the controller for debug purposes.
+            - This is a controller-level setting.
+            - rlogin/telnet will be enabled for ancient equipment where ssh is not available.
+        required: no
+    log_path:
+        description:
+            - A local path to a file to be used for debug logging
+        required: no
+notes:
+    - Check mode is supported.
+    - The interface settings are applied synchronously, but changes to the interface itself (receiving a new IP address
+      via dhcp, etc), can take seconds or minutes longer to take effect.
+    - "Known issue: Changes specifically to down ports will result in a failure. However, this may not be the case in up
+      coming NetApp E-Series firmware releases (released after firmware version 11.40.2)."

@@ -1,0 +1,34 @@
+
+---
+module: iam_user_info
+short_description: Gather IAM user(s) facts in AWS
+description:
+  - This module can be used to gather IAM user(s) facts in AWS.
+version_added: "2.10"
+author:
+  - Constantin Bugneac (@Constantin07)
+  - Abhijeet Kasurde (@Akasurde)
+options:
+  name:
+    description:
+     - The name of the IAM user to look for.
+    required: false
+    type: str
+  group:
+    description:
+     - The group name name of the IAM user to look for. Mutually exclusive with C(path).
+    required: false
+    type: str
+  path:
+    description:
+     - The path to the IAM user. Mutually exclusive with C(group).
+     - If specified, then would get all user names whose path starts with user provided value.
+    required: false
+    default: '/'
+    type: str
+requirements:
+  - botocore
+  - boto3
+extends_documentation_fragment:
+  - aws
+  - ec2

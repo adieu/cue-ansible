@@ -1,0 +1,148 @@
+
+---
+module: cloudflare_dns
+author:
+- Michael Gruener (@mgruener)
+requirements:
+   - python >= 2.6
+version_added: "2.1"
+short_description: Manage Cloudflare DNS records
+description:
+   - "Manages dns records via the Cloudflare API, see the docs: U(https://api.cloudflare.com/)"
+options:
+  api_token:
+    description:
+    - API token.
+    - Required for api token authentication.
+    - "You can obtain your API token from the bottom of the Cloudflare 'My Account' page, found here: U(https://dash.cloudflare.com/)"
+    type: str
+    required: false
+    version_added: '2.10'
+  account_api_key:
+    description:
+    - Account API key.
+    - Required for api keys authentication.
+    - "You can obtain your API key from the bottom of the Cloudflare 'My Account' page, found here: U(https://dash.cloudflare.com/)"
+    type: str
+    required: false
+    aliases: [ account_api_token ]
+  account_email:
+    description:
+    - Account email. Required for api keys authentication.
+    type: str
+    required: false
+  algorithm:
+    description:
+    - Algorithm number.
+    - Required for C(type=DS) and C(type=SSHFP) when C(state=present).
+    type: int
+    version_added: '2.7'
+  cert_usage:
+    description:
+    - Certificate usage number.
+    - Required for C(type=TLSA) when C(state=present).
+    type: int
+    choices: [ 0, 1, 2, 3 ]
+    version_added: '2.7'
+  hash_type:
+    description:
+    - Hash type number.
+    - Required for C(type=DS), C(type=SSHFP) and C(type=TLSA) when C(state=present).
+    type: int
+    choices: [ 1, 2 ]
+    version_added: '2.7'
+  key_tag:
+    description:
+    - DNSSEC key tag.
+    - Needed for C(type=DS) when C(state=present).
+    type: int
+    version_added: '2.7'
+  port:
+    description:
+    - Service port.
+    - Required for C(type=SRV) and C(type=TLSA).
+    type: int
+  priority:
+    description:
+    - Record priority.
+    - Required for C(type=MX) and C(type=SRV)
+    default: 1
+  proto:
+    description:
+    - Service protocol. Required for C(type=SRV) and C(type=TLSA).
+    - Common values are TCP and UDP.
+    - Before Ansible 2.6 only TCP and UDP were available.
+    type: str
+  proxied:
+    description:
+    - Proxy through Cloudflare network or just use DNS.
+    type: bool
+    default: no
+    version_added: '2.3'
+  record:
+    description:
+    - Record to add.
+    - Required if C(state=present).
+    - Default is C(@) (e.g. the zone name).
+    type: str
+    default: '@'
+    aliases: [ name ]
+  selector:
+    description:
+    - Selector number.
+    - Required for C(type=TLSA) when C(state=present).
+    choices: [ 0, 1 ]
+    type: int
+    version_added: '2.7'
+  service:
+    description:
+    - Record service.
+    - Required for C(type=SRV)
+  solo:
+    description:
+    - Whether the record should be the only one for that record type and record name.
+    - Only use with C(state=present).
+    - This will delete all other records with the same record name and type.
+    type: bool
+  state:
+    description:
+    - Whether the record(s) should exist or not.
+    type: str
+    choices: [ absent, present ]
+    default: present
+  timeout:
+    description:
+    - Timeout for Cloudflare API calls.
+    type: int
+    default: 30
+  ttl:
+    description:
+    - The TTL to give the new record.
+    - Must be between 120 and 2,147,483,647 seconds, or 1 for automatic.
+    type: int
+    default: 1
+  type:
+    description:
+      - The type of DNS record to create. Required if C(state=present).
+      - C(type=DS), C(type=SSHFP) and C(type=TLSA) added in Ansible 2.7.
+    type: str
+    choices: [ A, AAAA, CNAME, DS, MX, NS, SPF, SRV, SSHFP, TLSA, TXT ]
+  value:
+    description:
+    - The record value.
+    - Required for C(state=present).
+    type: str
+    aliases: [ content ]
+  weight:
+    description:
+    - Service weight.
+    - Required for C(type=SRV).
+    type: int
+    default: 1
+  zone:
+    description:
+    - The name of the Zone to work with (e.g. "example.com").
+    - The Zone must already exist.
+    type: str
+    required: true
+    aliases: [ domain ]

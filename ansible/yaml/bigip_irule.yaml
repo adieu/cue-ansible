@@ -1,0 +1,52 @@
+
+---
+module: bigip_irule
+short_description: Manage iRules across different modules on a BIG-IP
+description:
+  - Manage iRules across different modules on a BIG-IP.
+version_added: 2.2
+options:
+  content:
+    description:
+      - When used instead of 'src', sets the contents of an iRule directly to
+        the specified value. This is for simple values, but can be used with
+        lookup plugins for anything complex or with formatting. Either one
+        of C(src) or C(content) must be provided.
+    type: str
+  module:
+    description:
+      - The BIG-IP module to add the iRule to.
+    type: str
+    required: True
+    choices:
+      - ltm
+      - gtm
+  name:
+    description:
+      - The name of the iRule.
+    type: str
+    required: True
+  src:
+    description:
+      - The iRule file to interpret and upload to the BIG-IP. Either one
+        of C(src) or C(content) must be provided.
+    type: path
+    required: True
+  state:
+    description:
+      - Whether the iRule should exist or not.
+    type: str
+    choices:
+      - present
+      - absent
+    default: present
+  partition:
+    description:
+      - Device partition to manage resources on.
+    type: str
+    default: Common
+    version_added: 2.5
+extends_documentation_fragment: f5
+author:
+  - Tim Rupp (@caphrim007)
+  - Wojciech Wypior (@wojtek0806)

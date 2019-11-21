@@ -1,0 +1,239 @@
+
+---
+module: fortios_firewall_vip64
+short_description: Configure IPv6 to IPv4 virtual IPs in Fortinet's FortiOS and FortiGate.
+description:
+    - This module is able to configure a FortiGate or FortiOS (FOS) device by allowing the
+      user to set and modify firewall feature and vip64 category.
+      Examples include all parameters and values need to be adjusted to datasources before usage.
+      Tested with FOS v6.0.5
+version_added: "2.8"
+author:
+    - Miguel Angel Munoz (@mamunozgonzalez)
+    - Nicolas Thomas (@thomnico)
+notes:
+    - Requires fortiosapi library developed by Fortinet
+    - Run as a local_action in your playbook
+requirements:
+    - fortiosapi>=0.9.8
+options:
+    host:
+        description:
+            - FortiOS or FortiGate IP address.
+        type: str
+        required: false
+    username:
+        description:
+            - FortiOS or FortiGate username.
+        type: str
+        required: false
+    password:
+        description:
+            - FortiOS or FortiGate password.
+        type: str
+        default: ""
+    vdom:
+        description:
+            - Virtual domain, among those defined previously. A vdom is a
+              virtual instance of the FortiGate that can be configured and
+              used as a different unit.
+        type: str
+        default: root
+    https:
+        description:
+            - Indicates if the requests towards FortiGate must use HTTPS protocol.
+        type: bool
+        default: true
+    ssl_verify:
+        description:
+            - Ensures FortiGate certificate must be verified by a proper CA.
+        type: bool
+        default: true
+        version_added: 2.9
+    state:
+        description:
+            - Indicates whether to create or remove the object.
+              This attribute was present already in previous version in a deeper level.
+              It has been moved out to this outer level.
+        type: str
+        required: false
+        choices:
+            - present
+            - absent
+        version_added: 2.9
+    firewall_vip64:
+        description:
+            - Configure IPv6 to IPv4 virtual IPs.
+        default: null
+        type: dict
+        suboptions:
+            state:
+                description:
+                    - B(Deprecated)
+                    - Starting with Ansible 2.9 we recommend using the top-level 'state' parameter.
+                    - HORIZONTALLINE
+                    - Indicates whether to create or remove the object.
+                type: str
+                required: false
+                choices:
+                    - present
+                    - absent
+            arp_reply:
+                description:
+                    - Enable ARP reply.
+                type: str
+                choices:
+                    - disable
+                    - enable
+            color:
+                description:
+                    - Color of icon on the GUI.
+                type: int
+            comment:
+                description:
+                    - Comment.
+                type: str
+            extip:
+                description:
+                    - Start-external-IP [-end-external-IP].
+                type: str
+            extport:
+                description:
+                    - External service port.
+                type: str
+            id:
+                description:
+                    - Custom defined id.
+                type: int
+            ldb_method:
+                description:
+                    - Load balance method.
+                type: str
+                choices:
+                    - static
+                    - round-robin
+                    - weighted
+                    - least-session
+                    - least-rtt
+                    - first-alive
+            mappedip:
+                description:
+                    - Start-mapped-IP [-end-mapped-IP].
+                type: str
+            mappedport:
+                description:
+                    - Mapped service port.
+                type: str
+            monitor:
+                description:
+                    - Health monitors.
+                type: list
+                suboptions:
+                    name:
+                        description:
+                            - Health monitor name. Source firewall.ldb-monitor.name.
+                        required: true
+                        type: str
+            name:
+                description:
+                    - VIP64 name.
+                required: true
+                type: str
+            portforward:
+                description:
+                    - Enable port forwarding.
+                type: str
+                choices:
+                    - disable
+                    - enable
+            protocol:
+                description:
+                    - Mapped port protocol.
+                type: str
+                choices:
+                    - tcp
+                    - udp
+            realservers:
+                description:
+                    - Real servers.
+                type: list
+                suboptions:
+                    client_ip:
+                        description:
+                            - Restrict server to a client IP in this range.
+                        type: str
+                    healthcheck:
+                        description:
+                            - Per server health check.
+                        type: str
+                        choices:
+                            - disable
+                            - enable
+                            - vip
+                    holddown_interval:
+                        description:
+                            - Hold down interval.
+                        type: int
+                    id:
+                        description:
+                            - Real server ID.
+                        required: true
+                        type: int
+                    ip:
+                        description:
+                            - Mapped server IP.
+                        type: str
+                    max_connections:
+                        description:
+                            - Maximum number of connections allowed to server.
+                        type: int
+                    monitor:
+                        description:
+                            - Health monitors. Source firewall.ldb-monitor.name.
+                        type: str
+                    port:
+                        description:
+                            - Mapped server port.
+                        type: int
+                    status:
+                        description:
+                            - Server administrative status.
+                        type: str
+                        choices:
+                            - active
+                            - standby
+                            - disable
+                    weight:
+                        description:
+                            - weight
+                        type: int
+            server_type:
+                description:
+                    - Server type.
+                type: str
+                choices:
+                    - http
+                    - tcp
+                    - udp
+                    - ip
+            src_filter:
+                description:
+                    - "Source IP6 filter (x:x:x:x:x:x:x:x/x)."
+                type: list
+                suboptions:
+                    range:
+                        description:
+                            - Src-filter range.
+                        required: true
+                        type: str
+            type:
+                description:
+                    - "VIP type: static NAT or server load balance."
+                type: str
+                choices:
+                    - static-nat
+                    - server-load-balance
+            uuid:
+                description:
+                    - Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
+                type: str

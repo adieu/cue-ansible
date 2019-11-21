@@ -1,0 +1,85 @@
+
+---
+module: s3_bucket
+short_description: Manage S3 buckets in AWS, DigitalOcean, Ceph, Walrus and FakeS3
+description:
+    - Manage S3 buckets in AWS, DigitalOcean, Ceph, Walrus and FakeS3
+version_added: "2.0"
+requirements: [ boto3 ]
+author: "Rob White (@wimnat)"
+options:
+  force:
+    description:
+      - When trying to delete a bucket, delete all keys (including versions and delete markers)
+        in the bucket first (an s3 bucket must be empty for a successful deletion)
+    type: bool
+    default: 'no'
+  name:
+    description:
+      - Name of the s3 bucket
+    required: true
+    type: str
+  policy:
+    description:
+      - The JSON policy as a string.
+    type: json
+  s3_url:
+    description:
+      - S3 URL endpoint for usage with DigitalOcean, Ceph, Eucalyptus and fakes3 etc.
+      - Assumes AWS if not specified.
+      - For Walrus, use FQDN of the endpoint without scheme nor path.
+    aliases: [ S3_URL ]
+    type: str
+  ceph:
+    description:
+      - Enable API compatibility with Ceph. It takes into account the S3 API subset working
+        with Ceph in order to provide the same module behaviour where possible.
+    type: bool
+    version_added: "2.2"
+  requester_pays:
+    description:
+      - With Requester Pays buckets, the requester instead of the bucket owner pays the cost
+        of the request and the data download from the bucket.
+    type: bool
+    default: False
+  state:
+    description:
+      - Create or remove the s3 bucket
+    required: false
+    default: present
+    choices: [ 'present', 'absent' ]
+    type: str
+  tags:
+    description:
+      - tags dict to apply to bucket
+    type: dict
+  purge_tags:
+    description:
+      - whether to remove tags that aren't present in the C(tags) parameter
+    type: bool
+    default: True
+    version_added: "2.9"
+  versioning:
+    description:
+      - Whether versioning is enabled or disabled (note that once versioning is enabled, it can only be suspended)
+    type: bool
+  encryption:
+    description:
+      - Describes the default server-side encryption to apply to new objects in the bucket.
+        In order to remove the server-side encryption, the encryption needs to be set to 'none' explicitly.
+    choices: [ 'none', 'AES256', 'aws:kms' ]
+    version_added: "2.9"
+    type: str
+  encryption_key_id:
+    description: KMS master key ID to use for the default encryption. This parameter is allowed if encryption is aws:kms. If
+                 not specified then it will default to the AWS provided KMS key.
+    version_added: "2.9"
+    type: str
+extends_documentation_fragment:
+    - aws
+    - ec2
+notes:
+    - If C(requestPayment), C(policy), C(tagging) or C(versioning)
+      operations/API aren't implemented by the endpoint, module doesn't fail
+      if related parameters I(requester_pays), I(policy), I(tags) or
+      I(versioning) are C(None).

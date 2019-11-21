@@ -1,0 +1,37 @@
+
+---
+module: rhn_channel
+short_description: Adds or removes Red Hat software channels
+description:
+    - Adds or removes Red Hat software channels.
+version_added: "1.1"
+author:
+- Vincent Van der Kussen (@vincentvdk)
+notes:
+    - This module fetches the system id from RHN.
+    - This module doesn't support I(check_mode).
+options:
+    name:
+        description:
+            - Name of the software channel.
+        required: true
+    sysname:
+        description:
+            - Name of the system as it is known in RHN/Satellite.
+        required: true
+    state:
+        description:
+            - Whether the channel should be present or not, taking action if the state is different from what is stated.
+        default: present
+    url:
+        description:
+            - The full URL to the RHN/Satellite API.
+        required: true
+    user:
+        description:
+            - RHN/Satellite login.
+        required: true
+    password:
+        description:
+            - RHN/Satellite password.
+        required: true

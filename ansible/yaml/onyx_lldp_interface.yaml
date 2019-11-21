@@ -1,0 +1,25 @@
+
+---
+module: onyx_lldp_interface
+version_added: "2.5"
+author: "Samer Deeb (@samerd)"
+short_description: Manage LLDP interfaces configuration on Mellanox ONYX network devices
+description:
+  - This module provides declarative management of LLDP interfaces
+    configuration on Mellanox ONYX network devices.
+options:
+  name:
+    description:
+      - Name of the interface LLDP should be configured on.
+  aggregate:
+    description: List of interfaces LLDP should be configured on.
+  purge:
+    description:
+      - Purge interfaces not defined in the aggregate parameter.
+    type: bool
+    default: false
+  state:
+    description:
+      - State of the LLDP configuration.
+    default: present
+    choices: ['present', 'absent', 'enabled', 'disabled']

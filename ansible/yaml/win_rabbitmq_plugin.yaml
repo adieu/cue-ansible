@@ -1,0 +1,32 @@
+
+---
+module: win_rabbitmq_plugin
+short_description: Manage RabbitMQ plugins
+description:
+  - Manage RabbitMQ plugins.
+version_added: "2.4"
+options:
+  names:
+    description:
+      - Comma-separated list of plugin names.
+    type: str
+    required: yes
+    aliases: [ name ]
+  new_only:
+    description:
+      - Only enable missing plugins.
+      - Does not disable plugins that are not in the names list.
+    type: bool
+    default: no
+  state:
+    description:
+      - Specify if plugins are to be enabled or disabled.
+    type: str
+    choices: [ disabled, enabled ]
+    default: enabled
+  prefix:
+    description:
+      - Specify a custom install prefix to a Rabbit.
+    type: str
+author:
+  - Artem Zinenko (@ar7z1)

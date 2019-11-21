@@ -1,0 +1,249 @@
+
+---
+module: bigip_device_syslog
+short_description: Manage system-level syslog settings on BIG-IP
+description:
+  - Manage system-level syslog settings on BIG-IP.
+version_added: 2.8
+options:
+  auth_priv_from:
+    description:
+      - Specifies the lowest level of messages about user authentication
+        to include in the system log.
+    type: str
+    choices:
+      - alert
+      - crit
+      - debug
+      - emerg
+      - err
+      - info
+      - notice
+      - warning
+  auth_priv_to:
+    description:
+      - Specifies the highest level of messages about user authentication
+        to include in the system log.
+    type: str
+    choices:
+      - alert
+      - crit
+      - debug
+      - emerg
+      - err
+      - info
+      - notice
+      - warning
+  console_log:
+    description:
+      - Enables or disables logging emergency syslog messages to the
+        console.
+    type: bool
+  cron_from:
+    description:
+      - Specifies the lowest level of messages about time-based scheduling
+        to include in the system log.
+    type: str
+    choices:
+      - alert
+      - crit
+      - debug
+      - emerg
+      - err
+      - info
+      - notice
+      - warning
+  cron_to:
+    description:
+      - Specifies the highest level of messages about time-based
+        scheduling to include in the system log.
+    type: str
+    choices:
+      - alert
+      - crit
+      - debug
+      - emerg
+      - err
+      - info
+      - notice
+      - warning
+  daemon_from:
+    description:
+      - Specifies the lowest level of messages about daemon performance to
+        include in the system log.
+    type: str
+    choices:
+      - alert
+      - crit
+      - debug
+      - emerg
+      - err
+      - info
+      - notice
+      - warning
+  daemon_to:
+    description:
+      - Specifies the highest level of messages about daemon performance
+        to include in the system log.
+    type: str
+    choices:
+      - alert
+      - crit
+      - debug
+      - emerg
+      - err
+      - info
+      - notice
+      - warning
+  include:
+    description:
+      - Syslog-NG configuration to include in the device syslog config.
+    type: str
+  iso_date:
+    description:
+      - Enables or disables the ISO date format for messages in the log
+        files.
+    type: bool
+  kern_from:
+    description:
+      - Specifies the lowest level of kernel messages to include in the
+        system log.
+    type: str
+    choices:
+      - alert
+      - crit
+      - debug
+      - emerg
+      - err
+      - info
+      - notice
+      - warning
+  kern_to:
+    description:
+      - Specifies the highest level of kernel messages to include in the
+        system log.
+    type: str
+    choices:
+      - alert
+      - crit
+      - debug
+      - emerg
+      - err
+      - info
+      - notice
+      - warning
+  local6_from:
+    description:
+      - Specifies the lowest error level for messages from the local6
+        facility to include in the log.
+    type: str
+    choices:
+      - alert
+      - crit
+      - debug
+      - emerg
+      - err
+      - info
+      - notice
+      - warning
+  local6_to:
+    description:
+      - Specifies the highest error level for messages from the local6
+        facility to include in the log.
+    type: str
+    choices:
+      - alert
+      - crit
+      - debug
+      - emerg
+      - err
+      - info
+      - notice
+      - warning
+  mail_from:
+    description:
+      - Specifies the lowest level of mail log messages to include in the
+        system log.
+    type: str
+    choices:
+      - alert
+      - crit
+      - debug
+      - emerg
+      - err
+      - info
+      - notice
+      - warning
+  mail_to:
+    description:
+      - Specifies the highest level of mail log messages to include in the
+        system log.
+    type: str
+    choices:
+      - alert
+      - crit
+      - debug
+      - emerg
+      - err
+      - info
+      - notice
+      - warning
+  messages_from:
+    description:
+      - Specifies the lowest level of system messages to include in the
+        system log.
+    type: str
+    choices:
+      - alert
+      - crit
+      - debug
+      - emerg
+      - err
+      - info
+      - notice
+      - warning
+  messages_to:
+    description:
+      - Specifies the highest level of system messages to include in the
+        system log.
+    type: str
+    choices:
+      - alert
+      - crit
+      - debug
+      - emerg
+      - err
+      - info
+      - notice
+      - warning
+  user_log_from:
+    description:
+      - Specifies the lowest level of user account messages to include in
+        the system log.
+    type: str
+    choices:
+      - alert
+      - crit
+      - debug
+      - emerg
+      - err
+      - info
+      - notice
+      - warning
+  user_log_to:
+    description:
+      - Specifies the highest level of user account messages to include in
+        the system log.
+    type: str
+    choices:
+      - alert
+      - crit
+      - debug
+      - emerg
+      - err
+      - info
+      - notice
+      - warning
+extends_documentation_fragment: f5
+author:
+  - Tim Rupp (@caphrim007)

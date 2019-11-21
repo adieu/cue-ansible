@@ -1,0 +1,161 @@
+
+---
+module: one_vm
+short_description: Creates or terminates OpenNebula instances
+description:
+  - Manages OpenNebula instances
+version_added: "2.6"
+requirements:
+  - pyone
+options:
+  api_url:
+    description:
+      - URL of the OpenNebula RPC server.
+      - It is recommended to use HTTPS so that the username/password are not
+      - transferred over the network unencrypted.
+      - If not set then the value of the C(ONE_URL) environment variable is used.
+  api_username:
+    description:
+      - Name of the user to login into the OpenNebula RPC server. If not set
+      - then the value of the C(ONE_USERNAME) environment variable is used.
+  api_password:
+    description:
+      - Password of the user to login into OpenNebula RPC server. If not set
+      - then the value of the C(ONE_PASSWORD) environment variable is used.
+      - if both I(api_username) or I(api_password) are not set, then it will try
+      - authenticate with ONE auth file. Default path is "~/.one/one_auth".
+      - Set environment variable C(ONE_AUTH) to override this path.
+  template_name:
+    description:
+      - Name of VM template to use to create a new instace
+  template_id:
+    description:
+      - ID of a VM template to use to create a new instance
+  vm_start_on_hold:
+    description:
+      - Set to true to put vm on hold while creating
+    default: False
+    version_added: '2.9'
+  instance_ids:
+    description:
+      - A list of instance ids used for states':' C(absent), C(running), C(rebooted), C(poweredoff)
+    aliases: ['ids']
+  state:
+    description:
+      - C(present) - create instances from a template specified with C(template_id)/C(template_name).
+      - C(running) - run instances
+      - C(poweredoff) - power-off instances
+      - C(rebooted) - reboot instances
+      - C(absent) - terminate instances
+    choices: ["present", "absent", "running", "rebooted", "poweredoff"]
+    default: present
+  hard:
+    description:
+      - Reboot, power-off or terminate instances C(hard)
+    default: no
+    type: bool
+  wait:
+    description:
+      - Wait for the instance to reach its desired state before returning. Keep
+      - in mind if you are waiting for instance to be in running state it
+      - doesn't mean that you will be able to SSH on that machine only that
+      - boot process have started on that instance, see 'wait_for' example for
+      - details.
+    default: yes
+    type: bool
+  wait_timeout:
+    description:
+      - How long before wait gives up, in seconds
+    default: 300
+  attributes:
+    description:
+      - A dictionary of key/value attributes to add to new instances, or for
+      - setting C(state) of instances with these attributes.
+      - Keys are case insensitive and OpenNebula automatically converts them to upper case.
+      - Be aware C(NAME) is a special attribute which sets the name of the VM when it's deployed.
+      - C(#) character(s) can be appended to the C(NAME) and the module will automatically add
+      - indexes to the names of VMs.
+      - For example':' C(NAME':' foo-###) would create VMs with names C(foo-000), C(foo-001),...
+      - When used with C(count_attributes) and C(exact_count) the module will
+      - match the base name without the index part.
+    default: {}
+  labels:
+    description:
+      - A list of labels to associate with new instances, or for setting
+      - C(state) of instances with these labels.
+    default: []
+  count_attributes:
+    description:
+      - A dictionary of key/value attributes that can only be used with
+      - C(exact_count) to determine how many nodes based on a specific
+      - attributes criteria should be deployed. This can be expressed in
+      - multiple ways and is shown in the EXAMPLES section.
+  count_labels:
+    description:
+      - A list of labels that can only be used with C(exact_count) to determine
+      - how many nodes based on a specific labels criteria should be deployed.
+      - This can be expressed in multiple ways and is shown in the EXAMPLES
+      - section.
+  count:
+    description:
+      - Number of instances to launch
+    default: 1
+  exact_count:
+    description:
+      - Indicates how many instances that match C(count_attributes) and
+      - C(count_labels) parameters should be deployed. Instances are either
+      - created or terminated based on this value.
+      - NOTE':' Instances with the least IDs will be terminated first.
+  mode:
+    description:
+      - Set permission mode of the instance in octet format, e.g. C(600) to give owner C(use) and C(manage) and nothing to group and others.
+  owner_id:
+    description:
+      - ID of the user which will be set as the owner of the instance
+  group_id:
+    description:
+      - ID of the group which will be set as the group of the instance
+  memory:
+    description:
+      - The size of the memory for new instances (in MB, GB, ...)
+  disk_size:
+    description:
+      - The size of the disk created for new instances (in MB, GB, TB,...).
+      - NOTE':' If The Template hats Multiple Disks the Order of the Sizes is
+      - matched against the order specified in C(template_id)/C(template_name).
+  cpu:
+    description:
+      - Percentage of CPU divided by 100 required for the new instance. Half a
+      - processor is written 0.5.
+  vcpu:
+    description:
+      - Number of CPUs (cores) new VM will have.
+  networks:
+    description:
+      - A list of dictionaries with network parameters. See examples for more details.
+    default: []
+  disk_saveas:
+    description:
+      - Creates an image from a VM disk.
+      - It is a dictionary where you have to specify C(name) of the new image.
+      - Optionally you can specify C(disk_id) of the disk you want to save. By default C(disk_id) is 0.
+      - I(NOTE)':' This operation will only be performed on the first VM (if more than one VM ID is passed)
+      - and the VM has to be in the C(poweredoff) state.
+      - Also this operation will fail if an image with specified C(name) already exists.
+  persistent:
+    description:
+      - Create a private persistent copy of the template plus any image defined in DISK, and instantiate that copy.
+    default: NO
+    type: bool
+    version_added: '2.10'
+  datastore_id:
+    description:
+      - Name of Datastore to use to create a new instace
+    version_added: '2.10'
+  datastore_name:
+    description:
+      - Name of Datastore to use to create a new instace
+    version_added: '2.10'
+author:
+    - "Milan Ilic (@ilicmilan)"
+    - "Jan Meerkamp (@meerkampdvv)"

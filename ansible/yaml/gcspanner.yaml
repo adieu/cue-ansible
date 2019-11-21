@@ -1,0 +1,53 @@
+
+---
+module: gcspanner
+version_added: "2.3"
+short_description: Create and Delete Instances/Databases on Spanner
+description:
+    - Create and Delete Instances/Databases on Spanner.
+      See U(https://cloud.google.com/spanner/docs) for an overview.
+requirements:
+  - python >= 2.6
+  - google-auth >= 0.5.0
+  - google-cloud-spanner >= 0.23.0
+notes:
+  - Changing the configuration on an existing instance is not supported.
+deprecated:
+    removed_in: "2.12"
+    why: Updated modules released with increased functionality
+    alternative: Use M(gcp_spanner_database) and/or M(gcp_spanner_instance) instead.
+author:
+  - Tom Melendez (@supertom) <tom@supertom.com>
+options:
+  configuration:
+    description:
+       - Configuration the instance should use.
+       - Examples are us-central1, asia-east1 and europe-west1.
+    required: yes
+  instance_id:
+    description:
+       - GCP spanner instance name.
+    required: yes
+  database_name:
+    description:
+       - Name of database contained on the instance.
+  force_instance_delete:
+    description:
+       - To delete an instance, this argument must exist and be true (along with state being equal to absent).
+    type: bool
+    default: 'no'
+  instance_display_name:
+    description:
+       - Name of Instance to display.
+       - If not specified, instance_id will be used instead.
+  node_count:
+    description:
+       - Number of nodes in the instance.
+    default: 1
+  state:
+    description:
+    - State of the instance or database. Applies to the most granular resource.
+    - If a C(database_name) is specified we remove it.
+    - If only C(instance_id) is specified, that is what is removed.
+    choices: [ absent, present ]
+    default: present

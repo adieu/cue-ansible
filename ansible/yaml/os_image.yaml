@@ -1,0 +1,77 @@
+
+---
+module: os_image
+short_description: Add/Delete images from OpenStack Cloud
+extends_documentation_fragment: openstack
+version_added: "2.0"
+author: "Monty Taylor (@emonty)"
+description:
+   - Add or Remove images from the OpenStack Image Repository
+options:
+   name:
+     description:
+        - The name of the image when uploading - or the name/ID of the image if deleting
+     required: true
+   id:
+     version_added: "2.4"
+     description:
+        - The ID of the image when uploading an image
+   checksum:
+     version_added: "2.5"
+     description:
+        - The checksum of the image
+   disk_format:
+     description:
+        - The format of the disk that is getting uploaded
+     default: qcow2
+   container_format:
+     description:
+        - The format of the container
+     default: bare
+   owner:
+     description:
+        - The owner of the image
+   min_disk:
+     description:
+        - The minimum disk space (in GB) required to boot this image
+   min_ram:
+     description:
+        - The minimum ram (in MB) required to boot this image
+   is_public:
+     description:
+        - Whether the image can be accessed publicly. Note that publicizing an image requires admin role by default.
+     type: bool
+     default: 'yes'
+   protected:
+     version_added: "2.9"
+     description:
+        - Prevent image from being deleted
+     type: bool
+     default: 'no'
+   filename:
+     description:
+        - The path to the file which has to be uploaded
+   ramdisk:
+     description:
+        - The name of an existing ramdisk image that will be associated with this image
+   kernel:
+     description:
+        - The name of an existing kernel image that will be associated with this image
+   properties:
+     description:
+        - Additional properties to be associated with this image
+     default: {}
+   state:
+     description:
+       - Should the resource be present or absent.
+     choices: [present, absent]
+     default: present
+   availability_zone:
+     description:
+       - Ignored. Present for backwards compatibility
+   volume:
+     version_added: "2.10"
+     description:
+       - ID of a volume to create an image from.
+       - The volume must be in AVAILABLE state.
+requirements: ["openstacksdk"]

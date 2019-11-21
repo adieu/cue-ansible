@@ -1,0 +1,57 @@
+
+---
+module: azure_rm_iothub_info
+
+version_added: "2.9"
+
+short_description: Get IoT Hub facts
+
+description:
+    - Get facts for a specific IoT Hub or all IoT Hubs.
+
+options:
+    name:
+        description:
+            - Limit results to a specific resource group.
+        type: str
+    resource_group:
+        description:
+            - The resource group to search for the desired IoT Hub.
+        type: str
+    tags:
+        description:
+            - Limit results by providing a list of tags. Format tags as 'key' or 'key:value'.
+        type: list
+    show_stats:
+        description:
+            - Show the statistics for IoT Hub.
+            - Note this will have network overhead for each IoT Hub.
+        type: bool
+    show_quota_metrics:
+        description:
+            - Get the quota metrics for an IoT hub.
+            - Note this will have network overhead for each IoT Hub.
+        type: bool
+    show_endpoint_health:
+        description:
+            - Get the health for routing endpoints.
+            - Note this will have network overhead for each IoT Hub.
+        type: bool
+    test_route_message:
+        description:
+            - Test routes message. It will be used to test all routes.
+        type: str
+    list_consumer_groups:
+        description:
+            - List the consumer group of the built-in event hub.
+        type: bool
+    list_keys:
+        description:
+            - List the keys of IoT Hub.
+            - Note this will have network overhead for each IoT Hub.
+        type: bool
+extends_documentation_fragment:
+    - azure
+
+author:
+    - Yuwei Zhou (@yuwzho)
