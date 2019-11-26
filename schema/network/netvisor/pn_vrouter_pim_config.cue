@@ -1,0 +1,56 @@
+package ansible
+
+module: pn_vrouter_pim_config: {
+	module:            "pn_vrouter_pim_config"
+	author:            "Pluribus Networks (@rajaspachipulusu17)"
+	version_added:     "2.8"
+	short_description: "CLI command to modify vrouter-pim-config"
+	description: [
+		"This module can be used to modify pim parameters.",
+	]
+	options: {
+		pn_cliswitch: {
+			description: [
+				"Target switch to run the CLI on.",
+			]
+			required: false
+			type:     "str"
+		}
+		state: {
+			description: [
+				"State the action to perform. Use C(update) to modify the vrouter-pim-config.",
+			]
+			required: true
+			type:     "str"
+			choices: ["update"]
+		}
+		pn_query_interval: {
+			description: [
+				"igmp query interval in seconds.",
+			]
+			required: false
+			type:     "str"
+		}
+		pn_querier_timeout: {
+			description: [
+				"igmp querier timeout in seconds.",
+			]
+			required: false
+			type:     "str"
+		}
+		pn_hello_interval: {
+			description: [
+				"hello interval in seconds.",
+			]
+			required: false
+			type:     "str"
+		}
+		pn_vrouter_name: {
+			description: [
+				"name of service config.",
+			]
+			required: false
+			type:     "str"
+		}
+	}
+}

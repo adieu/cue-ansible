@@ -1,0 +1,70 @@
+package ansible
+
+module: ovirt_datacenter: {
+	module:            "ovirt_datacenter"
+	short_description: "Module to manage data centers in oVirt/RHV"
+	version_added:     "2.3"
+	author:            "Ondra Machacek (@machacekondra)"
+	description: [
+		"Module to manage data centers in oVirt/RHV",
+	]
+	options: {
+		id: {
+			description: [
+				"ID of the datacenter to manage.",
+			]
+			version_added: "2.8"
+		}
+		name: {
+			description: [
+				"Name of the data center to manage.",
+			]
+			required: true
+		}
+		state: {
+			description: [
+				"Should the data center be present or absent.",
+			]
+			choices: ["present", "absent"]
+			default: "present"
+		}
+		description: description: [
+			"Description of the data center.",
+		]
+		comment: description: [
+			"Comment of the data center.",
+		]
+		local: {
+			description: [
+				"I(True) if the data center should be local, I(False) if should be shared.",
+				"Default value is set by engine.",
+			]
+			type: "bool"
+		}
+		compatibility_version: description: [
+			"Compatibility version of the data center.",
+		]
+		quota_mode: {
+			description: [
+				"Quota mode of the data center. One of I(disabled), I(audit) or I(enabled)",
+			]
+			choices: ["disabled", "audit", "enabled"]
+		}
+		mac_pool: description: [
+			"MAC pool to be used by this datacenter.",
+			"IMPORTANT: This option is deprecated in oVirt/RHV 4.1. You should use C(mac_pool) in C(ovirt_clusters) module, as MAC pools are set per cluster since 4.1.",
+		]
+
+		force: {
+			description: [
+				"This parameter can be used only when removing a data center. If I(True) data center will be forcibly removed, even though it contains some clusters. Default value is I(False), which means that only empty data center can be removed.",
+			]
+
+			version_added: "2.5"
+			default:       false
+			type:          "bool"
+		}
+	}
+
+	extends_documentation_fragment: "ovirt"
+}

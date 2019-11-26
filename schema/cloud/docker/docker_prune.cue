@@ -1,0 +1,100 @@
+package ansible
+
+module: docker_prune: {
+	module: "docker_prune"
+
+	short_description: "Allows to prune various docker objects"
+
+	description: [
+		"Allows to run C(docker container prune), C(docker image prune), C(docker network prune) and C(docker volume prune) via the Docker API.",
+	]
+
+	version_added: "2.8"
+
+	options: {
+		containers: {
+			description: [
+				"Whether to prune containers.",
+			]
+			type:    "bool"
+			default: false
+		}
+		containers_filters: {
+			description: [
+				"A dictionary of filter values used for selecting containers to delete.",
+				"For example, C(until: 24h).",
+				"See L(the docker documentation,https://docs.docker.com/engine/reference/commandline/container_prune/#filtering) for more information on possible filters.",
+			]
+
+			type: "dict"
+		}
+		images: {
+			description: [
+				"Whether to prune images.",
+			]
+			type:    "bool"
+			default: false
+		}
+		images_filters: {
+			description: [
+				"A dictionary of filter values used for selecting images to delete.",
+				"For example, C(dangling: true).",
+				"See L(the docker documentation,https://docs.docker.com/engine/reference/commandline/image_prune/#filtering) for more information on possible filters.",
+			]
+
+			type: "dict"
+		}
+		networks: {
+			description: [
+				"Whether to prune networks.",
+			]
+			type:    "bool"
+			default: false
+		}
+		networks_filters: {
+			description: [
+				"A dictionary of filter values used for selecting networks to delete.",
+				"See L(the docker documentation,https://docs.docker.com/engine/reference/commandline/network_prune/#filtering) for more information on possible filters.",
+			]
+
+			type: "dict"
+		}
+		volumes: {
+			description: [
+				"Whether to prune volumes.",
+			]
+			type:    "bool"
+			default: false
+		}
+		volumes_filters: {
+			description: [
+				"A dictionary of filter values used for selecting volumes to delete.",
+				"See L(the docker documentation,https://docs.docker.com/engine/reference/commandline/volume_prune/#filtering) for more information on possible filters.",
+			]
+
+			type: "dict"
+		}
+		builder_cache: {
+			description: [
+				"Whether to prune the builder cache.",
+				"Requires version 3.3.0 of the Docker SDK for Python or newer.",
+			]
+			type:    "bool"
+			default: false
+		}
+	}
+
+	extends_documentation_fragment: [
+		"docker",
+		"docker.docker_py_2_documentation",
+	]
+
+	author: [
+		"Felix Fontein (@felixfontein)",
+	]
+
+	requirements: [
+		"L(Docker SDK for Python,https://docker-py.readthedocs.io/en/stable/) >= 2.1.0",
+		"Docker API >= 1.25",
+	]
+}

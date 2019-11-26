@@ -1,0 +1,47 @@
+
+---
+module: cs_resourcelimit
+short_description: Manages resource limits on Apache CloudStack based clouds.
+description:
+    - Manage limits of resources for domains, accounts and projects.
+version_added: '2.1'
+author: René Moser (@resmo)
+options:
+  resource_type:
+    description:
+      - Type of the resource.
+    type: str
+    required: true
+    choices:
+      - instance
+      - ip_address
+      - volume
+      - snapshot
+      - template
+      - network
+      - vpc
+      - cpu
+      - memory
+      - primary_storage
+      - secondary_storage
+    aliases: [ type ]
+  limit:
+    description:
+      - Maximum number of the resource.
+      - Default is unlimited C(-1).
+    type: int
+    default: -1
+    aliases: [ max ]
+  domain:
+    description:
+      - Domain the resource is related to.
+    type: str
+  account:
+    description:
+      - Account the resource is related to.
+    type: str
+  project:
+    description:
+      - Name of the project the resource is related to.
+    type: str
+extends_documentation_fragment: cloudstack

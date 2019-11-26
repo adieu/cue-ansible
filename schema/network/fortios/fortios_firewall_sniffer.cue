@@ -1,0 +1,397 @@
+package ansible
+
+module: fortios_firewall_sniffer: {
+	module:            "fortios_firewall_sniffer"
+	short_description: "Configure sniffer in Fortinet's FortiOS and FortiGate."
+	description: [
+		"This module is able to configure a FortiGate or FortiOS (FOS) device by allowing the user to set and modify firewall feature and sniffer category. Examples include all parameters and values need to be adjusted to datasources before usage. Tested with FOS v6.0.5",
+	]
+
+	version_added: "2.8"
+	author: [
+		"Miguel Angel Munoz (@mamunozgonzalez)",
+		"Nicolas Thomas (@thomnico)",
+	]
+	notes: [
+		"Requires fortiosapi library developed by Fortinet",
+		"Run as a local_action in your playbook",
+	]
+	requirements: [
+		"fortiosapi>=0.9.8",
+	]
+	options: {
+		host: {
+			description: [
+				"FortiOS or FortiGate IP address.",
+			]
+			type:     "str"
+			required: false
+		}
+		username: {
+			description: [
+				"FortiOS or FortiGate username.",
+			]
+			type:     "str"
+			required: false
+		}
+		password: {
+			description: [
+				"FortiOS or FortiGate password.",
+			]
+			type:    "str"
+			default: ""
+		}
+		vdom: {
+			description: [
+				"Virtual domain, among those defined previously. A vdom is a virtual instance of the FortiGate that can be configured and used as a different unit.",
+			]
+
+			type:    "str"
+			default: "root"
+		}
+		https: {
+			description: [
+				"Indicates if the requests towards FortiGate must use HTTPS protocol.",
+			]
+			type:    "bool"
+			default: true
+		}
+		ssl_verify: {
+			description: [
+				"Ensures FortiGate certificate must be verified by a proper CA.",
+			]
+			type:          "bool"
+			default:       true
+			version_added: 2.9
+		}
+		state: {
+			description: [
+				"Indicates whether to create or remove the object. This attribute was present already in previous version in a deeper level. It has been moved out to this outer level.",
+			]
+
+			type:     "str"
+			required: false
+			choices: [
+				"present",
+				"absent",
+			]
+			version_added: 2.9
+		}
+		firewall_sniffer: {
+			description: [
+				"Configure sniffer.",
+			]
+			default: null
+			type:    "dict"
+			suboptions: {
+				state: {
+					description: [
+						"B(Deprecated)",
+						"Starting with Ansible 2.9 we recommend using the top-level 'state' parameter.",
+						"HORIZONTALLINE",
+						"Indicates whether to create or remove the object.",
+					]
+					type:     "str"
+					required: false
+					choices: [
+						"present",
+						"absent",
+					]
+				}
+				anomaly: {
+					description: [
+						"Configuration method to edit Denial of Service (DoS) anomaly settings.",
+					]
+					type: "list"
+					suboptions: {
+						action: {
+							description: [
+								"Action taken when the threshold is reached.",
+							]
+							type: "str"
+							choices: [
+								"pass",
+								"block",
+							]
+						}
+						log: {
+							description: [
+								"Enable/disable anomaly logging.",
+							]
+							type: "str"
+							choices: [
+								"enable",
+								"disable",
+							]
+						}
+						name: {
+							description: [
+								"Anomaly name.",
+							]
+							required: true
+							type:     "str"
+						}
+						quarantine: {
+							description: [
+								"Quarantine method.",
+							]
+							type: "str"
+							choices: [
+								"none",
+								"attacker",
+							]
+						}
+						quarantine_expiry: {
+							description: ["Duration of quarantine. (Format"] //##d##h##m, minimum 1m, maximum 364d23h59m). Requires quarantine set to attacker.
+							type: "str"
+						}
+						quarantine_log: {
+							description: [
+								"Enable/disable quarantine logging.",
+							]
+							type: "str"
+							choices: [
+								"disable",
+								"enable",
+							]
+						}
+						status: {
+							description: [
+								"Enable/disable this anomaly.",
+							]
+							type: "str"
+							choices: [
+								"disable",
+								"enable",
+							]
+						}
+						threshold: {
+							description: [
+								"Anomaly threshold. Number of detected instances per minute that triggers the anomaly action.",
+							]
+							type: "int"
+						}
+						"threshold(default)": {
+							description: [
+								"Number of detected instances per minute which triggers action (1 - 2147483647). Note that each anomaly has a different threshold value assigned to it.",
+							]
+
+							type: "int"
+						}
+					}
+				}
+				application_list: {
+					description: [
+						"Name of an existing application list. Source application.list.name.",
+					]
+					type: "str"
+				}
+				application_list_status: {
+					description: [
+						"Enable/disable application control profile.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				av_profile: {
+					description: [
+						"Name of an existing antivirus profile. Source antivirus.profile.name.",
+					]
+					type: "str"
+				}
+				av_profile_status: {
+					description: [
+						"Enable/disable antivirus profile.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				dlp_sensor: {
+					description: [
+						"Name of an existing DLP sensor. Source dlp.sensor.name.",
+					]
+					type: "str"
+				}
+				dlp_sensor_status: {
+					description: [
+						"Enable/disable DLP sensor.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				dsri: {
+					description: [
+						"Enable/disable DSRI.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				host: {
+					description: [
+						"Hosts to filter for in sniffer traffic (Format examples: 1.1.1.1, 2.2.2.0/24, 3.3.3.3/255.255.255.0, 4.4.4.0-4.4.4.240).",
+					]
+					type: "str"
+				}
+				id: {
+					description: [
+						"Sniffer ID.",
+					]
+					required: true
+					type:     "int"
+				}
+				interface: {
+					description: [
+						"Interface name that traffic sniffing will take place on. Source system.interface.name.",
+					]
+					type: "str"
+				}
+				ips_dos_status: {
+					description: [
+						"Enable/disable IPS DoS anomaly detection.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				ips_sensor: {
+					description: [
+						"Name of an existing IPS sensor. Source ips.sensor.name.",
+					]
+					type: "str"
+				}
+				ips_sensor_status: {
+					description: [
+						"Enable/disable IPS sensor.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				ipv6: {
+					description: [
+						"Enable/disable sniffing IPv6 packets.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				logtraffic: {
+					description: [
+						"Either log all sessions, only sessions that have a security profile applied, or disable all logging for this policy.",
+					]
+					type: "str"
+					choices: [
+						"all",
+						"utm",
+						"disable",
+					]
+				}
+				max_packet_count: {
+					description: [
+						"Maximum packet count (1 - 1000000).",
+					]
+					type: "int"
+				}
+				non_ip: {
+					description: [
+						"Enable/disable sniffing non-IP packets.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				port: {
+					description: [
+						"Ports to sniff (Format examples: 10, :20, 30:40, 50-, 100-200).",
+					]
+					type: "str"
+				}
+				protocol: {
+					description: [
+						"Integer value for the protocol type as defined by IANA (0 - 255).",
+					]
+					type: "str"
+				}
+				scan_botnet_connections: {
+					description: [
+						"Enable/disable scanning of connections to Botnet servers.",
+					]
+					type: "str"
+					choices: [
+						"disable",
+						"block",
+						"monitor",
+					]
+				}
+				spamfilter_profile: {
+					description: [
+						"Name of an existing spam filter profile. Source spamfilter.profile.name.",
+					]
+					type: "str"
+				}
+				spamfilter_profile_status: {
+					description: [
+						"Enable/disable spam filter.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				status: {
+					description: [
+						"Enable/disable the active status of the sniffer.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				vlan: {
+					description: [
+						"List of VLANs to sniff.",
+					]
+					type: "str"
+				}
+				webfilter_profile: {
+					description: [
+						"Name of an existing web filter profile. Source webfilter.profile.name.",
+					]
+					type: "str"
+				}
+				webfilter_profile_status: {
+					description: [
+						"Enable/disable web filter profile.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+			}
+		}
+	}
+}

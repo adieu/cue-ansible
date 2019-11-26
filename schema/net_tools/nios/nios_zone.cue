@@ -1,0 +1,97 @@
+package ansible
+
+module: nios_zone: {
+	module:            "nios_zone"
+	version_added:     "2.5"
+	author:            "Peter Sprygada (@privateip)"
+	short_description: "Configure Infoblox NIOS DNS zones"
+	description: [
+		"Adds and/or removes instances of DNS zone objects from Infoblox NIOS servers.  This module manages NIOS C(zone_auth) objects using the Infoblox WAPI interface over REST.",
+	]
+
+	requirements: [
+		"infoblox-client",
+	]
+	extends_documentation_fragment: "nios"
+	options: {
+		fqdn: {
+			description: [
+				"Specifies the qualified domain name to either add or remove from the NIOS instance based on the configured C(state) value.",
+			]
+
+			required: true
+			aliases: [
+				"name",
+			]
+		}
+		view: {
+			description: [
+				"Configures the DNS view name for the configured resource.  The specified DNS zone must already exist on the running NIOS instance prior to configuring zones.",
+			]
+
+			required: true
+			default:  "default"
+			aliases: [
+				"dns_view",
+			]
+		}
+		grid_primary: {
+			description: [
+				"Configures the grid primary servers for this zone.",
+			]
+			suboptions: name: description: [
+				"The name of the grid primary server",
+			]
+		}
+		grid_secondaries: {
+			description: [
+				"Configures the grid secondary servers for this zone.",
+			]
+			suboptions: name: description: [
+				"The name of the grid secondary server",
+			]
+		}
+		ns_group: {
+			version_added: "2.6"
+			description: [
+				"Configures the name server group for this zone. Name server group is mutually exclusive with grid primary and grid secondaries.",
+			]
+		}
+
+		restart_if_needed: {
+			version_added: "2.6"
+			description: [
+				"If set to true, causes the NIOS DNS service to restart and load the new zone configuration",
+			]
+
+			type: "bool"
+		}
+		zone_format: {
+			version_added: "2.7"
+			description: [
+				"Create an authorative Reverse-Mapping Zone which is an area of network space for which one or more name servers-primary and secondary-have the responsibility to respond to address-to-name queries. It supports reverse-mapping zones for both IPv4 and IPv6 addresses.",
+			]
+
+			default: "FORWARD"
+		}
+		extattrs: description: [
+			"Allows for the configuration of Extensible Attributes on the instance of the object.  This argument accepts a set of key / value pairs for configuration.",
+		]
+
+		comment: description: [
+			"Configures a text string comment to be associated with the instance of this object.  The provided text string will be configured on the object instance.",
+		]
+
+		state: {
+			description: [
+				"Configures the intended state of the instance of the object on the NIOS server.  When this value is set to C(present), the object is configured on the device and when this value is set to C(absent) the value is removed (if necessary) from the device.",
+			]
+
+			default: "present"
+			choices: [
+				"present",
+				"absent",
+			]
+		}
+	}
+}

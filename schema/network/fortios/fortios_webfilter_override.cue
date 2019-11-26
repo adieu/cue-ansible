@@ -1,0 +1,181 @@
+package ansible
+
+module: fortios_webfilter_override: {
+	module:            "fortios_webfilter_override"
+	short_description: "Configure FortiGuard Web Filter administrative overrides in Fortinet's FortiOS and FortiGate."
+	description: [
+		"This module is able to configure a FortiGate or FortiOS (FOS) device by allowing the user to set and modify webfilter feature and override category. Examples include all parameters and values need to be adjusted to datasources before usage. Tested with FOS v6.0.5",
+	]
+
+	version_added: "2.8"
+	author: [
+		"Miguel Angel Munoz (@mamunozgonzalez)",
+		"Nicolas Thomas (@thomnico)",
+	]
+	notes: [
+		"Requires fortiosapi library developed by Fortinet",
+		"Run as a local_action in your playbook",
+	]
+	requirements: [
+		"fortiosapi>=0.9.8",
+	]
+	options: {
+		host: {
+			description: [
+				"FortiOS or FortiGate IP address.",
+			]
+			type:     "str"
+			required: false
+		}
+		username: {
+			description: [
+				"FortiOS or FortiGate username.",
+			]
+			type:     "str"
+			required: false
+		}
+		password: {
+			description: [
+				"FortiOS or FortiGate password.",
+			]
+			type:    "str"
+			default: ""
+		}
+		vdom: {
+			description: [
+				"Virtual domain, among those defined previously. A vdom is a virtual instance of the FortiGate that can be configured and used as a different unit.",
+			]
+
+			type:    "str"
+			default: "root"
+		}
+		https: {
+			description: [
+				"Indicates if the requests towards FortiGate must use HTTPS protocol.",
+			]
+			type:    "bool"
+			default: true
+		}
+		ssl_verify: {
+			description: [
+				"Ensures FortiGate certificate must be verified by a proper CA.",
+			]
+			type:          "bool"
+			default:       true
+			version_added: 2.9
+		}
+		state: {
+			description: [
+				"Indicates whether to create or remove the object. This attribute was present already in previous version in a deeper level. It has been moved out to this outer level.",
+			]
+
+			type:     "str"
+			required: false
+			choices: [
+				"present",
+				"absent",
+			]
+			version_added: 2.9
+		}
+		webfilter_override: {
+			description: [
+				"Configure FortiGuard Web Filter administrative overrides.",
+			]
+			default: null
+			type:    "dict"
+			suboptions: {
+				state: {
+					description: [
+						"B(Deprecated)",
+						"Starting with Ansible 2.9 we recommend using the top-level 'state' parameter.",
+						"HORIZONTALLINE",
+						"Indicates whether to create or remove the object.",
+					]
+					type:     "str"
+					required: false
+					choices: [
+						"present",
+						"absent",
+					]
+				}
+				expires: {
+					description: [
+						"Override expiration date and time, from 5 minutes to 365 from now (format: yyyy/mm/dd hh:mm:ss).",
+					]
+					type: "str"
+				}
+				id: {
+					description: [
+						"Override rule ID.",
+					]
+					required: true
+					type:     "int"
+				}
+				initiator: {
+					description: [
+						"Initiating user of override (read-only setting).",
+					]
+					type: "str"
+				}
+				ip: {
+					description: [
+						"IPv4 address which the override applies.",
+					]
+					type: "str"
+				}
+				ip6: {
+					description: [
+						"IPv6 address which the override applies.",
+					]
+					type: "str"
+				}
+				new_profile: {
+					description: [
+						"Name of the new web filter profile used by the override. Source webfilter.profile.name.",
+					]
+					type: "str"
+				}
+				old_profile: {
+					description: [
+						"Name of the web filter profile which the override applies. Source webfilter.profile.name.",
+					]
+					type: "str"
+				}
+				scope: {
+					description: [
+						"Override either the specific user, user group, IPv4 address, or IPv6 address.",
+					]
+					type: "str"
+					choices: [
+						"user",
+						"user-group",
+						"ip",
+						"ip6",
+					]
+				}
+				status: {
+					description: [
+						"Enable/disable override rule.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				user: {
+					description: [
+						"Name of the user which the override applies.",
+					]
+					type: "str"
+				}
+				user_group: {
+					description: [
+						"Specify the user group for which the override applies. Source user.group.name.",
+					]
+					type: "str"
+				}
+			}
+		}
+	}
+}

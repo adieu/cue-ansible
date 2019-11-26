@@ -1,0 +1,87 @@
+package ansible
+
+module: open_iscsi: {
+	module: "open_iscsi"
+	author: [
+		"Serge van Ginderachter (@srvg)",
+	]
+	version_added:     "1.4"
+	short_description: "Manage iSCSI targets with Open-iSCSI"
+	description: [
+		"Discover targets on given portal, (dis)connect targets, mark targets to manually or auto start, return device nodes of connected targets.",
+	]
+
+	requirements: [
+		"open_iscsi library and tools (iscsiadm)",
+	]
+	options: {
+		portal: {
+			description: [
+				"The IP address of the iSCSI target.",
+			]
+			type: "str"
+			aliases: ["ip"]
+		}
+		port: {
+			description: [
+				"The port on which the iSCSI target process listens.",
+			]
+			type:    "str"
+			default: 3260
+		}
+		target: {
+			description: [
+				"The iSCSI target name.",
+			]
+			type: "str"
+			aliases: ["name", "targetname"]
+		}
+		login: {
+			description: [
+				"Whether the target node should be connected.",
+			]
+			type: "bool"
+			aliases: ["state"]
+		}
+		node_auth: {
+			description: [
+				"The value for C(discovery.sendtargets.auth.authmethod).",
+			]
+			type:    "str"
+			default: "CHAP"
+		}
+		node_user: {
+			description: [
+				"The value for C(discovery.sendtargets.auth.username).",
+			]
+			type: "str"
+		}
+		node_pass: {
+			description: [
+				"The value for C(discovery.sendtargets.auth.password).",
+			]
+			type: "str"
+		}
+		auto_node_startup: {
+			description: [
+				"Whether the target node should be automatically connected at startup.",
+			]
+			type: "bool"
+			aliases: ["automatic"]
+		}
+		discover: {
+			description: [
+				"Whether the list of target nodes on the portal should be (re)discovered and added to the persistent iSCSI database.",
+				"Keep in mind that C(iscsiadm) discovery resets configuration, like C(node.startup) to manual, hence combined with C(auto_node_startup=yes) will always return a changed state.",
+			]
+
+			type: "bool"
+		}
+		show_nodes: {
+			description: [
+				"Whether the list of nodes in the persistent iSCSI database should be returned by the module.",
+			]
+			type: "bool"
+		}
+	}
+}

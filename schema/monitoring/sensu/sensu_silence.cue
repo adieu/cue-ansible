@@ -1,0 +1,59 @@
+package ansible
+
+module: sensu_silence: {
+	module:            "sensu_silence"
+	version_added:     "2.4"
+	author:            "Steven Bambling (@smbambling)"
+	short_description: "Manage Sensu silence entries"
+	description: [
+		"Create and clear (delete) a silence entries via the Sensu API for subscriptions and checks.",
+	]
+
+	options: {
+		check: description: [
+			"Specifies the check which the silence entry applies to.",
+		]
+		creator: description: [
+			"Specifies the entity responsible for this entry.",
+		]
+		expire: description: [
+			"If specified, the silence entry will be automatically cleared after this number of seconds.",
+		]
+
+		expire_on_resolve: {
+			description: [
+				"If specified as true, the silence entry will be automatically cleared once the condition it is silencing is resolved.",
+			]
+
+			type: "bool"
+		}
+		reason: description: [
+			"If specified, this free-form string is used to provide context or rationale for the reason this silence entry was created.",
+		]
+
+		state: {
+			description: [
+				"Specifies to create or clear (delete) a silence entry via the Sensu API",
+			]
+			required: true
+			default:  "present"
+			choices: ["present", "absent"]
+		}
+		subscription: {
+			description: [
+				"Specifies the subscription which the silence entry applies to.",
+				"To create a silence entry for a client prepend C(client:) to client name. Example - C(client:server1.example.dev)",
+			]
+
+			required: true
+			default: []
+		}
+		url: {
+			description: [
+				"Specifies the URL of the Sensu monitoring host server.",
+			]
+			required: false
+			default:  "http://127.0.01:4567"
+		}
+	}
+}

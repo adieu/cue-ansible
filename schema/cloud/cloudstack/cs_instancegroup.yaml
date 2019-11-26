@@ -1,0 +1,33 @@
+
+---
+module: cs_instancegroup
+short_description: Manages instance groups on Apache CloudStack based clouds.
+description:
+    - Create and remove instance groups.
+version_added: '2.0'
+author: René Moser (@resmo)
+options:
+  name:
+    description:
+      - Name of the instance group.
+    type: str
+    required: true
+  domain:
+    description:
+      - Domain the instance group is related to.
+    type: str
+  account:
+    description:
+      - Account the instance group is related to.
+    type: str
+  project:
+    description:
+      - Project the instance group is related to.
+    type: str
+  state:
+    description:
+      - State of the instance group.
+    type: str
+    default: present
+    choices: [ present, absent ]
+extends_documentation_fragment: cloudstack

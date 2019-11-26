@@ -1,0 +1,52 @@
+package ansible
+
+module: jenkins_job_info: {
+	module:            "jenkins_job_info"
+	short_description: "Get information about Jenkins jobs"
+	version_added:     "2.5"
+	description: [
+		"This module can be used to query information about which Jenkins jobs which already exists.",
+		"This module was called C(jenkins_job_info) before Ansible 2.9. The usage did not change.",
+	]
+	requirements: [
+		"python-jenkins >= 0.4.12",
+	]
+	options: {
+		name: description: [
+			"Exact name of the Jenkins job to fetch information about.",
+		]
+		glob: description: [
+			"A shell glob of Jenkins job names to fetch information about.",
+		]
+		color: description: [
+			"Only fetch jobs with the given status color.",
+		]
+		password: description: [
+			"Password to authenticate with the Jenkins server.",
+			"This is a required parameter, if C(token) is not provided.",
+		]
+		token: description: [
+			"API token used to authenticate with the Jenkins server.",
+			"This is a required parameter, if C(password) is not provided.",
+		]
+		url: {
+			description: [
+				"URL where the Jenkins server is accessible.",
+			]
+			default: "http://localhost:8080"
+		}
+		user: description: [
+			"User to authenticate with the Jenkins server.",
+		]
+		validate_certs: {
+			description: [
+				"If set to C(False), the SSL certificates will not be validated.",
+				"This should only set to C(False) used on personally controlled sites using self-signed certificates.",
+			]
+			default:       true
+			type:          "bool"
+			version_added: "2.6"
+		}
+	}
+	author: ["Chris St. Pierre (@stpierre)"]
+}

@@ -1,0 +1,31 @@
+package ansible
+
+module: ec2_group_info: {
+	module:            "ec2_group_info"
+	short_description: "Gather information about ec2 security groups in AWS."
+	description: [
+		"Gather information about ec2 security groups in AWS.",
+		"This module was called C(ec2_group_facts) before Ansible 2.9. The usage did not change.",
+	]
+	version_added: "2.3"
+	requirements: ["boto3"]
+	author: [
+		"Henrique Rodrigues (@Sodki)",
+	]
+	options: filters: {
+		description: [
+			"A dict of filters to apply. Each dict item consists of a filter key and a filter value. See       U(https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeSecurityGroups.html) for       possible filters. Filter names and values are case sensitive. You can also use underscores (_)       instead of dashes (-) in the filter keys, which will take precedence in case of conflict.",
+		]
+		required: false
+		default: {}
+		type: "dict"
+	}
+	notes: [
+		"By default, the module will return all security groups. To limit results use the appropriate filters.",
+	]
+
+	extends_documentation_fragment: [
+		"aws",
+		"ec2",
+	]
+}

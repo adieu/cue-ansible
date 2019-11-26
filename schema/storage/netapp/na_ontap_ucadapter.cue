@@ -1,0 +1,48 @@
+package ansible
+
+module: na_ontap_ucadapter: {
+	module:            "na_ontap_ucadapter"
+	short_description: "NetApp ONTAP UC adapter configuration"
+	extends_documentation_fragment: [
+		"netapp.na_ontap",
+	]
+	version_added: "2.6"
+	author:        "NetApp Ansible Team (@carchi8py) <ng-ansibleteam@netapp.com>"
+
+	description: [
+		"modify the UC adapter mode and type taking pending type and mode into account.",
+	]
+
+	options: {
+		state: {
+			description: [
+				"Whether the specified adapter should exist.",
+			]
+			required: false
+			choices: ["present"]
+			default: "present"
+		}
+
+		adapter_name: {
+			description: [
+				"Specifies the adapter name.",
+			]
+			required: true
+		}
+
+		node_name: {
+			description: [
+				"Specifies the adapter home node.",
+			]
+			required: true
+		}
+
+		mode: description: [
+			"Specifies the mode of the adapter.",
+		]
+
+		type: description: [
+			"Specifies the fc4 type of the adapter.",
+		]
+	}
+}

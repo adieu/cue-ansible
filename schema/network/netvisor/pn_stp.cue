@@ -1,0 +1,101 @@
+package ansible
+
+module: pn_stp: {
+	module:            "pn_stp"
+	author:            "Pluribus Networks (@rajaspachipulusu17)"
+	version_added:     "2.8"
+	short_description: "CLI command to modify stp"
+	description: [
+		"This module can be used to modify Spanning Tree Protocol parameters.",
+	]
+	options: {
+		pn_cliswitch: {
+			description: [
+				"Target switch to run the CLI on.",
+			]
+			type:     "str"
+			required: false
+		}
+		state: {
+			description: [
+				"State the action to perform. Use C(update) to stp.",
+			]
+			type:     "str"
+			required: true
+			choices: ["update"]
+		}
+		pn_hello_time: {
+			description: [
+				"STP hello time between 1 and 10 secs.",
+			]
+			type:    "str"
+			default: "2"
+		}
+		pn_enable: {
+			description: [
+				"enable or disable STP",
+			]
+			type: "bool"
+		}
+		pn_root_guard_wait_time: {
+			description: [
+				"root guard wait time between 0 and 300 secs. 0 to disable wait.",
+			]
+			type:    "str"
+			default: "20"
+		}
+		pn_bpdus_bridge_ports: {
+			description: [
+				"BPDU packets to bridge specific port.",
+			]
+			type: "bool"
+		}
+		pn_mst_max_hops: {
+			description: [
+				"maximum hop count for mstp bpdu.",
+			]
+			type:    "str"
+			default: "20"
+		}
+		pn_bridge_id: {
+			description: [
+				"STP bridge id.",
+			]
+			type: "str"
+		}
+		pn_max_age: {
+			description: [
+				"maximum age time between 6 and 40 secs.",
+			]
+			type:    "str"
+			default: "20"
+		}
+		pn_stp_mode: {
+			description: [
+				"STP mode.",
+			]
+			type: "str"
+			choices: ["rstp", "mstp"]
+		}
+		pn_mst_config_name: {
+			description: [
+				"Name for MST Configuration Instance.",
+			]
+			type: "str"
+		}
+		pn_forwarding_delay: {
+			description: [
+				"STP forwarding delay between 4 and 30 secs.",
+			]
+			type:    "str"
+			default: "15"
+		}
+		pn_bridge_priority: {
+			description: [
+				"STP bridge priority.",
+			]
+			type:    "str"
+			default: "32768"
+		}
+	}
+}

@@ -1,0 +1,94 @@
+package ansible
+
+module: avi_cloudconnectoruser: {
+	module: "avi_cloudconnectoruser"
+	author: "Gaurav Rastogi (@grastogi23) <grastogi@avinetworks.com>"
+
+	short_description: "Module for setup of CloudConnectorUser Avi RESTful Object"
+	description: [
+		"This module is used to configure CloudConnectorUser object",
+		"more examples at U(https://github.com/avinetworks/devops)",
+	]
+	requirements: ["avisdk"]
+	version_added: "2.4"
+	options: {
+		state: {
+			description: [
+				"The state that should be applied on the entity.",
+			]
+			default: "present"
+			choices: ["absent", "present"]
+		}
+		avi_api_update_method: {
+			description: [
+				"Default method for object update is HTTP PUT.",
+				"Setting to patch will override that behavior to use HTTP PATCH.",
+			]
+			version_added: "2.5"
+			default:       "put"
+			choices: ["put", "patch"]
+		}
+		avi_api_patch_op: {
+			description: [
+				"Patch operation to use when using avi_api_update_method as patch.",
+			]
+			version_added: "2.5"
+			choices: ["add", "replace", "delete"]
+		}
+		azure_serviceprincipal: {
+			description: [
+				"Field introduced in 17.2.1.",
+			]
+			version_added: "2.5"
+		}
+		azure_userpass: {
+			description: [
+				"Field introduced in 17.2.1.",
+			]
+			version_added: "2.5"
+		}
+		gcp_credentials: {
+			description: [
+				"Credentials for google cloud platform.",
+				"Field introduced in 18.2.1.",
+			]
+			version_added: "2.9"
+		}
+		name: {
+			description: [
+				"Name of the object.",
+			]
+			required: true
+		}
+		oci_credentials: {
+			description: [
+				"Credentials for oracle cloud infrastructure.",
+				"Field introduced in 18.2.1,18.1.3.",
+			]
+			version_added: "2.9"
+		}
+		private_key: description: [
+			"Private_key of cloudconnectoruser.",
+		]
+		public_key: description: [
+			"Public_key of cloudconnectoruser.",
+		]
+		tenant_ref: description: [
+			"It is a reference to an object of type tenant.",
+		]
+		tencent_credentials: {
+			description: [
+				"Credentials for tencent cloud.",
+				"Field introduced in 18.2.3.",
+			]
+			version_added: "2.9"
+		}
+		url: description: [
+			"Avi controller URL of the object.",
+		]
+		uuid: description: [
+			"Unique object identifier of the object.",
+		]
+	}
+	extends_documentation_fragment: ["avi"]
+}

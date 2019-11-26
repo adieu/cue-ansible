@@ -1,0 +1,43 @@
+package ansible
+
+module: ec2_vpc_dhcp_option_info: {
+	module:            "ec2_vpc_dhcp_option_info"
+	short_description: "Gather information about dhcp options sets in AWS"
+	description: [
+		"Gather information about dhcp options sets in AWS",
+		"This module was called C(ec2_vpc_dhcp_option_facts) before Ansible 2.9. The usage did not change.",
+	]
+	version_added: "2.2"
+	requirements: ["boto3"]
+	author: "Nick Aslanidis (@naslanidis)"
+	options: {
+		filters: {
+			description: [
+				"A dict of filters to apply. Each dict item consists of a filter key and a filter value. See U(https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeDhcpOptions.html) for possible filters.",
+			]
+
+			type: "dict"
+		}
+		dhcp_options_ids: {
+			description: [
+				"Get details of specific DHCP Option IDs.",
+			]
+			aliases: ["DhcpOptionIds"]
+			type:     "list"
+			elements: "str"
+		}
+		dry_run: {
+			description: [
+				"Checks whether you have the required permissions to view the DHCP Options.",
+			]
+
+			aliases: ["DryRun"]
+			version_added: "2.4"
+			type:          "bool"
+		}
+	}
+	extends_documentation_fragment: [
+		"aws",
+		"ec2",
+	]
+}

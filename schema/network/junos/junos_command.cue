@@ -1,0 +1,77 @@
+package ansible
+
+module: junos_command: {
+	module:            "junos_command"
+	version_added:     "2.1"
+	author:            "Peter Sprygada (@privateip)"
+	short_description: "Run arbitrary commands on an Juniper JUNOS device"
+	description: [
+		"Sends an arbitrary set of commands to an JUNOS node and returns the results read from the device.  This module includes an argument that will cause the module to wait for a specific condition before returning or timing out if the condition is not met.",
+	]
+
+	extends_documentation_fragment: "junos"
+	options: {
+		commands: description: [
+			"The commands to send to the remote junos device over the configured provider.  The resulting output from the command is returned.  If the I(wait_for) argument is provided, the module is not returned until the condition is satisfied or the number of I(retries) has been exceeded.",
+		]
+
+		rpcs: {
+			description: [
+				"The C(rpcs) argument accepts a list of RPCs to be executed over a netconf session and the results from the RPC execution is return to the playbook via the modules results dictionary.",
+			]
+
+			version_added: "2.3"
+		}
+		wait_for: {
+			description: [
+				"Specifies what to evaluate from the output of the command and what conditionals to apply.  This argument will cause the task to wait for a particular conditional to be true before moving forward.   If the conditional is not true by the configured retries, the task fails.  See examples.",
+			]
+
+			aliases: ["waitfor"]
+			version_added: "2.2"
+		}
+		match: {
+			description: [
+				"The I(match) argument is used in conjunction with the I(wait_for) argument to specify the match policy.  Valid values are C(all) or C(any).  If the value is set to C(all) then all conditionals in the I(wait_for) must be satisfied.  If the value is set to C(any) then only one of the values must be satisfied.",
+			]
+
+			default: "all"
+			choices: ["any", "all"]
+			version_added: "2.2"
+		}
+		retries: {
+			description: [
+				"Specifies the number of retries a command should be tried before it is considered failed.  The command is run on the target device every retry and evaluated against the I(wait_for) conditionals.",
+			]
+
+			default: 10
+		}
+		interval: {
+			description: [
+				"Configures the interval in seconds to wait between retries of the command.  If the command does not pass the specified conditional, the interval indicates how to long to wait before trying the command again.",
+			]
+
+			default: 1
+		}
+		display: {
+			description: [
+				"Encoding scheme to use when serializing output from the device. This handles how to properly understand the output and apply the conditionals path to the result set. For I(rpcs) argument default display is C(xml) and for I(commands) argument default display is C(text). Value C(set) is applicable only for fetching configuration from device.",
+			]
+
+			default: "depends on input argument I(rpcs) or I(commands)"
+			aliases: ["format", "output"]
+			choices: ["text", "json", "xml", "set"]
+			version_added: "2.3"
+		}
+	}
+	requirements: [
+		"jxmlease",
+		"ncclient (>=v0.5.2)",
+	]
+	notes: [
+		"This module requires the netconf system service be enabled on the remote device being managed.",
+		"Tested against vSRX JUNOS version 15.1X49-D15.4, vqfx-10000 JUNOS Version 15.1X53-D60.4.",
+		"Recommended connection is C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).",
+		"This module also works with C(network_cli) connections and with C(local) connections for legacy playbooks.",
+	]
+}

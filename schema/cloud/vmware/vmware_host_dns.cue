@@ -1,0 +1,92 @@
+package ansible
+
+module: vmware_host_dns: {
+	module:            "vmware_host_dns"
+	short_description: "Manage DNS configuration of an ESXi host system"
+	description: [
+		"This module can be used to configure DNS for the default TCP/IP stack on an ESXi host system.",
+	]
+	version_added: "2.10"
+	author: [
+		"Christian Kotte (@ckotte)",
+		"Mario Lenz (@mariolenz)",
+	]
+	notes: [
+		"This module is a replacement for the module C(vmware_dns_config)",
+		"Tested on vSphere 6.7",
+	]
+	requirements: [
+		"python >= 2.6",
+		"PyVmomi",
+	]
+	options: {
+		type: {
+			description: [
+				"Type of IP assignment. Either C(dhcp) or C(static).",
+				"A VMkernel adapter needs to be set to DHCP if C(type) is set to C(dhcp).",
+			]
+			type: "str"
+			choices: ["dhcp", "static"]
+			required: true
+		}
+		device: {
+			description: [
+				"The VMkernel network adapter to obtain DNS settings from.",
+				"Needs to get its IP through DHCP, a static network configuration combined with a dynamic DNS configuration doesn't work.",
+				"The parameter is only required in case of C(type) is set to C(dhcp).",
+			]
+			type: "str"
+		}
+		host_name: {
+			description: [
+				"The hostname to be used for the ESXi host.",
+				"Cannot be used when configuring a complete cluster.",
+			]
+			type: "str"
+		}
+		domain: {
+			description: [
+				"The domain name to be used for the the ESXi host.",
+			]
+			type: "str"
+		}
+		dns_servers: {
+			description: [
+				"A list of DNS servers to be used.",
+				"The order of the DNS servers is important as they are used consecutively in order.",
+			]
+			type: "list"
+		}
+		search_domains: {
+			description: [
+				"A list of domains to be searched through by the resolver.",
+			]
+			type: "list"
+		}
+		verbose: {
+			description: [
+				"Verbose output of the DNS server configuration change.",
+				"Explains if an DNS server was added, removed, or if the DNS server sequence was changed.",
+			]
+			type:    "bool"
+			default: false
+		}
+		esxi_hostname: {
+			description: [
+				"Name of the host system to work with.",
+				"This parameter is required if C(cluster_name) is not specified and you connect to a vCenter.",
+				"Cannot be used when you connect directly to an ESXi host.",
+			]
+			type: "str"
+		}
+		cluster_name: {
+			description: [
+				"Name of the cluster from which all host systems will be used.",
+				"This parameter is required if C(esxi_hostname) is not specified and you connect to a vCenter.",
+				"Cannot be used when you connect directly to an ESXi host.",
+			]
+			type: "str"
+		}
+	}
+	extends_documentation_fragment: "vmware.documentation"
+}

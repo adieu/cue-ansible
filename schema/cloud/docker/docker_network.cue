@@ -1,0 +1,232 @@
+package ansible
+
+module: docker_network: {
+	module:            "docker_network"
+	version_added:     "2.2"
+	short_description: "Manage Docker networks"
+	description: [
+		"Create/remove Docker networks and connect containers to them.",
+		"Performs largely the same function as the \"docker network\" CLI subcommand.",
+	]
+	options: {
+		name: {
+			description: [
+				"Name of the network to operate on.",
+			]
+			type:     "str"
+			required: true
+			aliases: [
+				"network_name",
+			]
+		}
+
+		connected: {
+			description: [
+				"List of container names or container IDs to connect to a network.",
+			]
+			type:     "list"
+			elements: "str"
+			aliases: [
+				"containers",
+			]
+		}
+
+		driver: {
+			description: [
+				"Specify the type of network. Docker provides bridge and overlay drivers, but 3rd party drivers can also be used.",
+			]
+			type:    "str"
+			default: "bridge"
+		}
+
+		driver_options: {
+			description: [
+				"Dictionary of network settings. Consult docker docs for valid options and values.",
+			]
+			type: "dict"
+		}
+
+		force: {
+			description: [
+				"With state C(absent) forces disconnecting all containers from the network prior to deleting the network. With state C(present) will disconnect all containers, delete the network and re-create the network.",
+				"This option is required if you have changed the IPAM or driver options and want an existing network to be updated to use the new options.",
+			]
+
+			type:    "bool"
+			default: false
+		}
+
+		appends: {
+			description: [
+				"By default the connected list is canonical, meaning containers not on the list are removed from the network.",
+				"Use I(appends) to leave existing containers connected.",
+			]
+			type:    "bool"
+			default: false
+			aliases: [
+				"incremental",
+			]
+		}
+
+		enable_ipv6: {
+			description: [
+				"Enable IPv6 networking.",
+			]
+			type:          "bool"
+			version_added: "2.8"
+		}
+
+		ipam_driver: {
+			description: [
+				"Specify an IPAM driver.",
+			]
+			type: "str"
+		}
+
+		ipam_driver_options: {
+			description: [
+				"Dictionary of IPAM driver options.",
+			]
+			type:          "dict"
+			version_added: "2.8"
+		}
+
+		ipam_options: {
+			description: [
+				"Dictionary of IPAM options.",
+				"Deprecated in 2.8, will be removed in 2.12. Use parameter I(ipam_config) instead. In Docker 1.10.0, IPAM options were introduced (see L(here,https://github.com/moby/moby/pull/17316)). This module parameter addresses the IPAM config not the newly introduced IPAM options. For the IPAM options, see the I(ipam_driver_options) parameter.",
+			]
+
+			type: "dict"
+			suboptions: {
+				subnet: {
+					description: [
+						"IP subset in CIDR notation.",
+					]
+					type: "str"
+				}
+				iprange: {
+					description: [
+						"IP address range in CIDR notation.",
+					]
+					type: "str"
+				}
+				gateway: {
+					description: [
+						"IP gateway address.",
+					]
+					type: "str"
+				}
+				aux_addresses: {
+					description: [
+						"Auxiliary IP addresses used by Network driver, as a mapping from hostname to IP.",
+					]
+					type: "dict"
+				}
+			}
+		}
+
+		ipam_config: {
+			description: [
+				"List of IPAM config blocks. Consult L(Docker docs,https://docs.docker.com/compose/compose-file/compose-file-v2/#ipam) for valid options and values. Note that I(iprange) is spelled differently here (we use the notation from the Docker SDK for Python).",
+			]
+
+			type:     "list"
+			elements: "dict"
+			suboptions: {
+				subnet: {
+					description: [
+						"IP subset in CIDR notation.",
+					]
+					type: "str"
+				}
+				iprange: {
+					description: [
+						"IP address range in CIDR notation.",
+					]
+					type: "str"
+				}
+				gateway: {
+					description: [
+						"IP gateway address.",
+					]
+					type: "str"
+				}
+				aux_addresses: {
+					description: [
+						"Auxiliary IP addresses used by Network driver, as a mapping from hostname to IP.",
+					]
+					type: "dict"
+				}
+			}
+			version_added: "2.8"
+		}
+
+		state: {
+			description: [
+				"C(absent) deletes the network. If a network has connected containers, it cannot be deleted. Use the I(force) option to disconnect all containers and delete the network.",
+				"C(present) creates the network, if it does not already exist with the specified parameters, and connects the list of containers provided via the connected parameter. Containers not on the list will be disconnected. An empty list will leave no containers connected to the network. Use the I(appends) option to leave existing containers connected. Use the I(force) options to force re-creation of the network.",
+			]
+
+			type:    "str"
+			default: "present"
+			choices: [
+				"absent",
+				"present",
+			]
+		}
+
+		internal: {
+			description: [
+				"Restrict external access to the network.",
+			]
+			type:          "bool"
+			version_added: "2.8"
+		}
+
+		labels: {
+			description: [
+				"Dictionary of labels.",
+			]
+			type:          "dict"
+			version_added: "2.8"
+		}
+
+		scope: {
+			description: [
+				"Specify the network's scope.",
+			]
+			type: "str"
+			choices: [
+				"local",
+				"global",
+				"swarm",
+			]
+			version_added: "2.8"
+		}
+
+		attachable: {
+			description: [
+				"If enabled, and the network is in the global scope, non-service containers on worker nodes will be able to connect to the network.",
+			]
+			type:          "bool"
+			version_added: "2.8"
+		}
+	}
+
+	extends_documentation_fragment: [
+		"docker",
+		"docker.docker_py_1_documentation",
+	]
+
+	author: [
+		"Ben Keith (@keitwb)",
+		"Chris Houseknecht (@chouseknecht)",
+		"Dave Bendit (@DBendit)",
+	]
+
+	requirements: [
+		"L(Docker SDK for Python,https://docker-py.readthedocs.io/en/stable/) >= 1.10.0 (use L(docker-py,https://pypi.org/project/docker-py/) for Python 2.6)",
+		"The docker server >= 1.10.0",
+	]
+}

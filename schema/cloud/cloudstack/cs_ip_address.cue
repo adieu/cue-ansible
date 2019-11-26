@@ -1,0 +1,81 @@
+package ansible
+
+module: cs_ip_address: {
+	module:            "cs_ip_address"
+	short_description: "Manages public IP address associations on Apache CloudStack based clouds."
+	description: [
+		"Acquires and associates a public IP to an account or project.",
+		"Due to API limitations this is not an idempotent call, so be sure to only conditionally call this when I(state=present).",
+		"Tagging the IP address can also make the call idempotent.",
+	]
+	version_added: "2.0"
+	author: [
+		"Darren Worrall (@dazworrall)",
+		"René Moser (@resmo)",
+	]
+	options: {
+		ip_address: {
+			description: [
+				"Public IP address.",
+				"Required if I(state=absent) and I(tags) is not set.",
+			]
+			type: "str"
+		}
+		domain: {
+			description: ["Domain the IP address is related to."]
+			type: "str"
+		}
+		network: {
+			description: [
+				"Network the IP address is related to.",
+				"Mutually exclusive with I(vpc).",
+			]
+			type: "str"
+		}
+		vpc: {
+			description: [
+				"VPC the IP address is related to.",
+				"Mutually exclusive with I(network).",
+			]
+			type:          "str"
+			version_added: "2.2"
+		}
+		account: {
+			description: ["Account the IP address is related to."]
+			type: "str"
+		}
+		project: {
+			description: ["Name of the project the IP address is related to."]
+			type: "str"
+		}
+		zone: {
+			description: [
+				"Name of the zone in which the IP address is in.",
+				"If not set, default zone is used.",
+			]
+			type: "str"
+		}
+		state: {
+			description: ["State of the IP address."]
+			type:    "str"
+			default: "present"
+			choices: ["present", "absent"]
+		}
+		tags: {
+			description: [
+				"List of tags. Tags are a list of dictionaries having keys I(key) and I(value).",
+				"Tags can be used as an unique identifier for the IP Addresses.",
+				"In this case, at least one of them must be unique to ensure idempotency.",
+			]
+			type: "list"
+			aliases: ["tag"]
+			version_added: "2.6"
+		}
+		poll_async: {
+			description: ["Poll async jobs until job has finished."]
+			type:    "bool"
+			default: true
+		}
+	}
+	extends_documentation_fragment: "cloudstack"
+}

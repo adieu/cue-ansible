@@ -1,0 +1,62 @@
+package ansible
+
+module: mssql_db: {
+	module:            "mssql_db"
+	short_description: "Add or remove MSSQL databases from a remote host."
+	description: [
+		"Add or remove MSSQL databases from a remote host.",
+	]
+	version_added: "2.2"
+	options: {
+		name: {
+			description: [
+				"name of the database to add or remove",
+			]
+			required: true
+			aliases: ["db"]
+		}
+		login_user: description: [
+			"The username used to authenticate with",
+		]
+		login_password: description: [
+			"The password used to authenticate with",
+		]
+		login_host: description: [
+			"Host running the database",
+		]
+		login_port: {
+			description: [
+				"Port of the MSSQL server. Requires login_host be defined as other than localhost if login_port is used",
+			]
+			default: 1433
+		}
+		state: {
+			description: [
+				"The database state",
+			]
+			default: "present"
+			choices: ["present", "absent", "import"]
+		}
+		target: description: [
+			"Location, on the remote host, of the dump file to read from or write to. Uncompressed SQL files (C(.sql)) files are supported.",
+		]
+
+		autocommit: {
+			description: [
+				"Automatically commit the change only if the import succeed. Sometimes it is necessary to use autocommit=true, since some content can't be changed within a transaction.",
+			]
+
+			type:    "bool"
+			default: "no"
+		}
+	}
+	notes: [
+		"Requires the pymssql Python package on the remote host. For Ubuntu, this is as easy as pip install pymssql (See M(pip).)",
+	]
+
+	requirements: [
+		"python >= 2.7",
+		"pymssql",
+	]
+	author: "Vedit Firat Arig (@vedit)"
+}

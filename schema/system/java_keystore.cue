@@ -1,0 +1,70 @@
+package ansible
+
+module: java_keystore: {
+	module:            "java_keystore"
+	short_description: "Create or delete a Java keystore in JKS format."
+	description: [
+		"Create or delete a Java keystore in JKS format for a given certificate.",
+	]
+	version_added: "2.7"
+	options: {
+		name: {
+			description: [
+				"Name of the certificate.",
+			]
+			required: true
+		}
+		certificate: {
+			description: [
+				"Certificate that should be used to create the key store.",
+			]
+			required: true
+		}
+		private_key: {
+			description: [
+				"Private key that should be used to create the key store.",
+			]
+			required: true
+		}
+		password: {
+			description: [
+				"Password that should be used to secure the key store.",
+			]
+			required: true
+		}
+		dest: {
+			description: [
+				"Absolute path where the jks should be generated.",
+			]
+			required: true
+		}
+		owner: {
+			description: [
+				"Name of the user that should own jks file.",
+			]
+			required: false
+		}
+		group: {
+			description: [
+				"Name of the group that should own jks file.",
+			]
+			required: false
+		}
+		mode: {
+			description: [
+				"Mode the file should be.",
+			]
+			required: false
+		}
+		force: {
+			description: [
+				"Key store will be created even if it already exists.",
+			]
+			required: false
+			type:     "bool"
+			default:  "no"
+		}
+	}
+	requirements: ["openssl", "keytool"]
+	author: "Guillaume Grossetie (@Mogztter)"
+}

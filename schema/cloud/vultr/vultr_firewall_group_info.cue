@@ -1,0 +1,12 @@
+package ansible
+
+module: vultr_firewall_group_info: {
+	module:            "vultr_firewall_group_info"
+	short_description: "Gather information about the Vultr firewall groups available."
+	description: [
+		"Gather information about firewall groups available in Vultr.",
+	]
+	version_added:                  "2.9"
+	author:                         "Yanis Guenane (@Spredzy)"
+	extends_documentation_fragment: "vultr"
+}

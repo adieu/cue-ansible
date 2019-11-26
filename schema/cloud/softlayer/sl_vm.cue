@@ -1,0 +1,131 @@
+package ansible
+
+module: sl_vm: {
+	module:            "sl_vm"
+	short_description: "create or cancel a virtual instance in SoftLayer"
+	description: [
+		"Creates or cancels SoftLayer instances.",
+		"When created, optionally waits for it to be 'running'.",
+	]
+	version_added: "2.1"
+	options: {
+		instance_id: description: [
+			"Instance Id of the virtual instance to perform action option.",
+		]
+		hostname: description: [
+			"Hostname to be provided to a virtual instance.",
+		]
+		domain: description: [
+			"Domain name to be provided to a virtual instance.",
+		]
+		datacenter: description: [
+			"Datacenter for the virtual instance to be deployed.",
+		]
+		tags: description: [
+			"Tag or list of tags to be provided to a virtual instance.",
+		]
+		hourly: {
+			description: [
+				"Flag to determine if the instance should be hourly billed.",
+			]
+			type:    "bool"
+			default: "yes"
+		}
+		private: {
+			description: [
+				"Flag to determine if the instance should be private only.",
+			]
+			type:    "bool"
+			default: "no"
+		}
+		dedicated: {
+			description: [
+				"Flag to determine if the instance should be deployed in dedicated space.",
+			]
+			type:    "bool"
+			default: "no"
+		}
+		local_disk: {
+			description: [
+				"Flag to determine if local disk should be used for the new instance.",
+			]
+			type:    "bool"
+			default: "yes"
+		}
+		cpus: {
+			description: [
+				"Count of cpus to be assigned to new virtual instance.",
+			]
+			required: true
+		}
+		memory: {
+			description: [
+				"Amount of memory to be assigned to new virtual instance.",
+			]
+			required: true
+		}
+		flavor: {
+			description: [
+				"Specify which SoftLayer flavor template to use instead of cpus and memory.",
+			]
+			version_added: "2.10"
+		}
+		disks: {
+			description: [
+				"List of disk sizes to be assigned to new virtual instance.",
+			]
+			required: true
+			default: [25]
+		}
+		os_code: description: [
+			"OS Code to be used for new virtual instance.",
+		]
+		image_id: description: [
+			"Image Template to be used for new virtual instance.",
+		]
+		nic_speed: {
+			description: [
+				"NIC Speed to be assigned to new virtual instance.",
+			]
+			default: 10
+		}
+		public_vlan: description: [
+			"VLAN by its Id to be assigned to the public NIC.",
+		]
+		private_vlan: description: [
+			"VLAN by its Id to be assigned to the private NIC.",
+		]
+		ssh_keys: description: [
+			"List of ssh keys by their Id to be assigned to a virtual instance.",
+		]
+		post_uri: description: [
+			"URL of a post provisioning script to be loaded and executed on virtual instance.",
+		]
+		state: {
+			description: [
+				"Create, or cancel a virtual instance.",
+				"Specify C(present) for create, C(absent) to cancel.",
+			]
+			choices: ["absent", "present"]
+			default: "present"
+		}
+		wait: {
+			description: [
+				"Flag used to wait for active status before returning.",
+			]
+			type:    "bool"
+			default: "yes"
+		}
+		wait_time: {
+			description: [
+				"Time in seconds before wait returns.",
+			]
+			default: 600
+		}
+	}
+	requirements: [
+		"python >= 2.6",
+		"softlayer >= 4.1.1",
+	]
+	author: ["Matt Colton (@mcltn)"]
+}

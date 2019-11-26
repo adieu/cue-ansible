@@ -1,0 +1,187 @@
+package ansible
+
+module: fortios_log_eventfilter: {
+	module:            "fortios_log_eventfilter"
+	short_description: "Configure log event filters in Fortinet's FortiOS and FortiGate."
+	description: [
+		"This module is able to configure a FortiGate or FortiOS (FOS) device by allowing the user to set and modify log feature and eventfilter category. Examples include all parameters and values need to be adjusted to datasources before usage. Tested with FOS v6.0.5",
+	]
+
+	version_added: "2.8"
+	author: [
+		"Miguel Angel Munoz (@mamunozgonzalez)",
+		"Nicolas Thomas (@thomnico)",
+	]
+	notes: [
+		"Requires fortiosapi library developed by Fortinet",
+		"Run as a local_action in your playbook",
+	]
+	requirements: [
+		"fortiosapi>=0.9.8",
+	]
+	options: {
+		host: {
+			description: [
+				"FortiOS or FortiGate IP address.",
+			]
+			type:     "str"
+			required: false
+		}
+		username: {
+			description: [
+				"FortiOS or FortiGate username.",
+			]
+			type:     "str"
+			required: false
+		}
+		password: {
+			description: [
+				"FortiOS or FortiGate password.",
+			]
+			type:    "str"
+			default: ""
+		}
+		vdom: {
+			description: [
+				"Virtual domain, among those defined previously. A vdom is a virtual instance of the FortiGate that can be configured and used as a different unit.",
+			]
+
+			type:    "str"
+			default: "root"
+		}
+		https: {
+			description: [
+				"Indicates if the requests towards FortiGate must use HTTPS protocol.",
+			]
+			type:    "bool"
+			default: true
+		}
+		ssl_verify: {
+			description: [
+				"Ensures FortiGate certificate must be verified by a proper CA.",
+			]
+			type:          "bool"
+			default:       true
+			version_added: 2.9
+		}
+		log_eventfilter: {
+			description: [
+				"Configure log event filters.",
+			]
+			default: null
+			type:    "dict"
+			suboptions: {
+				compliance_check: {
+					description: [
+						"Enable/disable PCI DSS compliance check logging.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				endpoint: {
+					description: [
+						"Enable/disable endpoint event logging.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				event: {
+					description: [
+						"Enable/disable event logging.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				ha: {
+					description: [
+						"Enable/disable ha event logging.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				router: {
+					description: [
+						"Enable/disable router event logging.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				security_rating: {
+					description: [
+						"Enable/disable Security Rating result logging.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				system: {
+					description: [
+						"Enable/disable system event logging.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				user: {
+					description: [
+						"Enable/disable user authentication event logging.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				vpn: {
+					description: [
+						"Enable/disable VPN event logging.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				wan_opt: {
+					description: [
+						"Enable/disable WAN optimization event logging.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				wireless_activity: {
+					description: [
+						"Enable/disable wireless event logging.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+			}
+		}
+	}
+}

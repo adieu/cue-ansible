@@ -1,0 +1,53 @@
+
+---
+module: win_domain_group_membership
+version_added: "2.8"
+short_description: Manage Windows domain group membership
+description:
+     - Allows the addition and removal of domain users
+       and domain groups from/to a domain group.
+options:
+  name:
+    description:
+      - Name of the domain group to manage membership on.
+    type: str
+    required: yes
+  members:
+    description:
+      - A list of members to ensure are present/absent from the group.
+      - The given names must be a SamAccountName of a user, group, service account, or computer.
+      - For computers, you must add "$" after the name; for example, to add "Mycomputer" to a group, use "Mycomputer$" as the member.
+    type: list
+    required: yes
+  state:
+    description:
+      - Desired state of the members in the group.
+      - When C(state) is C(pure), only the members specified will exist,
+        and all other existing members not specified are removed.
+    type: str
+    choices: [ absent, present, pure ]
+    default: present
+  domain_username:
+    description:
+    - The username to use when interacting with AD.
+    - If this is not set then the user Ansible used to log in with will be
+      used instead when using CredSSP or Kerberos with credential delegation.
+    type: str
+  domain_password:
+    description:
+    - The password for I(username).
+    type: str
+  domain_server:
+    description:
+    - Specifies the Active Directory Domain Services instance to connect to.
+    - Can be in the form of an FQDN or NetBIOS name.
+    - If not specified then the value is based on the domain of the computer
+      running PowerShell.
+    type: str
+notes:
+- This must be run on a host that has the ActiveDirectory powershell module installed.
+seealso:
+- module: win_domain_user
+- module: win_domain_group
+author:
+    - Marius Rieder (@jiuka)

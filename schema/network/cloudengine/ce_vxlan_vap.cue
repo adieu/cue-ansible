@@ -1,0 +1,52 @@
+package ansible
+
+module: ce_vxlan_vap: {
+	module:            "ce_vxlan_vap"
+	version_added:     "2.4"
+	short_description: "Manages VXLAN virtual access point on HUAWEI CloudEngine Devices."
+	description: [
+		"Manages VXLAN Virtual access point on HUAWEI CloudEngine Devices.",
+	]
+	author: "QijunPan (@QijunPan)"
+	notes: [
+		"This module requires the netconf system service be enabled on the remote device being managed.",
+		"Recommended connection is C(netconf).",
+		"This module also works with C(local) connections for legacy playbooks.",
+	]
+	options: {
+		bridge_domain_id: description: [
+			"Specifies a bridge domain ID. The value is an integer ranging from 1 to 16777215.",
+		]
+
+		bind_vlan_id: description: [
+			"Specifies the VLAN binding to a BD(Bridge Domain). The value is an integer ranging ranging from 1 to 4094.",
+		]
+
+		l2_sub_interface: description: [
+			"Specifies an Sub-Interface full name, i.e. \"10GE1/0/41.1\". The value is a string of 1 to 63 case-insensitive characters, spaces supported.",
+		]
+
+		encapsulation: {
+			description: [
+				"Specifies an encapsulation type of packets allowed to pass through a Layer 2 sub-interface.",
+			]
+			choices: ["dot1q", "default", "untag", "qinq", "none"]
+		}
+		ce_vid: description: [
+			"When I(encapsulation) is 'dot1q', specifies a VLAN ID in the outer VLAN tag. When I(encapsulation) is 'qinq', specifies an outer VLAN ID for double-tagged packets to be received by a Layer 2 sub-interface. The value is an integer ranging from 1 to 4094.",
+		]
+
+		pe_vid: description: [
+			"When I(encapsulation) is 'qinq', specifies an inner VLAN ID for double-tagged packets to be received by a Layer 2 sub-interface. The value is an integer ranging from 1 to 4094.",
+		]
+
+		state: {
+			description: [
+				"Determines whether the config should be present or not on the device.",
+			]
+
+			default: "present"
+			choices: ["present", "absent"]
+		}
+	}
+}

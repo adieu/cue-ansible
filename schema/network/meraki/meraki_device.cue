@@ -1,0 +1,124 @@
+package ansible
+
+module: meraki_device: {
+	module:            "meraki_device"
+	short_description: "Manage devices in the Meraki cloud"
+	version_added:     "2.7"
+	description: [
+		"Visibility into devices associated to a Meraki environment.",
+	]
+	notes: [
+		"This module does not support claiming of devices or licenses into a Meraki organization.",
+		"More information about the Meraki API can be found at U(https://dashboard.meraki.com/api_docs).",
+		"Some of the options are likely only used for developers within Meraki.",
+	]
+	options: {
+		state: {
+			description: [
+				"Query an organization.",
+			]
+			choices: ["absent", "present", "query"]
+			default: "query"
+			type:    "str"
+		}
+		net_name: {
+			description: [
+				"Name of a network.",
+			]
+			aliases: ["network"]
+			type: "str"
+		}
+		net_id: {
+			description: [
+				"ID of a network.",
+			]
+			type: "str"
+		}
+		serial: {
+			description: [
+				"Serial number of a device to query.",
+			]
+			type: "str"
+		}
+		hostname: {
+			description: [
+				"Hostname of network device to search for.",
+			]
+			aliases: ["name"]
+			type: "str"
+		}
+		model: {
+			description: [
+				"Model of network device to search for.",
+			]
+			type: "str"
+		}
+		tags: {
+			description: [
+				"Space delimited list of tags to assign to device.",
+			]
+			type: "str"
+		}
+		lat: {
+			description: [
+				"Latitude of device's geographic location.",
+				"Use negative number for southern hemisphere.",
+			]
+			aliases: ["latitude"]
+			type: "float"
+		}
+		lng: {
+			description: [
+				"Longitude of device's geographic location.",
+				"Use negative number for western hemisphere.",
+			]
+			aliases: ["longitude"]
+			type: "float"
+		}
+		address: {
+			description: [
+				"Postal address of device's location.",
+			]
+			type: "str"
+		}
+		move_map_marker: {
+			description: [
+				"Whether or not to set the latitude and longitude of a device based on the new address.",
+				"Only applies when C(lat) and C(lng) are not specified.",
+			]
+			type: "bool"
+		}
+		serial_lldp_cdp: {
+			description: [
+				"Serial number of device to query LLDP/CDP information from.",
+			]
+			type: "str"
+		}
+		lldp_cdp_timespan: {
+			description: [
+				"Timespan, in seconds, used to query LLDP and CDP information.",
+				"Must be less than 1 month.",
+			]
+			type: "int"
+		}
+		serial_uplink: {
+			description: [
+				"Serial number of device to query uplink information from.",
+			]
+			type: "str"
+		}
+		note: {
+			description: [
+				"Informational notes about a device.",
+				"Limited to 255 characters.",
+			]
+			version_added: "2.8"
+			type:          "str"
+		}
+	}
+
+	author: [
+		"Kevin Breit (@kbreit)",
+	]
+	extends_documentation_fragment: "meraki"
+}

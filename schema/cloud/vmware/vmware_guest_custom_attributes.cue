@@ -1,0 +1,86 @@
+package ansible
+
+module: vmware_guest_custom_attributes: {
+	module:            "vmware_guest_custom_attributes"
+	short_description: "Manage custom attributes from VMware for the given virtual machine"
+	description: [
+		"This module can be used to add, remove and update custom attributes for the given virtual machine.",
+	]
+	version_added: 2.7
+	author: [
+		"Jimmy Conner (@cigamit)",
+		"Abhijeet Kasurde (@Akasurde)",
+	]
+	notes: [
+		"Tested on vSphere 6.5",
+	]
+	requirements: [
+		"python >= 2.6",
+		"PyVmomi",
+	]
+	options: {
+		name: {
+			description: [
+				"Name of the virtual machine to work with.",
+				"This is required parameter, if C(uuid) or C(moid) is not supplied.",
+			]
+			type: "str"
+		}
+		state: {
+			description: [
+				"The action to take.",
+				"If set to C(present), then custom attribute is added or updated.",
+				"If set to C(absent), then custom attribute is removed.",
+			]
+			default: "present"
+			choices: ["present", "absent"]
+			type: "str"
+		}
+		uuid: {
+			description: [
+				"UUID of the virtual machine to manage if known. This is VMware's unique identifier.",
+				"This is required parameter, if C(name) or C(moid) is not supplied.",
+			]
+			type: "str"
+		}
+		moid: {
+			description: [
+				"Managed Object ID of the instance to manage if known, this is a unique identifier only within a single vCenter instance.",
+				"This is required if C(name) or C(uuid) is not supplied.",
+			]
+			version_added: "2.9"
+			type:          "str"
+		}
+		use_instance_uuid: {
+			description: [
+				"Whether to use the VMware instance UUID rather than the BIOS UUID.",
+			]
+			default:       false
+			type:          "bool"
+			version_added: "2.8"
+		}
+		folder: {
+			description: [
+				"Absolute path to find an existing guest.",
+				"This is required parameter, if C(name) is supplied and multiple virtual machines with same name are found.",
+			]
+			type: "str"
+		}
+		datacenter: {
+			description: [
+				"Datacenter name where the virtual machine is located in.",
+			]
+			required: true
+			type:     "str"
+		}
+		attributes: {
+			description: [
+				"A list of name and value of custom attributes that needs to be manage.",
+				"Value of custom attribute is not required and will be ignored, if C(state) is set to C(absent).",
+			]
+			default: []
+			type: "list"
+		}
+	}
+	extends_documentation_fragment: "vmware.documentation"
+}

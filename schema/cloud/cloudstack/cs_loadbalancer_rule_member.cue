@@ -1,0 +1,66 @@
+package ansible
+
+module: cs_loadbalancer_rule_member: {
+	module:            "cs_loadbalancer_rule_member"
+	short_description: "Manages load balancer rule members on Apache CloudStack based clouds."
+	description: [
+		"Add and remove load balancer rule members.",
+	]
+	version_added: "2.0"
+	author: [
+		"Darren Worrall (@dazworrall)",
+		"René Moser (@resmo)",
+	]
+	options: {
+		name: {
+			description: ["The name of the load balancer rule."]
+			type:     "str"
+			required: true
+		}
+		ip_address: {
+			description: [
+				"Public IP address from where the network traffic will be load balanced from.",
+				"Only needed to find the rule if I(name) is not unique.",
+			]
+			type: "str"
+			aliases: ["public_ip"]
+		}
+		vms: {
+			description: ["List of VMs to assign to or remove from the rule."]
+			type:     "list"
+			required: true
+			aliases: ["vm"]
+		}
+		state: {
+			description: ["Should the VMs be present or absent from the rule."]
+			type:    "str"
+			default: "present"
+			choices: ["present", "absent"]
+		}
+		project: {
+			description: ["Name of the project the firewall rule is related to."]
+			type: "str"
+		}
+		domain: {
+			description: ["Domain the rule is related to."]
+			type: "str"
+		}
+		account: {
+			description: ["Account the rule is related to."]
+			type: "str"
+		}
+		zone: {
+			description: [
+				"Name of the zone in which the rule should be located.",
+				"If not set, default zone is used.",
+			]
+			type: "str"
+		}
+		poll_async: {
+			description: ["Poll async jobs until job has finished."]
+			type:    "bool"
+			default: true
+		}
+	}
+	extends_documentation_fragment: "cloudstack"
+}

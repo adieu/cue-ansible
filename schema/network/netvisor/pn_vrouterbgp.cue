@@ -1,0 +1,140 @@
+package ansible
+
+module: pn_vrouterbgp: {
+	module:            "pn_vrouterbgp"
+	author:            "Pluribus Networks (@amitsi)"
+	version_added:     "2.2"
+	short_description: "CLI command to add/remove/modify vrouter-bgp."
+	deprecated: {
+		removed_in:  "2.12"
+		why:         "Doesn't support latest Pluribus Networks netvisor"
+		alternative: "Latest modules will be pushed in Ansible future versions."
+	}
+	description: [
+		"Execute vrouter-bgp-add, vrouter-bgp-remove, vrouter-bgp-modify command.",
+		"Each fabric, cluster, standalone switch, or virtual network (VNET) can provide its tenants with a vRouter service that forwards traffic between networks and implements Layer 4 protocols.",
+	]
+
+	options: {
+		pn_cliusername: {
+			description: [
+				"Provide login username if user is not root.",
+			]
+			required: false
+		}
+		pn_clipassword: {
+			description: [
+				"Provide login password if user is not root.",
+			]
+			required: false
+		}
+		pn_cliswitch: {
+			description: [
+				"Target switch(es) to run the cli on.",
+			]
+			required: false
+			default:  "local"
+		}
+		state: {
+			description: [
+				"State the action to perform. Use 'present' to add bgp, 'absent' to remove bgp and 'update' to modify bgp.",
+			]
+
+			required: true
+			choices: ["present", "absent", "update"]
+		}
+		pn_vrouter_name: {
+			description: [
+				"Specify a name for the vRouter service.",
+			]
+			required: true
+		}
+		pn_neighbor: description: [
+			"Specify a neighbor IP address to use for BGP.",
+			"Required for vrouter-bgp-add.",
+		]
+		pn_remote_as: description: [
+			"Specify the remote Autonomous System(AS) number. This value is between 1 and 4294967295.",
+			"Required for vrouter-bgp-add.",
+		]
+		pn_next_hop_self: {
+			description: [
+				"Specify if the next-hop is the same router or not.",
+			]
+			type: "bool"
+		}
+		pn_password: description: [
+			"Specify a password, if desired.",
+		]
+		pn_ebgp: description: [
+			"Specify a value for external BGP to accept or attempt BGP connections to external peers, not directly connected, on the network. This is a value between 1 and 255.",
+		]
+
+		pn_prefix_listin: description: [
+			"Specify the prefix list to filter traffic inbound.",
+		]
+		pn_prefix_listout: description: [
+			"Specify the prefix list to filter traffic outbound.",
+		]
+		pn_route_reflector: {
+			description: [
+				"Specify if a route reflector client is used.",
+			]
+			type: "bool"
+		}
+		pn_override_capability: {
+			description: [
+				"Specify if you want to override capability.",
+			]
+			type: "bool"
+		}
+		pn_soft_reconfig: {
+			description: [
+				"Specify if you want a soft reconfiguration of inbound traffic.",
+			]
+			type: "bool"
+		}
+		pn_max_prefix: description: [
+			"Specify the maximum number of prefixes.",
+		]
+		pn_max_prefix_warn: {
+			description: [
+				"Specify if you want a warning message when the maximum number of prefixes is exceeded.",
+			]
+
+			type: "bool"
+		}
+		pn_bfd: {
+			description: [
+				"Specify if you want BFD protocol support for fault detection.",
+			]
+			type: "bool"
+		}
+		pn_multiprotocol: {
+			description: [
+				"Specify a multi-protocol for BGP.",
+			]
+			choices: ["ipv4-unicast", "ipv6-unicast"]
+		}
+		pn_weight: description: [
+			"Specify a default weight value between 0 and 65535 for the neighbor routes.",
+		]
+
+		pn_default_originate: {
+			description: [
+				"Specify if you want announce default routes to the neighbor or not.",
+			]
+			type: "bool"
+		}
+		pn_keepalive: description: [
+			"Specify BGP neighbor keepalive interval in seconds.",
+		]
+		pn_holdtime: description: [
+			"Specify BGP neighbor holdtime in seconds.",
+		]
+		pn_route_mapin: description: [
+			"Specify inbound route map for neighbor.",
+		]
+		pn_route_mapout: description: ["Specify outbound route map for neighbor."]
+	}
+}

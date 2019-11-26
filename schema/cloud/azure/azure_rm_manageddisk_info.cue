@@ -1,0 +1,46 @@
+package ansible
+
+module: azure_rm_manageddisk_info: {
+	module: "azure_rm_manageddisk_info"
+
+	version_added: "2.9"
+
+	short_description: "Get managed disk facts"
+
+	description: [
+		"Get facts for a specific managed disk or all managed disks.",
+	]
+
+	notes: [
+		"This module was called M(azure_rm_managed_disk_facts) before Ansible 2.8. The usage did not change.",
+	]
+
+	options: {
+		name: {
+			description: [
+				"Limit results to a specific managed disk.",
+			]
+			type: "str"
+		}
+		resource_group: {
+			description: [
+				"Limit results to a specific resource group.",
+			]
+			type: "str"
+		}
+		tags: {
+			description: [
+				"Limit results by providing a list of tags.",
+				"Format tags as 'key' or 'key:value'.",
+			]
+			type: "list"
+		}
+	}
+
+	extends_documentation_fragment: [
+		"azure",
+		"azure_tags",
+	]
+
+	author: ["Bruno Medina (@brusMX)"]
+}

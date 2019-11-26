@@ -1,0 +1,79 @@
+package ansible
+
+module: packet_project: {
+	module: "packet_project"
+
+	short_description: "Create/delete a project in Packet host."
+
+	description: [
+		"Create/delete a project in Packet host.",
+		"API is documented at U(https://www.packet.com/developers/api/#projects).",
+	]
+
+	version_added: "2.10"
+
+	author: [
+		"Tomas Karasek (@t0mk) <tom.to.the.k@gmail.com>",
+		"Nurfet Becirevic (@nurfet-becirevic) <nurfet.becirevic@gmail.com>",
+	]
+
+	options: {
+		state: {
+			description: [
+				"Indicate desired state of the target.",
+			]
+			default: "present"
+			choices: ["present", "absent"]
+			type: "str"
+		}
+
+		payment_method: {
+			description: [
+				"Payment method is name of one of the payment methods available to your user.",
+				"When blank, the API assumes the default payment method.",
+			]
+			type: "str"
+		}
+
+		auth_token: {
+			description: [
+				"Packet api token. You can also supply it in env var C(PACKET_API_TOKEN).",
+			]
+			type: "str"
+		}
+
+		name: {
+			description: [
+				"Name for/of the project.",
+			]
+			type: "str"
+		}
+
+		org_id: {
+			description: [
+				"UUID of the organization to create a project for.",
+				"When blank, the API assumes the default organization.",
+			]
+			type: "str"
+		}
+
+		id: {
+			description: [
+				"UUID of the project which you want to remove.",
+			]
+			type: "str"
+		}
+
+		custom_data: {
+			description: [
+				"Custom data about the project to create.",
+			]
+			type: "str"
+		}
+	}
+
+	requirements: [
+		"python >= 2.6",
+		"packet-python >= 1.40",
+	]
+}

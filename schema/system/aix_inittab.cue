@@ -1,0 +1,78 @@
+package ansible
+
+module: aix_inittab: {
+	author: [
+		"Joris Weijters (@molekuul)",
+	]
+	module:            "aix_inittab"
+	short_description: "Manages the inittab on AIX"
+	description: [
+		"Manages the inittab on AIX.",
+	]
+	version_added: "2.3"
+	options: {
+		name: {
+			description: [
+				"Name of the inittab entry.",
+			]
+			type:     "str"
+			required: true
+			aliases: ["service"]
+		}
+		runlevel: {
+			description: [
+				"Runlevel of the entry.",
+			]
+			type:     "str"
+			required: true
+		}
+		action: {
+			description: [
+				"Action what the init has to do with this entry.",
+			]
+			type:     "str"
+			required: true
+			choices: [
+				"boot",
+				"bootwait",
+				"hold",
+				"initdefault",
+				"off",
+				"once",
+				"ondemand",
+				"powerfail",
+				"powerwait",
+				"respawn",
+				"sysinit",
+				"wait",
+			]
+		}
+		command: {
+			description: [
+				"What command has to run.",
+			]
+			type:     "str"
+			required: true
+		}
+		insertafter: {
+			description: [
+				"After which inittabline should the new entry inserted.",
+			]
+			type: "str"
+		}
+		state: {
+			description: [
+				"Whether the entry should be present or absent in the inittab file.",
+			]
+			type: "str"
+			choices: ["absent", "present"]
+			default: "present"
+		}
+	}
+	notes: [
+		"The changes are persistent across reboots.",
+		"You need root rights to read or adjust the inittab with the C(lsitab), C(chitab), C(mkitab) or C(rmitab) commands.",
+		"Tested on AIX 7.1.",
+	]
+	requirements: ["itertools"]
+}

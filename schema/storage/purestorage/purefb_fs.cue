@@ -1,0 +1,140 @@
+package ansible
+
+module: purefb_fs: {
+	module:            "purefb_fs"
+	version_added:     "2.6"
+	short_description: "Manage filesystemon Pure Storage FlashBlade`"
+	description: [
+		"This module manages filesystems on Pure Storage FlashBlade.",
+	]
+	author: "Pure Storage Ansible Team (@sdodsley) <pure-ansible-team@purestorage.com>"
+	options: {
+		name: {
+			description: [
+				"Filesystem Name.",
+			]
+			required: true
+			type:     "str"
+		}
+		state: {
+			description: [
+				"Create, delete or modifies a filesystem.",
+			]
+			required: false
+			default:  "present"
+			type:     "str"
+			choices: ["present", "absent"]
+		}
+		eradicate: {
+			description: [
+				"Define whether to eradicate the filesystem on delete or leave in trash.",
+			]
+			required: false
+			type:     "bool"
+			default:  false
+		}
+		size: {
+			description: [
+				"Volume size in M, G, T or P units. See examples.",
+			]
+			type:     "str"
+			required: false
+			default:  "32G"
+		}
+		nfsv3: {
+			description: [
+				"Define whether to NFSv3 protocol is enabled for the filesystem.",
+			]
+			required:      false
+			type:          "bool"
+			default:       true
+			version_added: 2.9
+		}
+		nfsv4: {
+			description: [
+				"Define whether to NFSv4.1 protocol is enabled for the filesystem.",
+			]
+			required:      false
+			type:          "bool"
+			default:       true
+			version_added: 2.9
+		}
+		nfs: {
+			description: [
+				"(Deprecate) Define whether to NFSv3 protocol is enabled for the filesystem.",
+				"This option will be deprecated in 2.10, use I(nfsv3) instead.",
+			]
+			required: false
+			type:     "bool"
+			default:  true
+		}
+		nfs_rules: {
+			description: [
+				"Define the NFS rules in operation.",
+			]
+			required: false
+			default:  "*(rw,no_root_squash)"
+			type:     "str"
+		}
+		smb: {
+			description: [
+				"Define whether to SMB protocol is enabled for the filesystem.",
+			]
+			required: false
+			type:     "bool"
+			default:  false
+		}
+		http: {
+			description: [
+				"Define whether to HTTP/HTTPS protocol is enabled for the filesystem.",
+			]
+			required: false
+			type:     "bool"
+			default:  false
+		}
+		snapshot: {
+			description: [
+				"Define whether a snapshot directory is enabled for the filesystem.",
+			]
+			required: false
+			type:     "bool"
+			default:  false
+		}
+		fastremove: {
+			description: [
+				"Define whether the fast remove directory is enabled for the filesystem.",
+			]
+			required: false
+			type:     "bool"
+			default:  false
+		}
+		hard_limit: {
+			description: [
+				"Define whether the capacity for a filesystem is a hard limit.",
+				"CAUTION This will cause the filesystem to go Read-Only if the capacity has already exceeded the logical size of the filesystem.",
+			]
+
+			required:      false
+			type:          "bool"
+			default:       false
+			version_added: 2.8
+		}
+		user_quota: {
+			description: [
+				"Default quota in M, G, T or P units for a user under this file system.",
+			]
+			required:      false
+			type:          "str"
+			version_added: 2.9
+		}
+		group_quota: {
+			description: [
+				"Default quota in M, G, T or P units for a group under this file system.",
+			]
+			required:      false
+			type:          "str"
+			version_added: 2.9
+		}
+	}
+	extends_documentation_fragment: ["purestorage.fb"]
+}

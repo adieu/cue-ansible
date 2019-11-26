@@ -1,0 +1,414 @@
+package ansible
+
+module: fortios_system_sdn_connector: {
+	module:            "fortios_system_sdn_connector"
+	short_description: "Configure connection to SDN Connector in Fortinet's FortiOS and FortiGate."
+	description: [
+		"This module is able to configure a FortiGate or FortiOS (FOS) device by allowing the user to set and modify system feature and sdn_connector category. Examples include all parameters and values need to be adjusted to datasources before usage. Tested with FOS v6.0.5",
+	]
+
+	version_added: "2.8"
+	author: [
+		"Miguel Angel Munoz (@mamunozgonzalez)",
+		"Nicolas Thomas (@thomnico)",
+	]
+	notes: [
+		"Requires fortiosapi library developed by Fortinet",
+		"Run as a local_action in your playbook",
+	]
+	requirements: [
+		"fortiosapi>=0.9.8",
+	]
+	options: {
+		host: {
+			description: [
+				"FortiOS or FortiGate IP address.",
+			]
+			type:     "str"
+			required: false
+		}
+		username: {
+			description: [
+				"FortiOS or FortiGate username.",
+			]
+			type:     "str"
+			required: false
+		}
+		password: {
+			description: [
+				"FortiOS or FortiGate password.",
+			]
+			type:    "str"
+			default: ""
+		}
+		vdom: {
+			description: [
+				"Virtual domain, among those defined previously. A vdom is a virtual instance of the FortiGate that can be configured and used as a different unit.",
+			]
+
+			type:    "str"
+			default: "root"
+		}
+		https: {
+			description: [
+				"Indicates if the requests towards FortiGate must use HTTPS protocol.",
+			]
+			type:    "bool"
+			default: true
+		}
+		ssl_verify: {
+			description: [
+				"Ensures FortiGate certificate must be verified by a proper CA.",
+			]
+			type:          "bool"
+			default:       true
+			version_added: 2.9
+		}
+		state: {
+			description: [
+				"Indicates whether to create or remove the object. This attribute was present already in previous version in a deeper level. It has been moved out to this outer level.",
+			]
+
+			type:     "str"
+			required: false
+			choices: [
+				"present",
+				"absent",
+			]
+			version_added: 2.9
+		}
+		system_sdn_connector: {
+			description: [
+				"Configure connection to SDN Connector.",
+			]
+			default: null
+			type:    "dict"
+			suboptions: {
+				state: {
+					description: [
+						"B(Deprecated)",
+						"Starting with Ansible 2.9 we recommend using the top-level 'state' parameter.",
+						"HORIZONTALLINE",
+						"Indicates whether to create or remove the object.",
+					]
+					type:     "str"
+					required: false
+					choices: [
+						"present",
+						"absent",
+					]
+				}
+				access_key: {
+					description: [
+						"AWS access key ID.",
+					]
+					type: "str"
+				}
+				azure_region: {
+					description: [
+						"Azure server region.",
+					]
+					type: "str"
+					choices: [
+						"global",
+						"china",
+						"germany",
+						"usgov",
+						"local",
+					]
+				}
+				client_id: {
+					description: [
+						"Azure client ID (application ID).",
+					]
+					type: "str"
+				}
+				client_secret: {
+					description: [
+						"Azure client secret (application key).",
+					]
+					type: "str"
+				}
+				compartment_id: {
+					description: [
+						"Compartment ID.",
+					]
+					type: "str"
+				}
+				external_ip: {
+					description: [
+						"Configure GCP external IP.",
+					]
+					type: "list"
+					suboptions: name: {
+						description: [
+							"External IP name.",
+						]
+						required: true
+						type:     "str"
+					}
+				}
+				gcp_project: {
+					description: [
+						"GCP project name.",
+					]
+					type: "str"
+				}
+				key_passwd: {
+					description: [
+						"Private key password.",
+					]
+					type: "str"
+				}
+				login_endpoint: {
+					description: [
+						"Azure Stack login enpoint.",
+					]
+					type: "str"
+				}
+				name: {
+					description: [
+						"SDN connector name.",
+					]
+					required: true
+					type:     "str"
+				}
+				nic: {
+					description: [
+						"Configure Azure network interface.",
+					]
+					type: "list"
+					suboptions: {
+						ip: {
+							description: [
+								"Configure IP configuration.",
+							]
+							type: "list"
+							suboptions: {
+								name: {
+									description: [
+										"IP configuration name.",
+									]
+									required: true
+									type:     "str"
+								}
+								public_ip: {
+									description: [
+										"Public IP name.",
+									]
+									type: "str"
+								}
+							}
+						}
+						name: {
+							description: [
+								"Network interface name.",
+							]
+							required: true
+							type:     "str"
+						}
+					}
+				}
+				oci_cert: {
+					description: [
+						"OCI certificate. Source certificate.local.name.",
+					]
+					type: "str"
+				}
+				oci_fingerprint: {
+					description: [
+						"OCI pubkey fingerprint.",
+					]
+					type: "str"
+				}
+				oci_region: {
+					description: [
+						"OCI server region.",
+					]
+					type: "str"
+					choices: [
+						"phoenix",
+						"ashburn",
+						"frankfurt",
+						"london",
+					]
+				}
+				password: {
+					description: [
+						"Password of the remote SDN connector as login credentials.",
+					]
+					type: "str"
+				}
+				private_key: {
+					description: [
+						"Private key of GCP service account.",
+					]
+					type: "str"
+				}
+				region: {
+					description: [
+						"AWS region name.",
+					]
+					type: "str"
+				}
+				resource_group: {
+					description: [
+						"Azure resource group.",
+					]
+					type: "str"
+				}
+				resource_url: {
+					description: [
+						"Azure Stack resource URL.",
+					]
+					type: "str"
+				}
+				route: {
+					description: [
+						"Configure GCP route.",
+					]
+					type: "list"
+					suboptions: name: {
+						description: [
+							"Route name.",
+						]
+						required: true
+						type:     "str"
+					}
+				}
+				route_table: {
+					description: [
+						"Configure Azure route table.",
+					]
+					type: "list"
+					suboptions: {
+						name: {
+							description: [
+								"Route table name.",
+							]
+							required: true
+							type:     "str"
+						}
+						route: {
+							description: [
+								"Configure Azure route.",
+							]
+							type: "list"
+							suboptions: {
+								name: {
+									description: [
+										"Route name.",
+									]
+									required: true
+									type:     "str"
+								}
+								next_hop: {
+									description: [
+										"Next hop address.",
+									]
+									type: "str"
+								}
+							}
+						}
+					}
+				}
+				secret_key: {
+					description: [
+						"AWS secret access key.",
+					]
+					type: "str"
+				}
+				server: {
+					description: [
+						"Server address of the remote SDN connector.",
+					]
+					type: "str"
+				}
+				server_port: {
+					description: [
+						"Port number of the remote SDN connector.",
+					]
+					type: "int"
+				}
+				service_account: {
+					description: [
+						"GCP service account email.",
+					]
+					type: "str"
+				}
+				status: {
+					description: [
+						"Enable/disable connection to the remote SDN connector.",
+					]
+					type: "str"
+					choices: [
+						"disable",
+						"enable",
+					]
+				}
+				subscription_id: {
+					description: [
+						"Azure subscription ID.",
+					]
+					type: "str"
+				}
+				tenant_id: {
+					description: [
+						"Tenant ID (directory ID).",
+					]
+					type: "str"
+				}
+				type: {
+					description: [
+						"Type of SDN connector.",
+					]
+					type: "str"
+					choices: [
+						"aci",
+						"aws",
+						"azure",
+						"gcp",
+						"nsx",
+						"nuage",
+						"oci",
+						"openstack",
+					]
+				}
+				update_interval: {
+					description: [
+						"Dynamic object update interval (0 - 3600 sec, 0 means disabled).",
+					]
+					type: "int"
+				}
+				use_metadata_iam: {
+					description: [
+						"Enable/disable using IAM role from metadata to call API.",
+					]
+					type: "str"
+					choices: [
+						"disable",
+						"enable",
+					]
+				}
+				user_id: {
+					description: [
+						"User ID.",
+					]
+					type: "str"
+				}
+				username: {
+					description: [
+						"Username of the remote SDN connector as login credentials.",
+					]
+					type: "str"
+				}
+				vpc_id: {
+					description: [
+						"AWS VPC ID.",
+					]
+					type: "str"
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,40 @@
+package ansible
+
+module: aci_maintenance_group_node: {
+	module:            "aci_maintenance_group_node"
+	short_description: "Manage maintenance group nodes"
+	version_added:     "2.8"
+	description: [
+		"Manage maintenance group nodes",
+	]
+	options: {
+		group: {
+			description: [
+				"The maintenance group name that you want to add the node to.",
+			]
+			type:     "str"
+			required: true
+		}
+		node: {
+			description: [
+				"The node to be added to the maintenance group.",
+				"The value equals the nodeid.",
+			]
+			type:     "str"
+			required: true
+		}
+		state: {
+			description: [
+				"Use C(present) or C(absent) for adding or removing.",
+				"Use C(query) for listing an object or multiple objects.",
+			]
+			type: "str"
+			choices: ["absent", "present", "query"]
+			default: "present"
+		}
+	}
+	extends_documentation_fragment: [
+		"aci",
+	]
+	author: ["Steven Gerhart (@sgerhart)"]
+}

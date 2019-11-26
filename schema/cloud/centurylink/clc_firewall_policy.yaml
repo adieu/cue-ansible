@@ -1,0 +1,64 @@
+
+module: clc_firewall_policy
+short_description: Create/delete/update firewall policies
+description:
+  - Create or delete or update firewall policies on Centurylink Cloud
+version_added: "2.0"
+options:
+  location:
+    description:
+      - Target datacenter for the firewall policy
+    required: True
+  state:
+    description:
+      - Whether to create or delete the firewall policy
+    default: present
+    choices: ['present', 'absent']
+  source:
+    description:
+      - The list  of source addresses for traffic on the originating firewall.
+        This is required when state is 'present'
+  destination:
+    description:
+      - The list of destination addresses for traffic on the terminating firewall.
+        This is required when state is 'present'
+  ports:
+    description:
+      - The list of ports associated with the policy.
+        TCP and UDP can take in single ports or port ranges.
+    choices: ['any', 'icmp', 'TCP/123', 'UDP/123', 'TCP/123-456', 'UDP/123-456']
+  firewall_policy_id:
+    description:
+      - Id of the firewall policy. This is required to update or delete an existing firewall policy
+  source_account_alias:
+    description:
+      - CLC alias for the source account
+    required: True
+  destination_account_alias:
+    description:
+      - CLC alias for the destination account
+  wait:
+    description:
+      - Whether to wait for the provisioning tasks to finish before returning.
+    type: bool
+    default: 'yes'
+  enabled:
+    description:
+      - Whether the firewall policy is enabled or disabled
+    choices: [True, False]
+    default: 'yes'
+requirements:
+    - python = 2.7
+    - requests >= 2.5.0
+    - clc-sdk
+author: "CLC Runner (@clc-runner)"
+notes:
+    - To use this module, it is required to set the below environment variables which enables access to the
+      Centurylink Cloud
+          - CLC_V2_API_USERNAME, the account login id for the centurylink cloud
+          - CLC_V2_API_PASSWORD, the account password for the centurylink cloud
+    - Alternatively, the module accepts the API token and account alias. The API token can be generated using the
+      CLC account login and password via the HTTP api call @ https://api.ctl.io/v2/authentication/login
+          - CLC_V2_API_TOKEN, the API token generated from https://api.ctl.io/v2/authentication/login
+          - CLC_ACCT_ALIAS, the account alias associated with the centurylink cloud
+    - Users can set CLC_V2_API_URL to specify an endpoint for pointing to a different CLC environment.

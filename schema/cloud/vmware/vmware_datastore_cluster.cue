@@ -1,0 +1,68 @@
+package ansible
+
+module: vmware_datastore_cluster: {
+	module:            "vmware_datastore_cluster"
+	short_description: "Manage VMware vSphere datastore clusters"
+	description: [
+		"This module can be used to add and delete datastore cluster in given VMware environment.",
+		"All parameters and VMware object values are case sensitive.",
+	]
+	version_added: 2.6
+	author: [
+		"Abhijeet Kasurde (@Akasurde)",
+	]
+	notes: [
+		"Tested on vSphere 6.0, 6.5",
+	]
+	requirements: [
+		"python >= 2.6",
+		"PyVmomi",
+	]
+	options: {
+		datacenter_name: {
+			description: [
+				"The name of the datacenter.",
+				"You must specify either a C(datacenter_name) or a C(folder).",
+				"Mutually exclusive with C(folder) parameter.",
+			]
+			required: false
+			aliases: ["datacenter"]
+			type: "str"
+		}
+		datastore_cluster_name: {
+			description: [
+				"The name of the datastore cluster.",
+			]
+			required: true
+			type:     "str"
+		}
+		state: {
+			description: [
+				"If the datastore cluster should be present or absent.",
+			]
+			choices: ["present", "absent"]
+			default: "present"
+			type:    "str"
+		}
+		folder: {
+			description: [
+				"Destination folder, absolute path to place datastore cluster in.",
+				"The folder should include the datacenter.",
+				"This parameter is case sensitive.",
+				"You must specify either a C(folder) or a C(datacenter_name).",
+				"Examples:",
+				"   folder: /datacenter1/datastore",
+				"   folder: datacenter1/datastore",
+				"   folder: /datacenter1/datastore/folder1",
+				"   folder: datacenter1/datastore/folder1",
+				"   folder: /folder1/datacenter1/datastore",
+				"   folder: folder1/datacenter1/datastore",
+				"   folder: /folder1/datacenter1/datastore/folder2",
+			]
+			required:      false
+			version_added: "2.9"
+			type:          "str"
+		}
+	}
+	extends_documentation_fragment: "vmware.documentation"
+}

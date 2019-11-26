@@ -1,0 +1,73 @@
+package ansible
+
+module: bigip_device_trust: {
+	module:            "bigip_device_trust"
+	short_description: "Manage the trust relationships between BIG-IPs"
+	description: [
+		"Manage the trust relationships between BIG-IPs. Devices, once peered, cannot be updated. If updating is needed, the peer must first be removed before it can be re-added to the trust.",
+	]
+
+	version_added: 2.5
+	options: {
+		peer_server: {
+			description: [
+				"The peer address to connect to and trust for synchronizing configuration. This is typically the management address of the remote device, but may also be a Self IP.",
+			]
+
+			type:     "str"
+			required: true
+		}
+		peer_hostname: {
+			description: [
+				"The hostname that you want to associate with the device. This value will be used to easily distinguish this device in BIG-IP configuration.",
+				"When trusting a new device, if this parameter is not specified, the value of C(peer_server) will be used as a default.",
+			]
+
+			type: "str"
+		}
+		peer_user: {
+			description: [
+				"The API username of the remote peer device that you are trusting. Note that the CLI user cannot be used unless it too has an API account. If this value is not specified, then the value of C(user), or the environment variable C(F5_USER) will be used.",
+			]
+
+			type: "str"
+		}
+		peer_password: {
+			description: [
+				"The password of the API username of the remote peer device that you are trusting. If this value is not specified, then the value of C(password), or the environment variable C(F5_PASSWORD) will be used.",
+			]
+
+			type: "str"
+		}
+		type: {
+			description: [
+				"Specifies whether the device you are adding is a Peer or a Subordinate. The default is C(peer).",
+				"The difference between the two is a matter of mitigating risk of compromise.",
+				"A subordinate device cannot sign a certificate for another device.",
+				"In the case where the security of an authority device in a trust domain is compromised, the risk of compromise is minimized for any subordinate device.",
+				"Designating devices as subordinate devices is recommended for device groups with a large number of member devices, where the risk of compromise is high.",
+			]
+
+			type: "str"
+			choices: [
+				"peer",
+				"subordinate",
+			]
+			default: "peer"
+		}
+		state: {
+			description: [
+				"When C(present), ensures the specified devices are trusted.",
+				"When C(absent), removes the device trusts.",
+			]
+			type: "str"
+			choices: [
+				"absent",
+				"present",
+			]
+			default: "present"
+		}
+	}
+	extends_documentation_fragment: "f5"
+	author: ["Tim Rupp (@caphrim007)"]
+}

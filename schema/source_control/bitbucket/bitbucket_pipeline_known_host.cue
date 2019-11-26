@@ -1,0 +1,72 @@
+package ansible
+
+module: bitbucket_pipeline_known_host: {
+	module:            "bitbucket_pipeline_known_host"
+	short_description: "Manages Bitbucket pipeline known hosts"
+	description: [
+		"Manages Bitbucket pipeline known hosts under the \"SSH Keys\" menu.",
+		"The host fingerprint will be retrieved automatically, but in case of an error, one can use I(key) field to specify it manually.",
+	]
+	version_added: "2.8"
+	author: [
+		"Evgeniy Krysanov (@catcombo)",
+	]
+	requirements: [
+		"paramiko",
+	]
+	options: {
+		client_id: {
+			description: [
+				"The OAuth consumer key.",
+				"If not set the environment variable C(BITBUCKET_CLIENT_ID) will be used.",
+			]
+			type: "str"
+		}
+		client_secret: {
+			description: [
+				"The OAuth consumer secret.",
+				"If not set the environment variable C(BITBUCKET_CLIENT_SECRET) will be used.",
+			]
+			type: "str"
+		}
+		repository: {
+			description: [
+				"The repository name.",
+			]
+			type:     "str"
+			required: true
+		}
+		username: {
+			description: [
+				"The repository owner.",
+			]
+			type:     "str"
+			required: true
+		}
+		name: {
+			description: [
+				"The FQDN of the known host.",
+			]
+			type:     "str"
+			required: true
+		}
+		key: {
+			description: [
+				"The public key.",
+			]
+			type: "str"
+		}
+		state: {
+			description: [
+				"Indicates desired state of the record.",
+			]
+			type:     "str"
+			required: true
+			choices: ["absent", "present"]
+		}
+	}
+	notes: [
+		"Bitbucket OAuth consumer key and secret can be obtained from Bitbucket profile -> Settings -> Access Management -> OAuth.",
+		"Check mode is supported.",
+	]
+}

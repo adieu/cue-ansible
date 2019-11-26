@@ -1,0 +1,92 @@
+package ansible
+
+module: bigip_message_routing_protocol: {
+	module:            "bigip_message_routing_protocol"
+	short_description: "Manage generic message parser profile."
+	description: [
+		"Manages generic message parser profile for use with the message routing framework.",
+	]
+	version_added: 2.9
+	options: {
+		name: {
+			description: [
+				"Specifies the name of the generic parser profile.",
+			]
+			required: true
+			type:     "str"
+		}
+		description: {
+			description: [
+				"The user defined description of the generic parser profile.",
+			]
+			type: "str"
+		}
+		parent: {
+			description: [
+				"The parent template of this parser profile. Once this value has been set, it cannot be changed.",
+				"When creating a new profile, if this parameter is not specified, the default is the system-supplied C(genericmsg) profile.",
+			]
+
+			type: "str"
+		}
+		disable_parser: {
+			description: [
+				"When C(yes), the generic message parser will be disabled ignoring all incoming packets and not directly send message data.",
+				"This mode supports iRule script protocol implementations that will generate messages from the incoming transport stream and send outgoing messages on the outgoing transport stream.",
+			]
+
+			type: "bool"
+		}
+		max_egress_buffer: {
+			description: [
+				"Specifies the maximum size of the send buffer in bytes. If the number of bytes in the send buffer for a connection exceeds this value, the generic message protocol will stop receiving outgoing messages from the router until the size of the size of the buffer drops below this setting.",
+				"The accepted range is between 0 and 4294967295 inclusive.",
+			]
+			type: "int"
+		}
+		max_msg_size: {
+			description: [
+				"Specifies the maximum size of a received message. If a message exceeds this size, the connection will be reset.",
+				"The accepted range is between 0 and 4294967295 inclusive.",
+			]
+			type: "int"
+		}
+		msg_terminator: {
+			description: [
+				"The string of characters used to terminate a message. If the message-terminator is not specified, the generic message parser will not separate the input stream into messages.",
+			]
+
+			type: "str"
+		}
+		no_response: {
+			description: [
+				"When set, matching of responses to requests is disabled.",
+			]
+			type: "bool"
+		}
+		partition: {
+			description: [
+				"Device partition to create route object on.",
+			]
+			type:    "str"
+			default: "Common"
+		}
+		state: {
+			description: [
+				"When C(present), ensures that the route exists.",
+				"When C(absent), ensures the route is removed.",
+			]
+			type: "str"
+			choices: [
+				"present",
+				"absent",
+			]
+			default: "present"
+		}
+	}
+	notes: [
+		"Requires BIG-IP >= 14.0.0",
+	]
+	extends_documentation_fragment: "f5"
+	author: ["Wojciech Wypior (@wojtek0806)"]
+}

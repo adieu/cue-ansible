@@ -1,0 +1,120 @@
+
+module: vmware_host_auto_start
+short_description: Manage the auto power ON or OFF for vm on ESXi host
+author:
+  - sky-joker (@sky-joker)
+version_added: '2.10'
+description:
+  - In this module, can set up automatic startup and shutdown of virtual machines according to host startup or shutdown.
+requirements:
+  - python >= 2.7
+  - PyVmomi
+options:
+  esxi_hostname:
+    description:
+    - ESXi hostname where the VM to set auto power on or off exists.
+    type: str
+    required: True
+  name:
+    description:
+    - VM name to set auto power on or off.
+    - This is not necessary if change only system default VM settings for autoStart config.
+    type: str
+  uuid:
+    description:
+    - VM uuid to set auto power on or off, this is VMware's unique identifier.
+    - This is required if C(name) is not supplied.
+    - This is not necessary if change only system default VM settings for autoStart config.
+    type: str
+  use_instance_uuid:
+    description:
+    - Whether to use the VMware instance UUID rather than the BIOS UUID.
+    type: bool
+    default: no
+  moid:
+    description:
+    - Managed Object ID of the instance to manage if known, this is a unique identifier only within a single vCenter instance.
+    - This is required if C(name) or C(uuid) is not supplied.
+    type: str
+  system_defaults:
+    description:
+    - System defaults for auto-start or auto-stop config for virtual machine.
+    type: dict
+    suboptions:
+      enabled:
+        description:
+        - Enable automatically start or stop of virtual machines.
+        type: bool
+        default: False
+      start_delay:
+        description:
+        - Default auto start delay in seconds.
+        type: int
+        default: 120
+      stop_action:
+        description:
+        - Default stop action executed on the virtual machine when the system stops.
+        type: str
+        choices: ['none', 'guestShutdown', 'powerOff', 'suspend']
+        default: powerOff
+      stop_delay:
+        description:
+        - Default auto stop delay in seconds.
+        type: int
+        default: 120
+      wait_for_heartbeat:
+        description:
+        - Continue power on processing when VMware Tools started.
+        - If this parameter is enabled to powers on the next virtual machine without waiting for the delay to pass.
+        - However, the virtual machine must have VMware Tools installed.
+        type: bool
+        default: False
+  power_info:
+    description:
+    - Startup or shutdown settings of virtual machine.
+    - This setting will override the system defaults.
+    type: dict
+    default:
+      start_action: none
+      start_delay: -1
+      start_order: -1
+      stop_action: systemDefault
+      stop_delay: -1
+      wait_for_heartbeat: systemDefault
+    suboptions:
+      start_action:
+        description:
+        - Whether to start the virtual machine when the host startup.
+        type: str
+        choices: ['none', 'powerOn']
+        default: none
+      start_delay:
+        description:
+        - Auto start delay in seconds of virtual machine.
+        type: int
+        default: -1
+      start_order:
+        description:
+        - The autostart priority of virtual machine.
+        - Virtual machines with a lower number are powered on first.
+        - On host shutdown, the virtual machines are shut down in reverse order, meaning those with a higher number are powered off first.
+        type: int
+        default: -1
+      stop_action:
+        description:
+        - Stop action executed on the virtual machine when the system stops of virtual machine.
+        choices: ['none', 'systemDefault', 'powerOff', 'suspend']
+        type: str
+        default: systemDefault
+      stop_delay:
+        description:
+        - Auto stop delay in seconds of virtual machine.
+        type: int
+        default: -1
+      wait_for_heartbeat:
+        description:
+        - Continue power on processing when VMware Tools started.
+        type: str
+        choices: ['no', 'yes', 'systemDefault']
+        default: systemDefault
+extends_documentation_fragment: vmware.documentation

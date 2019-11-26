@@ -1,0 +1,65 @@
+package ansible
+
+module: azure_rm_containerregistry: {
+	module:            "azure_rm_containerregistry"
+	version_added:     "2.5"
+	short_description: "Manage an Azure Container Registry"
+	description: [
+		"Create, update and delete an Azure Container Registry.",
+	]
+
+	options: {
+		resource_group: {
+			description: [
+				"Name of a resource group where the Container Registry exists or will be created.",
+			]
+			required: true
+		}
+		name: {
+			description: [
+				"Name of the Container Registry.",
+			]
+			required: true
+		}
+		state: {
+			description: [
+				"Assert the state of the container registry. Use C(present) to create or update an container registry and C(absent) to delete it.",
+			]
+			default: "present"
+			choices: [
+				"absent",
+				"present",
+			]
+		}
+		location: description: [
+			"Valid azure location. Defaults to location of the resource group.",
+		]
+		admin_user_enabled: {
+			description: [
+				"If enabled, you can use the registry name as username and admin user access key as password to docker login to your container registry.",
+			]
+			type:    "bool"
+			default: false
+		}
+		sku: {
+			description: [
+				"Specifies the SKU to use. Currently can be either C(Basic), C(Standard) or C(Premium).",
+			]
+			default: "Standard"
+			choices: [
+				"Basic",
+				"Standard",
+				"Premium",
+			]
+		}
+	}
+
+	extends_documentation_fragment: [
+		"azure",
+		"azure_tags",
+	]
+
+	author: [
+		"Yawei Wang (@yaweiw)",
+	]
+}

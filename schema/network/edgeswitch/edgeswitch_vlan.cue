@@ -1,0 +1,75 @@
+package ansible
+
+module: edgeswitch_vlan: {
+	module:            "edgeswitch_vlan"
+	version_added:     "2.8"
+	author:            "Frederic Bor (@f-bor)"
+	short_description: "Manage VLANs on Ubiquiti Edgeswitch network devices"
+	description: [
+		"This module provides declarative management of VLANs on Ubiquiti Edgeswitch network devices.",
+	]
+
+	notes: [
+		"Tested against edgeswitch 1.7.4",
+		"This module use native Ubiquiti vlan syntax and does not support switchport compatibility syntax. For clarity, it is strongly advised to not use both syntaxes on the same interface.",
+		"Edgeswitch does not support deleting or changing name of VLAN 1",
+		"As auto_tag, auto_untag and auto_exclude are a kind of default setting for all interfaces, they are mutually exclusive",
+	]
+
+	options: {
+		name: description: [
+			"Name of the VLAN.",
+		]
+		vlan_id: description: [
+			"ID of the VLAN. Range 1-4093.",
+		]
+		tagged_interfaces: description: [
+			"List of interfaces that should accept and transmit tagged frames for the VLAN. Accept range of interfaces.",
+		]
+
+		untagged_interfaces: description: [
+			"List of interfaces that should accept untagged frames and transmit them tagged for the VLAN. Accept range of interfaces.",
+		]
+
+		excluded_interfaces: description: [
+			"List of interfaces that should be excluded of the VLAN. Accept range of interfaces.",
+		]
+
+		auto_tag: {
+			description: [
+				"Each of the switch interfaces will be set to accept and transmit untagged frames for I(vlan_id) unless defined in I(*_interfaces). This is a default setting for all switch interfaces.",
+			]
+
+			type: "bool"
+		}
+		auto_untag: {
+			description: [
+				"Each of the switch interfaces will be set to accept untagged frames and transmit them tagged for I(vlan_id) unless defined in I(*_interfaces). This is a default setting for all switch interfaces.",
+			]
+
+			type: "bool"
+		}
+		auto_exclude: {
+			description: [
+				"Each of the switch interfaces will be excluded from I(vlan_id) unless defined in I(*_interfaces). This is a default setting for all switch interfaces.",
+			]
+
+			type: "bool"
+		}
+		aggregate: description: "List of VLANs definitions."
+		purge: {
+			description: [
+				"Purge VLANs not defined in the I(aggregate) parameter.",
+			]
+			default: false
+			type:    "bool"
+		}
+		state: {
+			description: [
+				"action on the VLAN configuration.",
+			]
+			default: "present"
+			choices: ["present", "absent"]
+		}
+	}
+}

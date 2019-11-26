@@ -1,0 +1,30 @@
+package ansible
+
+module: azure_rm_gallery_info: {
+	module:            "azure_rm_gallery_info"
+	version_added:     "2.9"
+	short_description: "Get Azure Shared Image Gallery info"
+	description: [
+		"Get info of Azure Shared Image Gallery.",
+	]
+	options: {
+		resource_group: {
+			description: [
+				"The name of the resource group.",
+			]
+			type: "str"
+		}
+		name: {
+			description: [
+				"Resource name",
+			]
+			type: "str"
+		}
+	}
+	extends_documentation_fragment: [
+		"azure",
+	]
+	author: [
+		"Liu Qingyi (@smile37773)",
+	]
+}

@@ -1,0 +1,108 @@
+package ansible
+
+module: fortios_firewall_auth_portal: {
+	module:            "fortios_firewall_auth_portal"
+	short_description: "Configure firewall authentication portals in Fortinet's FortiOS and FortiGate."
+	description: [
+		"This module is able to configure a FortiGate or FortiOS (FOS) device by allowing the user to set and modify firewall feature and auth_portal category. Examples include all parameters and values need to be adjusted to datasources before usage. Tested with FOS v6.0.5",
+	]
+
+	version_added: "2.8"
+	author: [
+		"Miguel Angel Munoz (@mamunozgonzalez)",
+		"Nicolas Thomas (@thomnico)",
+	]
+	notes: [
+		"Requires fortiosapi library developed by Fortinet",
+		"Run as a local_action in your playbook",
+	]
+	requirements: [
+		"fortiosapi>=0.9.8",
+	]
+	options: {
+		host: {
+			description: [
+				"FortiOS or FortiGate IP address.",
+			]
+			type:     "str"
+			required: false
+		}
+		username: {
+			description: [
+				"FortiOS or FortiGate username.",
+			]
+			type:     "str"
+			required: false
+		}
+		password: {
+			description: [
+				"FortiOS or FortiGate password.",
+			]
+			type:    "str"
+			default: ""
+		}
+		vdom: {
+			description: [
+				"Virtual domain, among those defined previously. A vdom is a virtual instance of the FortiGate that can be configured and used as a different unit.",
+			]
+
+			type:    "str"
+			default: "root"
+		}
+		https: {
+			description: [
+				"Indicates if the requests towards FortiGate must use HTTPS protocol.",
+			]
+			type:    "bool"
+			default: true
+		}
+		ssl_verify: {
+			description: [
+				"Ensures FortiGate certificate must be verified by a proper CA.",
+			]
+			type:          "bool"
+			default:       true
+			version_added: 2.9
+		}
+		firewall_auth_portal: {
+			description: [
+				"Configure firewall authentication portals.",
+			]
+			default: null
+			type:    "dict"
+			suboptions: {
+				groups: {
+					description: [
+						"Firewall user groups permitted to authenticate through this portal. Separate group names with spaces.",
+					]
+					type: "list"
+					suboptions: name: {
+						description: [
+							"Group name. Source user.group.name.",
+						]
+						required: true
+						type:     "str"
+					}
+				}
+				identity_based_route: {
+					description: [
+						"Name of the identity-based route that applies to this portal. Source firewall.identity-based-route.name.",
+					]
+					type: "str"
+				}
+				portal_addr: {
+					description: [
+						"Address (or FQDN) of the authentication portal.",
+					]
+					type: "str"
+				}
+				portal_addr6: {
+					description: [
+						"IPv6 address (or FQDN) of authentication portal.",
+					]
+					type: "str"
+				}
+			}
+		}
+	}
+}

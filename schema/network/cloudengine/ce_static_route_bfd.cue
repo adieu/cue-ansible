@@ -1,0 +1,130 @@
+package ansible
+
+module: ce_static_route_bfd: {
+	module:            "ce_static_route_bfd"
+	version_added:     "2.10"
+	short_description: "Manages static route configuration on HUAWEI CloudEngine switches."
+	description: [
+		"Manages the static routes on HUAWEI CloudEngine switches.",
+	]
+	author: "xuxiaowei0512 (@CloudEngine-Ansible)"
+	notes: [
+		"This module requires the netconf system service be enabled on the remote device being managed.",
+		"Recommended connection is C(netconf).",
+		"This module also works with C(local) connections for legacy playbooks.",
+		"If no vrf is supplied, vrf is set to default.",
+		"If I(state=absent), the route configuration will be removed, regardless of the non-required parameters.",
+	]
+	options: {
+		prefix: {
+			description: [
+				"Destination ip address of static route.",
+			]
+			required: true
+			type:     "str"
+		}
+		mask: {
+			description: [
+				"Destination ip mask of static route.",
+			]
+			type: "str"
+		}
+		aftype: {
+			description: [
+				"Destination ip address family type of static route.",
+			]
+			required: true
+			type:     "str"
+			choices: ["v4", "v6"]
+		}
+		next_hop: {
+			description: [
+				"Next hop address of static route.",
+			]
+			type: "str"
+		}
+		nhp_interface: {
+			description: [
+				"Next hop interface full name of static route.",
+			]
+			type: "str"
+		}
+		vrf: {
+			description: [
+				"VPN instance of destination ip address.",
+			]
+			type: "str"
+		}
+		destvrf: {
+			description: [
+				"VPN instance of next hop ip address.",
+			]
+			type: "str"
+		}
+		tag: {
+			description: [
+				"Route tag value (numeric).",
+			]
+			type: "int"
+		}
+		description: {
+			description: [
+				"Name of the route. Used with the name parameter on the CLI.",
+			]
+			type: "str"
+		}
+		pref: {
+			description: [
+				"Preference or administrative difference of route (range 1-255).",
+			]
+			type: "int"
+		}
+		function_flag: {
+			description: [
+				"Used to distinguish between command line functions.",
+			]
+			required: true
+			choices: ["globalBFD", "singleBFD", "dynamicBFD", "staticBFD"]
+			type: "str"
+		}
+		min_tx_interval: {
+			description: [
+				"Set the minimum BFD session sending interval (range 50-1000).",
+			]
+			type: "int"
+		}
+		min_rx_interval: {
+			description: [
+				"Set the minimum BFD receive interval (range 50-1000).",
+			]
+			type: "int"
+		}
+		detect_multiplier: {
+			description: [
+				"Configure the BFD multiplier (range 3-50).",
+			]
+			type: "int"
+		}
+		bfd_session_name: {
+			description: [
+				"bfd name (range 1-15).",
+			]
+			type: "str"
+		}
+		commands: {
+			description: [
+				"Incoming command line is used to send sys,undo ip route-static default-bfd,commit.",
+			]
+			type: "list"
+		}
+		state: {
+			description: [
+				"Specify desired state of the resource.",
+			]
+			required: false
+			choices: ["present", "absent"]
+			type:    "str"
+			default: "present"
+		}
+	}
+}

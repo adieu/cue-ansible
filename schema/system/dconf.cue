@@ -1,0 +1,48 @@
+package ansible
+
+module: dconf: {
+	module: "dconf"
+	author: [
+		"Branko Majic (@azaghal)",
+	]
+	short_description: "Modify and read dconf database"
+	description: [
+		"This module allows modifications and reading of dconf database. The module is implemented as a wrapper around dconf tool. Please see the dconf(1) man page for more details.",
+		"Since C(dconf) requires a running D-Bus session to change values, the module will try to detect an existing session and reuse it, or run the tool via C(dbus-run-session).",
+	]
+
+	notes: [
+		"This module depends on C(psutil) Python library (version 4.0.0 and upwards), C(dconf), C(dbus-send), and C(dbus-run-session) binaries. Depending on distribution you are using, you may need to install additional packages to have these available.",
+		"Detection of existing, running D-Bus session, required to change settings via C(dconf), is not 100% reliable due to implementation details of D-Bus daemon itself. This might lead to running applications not picking-up changes on the fly if options are changed via Ansible and C(dbus-run-session).",
+		"Keep in mind that the C(dconf) CLI tool, which this module wraps around, utilises an unusual syntax for the values (GVariant). For example, if you wanted to provide a string value, the correct syntax would be C(value=\"'myvalue'\") - with single quotes as part of the Ansible parameter value.",
+		"When using loops in combination with a value like :code:`\"[('xkb', 'us'), ('xkb', 'se')]\"`, you need to be aware of possible type conversions. Applying a filter :code:`\"{{ item.value | string }}\"` to the parameter variable can avoid potential conversion problems.",
+		"The easiest way to figure out exact syntax/value you need to provide for a key is by making the configuration change in application affected by the key, and then having a look at value set via commands C(dconf dump /path/to/dir/) or C(dconf read /path/to/key).",
+	]
+
+	version_added: "2.4"
+	options: {
+		key: {
+			required: true
+			description: [
+				"A dconf key to modify or read from the dconf database.",
+			]
+		}
+		value: {
+			required: false
+			description: [
+				"Value to set for the specified dconf key. Value should be specified in GVariant format. Due to complexity of this format, it is best to have a look at existing values in the dconf database. Required for C(state=present).",
+			]
+		}
+
+		state: {
+			required: false
+			default:  "present"
+			choices: [
+				"read",
+				"present",
+				"absent",
+			]
+			description: ["The action to take upon the key/value."]
+		}
+	}
+}

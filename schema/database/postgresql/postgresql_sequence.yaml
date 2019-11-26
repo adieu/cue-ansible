@@ -1,0 +1,143 @@
+
+---
+module: postgresql_sequence
+short_description: Create, drop, or alter a PostgreSQL sequence
+description:
+- Allows to create, drop or change the definition of a sequence generator.
+version_added: '2.9'
+options:
+  sequence:
+    description:
+    - The name of the sequence.
+    required: true
+    type: str
+    aliases:
+    - name
+  state:
+    description:
+    - The sequence state.
+    - If I(state=absent) other options will be ignored except of I(name) and
+      I(schema).
+    default: present
+    choices: [ absent, present ]
+    type: str
+  data_type:
+    description:
+    - Specifies the data type of the sequence. Valid types are bigint, integer,
+      and smallint. bigint is the default. The data type determines the default
+      minimum and maximum values of the sequence. For more info see the
+      documentation
+      U(https://www.postgresql.org/docs/current/sql-createsequence.html).
+    - Supported from PostgreSQL 10.
+    choices: [ bigint, integer, smallint ]
+    type: str
+  increment:
+    description:
+    - Increment specifies which value is added to the current sequence value
+      to create a new value.
+    - A positive value will make an ascending sequence, a negative one a
+      descending sequence. The default value is 1.
+    type: int
+  minvalue:
+    description:
+    - Minvalue determines the minimum value a sequence can generate. The
+      default for an ascending sequence is 1. The default for a descending
+      sequence is the minimum value of the data type.
+    type: int
+    aliases:
+      - min
+  maxvalue:
+    description:
+    - Maxvalue determines the maximum value for the sequence. The default for
+      an ascending sequence is the maximum
+      value of the data type. The default for a descending sequence is -1.
+    type: int
+    aliases:
+      - max
+  start:
+    description:
+    - Start allows the sequence to begin anywhere. The default starting value
+      is I(minvalue) for ascending sequences and I(maxvalue) for descending
+      ones.
+    type: int
+  cache:
+    description:
+    - Cache specifies how many sequence numbers are to be preallocated and
+      stored in memory for faster access. The minimum value is 1 (only one
+      value can be generated at a time, i.e., no cache), and this is also
+      the default.
+    type: int
+  cycle:
+    description:
+    - The cycle option allows the sequence to wrap around when the I(maxvalue)
+      or I(minvalue) has been reached by an ascending or descending sequence
+      respectively. If the limit is reached, the next number generated will be
+      the minvalue or maxvalue, respectively.
+    - If C(false) (NO CYCLE) is specified, any calls to nextval after the sequence
+      has reached its maximum value will return an error. False (NO CYCLE) is
+      the default.
+    type: bool
+    default: no
+  cascade:
+    description:
+    - Automatically drop objects that depend on the sequence, and in turn all
+      objects that depend on those objects.
+    - Ignored if I(state=present).
+    - Only used with I(state=absent).
+    type: bool
+    default: no
+  rename_to:
+    description:
+    - The new name for the I(sequence).
+    - Works only for existing sequences.
+    type: str
+  owner:
+    description:
+    - Set the owner for the I(sequence).
+    type: str
+  schema:
+    description:
+    - The schema of the I(sequence). This is be used to create and relocate
+      a I(sequence) in the given schema.
+    default: public
+    type: str
+  newschema:
+    description:
+    - The new schema for the I(sequence). Will be used for moving a
+      I(sequence) to another I(schema).
+    - Works only for existing sequences.
+    type: str
+  session_role:
+    description:
+    - Switch to session_role after connecting. The specified I(session_role)
+      must be a role that the current I(login_user) is a member of.
+    - Permissions checking for SQL commands is carried out as though
+      the I(session_role) were the one that had logged in originally.
+    type: str
+  db:
+    description:
+    - Name of database to connect to and run queries against.
+    type: str
+    aliases:
+    - database
+    - login_db
+notes:
+- If you do not pass db parameter, sequence will be created in the database
+  named postgres.
+seealso:
+- module: postgresql_table
+- module: postgresql_owner
+- module: postgresql_privs
+- module: postgresql_tablespace
+- name: CREATE SEQUENCE reference
+  description: Complete reference of the CREATE SEQUENCE command documentation.
+  link: https://www.postgresql.org/docs/current/sql-createsequence.html
+- name: ALTER SEQUENCE reference
+  description: Complete reference of the ALTER SEQUENCE command documentation.
+  link: https://www.postgresql.org/docs/current/sql-altersequence.html
+- name: DROP SEQUENCE reference
+  description: Complete reference of the DROP SEQUENCE command documentation.
+  link: https://www.postgresql.org/docs/current/sql-dropsequence.html
+author:
+- Tobias Birkefeld (@tcraxs)
+extends_documentation_fragment: postgres

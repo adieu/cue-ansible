@@ -1,0 +1,141 @@
+package ansible
+
+module: packet_volume: {
+	module: "packet_volume"
+
+	short_description: "Create/delete a volume in Packet host."
+
+	description: [
+		"Create/delete a volume in Packet host.",
+		"API is documented at U(https://www.packet.com/developers/api/#volumes).",
+	]
+
+	version_added: "2.10"
+
+	author: [
+		"Tomas Karasek (@t0mk) <tom.to.the.k@gmail.com>",
+		"Nurfet Becirevic (@nurfet-becirevic) <nurfet.becirevic@gmail.com>",
+	]
+
+	options: {
+		state: {
+			description: [
+				"Desired state of the volume.",
+			]
+			default: "present"
+			choices: ["present", "absent"]
+			type: "str"
+		}
+
+		project_id: {
+			description: [
+				"ID of project of the device.",
+			]
+			required: true
+			type:     "str"
+		}
+
+		auth_token: {
+			description: [
+				"Packet api token. You can also supply it in env var C(PACKET_API_TOKEN).",
+			]
+			type: "str"
+		}
+
+		name: {
+			description: [
+				"Selector for API-generated name of the volume",
+			]
+			type: "str"
+		}
+
+		description: {
+			description: [
+				"User-defined description attribute for Packet volume.",
+				"It is used used as idempotent identifier - if volume with given description exists, new one is not created.",
+			]
+
+			type: "str"
+		}
+
+		id: {
+			description: [
+				"UUID of a volume.",
+			]
+			type: "str"
+		}
+
+		plan: {
+			description: [
+				"storage_1 for standard tier, storage_2 for premium (performance) tier.",
+				"Tiers are described at U(https://www.packet.com/cloud/storage/).",
+			]
+			choices: ["storage_1", "storage_2"]
+			default: "storage_1"
+			type:    "str"
+		}
+
+		facility: {
+			description: [
+				"Location of the volume.",
+				"Volumes can only be attached to device in the same location.",
+			]
+			type: "str"
+		}
+
+		size: {
+			description: [
+				"Size of the volume in gigabytes.",
+			]
+			type: "int"
+		}
+
+		locked: {
+			description: [
+				"Create new volume locked.",
+			]
+			type:    "bool"
+			default: false
+		}
+
+		billing_cycle: {
+			description: [
+				"Billing cycle for new volume.",
+			]
+			choices: ["hourly", "monthly"]
+			default: "hourly"
+			type:    "str"
+		}
+
+		snapshot_policy: {
+			description: [
+				"Snapshot policy for new volume.",
+			]
+			type: "dict"
+
+			suboptions: {
+				snapshot_count: {
+					description: [
+						"How many snapshots to keep, a positive integer.",
+					]
+					required: true
+					type:     "int"
+				}
+
+				snapshot_frequency: {
+					description: [
+						"Frequency of snapshots.",
+					]
+					required: true
+					choices: ["15min", "1hour", "1day", "1week", "1month", "1year"]
+					type: "str"
+				}
+			}
+		}
+	}
+
+	requirements: [
+		"python >= 2.6",
+		"packet-python >= 1.35",
+	]
+}

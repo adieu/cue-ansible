@@ -1,0 +1,216 @@
+package ansible
+
+module: cs_instance: {
+	module:            "cs_instance"
+	short_description: "Manages instances and virtual machines on Apache CloudStack based clouds."
+	description: [
+		"Deploy, start, update, scale, restart, restore, stop and destroy instances.",
+	]
+	version_added: "2.0"
+	author:        "René Moser (@resmo)"
+	options: {
+		name: {
+			description: [
+				"Host name of the instance. C(name) can only contain ASCII letters.",
+				"Name will be generated (UUID) by CloudStack if not specified and can not be changed afterwards.",
+				"Either C(name) or C(display_name) is required.",
+			]
+			type: "str"
+		}
+		display_name: {
+			description: [
+				"Custom display name of the instances.",
+				"Display name will be set to I(name) if not specified.",
+				"Either I(name) or I(display_name) is required.",
+			]
+			type: "str"
+		}
+		group: {
+			description: ["Group in where the new instance should be in."]
+			type: "str"
+		}
+		state: {
+			description: ["State of the instance."]
+			type:    "str"
+			default: "present"
+			choices: ["deployed", "started", "stopped", "restarted", "restored", "destroyed", "expunged", "present", "absent"]
+		}
+		service_offering: {
+			description: [
+				"Name or id of the service offering of the new instance.",
+				"If not set, first found service offering is used.",
+			]
+			type: "str"
+		}
+		cpu: {
+			description: ["The number of CPUs to allocate to the instance, used with custom service offerings"]
+			type: "int"
+		}
+		cpu_speed: {
+			description: ["The clock speed/shares allocated to the instance, used with custom service offerings"]
+			type: "int"
+		}
+		memory: {
+			description: ["The memory allocated to the instance, used with custom service offerings"]
+			type: "int"
+		}
+		template: {
+			description: [
+				"Name, display text or id of the template to be used for creating the new instance.",
+				"Required when using I(state=present).",
+				"Mutually exclusive with I(iso) option.",
+			]
+			type: "str"
+		}
+		iso: {
+			description: [
+				"Name or id of the ISO to be used for creating the new instance.",
+				"Required when using I(state=present).",
+				"Mutually exclusive with I(template) option.",
+			]
+			type: "str"
+		}
+		template_filter: {
+			description: [
+				"Name of the filter used to search for the template or iso.",
+				"Used for params I(iso) or I(template) on I(state=present).",
+				"The filter C(all) was added in 2.6.",
+			]
+			type:    "str"
+			default: "executable"
+			choices: ["all", "featured", "self", "selfexecutable", "sharedexecutable", "executable", "community"]
+			aliases: ["iso_filter"]
+			version_added: "2.1"
+		}
+		hypervisor: {
+			description: [
+				"Name the hypervisor to be used for creating the new instance.",
+				"Relevant when using I(state=present), but only considered if not set on ISO/template.",
+				"If not set or found on ISO/template, first found hypervisor will be used.",
+				"Possible values are C(KVM), C(VMware), C(BareMetal), C(XenServer), C(LXC), C(HyperV), C(UCS), C(OVM), C(Simulator).",
+			]
+			type: "str"
+		}
+		keyboard: {
+			description: ["Keyboard device type for the instance."]
+			type: "str"
+			choices: ["de", "de-ch", "es", "fi", "fr", "fr-be", "fr-ch", "is", "it", "jp", "nl-be", "no", "pt", "uk", "us"]
+		}
+		networks: {
+			description: ["List of networks to use for the new instance."]
+			type: "list"
+			aliases: ["network"]
+		}
+		ip_address: {
+			description: ["IPv4 address for default instance's network during creation."]
+			type: "str"
+		}
+		ip6_address: {
+			description: ["IPv6 address for default instance's network."]
+			type: "str"
+		}
+		ip_to_networks: {
+			description: [
+				"List of mappings in the form I({'network': NetworkName, 'ip': 1.2.3.4})",
+				"Mutually exclusive with I(networks) option.",
+			]
+			type: "list"
+			aliases: ["ip_to_network"]
+		}
+		disk_offering: {
+			description: ["Name of the disk offering to be used."]
+			type: "str"
+		}
+		disk_size: {
+			description: ["Disk size in GByte required if deploying instance from ISO."]
+			type: "int"
+		}
+		root_disk_size: {
+			description: [
+				"Root disk size in GByte required if deploying instance with KVM hypervisor and want resize the root disk size at startup (need CloudStack >= 4.4, cloud-initramfs-growroot installed and enabled in the template)",
+			]
+
+			type: "int"
+		}
+		security_groups: {
+			description: ["List of security groups the instance to be applied to."]
+			type: "list"
+			aliases: ["security_group"]
+		}
+		host: {
+			description: [
+				"Host on which an instance should be deployed or started on.",
+				"Only considered when I(state=started) or instance is running.",
+				"Requires root admin privileges.",
+			]
+			type:          "str"
+			version_added: "2.6"
+		}
+		domain: {
+			description: ["Domain the instance is related to."]
+			type: "str"
+		}
+		account: {
+			description: ["Account the instance is related to."]
+			type: "str"
+		}
+		project: {
+			description: ["Name of the project the instance to be deployed in."]
+			type: "str"
+		}
+		zone: {
+			description: [
+				"Name of the zone in which the instance should be deployed.",
+				"If not set, default zone is used.",
+			]
+			type: "str"
+		}
+		ssh_key: {
+			description: ["Name of the SSH key to be deployed on the new instance."]
+			type: "str"
+		}
+		affinity_groups: {
+			description: ["Affinity groups names to be applied to the new instance."]
+			type: "list"
+			aliases: ["affinity_group"]
+		}
+		user_data: {
+			description: [
+				"Optional data (ASCII) that can be sent to the instance upon a successful deployment.",
+				"The data will be automatically base64 encoded.",
+				"Consider switching to HTTP_POST by using I(CLOUDSTACK_METHOD=post) to increase the HTTP_GET size limit of 2KB to 32 KB.",
+			]
+			type: "str"
+		}
+		force: {
+			description: ["Force stop/start the instance if required to apply changes, otherwise a running instance will not be changed."]
+			type:    "bool"
+			default: false
+		}
+		allow_root_disk_shrink: {
+			description: ["Enables a volume shrinkage when the new size is smaller than the old one."]
+			type:          "bool"
+			default:       false
+			version_added: "2.7"
+		}
+		tags: {
+			description: [
+				"List of tags. Tags are a list of dictionaries having keys C(key) and C(value).",
+				"If you want to delete all tags, set a empty list e.g. I(tags: []).",
+			]
+			type: "list"
+			aliases: ["tag"]
+		}
+		poll_async: {
+			description: ["Poll async jobs until job has finished."]
+			type:    "bool"
+			default: true
+		}
+		details: {
+			description: ["Map to specify custom parameters."]
+			type:          "dict"
+			version_added: "2.6"
+		}
+	}
+	extends_documentation_fragment: "cloudstack"
+}

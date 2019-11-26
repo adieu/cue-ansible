@@ -1,0 +1,51 @@
+
+---
+module: certificate_complete_chain
+author: "Felix Fontein (@felixfontein)"
+version_added: "2.7"
+short_description: Complete certificate chain given a set of untrusted and root certificates
+description:
+    - "This module completes a given chain of certificates in PEM format by finding
+       intermediate certificates from a given set of certificates, until it finds a root
+       certificate in another given set of certificates."
+    - "This can for example be used to find the root certificate for a certificate chain
+       returned by M(acme_certificate)."
+    - "Note that this module does I(not) check for validity of the chains. It only
+       checks that issuer and subject match, and that the signature is correct. It
+       ignores validity dates and key usage completely. If you need to verify that a
+       generated chain is valid, please use C(openssl verify ...)."
+requirements:
+    - "cryptography >= 1.5"
+options:
+    input_chain:
+        description:
+            - A concatenated set of certificates in PEM format forming a chain.
+            - The module will try to complete this chain.
+        type: str
+        required: yes
+    root_certificates:
+        description:
+            - "A list of filenames or directories."
+            - "A filename is assumed to point to a file containing one or more certificates
+               in PEM format. All certificates in this file will be added to the set of
+               root certificates."
+            - "If a directory name is given, all files in the directory and its
+               subdirectories will be scanned and tried to be parsed as concatenated
+               certificates in PEM format."
+            - "Symbolic links will be followed."
+        type: list
+        elements: path
+        required: yes
+    intermediate_certificates:
+        description:
+            - "A list of filenames or directories."
+            - "A filename is assumed to point to a file containing one or more certificates
+               in PEM format. All certificates in this file will be added to the set of
+               root certificates."
+            - "If a directory name is given, all files in the directory and its
+               subdirectories will be scanned and tried to be parsed as concatenated
+               certificates in PEM format."
+            - "Symbolic links will be followed."
+        type: list
+        elements: path
+        default: []

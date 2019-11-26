@@ -1,0 +1,53 @@
+package ansible
+
+module: junos_scp: {
+	module:            "junos_scp"
+	version_added:     "2.5"
+	author:            "Christian Giese (@GIC-de)"
+	short_description: "Transfer files from or to remote devices running Junos"
+	description: [
+		"This module transfers files via SCP from or to remote devices running Junos.",
+	]
+
+	extends_documentation_fragment: "junos"
+	options: {
+		src: {
+			description: [
+				"The C(src) argument takes a single path, or a list of paths to be transferred. The argument C(recursive) must be C(true) to transfer directories.",
+			]
+
+			required: true
+		}
+		dest: {
+			description: [
+				"The C(dest) argument specifies the path in which to receive the files.",
+			]
+			default: "."
+		}
+		recursive: {
+			description: [
+				"The C(recursive) argument enables recursive transfer of files and directories.",
+			]
+
+			type:    "bool"
+			default: "no"
+		}
+		remote_src: {
+			description: [
+				"The C(remote_src) argument enables the download of files (I(scp get)) from the remote device. The default behavior is to upload files (I(scp put)) to the remote device.",
+			]
+
+			type:    "bool"
+			default: "no"
+		}
+	}
+	requirements: [
+		"junos-eznc",
+		"ncclient (>=v0.5.2)",
+	]
+	notes: [
+		"This module requires the netconf system service be enabled on the remote device being managed.",
+		"Tested against vMX JUNOS version 17.3R1.10.",
+		"Works with C(local) connections only.",
+	]
+}

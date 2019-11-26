@@ -1,0 +1,114 @@
+package ansible
+
+module: os_subnet: {
+	module:                         "os_subnet"
+	short_description:              "Add/Remove subnet to an OpenStack network"
+	extends_documentation_fragment: "openstack"
+	version_added:                  "2.0"
+	author:                         "Monty Taylor (@emonty)"
+	description: [
+		"Add or Remove a subnet to an OpenStack network",
+	]
+	options: {
+		state: {
+			description: [
+				"Indicate desired state of the resource",
+			]
+			choices: ["present", "absent"]
+			default: "present"
+		}
+		network_name: description: [
+			"Name of the network to which the subnet should be attached",
+			"Required when I(state) is 'present'",
+		]
+		name: {
+			description: [
+				"The name of the subnet that should be created. Although Neutron allows for non-unique subnet names, this module enforces subnet name uniqueness.",
+			]
+
+			required: true
+		}
+		cidr: description: [
+			"The CIDR representation of the subnet that should be assigned to the subnet. Required when I(state) is 'present' and a subnetpool is not specified.",
+		]
+
+		ip_version: {
+			description: [
+				"The IP version of the subnet 4 or 6",
+			]
+			default: 4
+		}
+		enable_dhcp: {
+			description: [
+				"Whether DHCP should be enabled for this subnet.",
+			]
+			type:    "bool"
+			default: "yes"
+		}
+		gateway_ip: description: [
+			"The ip that would be assigned to the gateway for this subnet",
+		]
+		no_gateway_ip: {
+			description: [
+				"The gateway IP would not be assigned for this subnet",
+			]
+			type:          "bool"
+			default:       "no"
+			version_added: "2.2"
+		}
+		dns_nameservers: description: [
+			"List of DNS nameservers for this subnet.",
+		]
+		allocation_pool_start: description: [
+			"From the subnet pool the starting address from which the IP should be allocated.",
+		]
+
+		allocation_pool_end: description: [
+			"From the subnet pool the last IP that should be assigned to the virtual machines.",
+		]
+
+		host_routes: description: [
+			"A list of host route dictionaries for the subnet.",
+		]
+		ipv6_ra_mode: {
+			description: [
+				"IPv6 router advertisement mode",
+			]
+			choices: ["dhcpv6-stateful", "dhcpv6-stateless", "slaac"]
+		}
+		ipv6_address_mode: {
+			description: [
+				"IPv6 address mode",
+			]
+			choices: ["dhcpv6-stateful", "dhcpv6-stateless", "slaac"]
+		}
+		use_default_subnetpool: {
+			description: [
+				"Use the default subnetpool for I(ip_version) to obtain a CIDR.",
+			]
+			type:    "bool"
+			default: "no"
+		}
+		project: {
+			description: [
+				"Project name or ID containing the subnet (name admin-only)",
+			]
+			version_added: "2.1"
+		}
+		availability_zone: description: [
+			"Ignored. Present for backwards compatibility",
+		]
+		extra_specs: {
+			description: [
+				"Dictionary with extra key/value pairs passed to the API",
+			]
+			required: false
+			default: {}
+			version_added: "2.7"
+		}
+	}
+	requirements: [
+		"python >= 2.7",
+		"openstacksdk",
+	]
+}

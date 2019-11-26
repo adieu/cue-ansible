@@ -1,0 +1,95 @@
+package ansible
+
+module: cnos_l3_interface: {
+	module:            "cnos_l3_interface"
+	version_added:     "2.8"
+	author:            "Anil Kumar Muraleedharan (@amuraleedhar)"
+	short_description: "Manage Layer-3 interfaces on Lenovo CNOS network devices."
+	description: [
+		"This module provides declarative management of Layer-3 interfaces on CNOS network devices.",
+	]
+
+	notes: [
+		"Tested against CNOS 10.8.1",
+	]
+	options: {
+		name: description: [
+			"Name of the Layer-3 interface to be configured eg. Ethernet1/2",
+		]
+		ipv4: description: [
+			"IPv4 address to be set for the Layer-3 interface mentioned in I(name) option. The address format is <ipv4 address>/<mask>, the mask is number in range 0-32 eg. 10.241.107.1/24",
+		]
+
+		ipv6: description: [
+			"IPv6 address to be set for the Layer-3 interface mentioned in I(name) option. The address format is <ipv6 address>/<mask>, the mask is number in range 0-128 eg. fd5d:12c9:2201:1::1/64",
+		]
+
+		aggregate: description: [
+			"List of Layer-3 interfaces definitions. Each of the entry in aggregate list should define name of interface C(name) and a optional C(ipv4) or C(ipv6) address.",
+		]
+
+		state: {
+			description: [
+				"State of the Layer-3 interface configuration. It indicates if the configuration should be present or absent on remote device.",
+			]
+
+			default: "present"
+			choices: ["present", "absent"]
+		}
+		provider: {
+			description: [
+				"B(Deprecated)",
+				"Starting with Ansible 2.5 we recommend using C(connection: network_cli).",
+				"For more information please see the L(CNOS Platform Options guide, ../network/user_guide/platform_cnos.html).",
+				"HORIZONTALLINE",
+				"A dict object containing connection details.",
+			]
+			suboptions: {
+				host: {
+					description: [
+						"Specifies the DNS host name or address for connecting to the remote device over the specified transport.  The value of host is used as the destination address for the transport.",
+					]
+
+					required: true
+				}
+				port: {
+					description: [
+						"Specifies the port to use when building the connection to the remote device.",
+					]
+
+					default: 22
+				}
+				username: description: [
+					"Configures the username to use to authenticate the connection to the remote device.  This value is used to authenticate the SSH session. If the value is not specified in the task, the value of environment variable C(ANSIBLE_NET_USERNAME) will be used instead.",
+				]
+
+				password: description: [
+					"Specifies the password to use to authenticate the connection to the remote device.   This value is used to authenticate the SSH session. If the value is not specified in the task, the value of environment variable C(ANSIBLE_NET_PASSWORD) will be used instead.",
+				]
+
+				timeout: {
+					description: [
+						"Specifies the timeout in seconds for communicating with the network device for either connecting or sending commands.  If the timeout is exceeded before the operation is completed, the module will error.",
+					]
+
+					default: 10
+				}
+				ssh_keyfile: description: [
+					"Specifies the SSH key to use to authenticate the connection to the remote device.   This value is the path to the key used to authenticate the SSH session. If the value is not specified in the task, the value of environment variable C(ANSIBLE_NET_SSH_KEYFILE)will be used instead.",
+				]
+
+				authorize: {
+					description: [
+						"Instructs the module to enter privileged mode on the remote device before sending any commands.  If not specified, the device will attempt to execute all commands in non-privileged mode. If the value is not specified in the task, the value of environment variable C(ANSIBLE_NET_AUTHORIZE) will be used instead.",
+					]
+
+					type:    "bool"
+					default: "no"
+				}
+				auth_pass: description: [
+					"Specifies the password to use if required to enter privileged mode on the remote device.  If I(authorize) is false, then this argument does nothing. If the value is not specified in the task, the value of environment variable C(ANSIBLE_NET_AUTH_PASS) will be used instead.",
+				]
+			}
+		}
+	}
+}

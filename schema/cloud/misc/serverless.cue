@@ -1,0 +1,90 @@
+package ansible
+
+module: serverless: {
+	module:            "serverless"
+	short_description: "Manages a Serverless Framework project"
+	description: [
+		"Provides support for managing Serverless Framework (https://serverless.com/) project deployments and stacks.",
+	]
+	version_added: "2.3"
+	options: {
+		state: {
+			description: [
+				"Goal state of given stage/project.",
+			]
+			type: "str"
+			choices: ["absent", "present"]
+			default: "present"
+		}
+		serverless_bin_path: {
+			description: [
+				"The path of a serverless framework binary relative to the 'service_path' eg. node_module/.bin/serverless",
+			]
+			type:          "path"
+			version_added: "2.4"
+		}
+		service_path: {
+			description: [
+				"The path to the root of the Serverless Service to be operated on.",
+			]
+			type:     "path"
+			required: true
+		}
+		stage: {
+			description: [
+				"The name of the serverless framework project stage to deploy to.",
+				"This uses the serverless framework default \"dev\".",
+			]
+			type: "str"
+		}
+		functions: {
+			description: [
+				"A list of specific functions to deploy.",
+				"If this is not provided, all functions in the service will be deployed.",
+			]
+			type: "list"
+			default: []
+		}
+		region: {
+			description: [
+				"AWS region to deploy the service to.",
+				"This parameter defaults to C(us-east-1).",
+			]
+			type: "str"
+		}
+		deploy: {
+			description: [
+				"Whether or not to deploy artifacts after building them.",
+				"When this option is C(false) all the functions will be built, but no stack update will be run to send them out.",
+				"This is mostly useful for generating artifacts to be stored/deployed elsewhere.",
+			]
+			type:    "bool"
+			default: true
+		}
+		force: {
+			description: [
+				"Whether or not to force full deployment, equivalent to serverless C(--force) option.",
+			]
+			type:          "bool"
+			default:       false
+			version_added: "2.7"
+		}
+		verbose: {
+			description: [
+				"Shows all stack events during deployment, and display any Stack Output.",
+			]
+			type:          "bool"
+			default:       false
+			version_added: "2.7"
+		}
+	}
+	notes: [
+		"Currently, the C(serverless) command must be in the path of the node executing the task. In the future this may be a flag.",
+	]
+
+	requirements: [
+		"serverless",
+		"yaml",
+	]
+	author: ["Ryan Scott Brown (@ryansb)"]
+}

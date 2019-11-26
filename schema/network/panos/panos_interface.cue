@@ -1,0 +1,53 @@
+package ansible
+
+module: panos_interface: {
+	module:            "panos_interface"
+	short_description: "configure data-port network interface for DHCP"
+	description: [
+		"Configure data-port (DP) network interface for DHCP. By default DP interfaces are static.",
+	]
+	author:        "Luigi Mori (@jtschichold), Ivan Bojer (@ivanbojer)"
+	version_added: "2.3"
+	requirements: [
+		"pan-python can be obtained from PyPI U(https://pypi.org/project/pan-python/)",
+	]
+	deprecated: {
+		alternative: "Use U(https://galaxy.ansible.com/PaloAltoNetworks/paloaltonetworks) instead."
+		removed_in:  "2.12"
+		why:         "Consolidating code base."
+	}
+	notes: [
+		"Checkmode is not supported.",
+	]
+	options: {
+		if_name: {
+			description: [
+				"Name of the interface to configure.",
+			]
+			required: true
+		}
+		zone_name: {
+			description: """
+		Name of the zone for the interface. If the zone does not exist it is created but if the zone exists and it is not of the layer3 type the operation will fail.
+
+		"""
+
+			required: true
+		}
+		create_default_route: {
+			description: [
+				"Whether or not to add default route with router learned via DHCP.",
+			]
+			default: "false"
+			type:    "bool"
+		}
+		commit: {
+			description: [
+				"Commit if changed",
+			]
+			default: true
+			type:    "bool"
+		}
+	}
+	extends_documentation_fragment: "panos"
+}

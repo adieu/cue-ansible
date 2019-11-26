@@ -1,0 +1,75 @@
+package ansible
+
+module: azure_rm_batchaccount: {
+	module:            "azure_rm_batchaccount"
+	version_added:     "2.9"
+	short_description: "Manages a Batch Account on Azure"
+	description: [
+		"Create, update and delete instance of Azure Batch Account.",
+	]
+
+	options: {
+		resource_group: {
+			description: [
+				"The name of the resource group in which to create the Batch Account.",
+			]
+			required: true
+			type:     "str"
+		}
+		name: {
+			description: [
+				"The name of the Batch Account.",
+			]
+			required: true
+			type:     "str"
+		}
+		location: {
+			description: [
+				"Specifies the supported Azure location where the resource exists.",
+			]
+			type: "str"
+		}
+		auto_storage_account: description: [
+			"Existing storage account with which to associate the Batch Account.",
+			"It can be the storage account name which is in the same resource group.",
+			"It can be the storage account ID. Fox example \"/subscriptions/{subscription_id}/resourceGroups/ {resource_group}/providers/Microsoft.Storage/storageAccounts/{name}\".",
+			"It can be a dict which contains I(name) and I(resource_group) of the storage account.",
+		]
+		key_vault: description: [
+			"Existing key vault with which to associate the Batch Account.",
+			"It can be the key vault name which is in the same resource group.",
+			"It can be the key vault ID. For example \"/subscriptions/{subscription_id}/resourceGroups/ {resource_group}/providers/Microsoft.KeyVault/vaults/{name}\".",
+			"It can be a dict which contains I(name) and I(resource_group) of the key vault.",
+		]
+		pool_allocation_mode: {
+			description: [
+				"The pool acclocation mode of the Batch Account.",
+			]
+			default: "batch_service"
+			choices: [
+				"batch_service",
+				"user_subscription",
+			]
+			type: "str"
+		}
+		state: {
+			description: [
+				"Assert the state of the Batch Account.",
+				"Use C(present) to create or update a Batch Account and C(absent) to delete it.",
+			]
+			default: "present"
+			type:    "str"
+			choices: [
+				"present",
+				"absent",
+			]
+		}
+	}
+
+	extends_documentation_fragment: [
+		"azure",
+		"azure_tags",
+	]
+
+	author: ["Junyi Yi (@JunyiYi)"]
+}

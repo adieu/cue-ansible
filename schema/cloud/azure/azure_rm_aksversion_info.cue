@@ -1,0 +1,31 @@
+package ansible
+
+module: azure_rm_aksversion_info: {
+	module: "azure_rm_aksversion_info"
+
+	version_added: "2.9"
+
+	short_description: "Get available kubernetes versions supported by Azure Kubernetes Service"
+
+	description: [
+		"Get available kubernetes versions supported by Azure Kubernetes Service.",
+	]
+
+	options: {
+		location: {
+			description: [
+				"Get the versions available for creating a managed Kubernetes cluster.",
+			]
+			required: true
+		}
+		version: description: [
+			"Get the upgrade versions available for a managed Kubernetes cluster version.",
+		]
+	}
+
+	extends_documentation_fragment: [
+		"azure",
+	]
+
+	author: ["Yuwei Zhou (@yuwzho)"]
+}

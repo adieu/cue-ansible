@@ -1,0 +1,36 @@
+
+---
+module: onyx_ospf
+version_added: "2.5"
+author: "Samer Deeb (@samerd)"
+short_description: Manage OSPF protocol on Mellanox ONYX network devices
+description:
+  - This module provides declarative management and configuration of OSPF
+    protocol on Mellanox ONYX network devices.
+notes:
+  - Tested on ONYX 3.6.4000
+options:
+  ospf:
+    description:
+      - "OSPF instance number 1-65535"
+    required: true
+  router_id:
+    description:
+      - OSPF router ID. Required if I(state=present).
+  interfaces:
+    description:
+      - List of interfaces and areas. Required if I(state=present).
+    suboptions:
+      name:
+        description:
+          - Interface name.
+        required: true
+      area:
+        description:
+          - OSPF area.
+        required: true
+  state:
+    description:
+      - OSPF state.
+    default: present
+    choices: ['present', 'absent']

@@ -1,0 +1,82 @@
+package ansible
+
+module: junos_user: {
+	module:            "junos_user"
+	version_added:     "2.3"
+	author:            "Peter Sprygada (@privateip)"
+	short_description: "Manage local user accounts on Juniper JUNOS devices"
+	description: [
+		"This module manages locally configured user accounts on remote network devices running the JUNOS operating system.  It provides a set of arguments for creating, removing and updating locally defined accounts",
+	]
+
+	extends_documentation_fragment: "junos"
+	options: {
+		aggregate: {
+			description: [
+				"The C(aggregate) argument defines a list of users to be configured on the remote device.  The list of users will be compared against the current users and only changes will be added or removed from the device configuration.  This argument is mutually exclusive with the name argument.",
+			]
+
+			version_added: "2.4"
+			aliases: ["users", "collection"]
+		}
+		name: description: [
+			"The C(name) argument defines the username of the user to be created on the system.  This argument must follow appropriate usernaming conventions for the target device running JUNOS.  This argument is mutually exclusive with the C(aggregate) argument.",
+		]
+
+		full_name: description: [
+			"The C(full_name) argument provides the full name of the user account to be created on the remote device.  This argument accepts any text string value.",
+		]
+
+		role: {
+			description: [
+				"The C(role) argument defines the role of the user account on the remote system.  User accounts can have more than one role configured.",
+			]
+
+			choices: ["operator", "read-only", "super-user", "unauthorized"]
+		}
+		sshkey: description: [
+			"The C(sshkey) argument defines the public SSH key to be configured for the user account on the remote system.  This argument must be a valid SSH key",
+		]
+
+		encrypted_password: {
+			description: [
+				"The C(encrypted_password) argument set already hashed password for the user account on the remote system.",
+			]
+
+			version_added: "2.8"
+		}
+		purge: {
+			description: [
+				"The C(purge) argument instructs the module to consider the users definition absolute.  It will remove any previously configured users on the device with the exception of the current defined set of aggregate.",
+			]
+
+			type:    "bool"
+			default: "no"
+		}
+		state: {
+			description: [
+				"The C(state) argument configures the state of the user definitions as it relates to the device operational configuration.  When set to I(present), the user should be configured in the device active configuration and when set to I(absent) the user should not be in the device active configuration",
+			]
+
+			default: "present"
+			choices: ["present", "absent"]
+		}
+		active: {
+			description: [
+				"Specifies whether or not the configuration is active or deactivated",
+			]
+			type:          "bool"
+			default:       "yes"
+			version_added: "2.4"
+		}
+	}
+	requirements: [
+		"ncclient (>=v0.5.2)",
+	]
+	notes: [
+		"This module requires the netconf system service be enabled on the remote device being managed.",
+		"Tested against vSRX JUNOS version 15.1X49-D15.4, vqfx-10000 JUNOS Version 15.1X53-D60.4.",
+		"Recommended connection is C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).",
+		"This module also works with C(local) connections for legacy playbooks.",
+	]
+}

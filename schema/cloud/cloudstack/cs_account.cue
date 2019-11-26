@@ -1,0 +1,107 @@
+package ansible
+
+module: cs_account: {
+	module:            "cs_account"
+	short_description: "Manages accounts on Apache CloudStack based clouds."
+	description: [
+		"Create, disable, lock, enable and remove accounts.",
+	]
+	version_added: "2.0"
+	author:        "René Moser (@resmo)"
+	options: {
+		name: {
+			description: ["Name of account."]
+			type:     "str"
+			required: true
+		}
+		username: {
+			description: [
+				"Username of the user to be created if account did not exist.",
+				"Required on I(state=present).",
+			]
+			type: "str"
+		}
+		password: {
+			description: [
+				"Password of the user to be created if account did not exist.",
+				"Required on I(state=present) if I(ldap_domain) is not set.",
+			]
+			type: "str"
+		}
+		first_name: {
+			description: [
+				"First name of the user to be created if account did not exist.",
+				"Required on I(state=present) if I(ldap_domain) is not set.",
+			]
+			type: "str"
+		}
+		last_name: {
+			description: [
+				"Last name of the user to be created if account did not exist.",
+				"Required on I(state=present) if I(ldap_domain) is not set.",
+			]
+			type: "str"
+		}
+		email: {
+			description: [
+				"Email of the user to be created if account did not exist.",
+				"Required on I(state=present) if I(ldap_domain) is not set.",
+			]
+			type: "str"
+		}
+		timezone: {
+			description: ["Timezone of the user to be created if account did not exist."]
+			type: "str"
+		}
+		network_domain: {
+			description: ["Network domain of the account."]
+			type: "str"
+		}
+		account_type: {
+			description: ["Type of the account."]
+			type: "str"
+			choices: ["user", "root_admin", "domain_admin"]
+			default: "user"
+		}
+		domain: {
+			description: ["Domain the account is related to."]
+			type:    "str"
+			default: "ROOT"
+		}
+		role: {
+			description: ["Creates the account under the specified role name or id."]
+			type:          "str"
+			version_added: "2.8"
+		}
+		ldap_domain: {
+			description: [
+				"Name of the LDAP group or OU to bind.",
+				"If set, account will be linked to LDAP.",
+			]
+			type:          "str"
+			version_added: "2.8"
+		}
+		ldap_type: {
+			description: ["Type of the ldap name. GROUP or OU, defaults to GROUP."]
+			type: "str"
+			choices: ["GROUP", "OU"]
+			default:       "GROUP"
+			version_added: "2.8"
+		}
+		state: {
+			description: [
+				"State of the account.",
+				"C(unlocked) is an alias for C(enabled).",
+			]
+			type: "str"
+			choices: ["present", "absent", "enabled", "disabled", "locked", "unlocked"]
+			default: "present"
+		}
+		poll_async: {
+			description: ["Poll async jobs until job has finished."]
+			type:    "bool"
+			default: true
+		}
+	}
+	extends_documentation_fragment: "cloudstack"
+}

@@ -1,0 +1,196 @@
+package ansible
+
+module: linode: {
+	module:            "linode"
+	short_description: "Manage instances on the Linode Public Cloud"
+	description: [
+		"Manage Linode Public Cloud instances and optionally wait for it to be 'running'.",
+	]
+	version_added: "1.3"
+	options: {
+		state: {
+			description: [
+				"Indicate desired state of the resource",
+			]
+			choices: ["absent", "active", "deleted", "present", "restarted", "started", "stopped"]
+			default: "present"
+		}
+		api_key: description: [
+			"Linode API key",
+		]
+		name: {
+			description: [
+				"Name to give the instance (alphanumeric, dashes, underscore).",
+				"To keep sanity on the Linode Web Console, name is prepended with C(LinodeID-).",
+			]
+			required: true
+		}
+		displaygroup: {
+			description: [
+				"Add the instance to a Display Group in Linode Manager.",
+			]
+			version_added: "2.3"
+		}
+		linode_id: {
+			description: [
+				"Unique ID of a linode server. This value is read-only in the sense that if you specify it on creation of a Linode it will not be used. The Linode API generates these IDs and we can those generated value here to reference a Linode more specifically. This is useful for idempotence.",
+			]
+
+			aliases: ["lid"]
+		}
+		additional_disks: {
+			description: [
+				"List of dictionaries for creating additional disks that are added to the Linode configuration settings.",
+				"Dictionary takes Size, Label, Type. Size is in MB.",
+			]
+			version_added: "2.3"
+		}
+		alert_bwin_enabled: {
+			description: [
+				"Set status of bandwidth in alerts.",
+			]
+			type:          "bool"
+			version_added: "2.3"
+		}
+		alert_bwin_threshold: {
+			description: [
+				"Set threshold in MB of bandwidth in alerts.",
+			]
+			version_added: "2.3"
+		}
+		alert_bwout_enabled: {
+			description: [
+				"Set status of bandwidth out alerts.",
+			]
+			type:          "bool"
+			version_added: "2.3"
+		}
+		alert_bwout_threshold: {
+			description: [
+				"Set threshold in MB of bandwidth out alerts.",
+			]
+			version_added: "2.3"
+		}
+		alert_bwquota_enabled: {
+			description: [
+				"Set status of bandwidth quota alerts as percentage of network transfer quota.",
+			]
+			type:          "bool"
+			version_added: "2.3"
+		}
+		alert_bwquota_threshold: {
+			description: [
+				"Set threshold in MB of bandwidth quota alerts.",
+			]
+			version_added: "2.3"
+		}
+		alert_cpu_enabled: {
+			description: [
+				"Set status of receiving CPU usage alerts.",
+			]
+			type:          "bool"
+			version_added: "2.3"
+		}
+		alert_cpu_threshold: {
+			description: [
+				"Set percentage threshold for receiving CPU usage alerts. Each CPU core adds 100% to total.",
+			]
+			version_added: "2.3"
+		}
+		alert_diskio_enabled: {
+			description: [
+				"Set status of receiving disk IO alerts.",
+			]
+			type:          "bool"
+			version_added: "2.3"
+		}
+		alert_diskio_threshold: {
+			description: [
+				"Set threshold for average IO ops/sec over 2 hour period.",
+			]
+			version_added: "2.3"
+		}
+		backupweeklyday: {
+			description: [
+				"Integer value for what day of the week to store weekly backups.",
+			]
+			version_added: "2.3"
+		}
+		plan: description: [
+			"plan to use for the instance (Linode plan)",
+		]
+		payment_term: {
+			description: [
+				"payment term to use for the instance (payment term in months)",
+			]
+			default: 1
+			choices: [1, 12, 24]
+		}
+		password: description: [
+			"root password to apply to a new server (auto generated if missing)",
+		]
+		private_ip: {
+			description: [
+				"Add private IPv4 address when Linode is created.",
+			]
+			type:          "bool"
+			default:       "no"
+			version_added: "2.3"
+		}
+		ssh_pub_key: description: [
+			"SSH public key applied to root user",
+		]
+		swap: {
+			description: [
+				"swap size in MB",
+			]
+			default: 512
+		}
+		distribution: description: [
+			"distribution to use for the instance (Linode Distribution)",
+		]
+		datacenter: description: [
+			"datacenter to create an instance in (Linode Datacenter)",
+		]
+		kernel_id: {
+			description: [
+				"kernel to use for the instance (Linode Kernel)",
+			]
+			version_added: "2.4"
+		}
+		wait: {
+			description: [
+				"wait for the instance to be in state C(running) before returning",
+			]
+			type:    "bool"
+			default: "no"
+		}
+		wait_timeout: {
+			description: [
+				"how long before wait gives up, in seconds",
+			]
+			default: 300
+		}
+		watchdog: {
+			description: [
+				"Set status of Lassie watchdog.",
+			]
+			type:          "bool"
+			default:       "True"
+			version_added: "2.2"
+		}
+	}
+	requirements: [
+		"python >= 2.6",
+		"linode-python",
+	]
+	author: [
+		"Vincent Viallet (@zbal)",
+	]
+	notes: [
+		"Please note, linode-python does not have python 3 support.",
+		"This module uses the now deprecated v3 of the Linode API.",
+		"C(LINODE_API_KEY) env variable can be used instead.",
+		"Please review U(https://www.linode.com/api/linode) for determining the required parameters.",
+	]
+}

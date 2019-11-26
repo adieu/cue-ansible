@@ -1,0 +1,67 @@
+package ansible
+
+module: os_pool: {
+	module:                         "os_pool"
+	short_description:              "Add/Delete a pool in the load balancing service from OpenStack Cloud"
+	extends_documentation_fragment: "openstack"
+	version_added:                  "2.7"
+	author:                         "Lingxian Kong (@lingxiankong)"
+	description: [
+		"Add or Remove a pool from the OpenStack load-balancer service.",
+	]
+	options: {
+		name: {
+			description: [
+				"Name that has to be given to the pool",
+			]
+			required: true
+		}
+		state: {
+			description: [
+				"Should the resource be present or absent.",
+			]
+			choices: ["present", "absent"]
+			default: "present"
+		}
+		loadbalancer: description: [
+			"The name or id of the load balancer that this pool belongs to. Either loadbalancer or listener must be specified for pool creation.",
+		]
+
+		listener: description: [
+			"The name or id of the listener that this pool belongs to. Either loadbalancer or listener must be specified for pool creation.",
+		]
+
+		protocol: {
+			description: [
+				"The protocol for the pool.",
+			]
+			choices: ["HTTP", "HTTPS", "PROXY", "TCP", "UDP"]
+			default: "HTTP"
+		}
+		lb_algorithm: {
+			description: [
+				"The load balancing algorithm for the pool.",
+			]
+			choices: ["LEAST_CONNECTIONS", "ROUND_ROBIN", "SOURCE_IP"]
+			default: "ROUND_ROBIN"
+		}
+		wait: {
+			description: [
+				"If the module should wait for the pool to be ACTIVE.",
+			]
+			type:    "bool"
+			default: "yes"
+		}
+		timeout: {
+			description: [
+				"The amount of time the module should wait for the pool to get into ACTIVE state.",
+			]
+
+			default: 180
+		}
+		availability_zone: description: [
+			"Ignored. Present for backwards compatibility",
+		]
+	}
+	requirements: ["openstacksdk"]
+}

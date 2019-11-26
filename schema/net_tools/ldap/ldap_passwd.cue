@@ -1,0 +1,28 @@
+package ansible
+
+module: ldap_passwd: {
+	module:            "ldap_passwd"
+	short_description: "Set passwords in LDAP."
+	description: [
+		"Set a password for an LDAP entry.  This module only asserts that a given password is valid for a given entry.  To assert the existence of an entry, see M(ldap_entry).",
+	]
+
+	notes: [
+		"The default authentication settings will attempt to use a SASL EXTERNAL bind over a UNIX domain socket. This works well with the default Ubuntu install for example, which includes a cn=peercred,cn=external,cn=auth ACL rule allowing root to modify the server configuration. If you need to use a simple bind to access your server, pass the credentials in I(bind_dn) and I(bind_pw).",
+	]
+
+	version_added: "2.6"
+	author: [
+		"Keller Fuchs (@KellerFuchs)",
+	]
+	requirements: [
+		"python-ldap",
+	]
+	options: passwd: {
+		required: true
+		description: [
+			"The (plaintext) password to be set for I(dn).",
+		]
+	}
+	extends_documentation_fragment: "ldap.documentation"
+}

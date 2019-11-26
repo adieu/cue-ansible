@@ -1,0 +1,40 @@
+
+
+module: na_cdot_qtree
+
+short_description: Manage qtrees
+extends_documentation_fragment:
+    - netapp.ontap
+version_added: '2.3'
+author: Sumit Kumar (@timuster) <sumit4@netapp.com>
+
+deprecated:
+  removed_in: '2.11'
+  why: Updated modules released with increased functionality
+  alternative: Use M(na_ontap_qtree) instead.
+
+description:
+- Create or destroy Qtrees.
+
+options:
+
+  state:
+    description:
+    - Whether the specified Qtree should exist or not.
+    required: true
+    choices: ['present', 'absent']
+
+  name:
+    description:
+    - The name of the Qtree to manage.
+    required: true
+
+  flexvol_name:
+    description:
+    - The name of the FlexVol the Qtree should exist on. Required when C(state=present).
+
+  vserver:
+    description:
+    - The name of the vserver to use.
+    required: true
+

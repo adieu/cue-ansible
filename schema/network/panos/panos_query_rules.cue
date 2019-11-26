@@ -1,0 +1,84 @@
+package ansible
+
+module: panos_query_rules: {
+	module:            "panos_query_rules"
+	short_description: "PANOS module that allows search for security rules in PANW NGFW devices."
+	description: """
+		- Security policies allow you to enforce rules and take action, and can be as general or specific as needed. The policy rules are compared against the incoming traffic in sequence, and because the first rule that matches the traffic is applied, the more specific rules must precede the more general ones.
+
+		"""
+
+	author:        "Bob Hagen (@rnh556)"
+	version_added: "2.5"
+	requirements: [
+		"pan-python can be obtained from PyPI U(https://pypi.org/project/pan-python/)",
+		"pandevice can be obtained from PyPI U(https://pypi.org/project/pandevice/)",
+		"xmltodict can be obtains from PyPI U(https://pypi.org/project/xmltodict/)",
+	]
+	deprecated: {
+		alternative: "Use U(https://galaxy.ansible.com/PaloAltoNetworks/paloaltonetworks) instead."
+		removed_in:  "2.12"
+		why:         "Consolidating code base."
+	}
+	notes: [
+		"Checkmode is not supported.",
+		"Panorama is supported.",
+	]
+	options: {
+		ip_address: {
+			description: [
+				"IP address (or hostname) of PAN-OS firewall or Panorama management console being queried.",
+			]
+			required: true
+		}
+		username: {
+			description: [
+				"Username credentials to use for authentication.",
+			]
+			default: "admin"
+		}
+		password: {
+			description: [
+				"Password credentials to use for authentication.",
+			]
+			required: true
+		}
+		api_key: description: [
+			"API key that can be used instead of I(username)/I(password) credentials.",
+		]
+		application: description: [
+			"Name of the application or application group to be queried.",
+		]
+		source_zone: description: [
+			"Name of the source security zone to be queried.",
+		]
+		source_ip: description: [
+			"The source IP address to be queried.",
+		]
+		source_port: description: [
+			"The source port to be queried.",
+		]
+		destination_zone: description: [
+			"Name of the destination security zone to be queried.",
+		]
+		destination_ip: description: [
+			"The destination IP address to be queried.",
+		]
+		destination_port: description: [
+			"The destination port to be queried.",
+		]
+		protocol: {
+			description: [
+				"The protocol used to be queried.  Must be either I(tcp) or I(udp).",
+			]
+			choices: [
+				"tcp",
+				"udp",
+			]
+		}
+		tag_name: description: [
+			"Name of the rule tag to be queried.",
+		]
+		devicegroup: description: ["The Panorama device group in which to conduct the query."]
+	}
+}

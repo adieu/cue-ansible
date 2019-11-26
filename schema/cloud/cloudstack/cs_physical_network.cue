@@ -1,0 +1,107 @@
+package ansible
+
+module: cs_physical_network: {
+	module:            "cs_physical_network"
+	short_description: "Manages physical networks on Apache CloudStack based clouds."
+	description: [
+		"Create, update and remove networks.",
+		"Enabled and disabled Network Service Providers",
+		"Enables Internal LoadBalancer and VPC/VirtualRouter elements as required",
+	]
+	version_added: "2.8"
+	author: [
+		"Netservers Ltd. (@netservers)",
+		"Patryk Cichy (@PatTheSilent)",
+	]
+	options: {
+		name: {
+			description: [
+				"Name of the physical network.",
+			]
+			required: true
+			aliases: [
+				"physical_network",
+			]
+			type: "str"
+		}
+		zone: {
+			description: [
+				"Name of the zone in which the network belongs.",
+				"If not set, default zone is used.",
+			]
+			type: "str"
+		}
+		broadcast_domain_range: {
+			description: [
+				"broadcast domain range for the physical network[Pod or Zone].",
+			]
+			choices: ["POD", "ZONE"]
+			type: "str"
+		}
+		domain: {
+			description: [
+				"Domain the network is owned by.",
+			]
+			type: "str"
+		}
+		isolation_method: {
+			description: [
+				"Isolation method for the physical network.",
+			]
+			choices: ["VLAN", "GRE", "L3"]
+			type: "str"
+		}
+		network_speed: {
+			description: [
+				"The speed for the physical network.",
+			]
+			choices: ["1G", "10G"]
+			type: "str"
+		}
+		tags: {
+			description: [
+				"A tag to identify this network.",
+				"Physical networks support only one tag.",
+				"To remove an existing tag pass an empty string.",
+			]
+			aliases: [
+				"tag",
+			]
+			type: "str"
+		}
+		vlan: {
+			description: [
+				"The VLAN/VNI Ranges of the physical network.",
+			]
+			type: "str"
+		}
+		nsps_enabled: {
+			description: [
+				"List of Network Service Providers to enable.",
+			]
+			type: "list"
+		}
+		nsps_disabled: {
+			description: [
+				"List of Network Service Providers to disable.",
+			]
+			type: "list"
+		}
+		state: {
+			description: [
+				"State of the physical network.",
+			]
+			default: "present"
+			type:    "str"
+			choices: ["present", "absent", "disabled", "enabled"]
+		}
+		poll_async: {
+			description: [
+				"Poll async jobs until job has finished.",
+			]
+			default: true
+			type:    "bool"
+		}
+	}
+	extends_documentation_fragment: "cloudstack"
+}

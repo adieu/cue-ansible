@@ -1,0 +1,48 @@
+package ansible
+
+module: os_keystone_domain: {
+	module:            "os_keystone_domain"
+	short_description: "Manage OpenStack Identity Domains"
+	author: [
+		"Monty Taylor (@emonty)",
+		"Haneef Ali (@haneefs)",
+	]
+	extends_documentation_fragment: "openstack"
+	version_added:                  "2.1"
+	description: [
+		"Create, update, or delete OpenStack Identity domains. If a domain with the supplied name already exists, it will be updated with the new description and enabled attributes.",
+	]
+
+	options: {
+		name: {
+			description: [
+				"Name that has to be given to the instance",
+			]
+			required: true
+		}
+		description: description: [
+			"Description of the domain",
+		]
+		enabled: {
+			description: [
+				"Is the domain enabled",
+			]
+			type:    "bool"
+			default: "yes"
+		}
+		state: {
+			description: [
+				"Should the resource be present or absent.",
+			]
+			choices: ["present", "absent"]
+			default: "present"
+		}
+		availability_zone: description: [
+			"Ignored. Present for backwards compatibility",
+		]
+	}
+	requirements: [
+		"python >= 2.7",
+		"openstacksdk",
+	]
+}

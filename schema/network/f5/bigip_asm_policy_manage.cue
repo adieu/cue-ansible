@@ -1,0 +1,96 @@
+package ansible
+
+module: bigip_asm_policy_manage: {
+	module:            "bigip_asm_policy_manage"
+	short_description: "Manage BIG-IP ASM policies"
+	description: [
+		"Manage BIG-IP ASM policies, create from templates and manage global policy settings.",
+	]
+	version_added: 2.8
+	options: {
+		active: {
+			description: [
+				"If C(yes) will apply and activate existing inactive policy. If C(no), it will deactivate existing active policy. Generally should be C(yes) only in cases where you want to activate new or existing policy.",
+			]
+
+			default: false
+			type:    "bool"
+		}
+		name: {
+			description: [
+				"The ASM policy to manage or create.",
+			]
+			type:     "str"
+			required: true
+		}
+		state: {
+			description: [
+				"When C(state) is C(present), and C(template) parameter is provided, new ASM policy is created from template with the given policy C(name).",
+				"When C(state) is present and no C(template) parameter is provided new blank ASM policy is created with the given policy C(name).",
+				"When C(state) is C(absent), ensures that the policy is removed, even if it is currently active.",
+			]
+
+			type: "str"
+			choices: [
+				"present",
+				"absent",
+			]
+			default: "present"
+		}
+		template: {
+			description: [
+				"An ASM policy built-in template. If the template does not exist we will raise an error.",
+				"Once the policy has been created, this value cannot change.",
+				"The C(Comprehensive), C(Drupal), C(Fundamental), C(Joomla), C(Vulnerability Assessment Baseline), and C(Wordpress) templates are only available on BIG-IP versions >= 13.",
+			]
+
+			type: "str"
+			choices: [
+				"ActiveSync v1.0 v2.0 (http)",
+				"ActiveSync v1.0 v2.0 (https)",
+				"Comprehensive",
+				"Drupal",
+				"Fundamental",
+				"Joomla",
+				"LotusDomino 6.5 (http)",
+				"LotusDomino 6.5 (https)",
+				"OWA Exchange 2003 (http)",
+				"OWA Exchange 2003 (https)",
+				"OWA Exchange 2003 with ActiveSync (http)",
+				"OWA Exchange 2003 with ActiveSync (https)",
+				"OWA Exchange 2007 (http)",
+				"OWA Exchange 2007 (https)",
+				"OWA Exchange 2007 with ActiveSync (http)",
+				"OWA Exchange 2007 with ActiveSync (https)",
+				"OWA Exchange 2010 (http)",
+				"OWA Exchange 2010 (https)",
+				"Oracle 10g Portal (http)",
+				"Oracle 10g Portal (https)",
+				"Oracle Applications 11i (http)",
+				"Oracle Applications 11i (https)",
+				"PeopleSoft Portal 9 (http)",
+				"PeopleSoft Portal 9 (https)",
+				"Rapid Deployment Policy",
+				"SAP NetWeaver 7 (http)",
+				"SAP NetWeaver 7 (https)",
+				"SharePoint 2003 (http)",
+				"SharePoint 2003 (https)",
+				"SharePoint 2007 (http)",
+				"SharePoint 2007 (https)",
+				"SharePoint 2010 (http)",
+				"SharePoint 2010 (https)",
+				"Vulnerability Assessment Baseline",
+				"Wordpress",
+			]
+		}
+		partition: {
+			description: [
+				"Device partition to manage resources on.",
+			]
+			type:    "str"
+			default: "Common"
+		}
+	}
+	extends_documentation_fragment: "f5"
+	author: ["Wojciech Wypior (@wojtek0806)"]
+}

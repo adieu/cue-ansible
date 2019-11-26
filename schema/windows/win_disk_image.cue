@@ -1,0 +1,29 @@
+package ansible
+
+module: win_disk_image: {
+	module:            "win_disk_image"
+	short_description: "Manage ISO/VHD/VHDX mounts on Windows hosts"
+	version_added:     "2.3"
+	description: [
+		"Manages mount behavior for a specified ISO, VHD, or VHDX image on a Windows host. When C(state) is C(present), the image will be mounted under a system-assigned drive letter, which will be returned in the C(mount_path) value of the module result.",
+		"Requires Windows 8+ or Windows Server 2012+.",
+	]
+	options: {
+		image_path: {
+			description: [
+				"Path to an ISO, VHD, or VHDX image on the target Windows host (the file cannot reside on a network share)",
+			]
+			type:     "str"
+			required: true
+		}
+		state: {
+			description: [
+				"Whether the image should be present as a drive-letter mount or not.",
+			]
+			type: "str"
+			choices: ["absent", "present"]
+			default: "present"
+		}
+	}
+	author: ["Matt Davis (@nitzmahone)"]
+}

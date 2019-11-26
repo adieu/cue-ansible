@@ -1,0 +1,71 @@
+package ansible
+
+module: vcenter_license: {
+	module:            "vcenter_license"
+	short_description: "Manage VMware vCenter license keys"
+	description: [
+		"Add and delete vCenter, ESXi server license keys.",
+	]
+	version_added: "2.4"
+	author: [
+		"Dag Wieers (@dagwieers)",
+	]
+	requirements: [
+		"pyVmomi",
+	]
+	options: {
+		labels: {
+			description: [
+				"The optional labels of the license key to manage in vSphere vCenter.",
+				"This is dictionary with key/value pair.",
+			]
+			default: source: "ansible"
+
+			type: "dict"
+		}
+		license: {
+			description: [
+				"The license key to manage in vSphere vCenter.",
+			]
+			required: true
+			type:     "str"
+		}
+		state: {
+			description: [
+				"Whether to add (C(present)) or remove (C(absent)) the license key.",
+			]
+			choices: ["absent", "present"]
+			default: "present"
+			type:    "str"
+		}
+		esxi_hostname: {
+			description: [
+				"The hostname of the ESXi server to which the specified license will be assigned.",
+				"This parameter is optional.",
+			]
+			version_added: "2.8"
+			type:          "str"
+		}
+		datacenter: {
+			description: [
+				"The datacenter name to use for the operation.",
+			]
+			type:          "str"
+			version_added: "2.9"
+		}
+		cluster_name: {
+			description: [
+				"Name of the cluster to apply vSAN license.",
+			]
+			type:          "str"
+			version_added: "2.9"
+		}
+	}
+	notes: [
+		"This module will also auto-assign the current vCenter to the license key if the product matches the license key, and vCenter us currently assigned an evaluation license only.",
+		"The evaluation license (00000-00000-00000-00000-00000) is not listed when unused.",
+		"If C(esxi_hostname) is specified, then will assign the C(license) key to the ESXi host.",
+	]
+
+	extends_documentation_fragment: "vmware.vcenter_documentation"
+}

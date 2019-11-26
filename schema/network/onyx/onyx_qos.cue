@@ -1,0 +1,44 @@
+package ansible
+
+module: onyx_qos: {
+	module:            "onyx_qos"
+	version_added:     "2.9"
+	author:            "Anas Badaha (@anasb)"
+	short_description: "Configures QoS"
+	description: [
+		"This module provides declarative management of Onyx QoS configuration on Mellanox ONYX network devices.",
+	]
+
+	notes: [
+		"Tested on ONYX 3.6.8130",
+	]
+	options: {
+		interfaces: {
+			description: [
+				"list of interfaces name.",
+			]
+			required: true
+		}
+		trust: {
+			description: [
+				"trust type.",
+			]
+			choices: ["L2", "L3", "both"]
+			default: "L2"
+		}
+		rewrite_pcp: {
+			description: [
+				"rewrite with type pcp.",
+			]
+			choices: ["enabled", "disabled"]
+			default: "disabled"
+		}
+		rewrite_dscp: {
+			description: [
+				"rewrite with type dscp.",
+			]
+			choices: ["enabled", "disabled"]
+			default: "disabled"
+		}
+	}
+}

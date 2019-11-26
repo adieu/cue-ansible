@@ -1,0 +1,149 @@
+package ansible
+
+module: fmgr_fwobj_address: {
+	module:        "fmgr_fwobj_address"
+	version_added: "2.8"
+	notes: [
+		"Full Documentation at U(https://ftnt-ansible-docs.readthedocs.io/en/latest/).",
+	]
+	author: [
+		"Luke Weighall (@lweighall)",
+		"Andrew Welsh (@Ghilli3)",
+		"Jim Huber (@p4r4n0y1ng)",
+	]
+	short_description: "Allows the management of firewall objects in FortiManager"
+	description: [
+		"Allows for the management of IPv4, IPv6, and multicast address objects within FortiManager.",
+	]
+
+	options: {
+		adom: {
+			description: [
+				"The ADOM the configuration should belong to.",
+			]
+			required: false
+			default:  "root"
+		}
+
+		allow_routing: {
+			description: [
+				"Enable/disable use of this address in the static route configuration.",
+			]
+			choices: ["enable", "disable"]
+			default: "disable"
+		}
+
+		associated_interface: description: [
+			"Associated interface name.",
+		]
+
+		cache_ttl: description: [
+			"Minimal TTL of individual IP addresses in FQDN cache. Only applies when type = wildcard-fqdn.",
+		]
+
+		color: {
+			description: [
+				"Color of the object in FortiManager GUI.",
+				"Takes integers 1-32",
+			]
+			default: 22
+		}
+
+		comment: description: [
+			"Comment for the object in FortiManager.",
+		]
+
+		country: description: [
+			"Country name. Required if type = geographic.",
+		]
+
+		end_ip: description: [
+			"End IP. Only used when ipv4 = iprange.",
+		]
+
+		group_members: description: [
+			"Address group member. If this is defined w/out group_name, the operation will fail.",
+		]
+
+		group_name: description: [
+			"Address group name. If this is defined in playbook task, all other options are ignored.",
+		]
+
+		ipv4: {
+			description: [
+				"Type of IPv4 Object.",
+				"Must not be specified with either multicast or IPv6 parameters.",
+			]
+			choices: ["ipmask", "iprange", "fqdn", "wildcard", "geography", "wildcard-fqdn", "group"]
+		}
+
+		ipv4addr: description: [
+			"IP and network mask. If only defining one IP use this parameter. (i.e. 10.7.220.30/255.255.255.255)",
+			"Can also define subnets (i.e. 10.7.220.0/255.255.255.0)",
+			"Also accepts CIDR (i.e. 10.7.220.0/24)",
+			"If Netmask is omitted after IP address, /32 is assumed.",
+			"When multicast is set to Broadcast Subnet the ipv4addr parameter is used to specify the subnet.",
+		]
+
+		ipv6: {
+			description: [
+				"Puts module into IPv6 mode.",
+				"Must not be specified with either ipv4 or multicast parameters.",
+			]
+			choices: ["ip", "iprange", "group"]
+		}
+
+		ipv6addr: description: [
+			"IPv6 address in full. (i.e. 2001:0db8:85a3:0000:0000:8a2e:0370:7334)",
+		]
+
+		fqdn: description: [
+			"Fully qualified domain name.",
+		]
+
+		mode: {
+			description: [
+				"Sets one of three modes for managing the object.",
+			]
+			choices: ["add", "set", "delete"]
+			default: "add"
+		}
+
+		multicast: {
+			description: [
+				"Manages Multicast Address Objects.",
+				"Sets either a Multicast IP Range or a Broadcast Subnet.",
+				"Must not be specified with either ipv4 or ipv6 parameters.",
+				"When set to Broadcast Subnet the ipv4addr parameter is used to specify the subnet.",
+				"Can create IPv4 Multicast Objects (multicastrange and broadcastmask options -- uses start/end-ip and ipv4addr).",
+			]
+			choices: ["multicastrange", "broadcastmask", "ip6"]
+		}
+
+		name: description: [
+			"Friendly Name Address object name in FortiManager.",
+		]
+
+		obj_id: description: [
+			"Object ID for NSX.",
+		]
+
+		start_ip: description: [
+			"Start IP. Only used when ipv4 = iprange.",
+		]
+
+		visibility: {
+			description: [
+				"Enable/disable address visibility.",
+			]
+			choices: ["enable", "disable"]
+			default: "enable"
+		}
+
+		wildcard: description: [
+			"IP address and wildcard netmask. Required if ipv4 = wildcard.",
+		]
+
+		wildcard_fqdn: description: ["Wildcard FQDN. Required if ipv4 = wildcard-fqdn."]
+	}
+}

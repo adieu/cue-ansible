@@ -1,0 +1,83 @@
+package ansible
+
+module: os_nova_flavor: {
+	module:                         "os_nova_flavor"
+	short_description:              "Manage OpenStack compute flavors"
+	extends_documentation_fragment: "openstack"
+	version_added:                  "2.0"
+	author:                         "David Shrewsbury (@Shrews)"
+	description: [
+		"Add or remove flavors from OpenStack.",
+	]
+	options: {
+		state: {
+			description: [
+				"Indicate desired state of the resource. When I(state) is 'present', then I(ram), I(vcpus), and I(disk) are all required. There are no default values for those parameters.",
+			]
+
+			choices: ["present", "absent"]
+			default: "present"
+		}
+		name: {
+			description: [
+				"Flavor name.",
+			]
+			required: true
+		}
+		ram: description: [
+			"Amount of memory, in MB.",
+		]
+		vcpus: description: [
+			"Number of virtual CPUs.",
+		]
+		disk: {
+			description: [
+				"Size of local disk, in GB.",
+			]
+			default: 0
+			type:    "int"
+		}
+		ephemeral: {
+			description: [
+				"Ephemeral space size, in GB.",
+			]
+			default: 0
+		}
+		swap: {
+			description: [
+				"Swap space size, in MB.",
+			]
+			default: 0
+		}
+		rxtx_factor: {
+			description: [
+				"RX/TX factor.",
+			]
+			default: 1.0
+		}
+		is_public: {
+			description: [
+				"Make flavor accessible to the public.",
+			]
+			type:    "bool"
+			default: "yes"
+		}
+		flavorid: {
+			description: [
+				"ID for the flavor. This is optional as a unique UUID will be assigned if a value is not specified.",
+			]
+
+			default: "auto"
+		}
+		availability_zone: description: [
+			"Ignored. Present for backwards compatibility",
+		]
+		extra_specs: {
+			description: [
+				"Metadata dictionary",
+			]
+			version_added: "2.3"
+		}
+	}
+	requirements: ["openstacksdk"]
+}

@@ -1,0 +1,57 @@
+package ansible
+
+module: bigip_firewall_rule_list: {
+	module:            "bigip_firewall_rule_list"
+	short_description: "Manage AFM security firewall policies on a BIG-IP"
+	description: [
+		"Manages AFM security firewall policies on a BIG-IP.",
+	]
+	version_added: 2.7
+	options: {
+		name: {
+			description: [
+				"The name of the policy to create.",
+			]
+			type:     "str"
+			required: true
+		}
+		description: {
+			description: [
+				"The description to attach to the policy.",
+				"This parameter is only supported on versions of BIG-IP >= 12.1.0. On earlier versions it will simply be ignored.",
+			]
+
+			type: "str"
+		}
+		state: {
+			description: [
+				"When C(state) is C(present), ensures that the rule list exists.",
+				"When C(state) is C(absent), ensures that the rule list is removed.",
+			]
+			type: "str"
+			choices: [
+				"present",
+				"absent",
+			]
+			default: "present"
+		}
+		rules: {
+			description: [
+				"Specifies a list of rules that you want associated with this policy. The order of this list is the order they will be evaluated by BIG-IP. If the specified rules do not exist (for example when creating a new policy) then they will be created.",
+				"Rules specified here, if they do not exist, will be created with \"default deny\" behavior. It is expected that you follow-up this module with the actual configuration for these rules.",
+				"The C(bigip_firewall_rule) module can be used to also create, as well as edit, existing and new rules.",
+			]
+
+			type: "list"
+		}
+		partition: {
+			description: [
+				"Device partition to manage resources on.",
+			]
+			type:    "str"
+			default: "Common"
+		}
+	}
+	extends_documentation_fragment: "f5"
+	author: ["Tim Rupp (@caphrim007)"]
+}

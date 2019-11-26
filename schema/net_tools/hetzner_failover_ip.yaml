@@ -1,0 +1,44 @@
+
+---
+module: hetzner_failover_ip
+version_added: "2.9"
+short_description: Manage Hetzner's failover IPs
+author:
+  - Felix Fontein (@felixfontein)
+description:
+  - Manage Hetzner's failover IPs.
+seealso:
+  - name: Failover IP documentation
+    description: Hetzner's documentation on failover IPs.
+    link: https://wiki.hetzner.de/index.php/Failover/en
+  - module: hetzner_failover_ip_info
+    description: Retrieve information on failover IPs.
+extends_documentation_fragment:
+  - hetzner
+options:
+  failover_ip:
+    description: The failover IP address.
+    type: str
+    required: yes
+  state:
+    description:
+      - Defines whether the IP will be routed or not.
+      - If set to C(routed), I(value) must be specified.
+    type: str
+    choices:
+      - routed
+      - unrouted
+    default: routed
+  value:
+    description:
+      - The new value for the failover IP address.
+      - Required when setting I(state) to C(routed).
+    type: str
+  timeout:
+    description:
+      - Timeout to use when routing or unrouting the failover IP.
+      - Note that the API call returns when the failover IP has been
+        successfully routed to the new address, respectively successfully
+        unrouted.
+    type: int
+    default: 180

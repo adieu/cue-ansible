@@ -1,0 +1,94 @@
+package ansible
+
+module: ibm_sa_domain: {
+	module:            "ibm_sa_domain"
+	short_description: "Manages domains on IBM Spectrum Accelerate Family storage systems"
+	version_added:     "2.8"
+
+	description: [
+		"This module can be used to add domains to or removes them from IBM Spectrum Accelerate Family storage systems.",
+	]
+
+	options: {
+		domain: {
+			description: [
+				"Name of the domain to be managed.",
+			]
+			required: true
+		}
+		state: {
+			description: [
+				"The desired state of the domain.",
+			]
+			required: true
+			default:  "present"
+			choices: ["present", "absent"]
+		}
+		ldap_id: {
+			description: [
+				"ldap id to add to the domain.",
+			]
+			required: false
+		}
+		size: {
+			description: [
+				"Size of the domain.",
+			]
+			required: false
+		}
+		hard_capacity: {
+			description: [
+				"Hard capacity of the domain.",
+			]
+			required: false
+		}
+		soft_capacity: {
+			description: [
+				"Soft capacity of the domain.",
+			]
+			required: false
+		}
+		max_cgs: {
+			description: [
+				"Number of max cgs.",
+			]
+			required: false
+		}
+		max_dms: {
+			description: [
+				"Number of max dms.",
+			]
+			required: false
+		}
+		max_mirrors: {
+			description: [
+				"Number of max_mirrors.",
+			]
+			required: false
+		}
+		max_pools: {
+			description: [
+				"Number of max_pools.",
+			]
+			required: false
+		}
+		max_volumes: {
+			description: [
+				"Number of max_volumes.",
+			]
+			required: false
+		}
+		perf_class: {
+			description: [
+				"Add the domain to a performance class.",
+			]
+			required: false
+		}
+	}
+
+	extends_documentation_fragment: [
+		"ibm_storage",
+	]
+
+	author: ["Tzur Eliyahu (@tzure)"]
+}

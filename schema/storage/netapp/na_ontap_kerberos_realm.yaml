@@ -1,0 +1,88 @@
+
+
+module: na_ontap_kerberos_realm
+
+short_description: NetApp ONTAP vserver nfs kerberos realm
+extends_documentation_fragment:
+    - netapp.na_ontap
+version_added: '2.9'
+author: Milan Zink (@zeten30) <zeten30@gmail.com>,<mzink@redhat.com>
+
+description:
+- Create, modify or delete vserver kerberos realm configuration
+
+options:
+
+  state:
+    description:
+    - Whether the Kerberos realm is present or absent.
+    choices: ['present', 'absent']
+    default: 'present'
+    type: str
+
+  vserver:
+    description:
+    - vserver/svm with kerberos realm configured
+    required: true
+    type: str
+
+  realm:
+    description:
+    - Kerberos realm name
+    required: true
+    type: str
+
+  kdc_vendor:
+    description:
+    - The vendor of the Key Distribution Centre (KDC) server
+    - Required if I(state=present)
+    choices: ['Other', 'Microsoft']
+    type: str
+
+  kdc_ip:
+    description:
+    - IP address of the Key Distribution Centre (KDC) server
+    - Required if I(state=present)
+    type: str
+
+  kdc_port:
+    description:
+    - TCP port on the KDC to be used for Kerberos communication.
+    - The default for this parameter is '88'.
+    type: str
+
+  clock_skew:
+    description:
+    - The clock skew in minutes is the tolerance for accepting tickets with time stamps that do not exactly match the host's system clock.
+    - The default for this parameter is '5' minutes.
+    type: str
+
+  comment:
+    description:
+    - Optional comment
+    type: str
+
+  admin_server_ip:
+    description:
+    - IP address of the host where the Kerberos administration daemon is running. This is usually the master KDC.
+    - If this parameter is omitted, the address specified in kdc_ip is used.
+    type: str
+
+  admin_server_port:
+    description:
+    - The TCP port on the Kerberos administration server where the Kerberos administration service is running.
+    - The default for this parameter is '749'
+    type: str
+
+  pw_server_ip:
+    description:
+    - IP address of the host where the Kerberos password-changing server is running.
+    - Typically, this is the same as the host indicated in the adminserver-ip.
+    - If this parameter is omitted, the IP address in kdc-ip is used.
+    type: str
+
+  pw_server_port:
+    description:
+    - The TCP port on the Kerberos password-changing server where the Kerberos password-changing service is running.
+    - The default for this parameter is '464'.
+    type: str

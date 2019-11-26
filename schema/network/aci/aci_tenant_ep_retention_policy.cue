@@ -1,0 +1,103 @@
+package ansible
+
+module: aci_tenant_ep_retention_policy: {
+	module:            "aci_tenant_ep_retention_policy"
+	short_description: "Manage End Point (EP) retention protocol policies (fv:EpRetPol)"
+	description: [
+		"Manage End Point (EP) retention protocol policies on Cisco ACI fabrics.",
+	]
+	version_added: "2.4"
+	options: {
+		tenant: {
+			description: [
+				"The name of an existing tenant.",
+			]
+			type: "str"
+			aliases: ["tenant_name"]
+		}
+		epr_policy: {
+			description: [
+				"The name of the end point retention policy.",
+			]
+			type: "str"
+			aliases: ["epr_name", "name"]
+		}
+		bounce_age: {
+			description: [
+				"Bounce entry aging interval in seconds.",
+				"Accepted values range between C(150) and C(65535); 0 is used for infinite.",
+				"The APIC defaults to C(630) when unset during creation.",
+			]
+			type: "int"
+		}
+		bounce_trigger: {
+			description: [
+				"Determines if the bounce entries are installed by RARP Flood or COOP Protocol.",
+				"The APIC defaults to C(coop) when unset during creation.",
+			]
+			type: "str"
+			choices: ["coop", "flood"]
+		}
+		hold_interval: {
+			description: [
+				"Hold interval in seconds.",
+				"Accepted values range between C(5) and C(65535).",
+				"The APIC defaults to C(300) when unset during creation.",
+			]
+			type: "int"
+		}
+		local_ep_interval: {
+			description: [
+				"Local end point aging interval in seconds.",
+				"Accepted values range between C(120) and C(65535); 0 is used for infinite.",
+				"The APIC defaults to C(900) when unset during creation.",
+			]
+			type: "int"
+		}
+		remote_ep_interval: {
+			description: [
+				"Remote end point aging interval in seconds.",
+				"Accepted values range between C(120) and C(65535); 0 is used for infinite.",
+				"The APIC defaults to C(300) when unset during creation.",
+			]
+			type: "int"
+		}
+		move_frequency: {
+			description: [
+				"Move frequency per second.",
+				"Accepted values range between C(0) and C(65535); 0 is used for none.",
+				"The APIC defaults to C(256) when unset during creation.",
+			]
+			type: "int"
+		}
+		description: {
+			description: [
+				"Description for the End point retention policy.",
+			]
+			type: "str"
+			aliases: ["descr"]
+		}
+		state: {
+			description: [
+				"Use C(present) or C(absent) for adding or removing.",
+				"Use C(query) for listing an object or multiple objects.",
+			]
+			type: "str"
+			choices: ["absent", "present", "query"]
+			default: "present"
+		}
+	}
+	extends_documentation_fragment: "aci"
+	notes: [
+		"The C(tenant) used must exist before using this module in your playbook. The M(aci_tenant) module can be used for this.",
+	]
+
+	seealso: [{
+		module: "aci_tenant"
+	}, {
+		name:        "APIC Management Information Model reference"
+		description: "More information about the internal APIC class B(fv:EpRetPol)."
+		link:        "https://developer.cisco.com/docs/apic-mim-ref/"
+	}]
+	author: ["Swetha Chunduri (@schunduri)"]
+}

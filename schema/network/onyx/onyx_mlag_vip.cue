@@ -1,0 +1,39 @@
+package ansible
+
+module: onyx_mlag_vip: {
+	module:            "onyx_mlag_vip"
+	version_added:     "2.5"
+	author:            "Samer Deeb (@samerd)"
+	short_description: "Configures MLAG VIP on Mellanox ONYX network devices"
+	description: [
+		"This module provides declarative management of MLAG virtual IPs on Mellanox ONYX network devices.",
+	]
+
+	notes: [
+		"Tested on ONYX 3.6.4000",
+	]
+	options: {
+		ipaddress: description: [
+			"Virtual IP address of the MLAG. Required if I(state=present).",
+		]
+		group_name: description: [
+			"MLAG group name. Required if I(state=present).",
+		]
+		mac_address: description: [
+			"MLAG system MAC address. Required if I(state=present).",
+		]
+		state: {
+			description: [
+				"MLAG VIP state.",
+			]
+			choices: ["present", "absent"]
+		}
+		delay: {
+			description: [
+				"Delay interval, in seconds, waiting for the changes on mlag VIP to take effect.",
+			]
+
+			default: 12
+		}
+	}
+}

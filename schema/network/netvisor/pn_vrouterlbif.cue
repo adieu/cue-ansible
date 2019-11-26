@@ -1,0 +1,62 @@
+package ansible
+
+module: pn_vrouterlbif: {
+	module:            "pn_vrouterlbif"
+	author:            "Pluribus Networks (@amitsi)"
+	version_added:     "2.2"
+	short_description: "CLI command to add/remove vrouter-loopback-interface."
+	deprecated: {
+		removed_in:  "2.12"
+		why:         "Doesn't support latest Pluribus Networks netvisor"
+		alternative: "Latest modules will be pushed in Ansible future versions."
+	}
+	description: [
+		"Execute vrouter-loopback-interface-add, vrouter-loopback-interface-remove commands.",
+		"Each fabric, cluster, standalone switch, or virtual network (VNET) can provide its tenants with a virtual router (vRouter) service that forwards traffic between networks and implements Layer 3 protocols.",
+	]
+
+	options: {
+		pn_cliusername: {
+			description: [
+				"Provide login username if user is not root.",
+			]
+			required: false
+		}
+		pn_clipassword: {
+			description: [
+				"Provide login password if user is not root.",
+			]
+			required: false
+		}
+		pn_cliswitch: {
+			description: [
+				"Target switch(es) to run the cli on.",
+			]
+			required: false
+			default:  "local"
+		}
+		state: {
+			description: [
+				"State the action to perform. Use 'present' to add vrouter loopback interface and 'absent' to remove vrouter loopback interface.",
+			]
+
+			required: true
+			choices: ["present", "absent"]
+		}
+		pn_vrouter_name: {
+			description: [
+				"Specify the name of the vRouter.",
+			]
+			required: true
+		}
+		pn_index: description: [
+			"Specify the interface index from 1 to 255.",
+		]
+		pn_interface_ip: {
+			description: [
+				"Specify the IP address.",
+			]
+			required: true
+		}
+	}
+}

@@ -1,0 +1,101 @@
+package ansible
+
+module: postgresql_slot: {
+	module:            "postgresql_slot"
+	short_description: "Add or remove slots from a PostgreSQL database"
+	description: [
+		"Add or remove physical or logical slots from a PostgreSQL database.",
+	]
+	version_added: "2.8"
+
+	options: {
+		name: {
+			description: [
+				"Name of the slot to add or remove.",
+			]
+			type:     "str"
+			required: true
+			aliases: [
+				"slot_name",
+			]
+		}
+		slot_type: {
+			description: [
+				"Slot type.",
+			]
+			type:    "str"
+			default: "physical"
+			choices: ["logical", "physical"]
+		}
+		state: {
+			description: [
+				"The slot state.",
+				"I(state=present) implies the slot must be present in the system.",
+				"I(state=absent) implies the I(groups) must be revoked from I(target_roles).",
+			]
+			type:    "str"
+			default: "present"
+			choices: ["absent", "present"]
+		}
+		immediately_reserve: {
+			description: [
+				"Optional parameter the when C(yes) specifies that the LSN for this replication slot be reserved immediately, otherwise the default, C(no), specifies that the LSN is reserved on the first connection from a streaming replication client.",
+				"Is available from PostgreSQL version 9.6.",
+				"Uses only with I(slot_type=physical).",
+				"Mutually exclusive with I(slot_type=logical).",
+			]
+			type:    "bool"
+			default: false
+		}
+		output_plugin: {
+			description: [
+				"All logical slots must indicate which output plugin decoder they're using.",
+				"This parameter does not apply to physical slots.",
+				"It will be ignored with I(slot_type=physical).",
+			]
+			type:    "str"
+			default: "test_decoding"
+		}
+		db: {
+			description: [
+				"Name of database to connect to.",
+			]
+			type: "str"
+			aliases: [
+				"login_db",
+			]
+		}
+		session_role: {
+			description: [
+				"Switch to session_role after connecting. The specified session_role must be a role that the current login_user is a member of.",
+				"Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.",
+			]
+
+			type: "str"
+		}
+	}
+
+	notes: [
+		"Physical replication slots were introduced to PostgreSQL with version 9.4, while logical replication slots were added beginning with version 10.0.",
+	]
+
+	seealso: [{
+		name:        "PostgreSQL pg_replication_slots view reference"
+		description: "Complete reference of the PostgreSQL pg_replication_slots view."
+		link:        "https://www.postgresql.org/docs/current/view-pg-replication-slots.html"
+	}, {
+		name:        "PostgreSQL streaming replication protocol reference"
+		description: "Complete reference of the PostgreSQL streaming replication protocol documentation."
+		link:        "https://www.postgresql.org/docs/current/protocol-replication.html"
+	}, {
+		name:        "PostgreSQL logical replication protocol reference"
+		description: "Complete reference of the PostgreSQL logical replication protocol documentation."
+		link:        "https://www.postgresql.org/docs/current/protocol-logical-replication.html"
+	}]
+
+	author: [
+		"John Scalia (@jscalia)",
+		"Andrew Klychkov (@Andersson007)",
+	]
+	extends_documentation_fragment: "postgres"
+}

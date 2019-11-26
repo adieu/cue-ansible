@@ -1,0 +1,72 @@
+package ansible
+
+module: vmware_cluster_drs: {
+	module:            "vmware_cluster_drs"
+	short_description: "Manage Distributed Resource Scheduler (DRS) on VMware vSphere clusters"
+	description: [
+		"Manages DRS on VMware vSphere clusters.",
+		"All values and VMware object names are case sensitive.",
+	]
+	version_added: "2.9"
+	author: [
+		"Joseph Callen (@jcpowermac)",
+		"Abhijeet Kasurde (@Akasurde)",
+	]
+	requirements: [
+		"Tested on ESXi 5.5 and 6.5.",
+		"PyVmomi installed.",
+	]
+	options: {
+		cluster_name: {
+			description: [
+				"The name of the cluster to be managed.",
+			]
+			type:     "str"
+			required: true
+		}
+		datacenter: {
+			description: [
+				"The name of the datacenter.",
+			]
+			type:     "str"
+			required: true
+			aliases: ["datacenter_name"]
+		}
+		enable_drs: {
+			description: [
+				"Whether to enable DRS.",
+			]
+			type:    "bool"
+			default: "no"
+		}
+		drs_enable_vm_behavior_overrides: {
+			description: [
+				"Whether DRS Behavior overrides for individual virtual machines are enabled.",
+				"If set to C(True), overrides C(drs_default_vm_behavior).",
+			]
+			type:    "bool"
+			default: true
+		}
+		drs_default_vm_behavior: {
+			description: [
+				"Specifies the cluster-wide default DRS behavior for virtual machines.",
+				"If set to C(partiallyAutomated), vCenter generates recommendations for virtual machine migration and for the placement with a host, then automatically implements placement recommendations at power on.",
+				"If set to C(manual), then vCenter generates recommendations for virtual machine migration and for the placement with a host, but does not implement the recommendations automatically.",
+				"If set to C(fullyAutomated), then vCenter automates both the migration of virtual machines and their placement with a host at power on.",
+			]
+
+			type:    "str"
+			default: "fullyAutomated"
+			choices: ["fullyAutomated", "manual", "partiallyAutomated"]
+		}
+		drs_vmotion_rate: {
+			description: [
+				"Threshold for generated ClusterRecommendations.",
+			]
+			type:    "int"
+			default: 3
+			choices: [1, 2, 3, 4, 5]
+		}
+	}
+	extends_documentation_fragment: "vmware.documentation"
+}

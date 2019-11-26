@@ -1,0 +1,712 @@
+package ansible
+
+module: cp_mgmt_simple_gateway: {
+	module:            "cp_mgmt_simple_gateway"
+	short_description: "Manages simple-gateway objects on Check Point over Web Services API"
+	description: [
+		"Manages simple-gateway objects on Check Point devices including creating, updating and removing objects.",
+		"All operations are performed over Web Services API.",
+	]
+	version_added: "2.9"
+	author:        "Or Soffer (@chkp-orso)"
+	options: {
+		name: {
+			description: [
+				"Object name.",
+			]
+			type:     "str"
+			required: true
+		}
+		ip_address: {
+			description: [
+				"IPv4 or IPv6 address. If both addresses are required use ipv4-address and ipv6-address fields explicitly.",
+			]
+			type: "str"
+		}
+		ipv4_address: {
+			description: [
+				"IPv4 address.",
+			]
+			type: "str"
+		}
+		ipv6_address: {
+			description: [
+				"IPv6 address.",
+			]
+			type: "str"
+		}
+		anti_bot: {
+			description: [
+				"Anti-Bot blade enabled.",
+			]
+			type: "bool"
+		}
+		anti_virus: {
+			description: [
+				"Anti-Virus blade enabled.",
+			]
+			type: "bool"
+		}
+		application_control: {
+			description: [
+				"Application Control blade enabled.",
+			]
+			type: "bool"
+		}
+		content_awareness: {
+			description: [
+				"Content Awareness blade enabled.",
+			]
+			type: "bool"
+		}
+		firewall: {
+			description: [
+				"Firewall blade enabled.",
+			]
+			type: "bool"
+		}
+		firewall_settings: {
+			description: [
+				"N/A",
+			]
+			type: "dict"
+			suboptions: {
+				auto_calculate_connections_hash_table_size_and_memory_pool: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				auto_maximum_limit_for_concurrent_connections: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				connections_hash_size: {
+					description: [
+						"N/A",
+					]
+					type: "int"
+				}
+				maximum_limit_for_concurrent_connections: {
+					description: [
+						"N/A",
+					]
+					type: "int"
+				}
+				maximum_memory_pool_size: {
+					description: [
+						"N/A",
+					]
+					type: "int"
+				}
+				memory_pool_size: {
+					description: [
+						"N/A",
+					]
+					type: "int"
+				}
+			}
+		}
+		interfaces: {
+			description: [
+				"Network interfaces. When a gateway is updated with a new interfaces, the existing interfaces are removed.",
+			]
+			type: "list"
+			suboptions: {
+				name: {
+					description: [
+						"Object name.",
+					]
+					type: "str"
+				}
+				anti_spoofing: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				anti_spoofing_settings: {
+					description: [
+						"N/A",
+					]
+					type: "dict"
+					suboptions: action: {
+						description: [
+							"If packets will be rejected (the Prevent option) or whether the packets will be monitored (the Detect option).",
+						]
+						type: "str"
+						choices: ["prevent", "detect"]
+					}
+				}
+				ip_address: {
+					description: [
+						"IPv4 or IPv6 address. If both addresses are required use ipv4-address and ipv6-address fields explicitly.",
+					]
+					type: "str"
+				}
+				ipv4_address: {
+					description: [
+						"IPv4 address.",
+					]
+					type: "str"
+				}
+				ipv6_address: {
+					description: [
+						"IPv6 address.",
+					]
+					type: "str"
+				}
+				network_mask: {
+					description: [
+						"IPv4 or IPv6 network mask. If both masks are required use ipv4-network-mask and ipv6-network-mask fields explicitly. Instead of providing mask itself it is possible to specify IPv4 or IPv6 mask length in mask-length field. If both masks length are required use ipv4-mask-length and  ipv6-mask-length fields explicitly.",
+					]
+
+					type: "str"
+				}
+				ipv4_network_mask: {
+					description: [
+						"IPv4 network address.",
+					]
+					type: "str"
+				}
+				ipv6_network_mask: {
+					description: [
+						"IPv6 network address.",
+					]
+					type: "str"
+				}
+				mask_length: {
+					description: [
+						"IPv4 or IPv6 network mask length.",
+					]
+					type: "str"
+				}
+				ipv4_mask_length: {
+					description: [
+						"IPv4 network mask length.",
+					]
+					type: "str"
+				}
+				ipv6_mask_length: {
+					description: [
+						"IPv6 network mask length.",
+					]
+					type: "str"
+				}
+				security_zone: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				security_zone_settings: {
+					description: [
+						"N/A",
+					]
+					type: "dict"
+					suboptions: {
+						auto_calculated: {
+							description: [
+								"Security Zone is calculated according to where the interface leads to.",
+							]
+							type: "bool"
+						}
+						specific_zone: {
+							description: [
+								"Security Zone specified manually.",
+							]
+							type: "str"
+						}
+					}
+				}
+				tags: {
+					description: [
+						"Collection of tag identifiers.",
+					]
+					type: "list"
+				}
+				topology: {
+					description: [
+						"N/A",
+					]
+					type: "str"
+					choices: ["automatic", "external", "internal"]
+				}
+				topology_settings: {
+					description: [
+						"N/A",
+					]
+					type: "dict"
+					suboptions: {
+						interface_leads_to_dmz: {
+							description: [
+								"Whether this interface leads to demilitarized zone (perimeter network).",
+							]
+							type: "bool"
+						}
+						ip_address_behind_this_interface: {
+							description: [
+								"N/A",
+							]
+							type: "str"
+							choices: ["not defined", "network defined by the interface ip and net mask", "network defined by routing", "specific"]
+						}
+						specific_network: {
+							description: [
+								"Network behind this interface.",
+							]
+							type: "str"
+						}
+					}
+				}
+				color: {
+					description: [
+						"Color of the object. Should be one of existing colors.",
+					]
+					type: "str"
+					choices: [
+						"aquamarine",
+						"black",
+						"blue",
+						"crete blue",
+						"burlywood",
+						"cyan",
+						"dark green",
+						"khaki",
+						"orchid",
+						"dark orange",
+						"dark sea green",
+						"pink",
+						"turquoise",
+						"dark blue",
+						"firebrick",
+						"brown",
+						"forest green",
+						"gold",
+						"dark gold",
+						"gray",
+						"dark gray",
+						"light green",
+						"lemon chiffon",
+						"coral",
+						"sea green",
+						"sky blue",
+						"magenta",
+						"purple",
+						"slate blue",
+						"violet red",
+						"navy blue",
+						"olive",
+						"orange",
+						"red",
+						"sienna",
+						"yellow",
+					]
+				}
+				comments: {
+					description: [
+						"Comments string.",
+					]
+					type: "str"
+				}
+				details_level: {
+					description: [
+						"The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed representation of the object.",
+					]
+
+					type: "str"
+					choices: ["uid", "standard", "full"]
+				}
+				ignore_warnings: {
+					description: [
+						"Apply changes ignoring warnings.",
+					]
+					type: "bool"
+				}
+				ignore_errors: {
+					description: [
+						"Apply changes ignoring errors. You won't be able to publish such a changes. If ignore-warnings flag was omitted - warnings will also be ignored.",
+					]
+					type: "bool"
+				}
+			}
+		}
+		ips: {
+			description: [
+				"Intrusion Prevention System blade enabled.",
+			]
+			type: "bool"
+		}
+		logs_settings: {
+			description: [
+				"N/A",
+			]
+			type: "dict"
+			suboptions: {
+				alert_when_free_disk_space_below: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				alert_when_free_disk_space_below_threshold: {
+					description: [
+						"N/A",
+					]
+					type: "int"
+				}
+				alert_when_free_disk_space_below_type: {
+					description: [
+						"N/A",
+					]
+					type: "str"
+					choices: [
+						"none",
+						"log",
+						"popup alert",
+						"mail alert",
+						"snmp trap alert",
+						"user defined alert no.1",
+						"user defined alert no.2",
+						"user defined alert no.3",
+					]
+				}
+				before_delete_keep_logs_from_the_last_days: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				before_delete_keep_logs_from_the_last_days_threshold: {
+					description: [
+						"N/A",
+					]
+					type: "int"
+				}
+				before_delete_run_script: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				before_delete_run_script_command: {
+					description: [
+						"N/A",
+					]
+					type: "str"
+				}
+				delete_index_files_older_than_days: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				delete_index_files_older_than_days_threshold: {
+					description: [
+						"N/A",
+					]
+					type: "int"
+				}
+				delete_index_files_when_index_size_above: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				delete_index_files_when_index_size_above_threshold: {
+					description: [
+						"N/A",
+					]
+					type: "int"
+				}
+				delete_when_free_disk_space_below: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				delete_when_free_disk_space_below_threshold: {
+					description: [
+						"N/A",
+					]
+					type: "int"
+				}
+				detect_new_citrix_ica_application_names: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				forward_logs_to_log_server: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				forward_logs_to_log_server_name: {
+					description: [
+						"N/A",
+					]
+					type: "str"
+				}
+				forward_logs_to_log_server_schedule_name: {
+					description: [
+						"N/A",
+					]
+					type: "str"
+				}
+				free_disk_space_metrics: {
+					description: [
+						"N/A",
+					]
+					type: "str"
+					choices: ["mbytes", "percent"]
+				}
+				perform_log_rotate_before_log_forwarding: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				reject_connections_when_free_disk_space_below_threshold: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				reserve_for_packet_capture_metrics: {
+					description: [
+						"N/A",
+					]
+					type: "str"
+					choices: ["percent", "mbytes"]
+				}
+				reserve_for_packet_capture_threshold: {
+					description: [
+						"N/A",
+					]
+					type: "int"
+				}
+				rotate_log_by_file_size: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				rotate_log_file_size_threshold: {
+					description: [
+						"N/A",
+					]
+					type: "int"
+				}
+				rotate_log_on_schedule: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				rotate_log_schedule_name: {
+					description: [
+						"N/A",
+					]
+					type: "str"
+				}
+				stop_logging_when_free_disk_space_below: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				stop_logging_when_free_disk_space_below_threshold: {
+					description: [
+						"N/A",
+					]
+					type: "int"
+				}
+				turn_on_qos_logging: {
+					description: [
+						"N/A",
+					]
+					type: "bool"
+				}
+				update_account_log_every: {
+					description: [
+						"N/A",
+					]
+					type: "int"
+				}
+			}
+		}
+		one_time_password: {
+			description: [
+				"N/A",
+			]
+			type: "str"
+		}
+		os_name: {
+			description: [
+				"Gateway platform operating system.",
+			]
+			type: "str"
+		}
+		save_logs_locally: {
+			description: [
+				"Save logs locally on the gateway.",
+			]
+			type: "bool"
+		}
+		send_alerts_to_server: {
+			description: [
+				"Server(s) to send alerts to.",
+			]
+			type: "list"
+		}
+		send_logs_to_backup_server: {
+			description: [
+				"Backup server(s) to send logs to.",
+			]
+			type: "list"
+		}
+		send_logs_to_server: {
+			description: [
+				"Server(s) to send logs to.",
+			]
+			type: "list"
+		}
+		tags: {
+			description: [
+				"Collection of tag identifiers.",
+			]
+			type: "list"
+		}
+		threat_emulation: {
+			description: [
+				"Threat Emulation blade enabled.",
+			]
+			type: "bool"
+		}
+		threat_extraction: {
+			description: [
+				"Threat Extraction blade enabled.",
+			]
+			type: "bool"
+		}
+		url_filtering: {
+			description: [
+				"URL Filtering blade enabled.",
+			]
+			type: "bool"
+		}
+		version: {
+			description: [
+				"Gateway platform version.",
+			]
+			type: "str"
+		}
+		vpn: {
+			description: [
+				"VPN blade enabled.",
+			]
+			type: "bool"
+		}
+		vpn_settings: {
+			description: [
+				"Gateway VPN settings.",
+			]
+			type: "dict"
+			suboptions: {
+				maximum_concurrent_ike_negotiations: {
+					description: [
+						"N/A",
+					]
+					type: "int"
+				}
+				maximum_concurrent_tunnels: {
+					description: [
+						"N/A",
+					]
+					type: "int"
+				}
+			}
+		}
+		color: {
+			description: [
+				"Color of the object. Should be one of existing colors.",
+			]
+			type: "str"
+			choices: [
+				"aquamarine",
+				"black",
+				"blue",
+				"crete blue",
+				"burlywood",
+				"cyan",
+				"dark green",
+				"khaki",
+				"orchid",
+				"dark orange",
+				"dark sea green",
+				"pink",
+				"turquoise",
+				"dark blue",
+				"firebrick",
+				"brown",
+				"forest green",
+				"gold",
+				"dark gold",
+				"gray",
+				"dark gray",
+				"light green",
+				"lemon chiffon",
+				"coral",
+				"sea green",
+				"sky blue",
+				"magenta",
+				"purple",
+				"slate blue",
+				"violet red",
+				"navy blue",
+				"olive",
+				"orange",
+				"red",
+				"sienna",
+				"yellow",
+			]
+		}
+		comments: {
+			description: [
+				"Comments string.",
+			]
+			type: "str"
+		}
+		details_level: {
+			description: [
+				"The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed representation of the object.",
+			]
+
+			type: "str"
+			choices: ["uid", "standard", "full"]
+		}
+		groups: {
+			description: [
+				"Collection of group identifiers.",
+			]
+			type: "list"
+		}
+		ignore_warnings: {
+			description: [
+				"Apply changes ignoring warnings.",
+			]
+			type: "bool"
+		}
+		ignore_errors: {
+			description: [
+				"Apply changes ignoring errors. You won't be able to publish such a changes. If ignore-warnings flag was omitted - warnings will also be ignored.",
+			]
+			type: "bool"
+		}
+	}
+	extends_documentation_fragment: "checkpoint_objects"
+}

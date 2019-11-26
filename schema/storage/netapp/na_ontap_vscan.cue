@@ -1,0 +1,34 @@
+package ansible
+
+module: na_ontap_vscan: {
+	module:            "na_ontap_vscan"
+	short_description: "NetApp ONTAP Vscan enable/disable."
+	extends_documentation_fragment: [
+		"netapp.na_ontap",
+	]
+	version_added: "2.9"
+	author:        "NetApp Ansible Team (@carchi8py) <ng-ansibleteam@netapp.com>"
+	notes: [
+		"on demand task, on_access_policy and scanner_pools must be set up before running this module",
+	]
+	description: [
+		"Enable and Disable Vscan",
+	]
+	options: {
+		enable: {
+			description: [
+				"Whether to enable to disable a Vscan",
+			]
+			type:    "bool"
+			default: true
+		}
+
+		vserver: {
+			description: [
+				"the name of the data vserver to use.",
+			]
+			required: true
+			type:     "str"
+		}
+	}
+}

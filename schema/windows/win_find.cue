@@ -1,0 +1,110 @@
+package ansible
+
+module: win_find: {
+	module:            "win_find"
+	version_added:     "2.3"
+	short_description: "Return a list of files based on specific criteria"
+	description: [
+		"Return a list of files based on specified criteria.",
+		"Multiple criteria are AND'd together.",
+		"For non-Windows targets, use the M(find) module instead.",
+	]
+	options: {
+		age: {
+			description: [
+				"Select files or folders whose age is equal to or greater than the specified time.",
+				"Use a negative age to find files equal to or less than the specified time.",
+				"You can choose seconds, minutes, hours, days or weeks by specifying the first letter of an of those words (e.g., \"2s\", \"10d\", 1w\").",
+			]
+
+			type: "str"
+		}
+		age_stamp: {
+			description: [
+				"Choose the file property against which we compare C(age).",
+				"The default attribute we compare with is the last modification time.",
+			]
+			type: "str"
+			choices: ["atime", "ctime", "mtime"]
+			default: "mtime"
+		}
+		checksum_algorithm: {
+			description: [
+				"Algorithm to determine the checksum of a file.",
+				"Will throw an error if the host is unable to use specified algorithm.",
+			]
+			type: "str"
+			choices: ["md5", "sha1", "sha256", "sha384", "sha512"]
+			default: "sha1"
+		}
+		file_type: {
+			description: "Type of file to search for."
+			type:        "str"
+			choices: ["directory", "file"]
+			default: "file"
+		}
+		follow: {
+			description: [
+				"Set this to C(yes) to follow symlinks in the path.",
+				"This needs to be used in conjunction with C(recurse).",
+			]
+			type:    "bool"
+			default: false
+		}
+		get_checksum: {
+			description: [
+				"Whether to return a checksum of the file in the return info (default sha1), use C(checksum_algorithm) to change from the default.",
+			]
+
+			type:    "bool"
+			default: true
+		}
+		hidden: {
+			description: "Set this to include hidden files or folders."
+			type:        "bool"
+			default:     false
+		}
+		paths: {
+			description: [
+				"List of paths of directories to search for files or folders in.",
+				"This can be supplied as a single path or a list of paths.",
+			]
+			type:     "list"
+			required: true
+		}
+		patterns: {
+			description: [
+				"One or more (powershell or regex) patterns to compare filenames with.",
+				"The type of pattern matching is controlled by C(use_regex) option.",
+				"The patterns restrict the list of files or folders to be returned based on the filenames.",
+				"For a file to be matched it only has to match with one pattern in a list provided.",
+			]
+			type: "list"
+			aliases: ["regex", "regexp"]
+		}
+		recurse: {
+			description: [
+				"Will recursively descend into the directory looking for files or folders.",
+			]
+			type:    "bool"
+			default: false
+		}
+		size: {
+			description: [
+				"Select files or folders whose size is equal to or greater than the specified size.",
+				"Use a negative value to find files equal to or less than the specified size.",
+				"You can specify the size with a suffix of the byte type i.e. kilo = k, mega = m...",
+				"Size is not evaluated for symbolic links.",
+			]
+			type: "str"
+		}
+		use_regex: {
+			description: [
+				"Will set patterns to run as a regex check if set to C(yes).",
+			]
+			type:    "bool"
+			default: false
+		}
+	}
+	author: ["Jordan Borean (@jborean93)"]
+}

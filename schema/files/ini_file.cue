@@ -1,0 +1,98 @@
+package ansible
+
+module: ini_file: {
+	module:                         "ini_file"
+	short_description:              "Tweak settings in INI files"
+	extends_documentation_fragment: "files"
+	description: [
+		"Manage (add, remove, change) individual settings in an INI-style file without having to manage the file as a whole with, say, M(template) or M(assemble).",
+		"Adds missing sections if they don't exist.",
+		"Before Ansible 2.0, comments are discarded when the source file is read, and therefore will not show up in the destination file.",
+		"Since Ansible 2.3, this module adds missing ending newlines to files to keep in line with the POSIX standard, even when no other modifications need to be applied.",
+	]
+
+	version_added: "0.9"
+	options: {
+		path: {
+			description: [
+				"Path to the INI-style file; this file is created if required.",
+				"Before Ansible 2.3 this option was only usable as I(dest).",
+			]
+			type:     "path"
+			required: true
+			aliases: ["dest"]
+		}
+		section: {
+			description: [
+				"Section name in INI file. This is added if C(state=present) automatically when a single value is being set.",
+				"If left empty or set to C(null), the I(option) will be placed before the first I(section).",
+				"Using C(null) is also required if the config format does not support sections.",
+			]
+			type:     "str"
+			required: true
+		}
+		option: {
+			description: [
+				"If set (required for changing a I(value)), this is the name of the option.",
+				"May be omitted if adding/removing a whole I(section).",
+			]
+			type: "str"
+		}
+		value: {
+			description: [
+				"The string value to be associated with an I(option).",
+				"May be omitted when removing an I(option).",
+			]
+			type: "str"
+		}
+		backup: {
+			description: [
+				"Create a backup file including the timestamp information so you can get the original file back if you somehow clobbered it incorrectly.",
+			]
+
+			type:    "bool"
+			default: false
+		}
+		state: {
+			description: [
+				"If set to C(absent) the option or section will be removed if present instead of created.",
+			]
+			type: "str"
+			choices: ["absent", "present"]
+			default: "present"
+		}
+		no_extra_spaces: {
+			description: [
+				"Do not insert spaces before and after '=' symbol.",
+			]
+			type:          "bool"
+			default:       false
+			version_added: "2.1"
+		}
+		create: {
+			description: [
+				"If set to C(no), the module will fail if the file does not already exist.",
+				"By default it will create the file if it is missing.",
+			]
+			type:          "bool"
+			default:       true
+			version_added: "2.2"
+		}
+		allow_no_value: {
+			description: [
+				"Allow option without value and without '=' symbol.",
+			]
+			type:          "bool"
+			default:       false
+			version_added: "2.6"
+		}
+	}
+	notes: [
+		"While it is possible to add an I(option) without specifying a I(value), this makes no sense.",
+		"As of Ansible 2.3, the I(dest) option has been changed to I(path) as default, but I(dest) still works as well.",
+	]
+	author: [
+		"Jan-Piet Mens (@jpmens)",
+		"Ales Nosek (@noseka1)",
+	]
+}

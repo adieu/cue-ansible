@@ -1,0 +1,12 @@
+package ansible
+
+module: vultr_region_info: {
+	module:            "vultr_region_info"
+	short_description: "Gather information about the Vultr regions available."
+	description: [
+		"Gather information about regions available to boot servers.",
+	]
+	version_added:                  "2.9"
+	author:                         "Yanis Guenane (@Spredzy)"
+	extends_documentation_fragment: "vultr"
+}

@@ -1,0 +1,35 @@
+
+---
+module: net_l3_interface
+version_added: "2.4"
+author: "Ricardo Carrillo Cruz (@rcarrillocruz)"
+short_description: Manage L3 interfaces on network devices
+description:
+  - This module provides declarative management of L3 interfaces
+    on network devices.
+deprecated:
+    removed_in: "2.13"
+    alternative: Use platform-specific "[netos]_l3_interfaces" module
+    why: Updated modules released with more functionality
+extends_documentation_fragment: network_agnostic
+options:
+  name:
+    description:
+      - Name of the L3 interface.
+  ipv4:
+    description:
+      - IPv4 of the L3 interface.
+  ipv6:
+    description:
+      - IPv6 of the L3 interface.
+  aggregate:
+    description: List of L3 interfaces definitions
+  purge:
+    description:
+      - Purge L3 interfaces not defined in the I(aggregate) parameter.
+    default: no
+  state:
+    description:
+      - State of the L3 interface configuration.
+    default: present
+    choices: ['present', 'absent']

@@ -1,0 +1,57 @@
+package ansible
+
+module: elasticache_snapshot: {
+	module:            "elasticache_snapshot"
+	short_description: "Manage cache snapshots in Amazon ElastiCache."
+	description: [
+		"Manage cache snapshots in Amazon ElastiCache.",
+		"Returns information about the specified snapshot.",
+	]
+	version_added: "2.3"
+	author:        "Sloane Hertel (@s-hertel)"
+	extends_documentation_fragment: [
+		"aws",
+		"ec2",
+	]
+	requirements: ["boto3", "botocore"]
+	options: {
+		name: {
+			description: [
+				"The name of the snapshot we want to create, copy, delete.",
+			]
+			required: true
+			type:     "str"
+		}
+		state: {
+			description: [
+				"Actions that will create, destroy, or copy a snapshot.",
+			]
+			choices: ["present", "absent", "copy"]
+			type: "str"
+		}
+		replication_id: {
+			description: [
+				"The name of the existing replication group to make the snapshot.",
+			]
+			type: "str"
+		}
+		cluster_id: {
+			description: [
+				"The name of an existing cache cluster in the replication group to make the snapshot.",
+			]
+			type: "str"
+		}
+		target: {
+			description: [
+				"The name of a snapshot copy.",
+			]
+			type: "str"
+		}
+		bucket: {
+			description: [
+				"The s3 bucket to which the snapshot is exported.",
+			]
+			type: "str"
+		}
+	}
+}

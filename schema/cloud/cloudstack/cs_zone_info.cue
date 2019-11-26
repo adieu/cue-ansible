@@ -1,0 +1,20 @@
+package ansible
+
+module: cs_zone_info: {
+	module:            "cs_zone_info"
+	short_description: "Gathering information about zones from Apache CloudStack based clouds."
+	description: [
+		"Gathering information from the API of a zone.",
+	]
+	version_added: "2.9"
+	author:        "René Moser (@resmo)"
+	options: zone: {
+		description: [
+			"Name of the zone.",
+			"If not specified, all zones are returned",
+		]
+		type: "str"
+		aliases: ["name"]
+	}
+	extends_documentation_fragment: "cloudstack"
+}

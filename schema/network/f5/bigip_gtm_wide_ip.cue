@@ -1,0 +1,139 @@
+package ansible
+
+module: bigip_gtm_wide_ip: {
+	module:            "bigip_gtm_wide_ip"
+	short_description: "Manages F5 BIG-IP GTM wide ip"
+	description: [
+		"Manages F5 BIG-IP GTM wide ip.",
+	]
+	version_added: 2.0
+	options: {
+		pool_lb_method: {
+			description: [
+				"Specifies the load balancing method used to select a pool in this wide IP. This setting is relevant only when multiple pools are configured for a wide IP.",
+			]
+
+			type:     "str"
+			required: true
+			aliases: ["lb_method"]
+			choices: [
+				"round-robin",
+				"ratio",
+				"topology",
+				"global-availability",
+			]
+			version_added: 2.5
+		}
+		name: {
+			description: [
+				"Wide IP name. This name must be formatted as a fully qualified domain name (FQDN). You can also use the alias C(wide_ip) but this is deprecated and will be removed in a future Ansible version.",
+			]
+
+			type:     "str"
+			required: true
+			aliases: [
+				"wide_ip",
+			]
+		}
+		type: {
+			description: [
+				"Specifies the type of wide IP. GTM wide IPs need to be keyed by query type in addition to name, since pool members need different attributes depending on the response RDATA they are meant to supply. This value is required if you are using BIG-IP versions >= 12.0.0.",
+			]
+
+			type: "str"
+			choices: [
+				"a",
+				"aaaa",
+				"cname",
+				"mx",
+				"naptr",
+				"srv",
+			]
+			version_added: 2.4
+		}
+		state: {
+			description: [
+				"When C(present) or C(enabled), ensures that the Wide IP exists and is enabled.",
+				"When C(absent), ensures that the Wide IP has been removed.",
+				"When C(disabled), ensures that the Wide IP exists and is disabled.",
+			]
+			type: "str"
+			choices: [
+				"present",
+				"absent",
+				"disabled",
+				"enabled",
+			]
+			default:       "present"
+			version_added: 2.4
+		}
+		partition: {
+			description: [
+				"Device partition to manage resources on.",
+			]
+			type:          "str"
+			default:       "Common"
+			version_added: 2.5
+		}
+		pools: {
+			description: [
+				"The pools that you want associated with the Wide IP.",
+				"If C(ratio) is not provided when creating a new Wide IP, it will default to 1.",
+			]
+
+			type: "list"
+			suboptions: {
+				name: {
+					description: [
+						"The name of the pool to include.",
+					]
+					type:     "str"
+					required: true
+				}
+				ratio: {
+					description: [
+						"Ratio for the pool.",
+						"The system uses this number with the Ratio load balancing method.",
+					]
+					type: "int"
+				}
+			}
+			version_added: 2.5
+		}
+		irules: {
+			description: [
+				"List of rules to be applied.",
+				"If you want to remove all existing iRules, specify a single empty value; C(\"\"). See the documentation for an example.",
+			]
+
+			type:          "list"
+			version_added: 2.6
+		}
+		aliases: {
+			description: [
+				"Specifies alternate domain names for the web site content you are load balancing.",
+				"You can use the same wildcard characters for aliases as you can for actual wide IP names.",
+			]
+
+			type:          "list"
+			version_added: 2.7
+		}
+		last_resort_pool: {
+			description: [
+				"Specifies which GTM pool, for the system to use as the last resort pool for the wide IP.",
+				"The valid pools for this parameter are those with the C(type) specified in this module.",
+			]
+
+			type:          "str"
+			version_added: 2.8
+		}
+	}
+	notes: [
+		"Support for TMOS versions below v12.x has been deprecated for this module, and will be removed in Ansible 2.12.",
+	]
+	extends_documentation_fragment: "f5"
+	author: [
+		"Tim Rupp (@caphrim007)",
+		"Wojciech Wypior (@wojtek0806)",
+	]
+}

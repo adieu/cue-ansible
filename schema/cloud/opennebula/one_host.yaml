@@ -1,0 +1,62 @@
+
+---
+module: one_host
+
+short_description: Manages OpenNebula Hosts
+
+version_added: "2.6"
+
+requirements:
+    - pyone
+
+description:
+    - "Manages OpenNebula Hosts"
+
+options:
+    name:
+        description:
+            - Hostname of the machine to manage.
+        required: true
+    state:
+        description:
+            - Takes the host to the desired lifecycle state.
+            - If C(absent) the host will be deleted from the cluster.
+            - If C(present) the host will be created in the cluster (includes C(enabled), C(disabled) and C(offline) states).
+            - If C(enabled) the host is fully operational.
+            - C(disabled), e.g. to perform maintenance operations.
+            - C(offline), host is totally offline.
+        choices:
+            - absent
+            - present
+            - enabled
+            - disabled
+            - offline
+        default: present
+    im_mad_name:
+        description:
+            - The name of the information manager, this values are taken from the oned.conf with the tag name IM_MAD (name)
+        default: kvm
+    vmm_mad_name:
+        description:
+            - The name of the virtual machine manager mad name, this values are taken from the oned.conf with the tag name VM_MAD (name)
+        default: kvm
+    cluster_id:
+        description:
+            - The cluster ID.
+        default: 0
+    cluster_name:
+        description:
+            - The cluster specified by name.
+    labels:
+        description:
+            - The labels for this host.
+    template:
+        description:
+            - The template or attribute changes to merge into the host template.
+        aliases:
+            - attributes
+
+extends_documentation_fragment: opennebula
+
+author:
+    - Rafael del Valle (@rvalle)

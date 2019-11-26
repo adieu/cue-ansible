@@ -1,0 +1,286 @@
+package ansible
+
+module: meraki_ssid: {
+	module:            "meraki_ssid"
+	short_description: "Manage wireless SSIDs in the Meraki cloud"
+	version_added:     "2.7"
+	description: [
+		"Allows for management of SSIDs in a Meraki wireless environment.",
+	]
+	notes: [
+		"Deleting an SSID does not delete RADIUS servers.",
+	]
+	options: {
+		state: {
+			description: [
+				"Specifies whether SNMP information should be queried or modified.",
+			]
+			type: "str"
+			choices: ["absent", "query", "present"]
+			default: "present"
+		}
+		number: {
+			description: [
+				"SSID number within network.",
+			]
+			type: "int"
+			aliases: ["ssid_number"]
+		}
+		name: {
+			description: [
+				"Name of SSID.",
+			]
+			type: "str"
+		}
+		net_name: {
+			description: [
+				"Name of network.",
+			]
+			type: "str"
+		}
+		net_id: {
+			description: [
+				"ID of network.",
+			]
+			type: "str"
+		}
+		enabled: {
+			description: [
+				"Enable or disable SSID network.",
+			]
+			type: "bool"
+		}
+		auth_mode: {
+			description: [
+				"Set authentication mode of network.",
+			]
+			type: "str"
+			choices: ["open", "psk", "open-with-radius", "8021x-meraki", "8021x-radius"]
+		}
+		encryption_mode: {
+			description: [
+				"Set encryption mode of network.",
+			]
+			type: "str"
+			choices: ["wpa", "eap", "wpa-eap"]
+		}
+		psk: {
+			description: [
+				"Password for wireless network.",
+				"Requires auth_mode to be set to psk.",
+			]
+			type: "str"
+		}
+		wpa_encryption_mode: {
+			description: [
+				"Encryption mode within WPA2 specification.",
+			]
+			type: "str"
+			choices: ["WPA1 and WPA2", "WPA2 only"]
+		}
+		splash_page: {
+			description: [
+				"Set to enable splash page and specify type of splash.",
+			]
+			type: "str"
+			choices: [
+				"None",
+				"Click-through splash page",
+				"Billing",
+				"Password-protected with Meraki RADIUS",
+				"Password-protected with custom RADIUS",
+				"Password-protected with Active Directory",
+				"Password-protected with LDAP",
+				"SMS authentication",
+				"Systems Manager Sentry",
+				"Facebook Wi-Fi",
+				"Google OAuth",
+				"Sponsored guest",
+			]
+		}
+		radius_servers: {
+			description: [
+				"List of RADIUS servers.",
+			]
+			type: "list"
+			suboptions: {
+				host: {
+					description: [
+						"IP address or hostname of RADIUS server.",
+					]
+					type: "str"
+				}
+				port: {
+					description: [
+						"Port number RADIUS server is listening to.",
+					]
+					type: "int"
+				}
+				secret: {
+					description: [
+						"RADIUS password.",
+						"Setting password is not idempotent.",
+					]
+					type: "str"
+				}
+			}
+		}
+		radius_coa_enabled: {
+			description: [
+				"Enable or disable RADIUS CoA (Change of Authorization) on SSID.",
+			]
+			type: "bool"
+		}
+		radius_failover_policy: {
+			description: [
+				"Set client access policy in case RADIUS servers aren't available.",
+			]
+			type: "str"
+			choices: ["Deny access", "Allow access"]
+		}
+		radius_load_balancing_policy: {
+			description: [
+				"Set load balancing policy when multiple RADIUS servers are specified.",
+			]
+			type: "str"
+			choices: ["Strict priority order", "Round robin"]
+		}
+		radius_accounting_enabled: {
+			description: [
+				"Enable or disable RADIUS accounting.",
+			]
+			type: "bool"
+		}
+		radius_accounting_servers: {
+			description: [
+				"List of RADIUS servers for RADIUS accounting.",
+			]
+			type: "list"
+			suboptions: {
+				host: {
+					description: [
+						"IP address or hostname of RADIUS server.",
+					]
+					type: "str"
+				}
+				port: {
+					description: [
+						"Port number RADIUS server is listening to.",
+					]
+					type: "int"
+				}
+				secret: {
+					description: [
+						"RADIUS password.",
+						"Setting password is not idempotent.",
+					]
+					type: "str"
+				}
+			}
+		}
+		ip_assignment_mode: {
+			description: [
+				"Method of which SSID uses to assign IP addresses.",
+			]
+			type: "str"
+			choices: [
+				"NAT mode",
+				"Bridge mode",
+				"Layer 3 roaming",
+				"Layer 3 roaming with a concentrator",
+				"VPN",
+			]
+		}
+		use_vlan_tagging: {
+			description: [
+				"Set whether to use VLAN tagging.",
+				"Requires C(default_vlan_id) to be set.",
+			]
+			type: "bool"
+		}
+		default_vlan_id: {
+			description: [
+				"Default VLAN ID.",
+				"Requires C(ip_assignment_mode) to be C(Bridge mode) or C(Layer 3 roaming).",
+			]
+			type: "str"
+		}
+		vlan_id: {
+			description: [
+				"ID number of VLAN on SSID.",
+				"Requires C(ip_assignment_mode) to be C(ayer 3 roaming with a concentrator) or C(VPN).",
+			]
+			type: "int"
+		}
+		ap_tags_vlan_ids: {
+			description: [
+				"List of VLAN tags.",
+				"Requires C(ip_assignment_mode) to be C(Bridge mode) or C(Layer 3 roaming).",
+				"Requires C(use_vlan_tagging) to be C(True).",
+			]
+			type: "list"
+			suboptions: {
+				tags: {
+					description: [
+						"List of AP tags.",
+					]
+					type: "list"
+				}
+				vlan_id: {
+					description: [
+						"Numerical identifier that is assigned to the VLAN.",
+					]
+					type: "int"
+				}
+			}
+		}
+		walled_garden_enabled: {
+			description: [
+				"Enable or disable walled garden functionality.",
+			]
+			type: "bool"
+		}
+		walled_garden_ranges: {
+			description: [
+				"List of walled garden ranges.",
+			]
+			type: "list"
+		}
+		min_bitrate: {
+			description: [
+				"Minimum bitrate (Mbps) allowed on SSID.",
+			]
+			type: "float"
+			choices: [1, 2, 5.5, 6, 9, 11, 12, 18, 24, 36, 48, 54]
+		}
+		band_selection: {
+			description: [
+				"Set band selection mode.",
+			]
+			type: "str"
+			choices: ["Dual band operation", "5 GHz band only", "Dual band operation with Band Steering"]
+		}
+		per_client_bandwidth_limit_up: {
+			description: [
+				"Maximum bandwidth in Mbps devices on SSID can upload.",
+			]
+			type: "int"
+		}
+		per_client_bandwidth_limit_down: {
+			description: [
+				"Maximum bandwidth in Mbps devices on SSID can download.",
+			]
+			type: "int"
+		}
+		concentrator_network_id: {
+			description: [
+				"The concentrator to use for 'Layer 3 roaming with a concentrator' or 'VPN'.",
+			]
+			type: "str"
+		}
+	}
+	author: [
+		"Kevin Breit (@kbreit)",
+	]
+	extends_documentation_fragment: "meraki"
+}

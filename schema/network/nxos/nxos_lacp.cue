@@ -1,0 +1,66 @@
+package ansible
+
+module: nxos_lacp: {
+	module:            "nxos_lacp"
+	version_added:     2.9
+	short_description: "Manage Global Link Aggregation Control Protocol (LACP) on Cisco NX-OS devices."
+	description:       "This module manages Global Link Aggregation Control Protocol (LACP) on NX-OS devices."
+	author:            "Trishna Guha (@trishnaguha)"
+	notes: [
+		"Tested against NXOS 7.3.(0)D1(1) on VIRL.",
+		"Feature lacp should be enabled for this module.",
+	]
+	options: {
+		config: {
+			description: "LACP global options."
+			type:        "dict"
+			suboptions: system: {
+				description: [
+					"LACP system options",
+				]
+				type: "dict"
+				suboptions: {
+					priority: {
+						description: [
+							"The system priority to use in LACP negotiations.",
+						]
+						type: "int"
+					}
+					mac: {
+						description: [
+							"MAC address to be used for the LACP Protocol exchanges",
+						]
+						type: "dict"
+						suboptions: {
+							address: {
+								description: [
+									"MAC-address (FORMAT :xxxx.xxxx.xxxx).",
+								]
+								type: "str"
+							}
+							role: {
+								description: [
+									"The role for the Switch.",
+								]
+								type: "str"
+								choices: ["primary", "secondary"]
+							}
+						}
+					}
+				}
+			}
+		}
+		state: {
+			description: [
+				"The state of the configuration after module completion.",
+			]
+			type: "str"
+			choices: [
+				"merged",
+				"replaced",
+				"deleted",
+			]
+			default: "merged"
+		}
+	}
+}

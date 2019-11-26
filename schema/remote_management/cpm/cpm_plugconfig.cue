@@ -1,0 +1,90 @@
+package ansible
+
+module: cpm_plugconfig: {
+	module:            "cpm_plugconfig"
+	version_added:     "2.8"
+	author:            "Western Telematic Inc. (@wtinetworkgear)"
+	short_description: "Get and Set Plug Parameters on WTI OOB and PDU power devices"
+	description: [
+		"Get and Set Plug Parameters on WTI OOB and PDU devices",
+	]
+	options: {
+		cpm_action: {
+			description: [
+				"This is the Action to send the module.",
+			]
+			required: true
+			choices: ["getplugconfig", "setplugconfig"]
+		}
+		cpm_url: {
+			description: [
+				"This is the URL of the WTI device to send the module.",
+			]
+			required: true
+		}
+		cpm_username: description: [
+			"This is the Username of the WTI device to send the module.",
+		]
+		cpm_password: description: [
+			"This is the Password of the WTI device to send the module.",
+		]
+		use_https: {
+			description: [
+				"Designates to use an https connection or http connection.",
+			]
+			required: false
+			type:     "bool"
+			default:  true
+		}
+		validate_certs: {
+			description: [
+				"If false, SSL certificates will not be validated. This should only be used",
+				"on personally controlled sites using self-signed certificates.",
+			]
+			required: false
+			type:     "bool"
+			default:  true
+		}
+		use_proxy: {
+			description: "Flag to control if the lookup will observe HTTP proxy environment variables when present."
+			required:    false
+			type:        "bool"
+			default:     false
+		}
+		plug_id: {
+			description: [
+				"This is the plug number that is to be manipulated For the getplugconfig command, the plug_id 'all' will return the status of all the plugs the user has rights to access.",
+			]
+
+			required: true
+		}
+		plug_name: {
+			description: [
+				"The new name of the Plug.",
+			]
+			required: false
+		}
+		plug_bootdelay: {
+			description: [
+				"On a reboot command, this is the time when a plug will turn on power, after it has been turned off. 0='0.5 Secs', 1='1 Sec', 2='2 Sec', 3='5 Sec', 4='15 Sec', 5='30 Sec', 6='1 Min', 7='2 Mins', 8='3 Mins', 9='5 Mins'.",
+			]
+
+			required: false
+			choices: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+		}
+		plug_default: {
+			description: [
+				"What the Plugs default state is when the device starts. 0 - Off, 1 - On.",
+			]
+			required: false
+			choices: [0, 1]
+		}
+		plug_bootpriority: {
+			description: [
+				"Prioritizes which plug gets its state changed first. The lower the number the higher the priority. Valid value can from 1 to the maximum number of plugs of the WTI unit.",
+			]
+
+			required: false
+		}
+	}
+}

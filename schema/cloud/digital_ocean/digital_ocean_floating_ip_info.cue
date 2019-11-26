@@ -1,0 +1,17 @@
+package ansible
+
+module: digital_ocean_floating_ip_info: {
+	module:            "digital_ocean_floating_ip_info"
+	short_description: "DigitalOcean Floating IPs information"
+	description: [
+		"This module can be used to fetch DigitalOcean Floating IPs information.",
+		"This module was called C(digital_ocean_floating_ip_facts) before Ansible 2.9. The usage did not change.",
+	]
+	version_added:                  "2.5"
+	author:                         "Patrick Marques (@pmarques)"
+	extends_documentation_fragment: "digital_ocean.documentation"
+	notes: [
+		"Version 2 of DigitalOcean API is used.",
+	]
+	requirements: ["python >= 2.6"]
+}

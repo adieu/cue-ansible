@@ -1,0 +1,63 @@
+package ansible
+
+module: ldap_attr: {
+	module:            "ldap_attr"
+	short_description: "Add or remove LDAP attribute values"
+	description: [
+		"Add or remove LDAP attribute values.",
+	]
+	notes: [
+		"This only deals with attributes on existing entries. To add or remove whole entries, see M(ldap_entry).",
+		"The default authentication settings will attempt to use a SASL EXTERNAL bind over a UNIX domain socket. This works well with the default Ubuntu install for example, which includes a cn=peercred,cn=external,cn=auth ACL rule allowing root to modify the server configuration. If you need to use a simple bind to access your server, pass the credentials in I(bind_dn) and I(bind_pw).",
+		"For I(state=present) and I(state=absent), all value comparisons are performed on the server for maximum accuracy. For I(state=exact), values have to be compared in Python, which obviously ignores LDAP matching rules. This should work out in most cases, but it is theoretically possible to see spurious changes when target and actual values are semantically identical but lexically distinct.",
+	]
+
+	version_added: "2.3"
+	deprecated: {
+		removed_in:  "2.14"
+		why:         "The current \"ldap_attr\" module does not support LDAP attribute insertions or deletions with objectClass dependencies."
+		alternative: "Use M(ldap_attrs) instead. Deprecated in 2.10."
+	}
+	author: [
+		"Jiri Tyr (@jtyr)",
+	]
+	requirements: [
+		"python-ldap",
+	]
+	options: {
+		name: {
+			description: [
+				"The name of the attribute to modify.",
+			]
+			type:     "str"
+			required: true
+		}
+		state: {
+			description: [
+				"The state of the attribute values.",
+				"If C(present), all given values will be added if they're missing.",
+				"If C(absent), all given values will be removed if present.",
+				"If C(exact), the set of values will be forced to exactly those provided and no others.",
+				"If I(state=exact) and I(value) is an empty list, all values for this attribute will be removed.",
+			]
+			type: "str"
+			choices: ["absent", "exact", "present"]
+			default: "present"
+		}
+		values: {
+			description: [
+				"The value(s) to add or remove. This can be a string or a list of strings. The complex argument format is required in order to pass a list of strings (see examples).",
+			]
+
+			type:     "raw"
+			required: true
+		}
+		params: {
+			description: [
+				"Additional module parameters.",
+			]
+			type: "dict"
+		}
+	}
+	extends_documentation_fragment: ["ldap.documentation"]
+}

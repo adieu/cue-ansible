@@ -1,0 +1,60 @@
+
+
+module: na_elementsw_vlan
+
+short_description: NetApp Element Software Manage VLAN
+extends_documentation_fragment:
+    - netapp.solidfire
+version_added: '2.7'
+author: NetApp Ansible Team (@carchi8py) <ng-ansibleteam@netapp.com>
+description:
+- Create, delete, modify VLAN
+
+options:
+
+    state:
+      description:
+      - Whether the specified vlan should exist or not.
+      choices: ['present', 'absent']
+      default: present
+
+    vlan_tag:
+      description:
+      - Virtual Network Tag
+      required: true
+
+    name:
+      description:
+      - User defined name for the new VLAN
+      - Name of the vlan is unique
+      - Required for create
+
+    svip:
+      description:
+      - Storage virtual IP which is unique
+      - Required for create
+
+    address_blocks:
+      description:
+      - List of address blocks for the VLAN
+      - Each address block contains the starting IP address and size for the block
+      - Required for create
+
+    netmask:
+      description:
+      - Netmask for the VLAN
+      - Required for create
+
+    gateway:
+      description:
+      - Gateway for the VLAN
+
+    namespace:
+      description:
+      - Enable or disable namespaces
+      type: bool
+
+    attributes:
+      description:
+      - Dictionary of attributes with name and value for each attribute
+

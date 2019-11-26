@@ -1,0 +1,136 @@
+package ansible
+
+module: na_elementsw_network_interfaces: {
+	module: "na_elementsw_network_interfaces"
+
+	short_description: "NetApp Element Software Configure Node Network Interfaces"
+	extends_documentation_fragment: [
+		"netapp.solidfire",
+	]
+	version_added: "2.7"
+	author:        "NetApp Ansible Team (@carchi8py) <ng-ansibleteam@netapp.com>"
+	description: [
+		"Configure Element SW Node Network Interfaces for Bond 1G and 10G IP address.",
+	]
+
+	options: {
+		method: {
+			description: [
+				"Type of Method used to configure the interface.",
+				"method depends on other settings such as the use of a static IP address, which will change the method to static.",
+				"loopback - Used to define the IPv4 loopback interface.",
+				"manual - Used to define interfaces for which no configuration is done by default.",
+				"dhcp - May be used to obtain an IP address via DHCP.",
+				"static - Used to define Ethernet interfaces with statically allocated IPv4 addresses.",
+			]
+			choices: ["loopback", "manual", "dhcp", "static"]
+			required: true
+		}
+
+		ip_address_1g: {
+			description: [
+				"IP address for the 1G network.",
+			]
+			required: true
+		}
+
+		ip_address_10g: {
+			description: [
+				"IP address for the 10G network.",
+			]
+			required: true
+		}
+
+		subnet_1g: {
+			description: [
+				"1GbE Subnet Mask.",
+			]
+			required: true
+		}
+
+		subnet_10g: {
+			description: [
+				"10GbE Subnet Mask.",
+			]
+			required: true
+		}
+
+		gateway_address_1g: {
+			description: [
+				"Router network address to send packets out of the local network.",
+			]
+			required: true
+		}
+
+		gateway_address_10g: {
+			description: [
+				"Router network address to send packets out of the local network.",
+			]
+			required: true
+		}
+
+		mtu_1g: {
+			description: [
+				"Maximum Transmission Unit for 1GbE, Largest packet size that a network protocol can transmit.",
+				"Must be greater than or equal to 1500 bytes.",
+			]
+			default: "1500"
+		}
+
+		mtu_10g: {
+			description: [
+				"Maximum Transmission Unit for 10GbE, Largest packet size that a network protocol can transmit.",
+				"Must be greater than or equal to 1500 bytes.",
+			]
+			default: "1500"
+		}
+
+		dns_nameservers: description: [
+			"List of addresses for domain name servers.",
+		]
+
+		dns_search_domains: description: [
+			"List of DNS search domains.",
+		]
+
+		bond_mode_1g: {
+			description: [
+				"Bond mode for 1GbE configuration.",
+			]
+			choices: ["ActivePassive", "ALB", "LACP"]
+			default: "ActivePassive"
+		}
+
+		bond_mode_10g: {
+			description: [
+				"Bond mode for 10GbE configuration.",
+			]
+			choices: ["ActivePassive", "ALB", "LACP"]
+			default: "ActivePassive"
+		}
+
+		lacp_1g: {
+			description: [
+				"Link Aggregation Control Protocol useful only if LACP is selected as the Bond Mode.",
+				"Slow - Packets are transmitted at 30 second intervals.",
+				"Fast - Packets are transmitted in 1 second intervals.",
+			]
+			choices: ["Fast", "Slow"]
+			default: "Slow"
+		}
+
+		lacp_10g: {
+			description: [
+				"Link Aggregation Control Protocol useful only if LACP is selected as the Bond Mode.",
+				"Slow - Packets are transmitted at 30 second intervals.",
+				"Fast - Packets are transmitted in 1 second intervals.",
+			]
+			choices: ["Fast", "Slow"]
+			default: "Slow"
+		}
+
+		virtual_network_tag: description: [
+			"This is the primary network tag. All nodes in a cluster have the same VLAN tag.",
+		]
+	}
+}

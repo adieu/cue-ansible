@@ -1,0 +1,55 @@
+package ansible
+
+module: azure_rm_postgresqlfirewallrule: {
+	module:            "azure_rm_postgresqlfirewallrule"
+	version_added:     "2.8"
+	short_description: "Manage PostgreSQL firewall rule instance"
+	description: [
+		"Create, update and delete instance of PostgreSQL firewall rule.",
+	]
+
+	options: {
+		resource_group: {
+			description: [
+				"The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.",
+			]
+			required: true
+		}
+		server_name: {
+			description: [
+				"The name of the server.",
+			]
+			required: true
+		}
+		name: {
+			description: [
+				"The name of the PostgreSQL firewall rule.",
+			]
+			required: true
+		}
+		start_ip_address: description: [
+			"The start IP address of the PostgreSQL firewall rule. Must be IPv4 format.",
+		]
+		end_ip_address: description: [
+			"The end IP address of the PostgreSQL firewall rule. Must be IPv4 format.",
+		]
+		state: {
+			description: [
+				"Assert the state of the PostgreSQL firewall rule. Use C(present) to create or update a PostgreSQL firewall rule and C(absent) to delete it.",
+			]
+			default: "present"
+			choices: [
+				"absent",
+				"present",
+			]
+		}
+	}
+
+	extends_documentation_fragment: [
+		"azure",
+	]
+
+	author: [
+		"Zim Kalinowski (@zikalino)",
+	]
+}

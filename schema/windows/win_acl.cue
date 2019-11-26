@@ -1,0 +1,92 @@
+package ansible
+
+module: win_acl: {
+	module:            "win_acl"
+	version_added:     "2.0"
+	short_description: "Set file/directory/registry permissions for a system user or group"
+	description: [
+		"Add or remove rights/permissions for a given user or group for the specified file, folder, registry key or AppPool identifies.",
+	]
+
+	options: {
+		path: {
+			description: [
+				"The path to the file or directory.",
+			]
+			type:     "str"
+			required: true
+		}
+		user: {
+			description: [
+				"User or Group to add specified rights to act on src file/folder or registry key.",
+			]
+
+			type:     "str"
+			required: true
+		}
+		state: {
+			description: [
+				"Specify whether to add C(present) or remove C(absent) the specified access rule.",
+			]
+			type: "str"
+			choices: ["absent", "present"]
+			default: "present"
+		}
+		type: {
+			description: [
+				"Specify whether to allow or deny the rights specified.",
+			]
+			type:     "str"
+			required: true
+			choices: ["allow", "deny"]
+		}
+		rights: {
+			description: [
+				"The rights/permissions that are to be allowed/denied for the specified user or group for the item at C(path).",
+				"If C(path) is a file or directory, rights can be any right under MSDN FileSystemRights U(https://msdn.microsoft.com/en-us/library/system.security.accesscontrol.filesystemrights.aspx).",
+				"If C(path) is a registry key, rights can be any right under MSDN RegistryRights U(https://msdn.microsoft.com/en-us/library/system.security.accesscontrol.registryrights.aspx).",
+			]
+
+			type:     "str"
+			required: true
+		}
+		inherit: {
+			description: [
+				"Inherit flags on the ACL rules.",
+				"Can be specified as a comma separated list, e.g. C(ContainerInherit), C(ObjectInherit).",
+				"For more information on the choices see MSDN InheritanceFlags enumeration at U(https://msdn.microsoft.com/en-us/library/system.security.accesscontrol.inheritanceflags.aspx).",
+				"Defaults to C(ContainerInherit, ObjectInherit) for Directories.",
+			]
+			type: "str"
+			choices: ["ContainerInherit", "ObjectInherit"]
+		}
+		propagation: {
+			description: [
+				"Propagation flag on the ACL rules.",
+				"For more information on the choices see MSDN PropagationFlags enumeration at U(https://msdn.microsoft.com/en-us/library/system.security.accesscontrol.propagationflags.aspx).",
+			]
+
+			type: "str"
+			choices: ["InheritOnly", "None", "NoPropagateInherit"]
+			default: "None"
+		}
+	}
+	notes: [
+		"If adding ACL's for AppPool identities (available since 2.3), the Windows Feature \"Web-Scripting-Tools\" must be enabled.",
+	]
+
+	seealso: [{
+		module: "win_acl_inheritance"
+	}, {
+		module: "win_file"
+	}, {
+		module: "win_owner"
+	}, {
+		module: "win_stat"
+	}]
+	author: [
+		"Phil Schwartz (@schwartzmx)",
+		"Trond Hindenes (@trondhindenes)",
+		"Hans-Joachim Kliemeck (@h0nIg)",
+	]
+}

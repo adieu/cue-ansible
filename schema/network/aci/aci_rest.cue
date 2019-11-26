@@ -1,0 +1,71 @@
+package ansible
+
+module: aci_rest: {
+	module:            "aci_rest"
+	short_description: "Direct access to the Cisco APIC REST API"
+	description: [
+		"Enables the management of the Cisco ACI fabric through direct access to the Cisco APIC REST API.",
+		"Thanks to the idempotent nature of the APIC, this module is idempotent and reports changes.",
+	]
+	version_added: "2.4"
+	requirements: [
+		"lxml (when using XML payload)",
+		"xmljson >= 0.1.8 (when using XML payload)",
+		"python 2.7+ (when using xmljson)",
+	]
+	options: {
+		method: {
+			description: [
+				"The HTTP method of the request.",
+				"Using C(delete) is typically used for deleting objects.",
+				"Using C(get) is typically used for querying objects.",
+				"Using C(post) is typically used for modifying objects.",
+			]
+			type: "str"
+			choices: ["delete", "get", "post"]
+			default: "get"
+			aliases: ["action"]
+		}
+		path: {
+			description: [
+				"URI being used to execute API calls.",
+				"Must end in C(.xml) or C(.json).",
+			]
+			type:     "str"
+			required: true
+			aliases: ["uri"]
+		}
+		content: {
+			description: [
+				"When used instead of C(src), sets the payload of the API request directly.",
+				"This may be convenient to template simple requests.",
+				"For anything complex use the C(template) lookup plugin (see examples) or the M(template) module with parameter C(src).",
+			]
+
+			type: "raw"
+		}
+		src: {
+			description: [
+				"Name of the absolute path of the filename that includes the body of the HTTP request being sent to the ACI fabric.",
+				"If you require a templated payload, use the C(content) parameter together with the C(template) lookup plugin, or use M(template).",
+			]
+
+			type: "path"
+			aliases: ["config_file"]
+		}
+	}
+	extends_documentation_fragment: "aci"
+	notes: [
+		"Certain payloads are known not to be idempotent, so be careful when constructing payloads, e.g. using C(status=\"created\") will cause idempotency issues, use C(status=\"modified\") instead. More information in :ref:`the ACI documentation <aci_guide_known_issues>`.",
+		"Certain payloads (and used paths) are known to report no changes happened when changes did happen. This is a known APIC problem and has been reported to the vendor. A workaround for this issue exists. More information in :ref:`the ACI documentation <aci_guide_known_issues>`.",
+		"XML payloads require the C(lxml) and C(xmljson) python libraries. For JSON payloads nothing special is needed.",
+	]
+	seealso: [{
+		module: "aci_tenant"
+	}, {
+		name:        "Cisco APIC REST API Configuration Guide"
+		description: "More information about the APIC REST API."
+		link:        "http://www.cisco.com/c/en/us/td/docs/switches/datacenter/aci/apic/sw/2-x/rest_cfg/2_1_x/b_Cisco_APIC_REST_API_Configuration_Guide.html"
+	}]
+	author: ["Dag Wieers (@dagwieers)"]
+}

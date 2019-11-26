@@ -1,0 +1,75 @@
+package ansible
+
+module: ovirt_host_network: {
+	module:            "ovirt_host_network"
+	short_description: "Module to manage host networks in oVirt/RHV"
+	version_added:     "2.3"
+	author:            "Ondra Machacek (@machacekondra)"
+	description: [
+		"Module to manage host networks in oVirt/RHV.",
+	]
+	options: {
+		name: {
+			description: [
+				"Name of the host to manage networks for.",
+			]
+			required: true
+			aliases: [
+				"host",
+			]
+		}
+		state: {
+			description: [
+				"Should the host be present/absent.",
+			]
+			choices: ["present", "absent"]
+			default: "present"
+		}
+		bond: description: [
+			"Dictionary describing network bond:",
+			"C(name) - Bond name.",
+			"C(mode) - Bonding mode.",
+			"C(options) - Bonding options.",
+			"C(interfaces) - List of interfaces to create a bond.",
+		]
+		interface: description: [
+			"Name of the network interface where logical network should be attached.",
+		]
+		networks: description: [
+			"List of dictionary describing networks to be attached to interface or bond:",
+			"C(name) - Name of the logical network to be assigned to bond or interface.",
+			"C(boot_protocol) - Boot protocol one of the I(none), I(static) or I(dhcp).",
+			"C(address) - IP address in case of I(static) boot protocol is used.",
+			"C(netmask) - Subnet mask in case of I(static) boot protocol is used.",
+			"C(gateway) - Gateway in case of I(static) boot protocol is used.",
+			"C(version) - IP version. Either v4 or v6. Default is v4.",
+		]
+		labels: description: [
+			"List of names of the network label to be assigned to bond or interface.",
+		]
+		check: {
+			description: [
+				"If I(true) verify connectivity between host and engine.",
+				"Network configuration changes will be rolled back if connectivity between engine and the host is lost after changing network configuration.",
+			]
+
+			type: "bool"
+		}
+		save: {
+			description: [
+				"If I(true) network configuration will be persistent, otherwise it is temporary. Default I(true) since Ansible 2.8.",
+			]
+			type:    "bool"
+			default: true
+		}
+		sync_networks: {
+			description: [
+				"If I(true) all networks will be synchronized before modification",
+			]
+			type:          "bool"
+			default:       false
+			version_added: 2.8
+		}
+	}
+	extends_documentation_fragment: "ovirt"
+}

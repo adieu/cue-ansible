@@ -1,0 +1,58 @@
+package ansible
+
+module: rabbitmq_binding: {
+	module:        "rabbitmq_binding"
+	author:        "Manuel Sousa (@manuel-sousa)"
+	version_added: "2.0"
+
+	short_description: "Manage rabbitMQ bindings"
+	description: [
+		"This module uses rabbitMQ REST APIs to create / delete bindings.",
+	]
+	requirements: ["requests >= 1.0.0"]
+	options: {
+		state: {
+			description: [
+				"Whether the bindings should be present or absent.",
+			]
+			choices: ["present", "absent"]
+			default: "present"
+		}
+		name: {
+			description: [
+				"source exchange to create binding on.",
+			]
+			required: true
+			aliases: ["src", "source"]
+		}
+		destination: {
+			description: [
+				"destination exchange or queue for the binding.",
+			]
+			required: true
+			aliases: ["dst", "dest"]
+		}
+		destination_type: {
+			description: [
+				"Either queue or exchange.",
+			]
+			required: true
+			choices: ["queue", "exchange"]
+			aliases: ["type", "dest_type"]
+		}
+		routing_key: {
+			description: [
+				"routing key for the binding.",
+			]
+			default: "#"
+		}
+		arguments: {
+			description: [
+				"extra arguments for exchange. If defined this argument is a key/value dictionary",
+			]
+			required: false
+			default: {}
+		}
+	}
+	extends_documentation_fragment: ["rabbitmq"]
+}

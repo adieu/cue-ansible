@@ -1,0 +1,78 @@
+package ansible
+
+module: net_interface: {
+	module:            "net_interface"
+	version_added:     "2.4"
+	author:            "Ganesh Nalawade (@ganeshrn)"
+	short_description: "Manage Interface on network devices"
+	description: [
+		"This module provides declarative management of Interfaces on network devices.",
+	]
+
+	deprecated: {
+		removed_in:  "2.13"
+		alternative: "Use platform-specific \"[netos]_interfaces\" module"
+		why:         "Updated modules released with more functionality"
+	}
+	extends_documentation_fragment: "network_agnostic"
+	options: {
+		name: {
+			description: [
+				"Name of the Interface.",
+			]
+			required: true
+		}
+		description: description: [
+			"Description of Interface.",
+		]
+		enabled: description: [
+			"Configure interface link status.",
+		]
+		speed: description: [
+			"Interface link speed.",
+		]
+		mtu: description: [
+			"Maximum size of transmit packet.",
+		]
+		duplex: {
+			description: [
+				"Interface link status",
+			]
+			default: "auto"
+			choices: ["full", "half", "auto"]
+		}
+		tx_rate: description: [
+			"Transmit rate in bits per second (bps).",
+			"This is state check parameter only.",
+			"Supports conditionals, see L(Conditionals in Networking Modules,../network/user_guide/network_working_with_command_output.html)",
+		]
+		rx_rate: description: [
+			"Receiver rate in bits per second (bps).",
+			"This is state check parameter only.",
+			"Supports conditionals, see L(Conditionals in Networking Modules,../network/user_guide/network_working_with_command_output.html)",
+		]
+		delay: {
+			description: [
+				"Time in seconds to wait before checking for the operational state on remote device. This wait is applicable for operational state argument which are I(state) with values C(up)/C(down), I(tx_rate) and I(rx_rate).",
+			]
+
+			default: 10
+		}
+		aggregate: description: "List of Interfaces definitions."
+		purge: {
+			description: [
+				"Purge Interfaces not defined in the aggregate parameter. This applies only for logical interface.",
+			]
+
+			default: false
+		}
+		state: {
+			description: [
+				"State of the Interface configuration, C(up) indicates present and operationally up and C(down) indicates present and operationally C(down)",
+			]
+
+			default: "present"
+			choices: ["present", "absent", "up", "down"]
+		}
+	}
+}

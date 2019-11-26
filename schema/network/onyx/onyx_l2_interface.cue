@@ -1,0 +1,40 @@
+package ansible
+
+module: onyx_l2_interface: {
+	module:            "onyx_l2_interface"
+	version_added:     "2.5"
+	author:            "Samer Deeb (@samerd)"
+	short_description: "Manage Layer-2 interface on Mellanox ONYX network devices"
+	description: [
+		"This module provides declarative management of Layer-2 interface on Mellanox ONYX network devices.",
+	]
+
+	options: {
+		name: description: [
+			"Name of the interface.",
+		]
+		aggregate: description: [
+			"List of Layer-2 interface definitions.",
+		]
+		mode: {
+			description: [
+				"Mode in which interface needs to be configured.",
+			]
+			default: "access"
+			choices: ["access", "trunk", "hybrid"]
+		}
+		access_vlan: description: [
+			"Configure given VLAN in access port.",
+		]
+		trunk_allowed_vlans: description: [
+			"List of allowed VLANs in a given trunk port.",
+		]
+		state: {
+			description: [
+				"State of the Layer-2 Interface configuration.",
+			]
+			default: "present"
+			choices: ["present", "absent"]
+		}
+	}
+}

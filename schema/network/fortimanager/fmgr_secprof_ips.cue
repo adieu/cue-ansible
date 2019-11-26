@@ -1,0 +1,521 @@
+package ansible
+
+module: fmgr_secprof_ips: {
+	module:        "fmgr_secprof_ips"
+	version_added: "2.8"
+	notes: [
+		"Full Documentation at U(https://ftnt-ansible-docs.readthedocs.io/en/latest/).",
+	]
+	author: [
+		"Luke Weighall (@lweighall)",
+		"Andrew Welsh (@Ghilli3)",
+		"Jim Huber (@p4r4n0y1ng)",
+	]
+	short_description: "Managing IPS security profiles in FortiManager"
+	description: [
+		"Managing IPS security profiles in FortiManager",
+	]
+
+	options: {
+		adom: {
+			description: [
+				"The ADOM the configuration should belong to.",
+			]
+			required: false
+			default:  "root"
+		}
+
+		mode: {
+			description: [
+				"Sets one of three modes for managing the object.",
+				"Allows use of soft-adds instead of overwriting existing values",
+			]
+			choices: ["add", "set", "delete", "update"]
+			required: false
+			default:  "add"
+		}
+
+		replacemsg_group: {
+			description: [
+				"Replacement message group.",
+			]
+			required: false
+		}
+
+		name: {
+			description: [
+				"Sensor name.",
+			]
+			required: false
+		}
+
+		extended_log: {
+			description: [
+				"Enable/disable extended logging.",
+			]
+			required: false
+			choices: [
+				"disable",
+				"enable",
+			]
+		}
+
+		comment: {
+			description: [
+				"Comment.",
+			]
+			required: false
+		}
+
+		block_malicious_url: {
+			description: [
+				"Enable/disable malicious URL blocking.",
+			]
+			required: false
+			choices: [
+				"disable",
+				"enable",
+			]
+		}
+
+		entries: {
+			description: [
+				"EXPERTS ONLY! KNOWLEDGE OF FMGR JSON API IS REQUIRED!",
+				"List of multiple child objects to be added. Expects a list of dictionaries.",
+				"Dictionaries must use FortiManager API parameters, not the ansible ones listed below.",
+				"If submitted, all other prefixed sub-parameters ARE IGNORED.",
+				"This object is MUTUALLY EXCLUSIVE with its options.",
+				"We expect that you know what you are doing with these list parameters, and are leveraging the JSON API Guide.",
+				"WHEN IN DOUBT, USE THE SUB OPTIONS BELOW INSTEAD TO CREATE OBJECTS WITH MULTIPLE TASKS",
+			]
+			required: false
+		}
+
+		entries_action: {
+			description: [
+				"Action taken with traffic in which signatures are detected.",
+			]
+			required: false
+			choices: [
+				"pass",
+				"block",
+				"reset",
+				"default",
+			]
+		}
+
+		entries_application: {
+			description: [
+				"Applications to be protected. set application ? lists available applications. all includes all applications. other includes all unlisted applications.",
+			]
+
+			required: false
+		}
+
+		entries_location: {
+			description: [
+				"Protect client or server traffic.",
+			]
+			required: false
+		}
+
+		entries_log: {
+			description: [
+				"Enable/disable logging of signatures included in filter.",
+			]
+			required: false
+			choices: [
+				"disable",
+				"enable",
+			]
+		}
+
+		entries_log_attack_context: {
+			description: [
+				"Enable/disable logging of attack context| URL buffer, header buffer, body buffer, packet buffer.",
+			]
+			required: false
+			choices: [
+				"disable",
+				"enable",
+			]
+		}
+
+		entries_log_packet: {
+			description: [
+				"Enable/disable packet logging. Enable to save the packet that triggers the filter. You can download the packets in pcap format for diagnostic use.",
+			]
+
+			required: false
+			choices: [
+				"disable",
+				"enable",
+			]
+		}
+
+		entries_os: {
+			description: [
+				"Operating systems to be protected.  all includes all operating systems. other includes all unlisted operating systems.",
+			]
+
+			required: false
+		}
+
+		entries_protocol: {
+			description: [
+				"Protocols to be examined. set protocol ? lists available protocols. all includes all protocols. other includes all unlisted protocols.",
+			]
+
+			required: false
+		}
+
+		entries_quarantine: {
+			description: [
+				"Quarantine method.",
+			]
+			required: false
+			choices: [
+				"none",
+				"attacker",
+			]
+		}
+
+		entries_quarantine_expiry: {
+			description: [
+				"Duration of quarantine.",
+			]
+			required: false
+		}
+
+		entries_quarantine_log: {
+			description: [
+				"Enable/disable quarantine logging.",
+			]
+			required: false
+			choices: [
+				"disable",
+				"enable",
+			]
+		}
+
+		entries_rate_count: {
+			description: [
+				"Count of the rate.",
+			]
+			required: false
+		}
+
+		entries_rate_duration: {
+			description: [
+				"Duration (sec) of the rate.",
+			]
+			required: false
+		}
+
+		entries_rate_mode: {
+			description: [
+				"Rate limit mode.",
+			]
+			required: false
+			choices: [
+				"periodical",
+				"continuous",
+			]
+		}
+
+		entries_rate_track: {
+			description: [
+				"Track the packet protocol field.",
+			]
+			required: false
+			choices: [
+				"none",
+				"src-ip",
+				"dest-ip",
+				"dhcp-client-mac",
+				"dns-domain",
+			]
+		}
+
+		entries_rule: {
+			description: [
+				"Identifies the predefined or custom IPS signatures to add to the sensor.",
+			]
+			required: false
+		}
+
+		entries_severity: {
+			description: [
+				"Relative severity of the signature, from info to critical. Log messages generated by the signature include the severity.",
+			]
+
+			required: false
+		}
+
+		entries_status: {
+			description: [
+				"Status of the signatures included in filter. default enables the filter and only use filters with default status of enable. Filters with default status of disable will not be used.",
+			]
+
+			required: false
+			choices: [
+				"disable",
+				"enable",
+				"default",
+			]
+		}
+
+		entries_exempt_ip_dst_ip: {
+			description: [
+				"Destination IP address and netmask.",
+			]
+			required: false
+		}
+
+		entries_exempt_ip_src_ip: {
+			description: [
+				"Source IP address and netmask.",
+			]
+			required: false
+		}
+
+		filter: {
+			description: [
+				"EXPERTS ONLY! KNOWLEDGE OF FMGR JSON API IS REQUIRED!",
+				"List of multiple child objects to be added. Expects a list of dictionaries.",
+				"Dictionaries must use FortiManager API parameters, not the ansible ones listed below.",
+				"If submitted, all other prefixed sub-parameters ARE IGNORED.",
+				"This object is MUTUALLY EXCLUSIVE with its options.",
+				"We expect that you know what you are doing with these list parameters, and are leveraging the JSON API Guide.",
+				"WHEN IN DOUBT, USE THE SUB OPTIONS BELOW INSTEAD TO CREATE OBJECTS WITH MULTIPLE TASKS",
+			]
+			required: false
+		}
+
+		filter_action: {
+			description: [
+				"Action of selected rules.",
+			]
+			required: false
+			choices: [
+				"pass",
+				"block",
+				"default",
+				"reset",
+			]
+		}
+
+		filter_application: {
+			description: [
+				"Vulnerable application filter.",
+			]
+			required: false
+		}
+
+		filter_location: {
+			description: [
+				"Vulnerability location filter.",
+			]
+			required: false
+		}
+
+		filter_log: {
+			description: [
+				"Enable/disable logging of selected rules.",
+			]
+			required: false
+			choices: [
+				"disable",
+				"enable",
+			]
+		}
+
+		filter_log_packet: {
+			description: [
+				"Enable/disable packet logging of selected rules.",
+			]
+			required: false
+			choices: [
+				"disable",
+				"enable",
+			]
+		}
+
+		filter_name: {
+			description: [
+				"Filter name.",
+			]
+			required: false
+		}
+
+		filter_os: {
+			description: [
+				"Vulnerable OS filter.",
+			]
+			required: false
+		}
+
+		filter_protocol: {
+			description: [
+				"Vulnerable protocol filter.",
+			]
+			required: false
+		}
+
+		filter_quarantine: {
+			description: [
+				"Quarantine IP or interface.",
+			]
+			required: false
+			choices: [
+				"none",
+				"attacker",
+			]
+		}
+
+		filter_quarantine_expiry: {
+			description: [
+				"Duration of quarantine in minute.",
+			]
+			required: false
+		}
+
+		filter_quarantine_log: {
+			description: [
+				"Enable/disable logging of selected quarantine.",
+			]
+			required: false
+			choices: [
+				"disable",
+				"enable",
+			]
+		}
+
+		filter_severity: {
+			description: [
+				"Vulnerability severity filter.",
+			]
+			required: false
+		}
+
+		filter_status: {
+			description: [
+				"Selected rules status.",
+			]
+			required: false
+			choices: [
+				"disable",
+				"enable",
+				"default",
+			]
+		}
+
+		override: {
+			description: [
+				"EXPERTS ONLY! KNOWLEDGE OF FMGR JSON API IS REQUIRED!",
+				"List of multiple child objects to be added. Expects a list of dictionaries.",
+				"Dictionaries must use FortiManager API parameters, not the ansible ones listed below.",
+				"If submitted, all other prefixed sub-parameters ARE IGNORED.",
+				"This object is MUTUALLY EXCLUSIVE with its options.",
+				"We expect that you know what you are doing with these list parameters, and are leveraging the JSON API Guide.",
+				"WHEN IN DOUBT, USE THE SUB OPTIONS BELOW INSTEAD TO CREATE OBJECTS WITH MULTIPLE TASKS",
+			]
+			required: false
+		}
+
+		override_action: {
+			description: [
+				"Action of override rule.",
+			]
+			required: false
+			choices: [
+				"pass",
+				"block",
+				"reset",
+			]
+		}
+
+		override_log: {
+			description: [
+				"Enable/disable logging.",
+			]
+			required: false
+			choices: [
+				"disable",
+				"enable",
+			]
+		}
+
+		override_log_packet: {
+			description: [
+				"Enable/disable packet logging.",
+			]
+			required: false
+			choices: [
+				"disable",
+				"enable",
+			]
+		}
+
+		override_quarantine: {
+			description: [
+				"Quarantine IP or interface.",
+			]
+			required: false
+			choices: [
+				"none",
+				"attacker",
+			]
+		}
+
+		override_quarantine_expiry: {
+			description: [
+				"Duration of quarantine in minute.",
+			]
+			required: false
+		}
+
+		override_quarantine_log: {
+			description: [
+				"Enable/disable logging of selected quarantine.",
+			]
+			required: false
+			choices: [
+				"disable",
+				"enable",
+			]
+		}
+
+		override_rule_id: {
+			description: [
+				"Override rule ID.",
+			]
+			required: false
+		}
+
+		override_status: {
+			description: [
+				"Enable/disable status of override rule.",
+			]
+			required: false
+			choices: [
+				"disable",
+				"enable",
+			]
+		}
+
+		override_exempt_ip_dst_ip: {
+			description: [
+				"Destination IP address and netmask.",
+			]
+			required: false
+		}
+
+		override_exempt_ip_src_ip: {
+			description: [
+				"Source IP address and netmask.",
+			]
+			required: false
+		}
+	}
+}

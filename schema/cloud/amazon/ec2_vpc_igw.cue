@@ -1,0 +1,44 @@
+package ansible
+
+module: ec2_vpc_igw: {
+	module:            "ec2_vpc_igw"
+	short_description: "Manage an AWS VPC Internet gateway"
+	description: [
+		"Manage an AWS VPC Internet gateway",
+	]
+	version_added: "2.0"
+	author:        "Robert Estelle (@erydo)"
+	options: {
+		vpc_id: {
+			description: [
+				"The VPC ID for the VPC in which to manage the Internet Gateway.",
+			]
+			required: true
+			type:     "str"
+		}
+		tags: {
+			description: [
+				"A dict of tags to apply to the internet gateway. Any tags currently applied to the internet gateway and not present here will be removed.",
+			]
+			aliases: ["resource_tags"]
+			version_added: "2.4"
+			type:          "dict"
+		}
+		state: {
+			description: [
+				"Create or terminate the IGW",
+			]
+			default: "present"
+			choices: ["present", "absent"]
+			type: "str"
+		}
+	}
+	extends_documentation_fragment: [
+		"aws",
+		"ec2",
+	]
+	requirements: [
+		"botocore",
+		"boto3",
+	]
+}

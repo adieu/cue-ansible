@@ -1,0 +1,61 @@
+package ansible
+
+module: ovirt_host_pm: {
+	module:            "ovirt_host_pm"
+	short_description: "Module to manage power management of hosts in oVirt/RHV"
+	version_added:     "2.3"
+	author:            "Ondra Machacek (@machacekondra)"
+	description: [
+		"Module to manage power management of hosts in oVirt/RHV.",
+	]
+	options: {
+		name: {
+			description: [
+				"Name of the host to manage.",
+			]
+			required: true
+			aliases: ["host"]
+		}
+		state: {
+			description: [
+				"Should the host be present/absent.",
+			]
+			choices: ["present", "absent"]
+			default: "present"
+		}
+		address: description: [
+			"Address of the power management interface.",
+		]
+		username: description: [
+			"Username to be used to connect to power management interface.",
+		]
+		password: description: [
+			"Password of the user specified in C(username) parameter.",
+		]
+		type: description: [
+			"Type of the power management. oVirt/RHV predefined values are I(drac5), I(ipmilan), I(rsa), I(bladecenter), I(alom), I(apc), I(apc_snmp), I(eps), I(wti), I(rsb), I(cisco_ucs), I(drac7), I(hpblade), I(ilo), I(ilo2), I(ilo3), I(ilo4), I(ilo_ssh), but user can have defined custom type.",
+		]
+
+		port: description: [
+			"Power management interface port.",
+		]
+		options: description: [
+			"Dictionary of additional fence agent options (including Power Management slot).",
+			"Additional information about options can be found at U(https://github.com/ClusterLabs/fence-agents/blob/master/doc/FenceAgentAPI.md).",
+		]
+		encrypt_options: {
+			description: [
+				"If I(true) options will be encrypted when send to agent.",
+			]
+			aliases: ["encrypt"]
+			type: "bool"
+		}
+		order: {
+			description: [
+				"Integer value specifying, by default it's added at the end.",
+			]
+			version_added: "2.5"
+		}
+	}
+	extends_documentation_fragment: "ovirt"
+}

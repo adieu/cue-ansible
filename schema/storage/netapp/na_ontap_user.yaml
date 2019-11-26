@@ -1,0 +1,63 @@
+
+
+module: na_ontap_user
+
+short_description: NetApp ONTAP user configuration and management
+extends_documentation_fragment:
+    - netapp.na_ontap
+version_added: '2.6'
+author: NetApp Ansible Team (@carchi8py) <ng-ansibleteam@netapp.com>
+
+description:
+- Create or destroy users.
+
+options:
+  state:
+    description:
+    - Whether the specified user should exist or not.
+    choices: ['present', 'absent']
+    default: 'present'
+  name:
+    description:
+    - The name of the user to manage.
+    required: true
+  applications:
+    description:
+    - List of application to grant access to.
+    required: true
+    type: list
+    choices: ['console', 'http','ontapi','rsh','snmp','service-processor','sp','ssh','telnet']
+    aliases:
+      - application
+  authentication_method:
+    description:
+    - Authentication method for the application.
+    - Not all authentication methods are valid for an application.
+    - Valid authentication methods for each application are as denoted in I(authentication_choices_description).
+    - Password for console application
+    - Password, domain, nsswitch, cert for http application.
+    - Password, domain, nsswitch, cert for ontapi application.
+    - Community for snmp application (when creating SNMPv1 and SNMPv2 users).
+    - The usm and community for snmp application (when creating SNMPv3 users).
+    - Password for sp application.
+    - Password for rsh application.
+    - Password for telnet application.
+    - Password, publickey, domain, nsswitch for ssh application.
+    required: true
+    choices: ['community', 'password', 'publickey', 'domain', 'nsswitch', 'usm', 'cert']
+  set_password:
+    description:
+    - Password for the user account.
+    - It is ignored for creating snmp users, but is required for creating non-snmp users.
+    - For an existing user, this value will be used as the new password.
+  role_name:
+    description:
+    - The name of the role. Required when C(state=present)
+  lock_user:
+    description:
+    - Whether the specified user account is locked.
+    type: bool
+  vserver:
+    description:
+    - The name of the vserver to use.
+    required: true

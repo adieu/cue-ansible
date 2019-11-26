@@ -1,0 +1,15 @@
+package ansible
+
+module: netapp_e_facts: {
+	module:            "netapp_e_facts"
+	short_description: "NetApp E-Series retrieve facts about NetApp E-Series storage arrays"
+	description: [
+		"The netapp_e_facts module returns a collection of facts regarding NetApp E-Series storage arrays.",
+	]
+	version_added: "2.2"
+	author: [
+		"Kevin Hulquest (@hulquest)",
+		"Nathan Swartz (@ndswartz)",
+	]
+	extends_documentation_fragment: ["netapp.eseries"]
+}

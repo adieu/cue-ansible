@@ -1,0 +1,47 @@
+package ansible
+
+module: azure_rm_loganalyticsworkspace_info: {
+	module:            "azure_rm_loganalyticsworkspace_info"
+	version_added:     "2.9"
+	short_description: "Get facts of Azure Log Analytics workspaces"
+	description: [
+		"Get, query Azure Log Analytics workspaces.",
+	]
+	options: {
+		resource_group: {
+			description: [
+				"Name of resource group.",
+			]
+			required: true
+		}
+		name: description: [
+			"Name of the workspace.",
+		]
+		tags: description: [
+			"Limit results by providing a list of tags. Format tags as 'key' or 'key:value'.",
+		]
+		show_intelligence_packs: description: [
+			"Show the intelligence packs for a workspace.",
+			"Note this will cost one more network overhead for each workspace, expected slow response.",
+		]
+		show_management_groups: description: [
+			"Show the management groups for a workspace.",
+			"Note this will cost one more network overhead for each workspace, expected slow response.",
+		]
+		show_shared_keys: description: [
+			"Show the shared keys for a workspace.",
+			"Note this will cost one more network overhead for each workspace, expected slow response.",
+		]
+		show_usages: description: [
+			"Show the list of usages for a workspace.",
+			"Note this will cost one more network overhead for each workspace, expected slow response.",
+		]
+	}
+	extends_documentation_fragment: [
+		"azure",
+	]
+
+	author: [
+		"Yuwei Zhou (@yuwzho)",
+	]
+}

@@ -1,0 +1,97 @@
+package ansible
+
+module: nxos_ospf_vrf: {
+	module:                         "nxos_ospf_vrf"
+	extends_documentation_fragment: "nxos"
+	version_added:                  "2.2"
+	short_description:              "Manages a VRF for an OSPF router."
+	description: [
+		"Manages a VRF for an OSPF router.",
+	]
+	author: "Gabriele Gerbino (@GGabriele)"
+	notes: [
+		"Tested against NXOSv 7.3.(0)D1(1) on VIRL",
+		"Value I(default) restores params default value, if any. Otherwise it removes the existing param configuration.",
+	]
+
+	options: {
+		vrf: {
+			description: [
+				"Name of the resource instance. Valid value is a string. The name 'default' is a valid VRF representing the global OSPF.",
+			]
+
+			default: "default"
+		}
+		ospf: {
+			description: [
+				"Name of the OSPF instance.",
+			]
+			required: true
+		}
+		router_id: description: [
+			"Router Identifier (ID) of the OSPF router VRF instance.",
+		]
+		default_metric: description: [
+			"Specify the default Metric value. Valid values are an integer or the keyword 'default'.",
+		]
+
+		log_adjacency: {
+			description: [
+				"Controls the level of log messages generated whenever a neighbor changes state. Valid values are 'log', 'detail', and 'default'.",
+			]
+
+			choices: ["log", "detail", "default"]
+		}
+		timer_throttle_lsa_start: description: [
+			"Specify the start interval for rate-limiting Link-State Advertisement (LSA) generation. Valid values are an integer, in milliseconds, or the keyword 'default'.",
+		]
+
+		timer_throttle_lsa_hold: description: [
+			"Specify the hold interval for rate-limiting Link-State Advertisement (LSA) generation. Valid values are an integer, in milliseconds, or the keyword 'default'.",
+		]
+
+		timer_throttle_lsa_max: description: [
+			"Specify the max interval for rate-limiting Link-State Advertisement (LSA) generation. Valid values are an integer, in milliseconds, or the keyword 'default'.",
+		]
+
+		timer_throttle_spf_start: description: [
+			"Specify initial Shortest Path First (SPF) schedule delay. Valid values are an integer, in milliseconds, or the keyword 'default'.",
+		]
+
+		timer_throttle_spf_hold: description: [
+			"Specify minimum hold time between Shortest Path First (SPF) calculations. Valid values are an integer, in milliseconds, or the keyword 'default'.",
+		]
+
+		timer_throttle_spf_max: description: [
+			"Specify the maximum wait time between Shortest Path First (SPF) calculations. Valid values are an integer, in milliseconds, or the keyword 'default'.",
+		]
+
+		auto_cost: description: [
+			"Specifies the reference bandwidth used to assign OSPF cost. Valid values are an integer, in Mbps, or the keyword 'default'.",
+		]
+
+		bfd: {
+			description: [
+				"Enables BFD on all OSPF interfaces.",
+				"Dependency: 'feature bfd'",
+			]
+			version_added: "2.9"
+			type:          "str"
+			choices: ["enable", "disable"]
+		}
+		passive_interface: {
+			description: [
+				"Setting to C(yes) will suppress routing update on interface.",
+			]
+			version_added: "2.4"
+			type:          "bool"
+		}
+		state: {
+			description: [
+				"State of ospf vrf configuration.",
+			]
+			default: "present"
+			choices: ["present", "absent"]
+		}
+	}
+}

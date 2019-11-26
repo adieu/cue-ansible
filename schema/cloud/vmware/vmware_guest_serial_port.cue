@@ -1,0 +1,68 @@
+package ansible
+
+module: vmware_guest_serial_port: {
+	module: "vmware_guest_serial_port"
+
+	short_description: "Manage serial ports on an existing VM"
+
+	version_added: "2.10"
+
+	description: [
+		"This module can be used to manage serial ports on an existing VM",
+	]
+
+	options: {
+		name: {
+			description: [
+				"Name of the virtual machine.",
+				"This is a required parameter, if parameter C(uuid) or C(moid) is not supplied.",
+			]
+			type: "str"
+		}
+		uuid: {
+			description: [
+				"UUID of the instance to manage the serial ports, this is VMware's unique identifier.",
+				"This is a required parameter, if parameter C(name) or C(moid) is not supplied.",
+			]
+			type: "str"
+		}
+		moid: {
+			description: [
+				"Managed Object ID of the instance to manage if known, this is a unique identifier only within a single vCenter instance.",
+				"This is required if C(name) or C(uuid) is not supplied.",
+			]
+			type: "str"
+		}
+		use_instance_uuid: {
+			description: [
+				"Whether to use the VMware instance UUID rather than the BIOS UUID.",
+			]
+			default: false
+			type:    "bool"
+		}
+		backings: {
+			type: "list"
+			description: [
+				"A list of backings for serial ports.",
+				"C(backing_type) (str): is required to add or reconfigure or remove an existing serial port.",
+				"Valid attributes are:",
+				" - C(backing_type) (str): Backing type is required for the serial ports to be added or reconfigured or removed.",
+				" - C(state) (str): is required to identify whether we are adding, modifying or removing the serial port. - choices: - C(present): modify an existing serial port. C(backing_type) is required to determine the port. The first matching C(backing_type) and either of C(service_uri) or C(pipe_name) or C(device_name) or C(file_path) will be modified. If there is only one device with a backing type, the secondary details are not needed. We will match the last such device with the given backing type. - C(absent): remove an existing serial port. C(backing_type) is required to determine the port. The first matching C(backing_type) and either of C(service_uri) or C(pipe_name) or C(device_name) or C(file_path) will be removed. If there is only one device with a backing type, the secondary details are not needed. We will match the last such device with the given backing type.",
+				" - C(yield_on_poll) (bool): Enables CPU yield behavior. Default value is true.",
+				" - C(direction) (str): Required when I(backing_type=network). The direction of the connection. - choices: - client - server",
+				" - C(service_uri) (str): Required when I(backing_type=network). Identifies the local host or a system on the network, depending on the value of I(direction). If you use the virtual machine as a server, the URI identifies the host on which the virtual machine runs. In this case, the host name part of the URI should be empty, or it should specify the address of the local host. If you use the virtual machine as a client, the URI identifies the remote system on the network.",
+				" - C(endpoint) (str): Required when I(backing_type=pipe). When you use serial port pipe backing to connect a virtual machine to another process, you must define the endpoints.",
+				" - C(no_rx_loss) (bool): Required when I(backing_type=pipe). Enables optimized data transfer over the pipe. - choices: - client - server",
+				" - C(pipe_name) (str): Required when I(backing_type=pipe).",
+				" - C(device_name) (str): Required when I(backing_type=device).",
+				" - C(file_path) (str): Required when I(backing_type=file). File path for the host file used in this backing. Fully qualified path is required, like <datastore_name>/<file_name>",
+			]
+		}
+	}
+
+	extends_documentation_fragment: [
+		"vmware.documentation",
+	]
+
+	author: ["Anusha Hegde (@anusha94)"]
+}

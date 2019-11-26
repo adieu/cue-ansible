@@ -1,0 +1,41 @@
+package ansible
+
+module: ce_mtu: {
+	module:            "ce_mtu"
+	version_added:     "2.4"
+	short_description: "Manages MTU settings on HUAWEI CloudEngine switches."
+	description: [
+		"Manages MTU settings on HUAWEI CloudEngine switches.",
+	]
+	author: "QijunPan (@QijunPan)"
+	notes: [
+		"Either C(sysmtu) param is required or C(interface) AND C(mtu) params are req'd.",
+		"C(state=absent) unconfigures a given MTU if that value is currently present.",
+		"Recommended connection is C(network_cli).",
+		"This module also works with C(local) connections for legacy playbooks.",
+	]
+	options: {
+		interface: description: [
+			"Full name of interface, i.e. 40GE1/0/22.",
+		]
+		mtu: description: [
+			"MTU for a specific interface. The value is an integer ranging from 46 to 9600, in bytes.",
+		]
+
+		jumbo_max: description: [
+			"Maximum frame size. The default value is 9216. The value is an integer and expressed in bytes. The value range is 1536 to 12224 for the CE12800 and 1536 to 12288 for ToR switches.",
+		]
+
+		jumbo_min: description: [
+			"Non-jumbo frame size threshold. The default value is 1518. The value is an integer that ranges from 1518 to jumbo_max, in bytes.",
+		]
+
+		state: {
+			description: [
+				"Specify desired state of the resource.",
+			]
+			default: "present"
+			choices: ["present", "absent"]
+		}
+	}
+}

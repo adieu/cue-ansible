@@ -1,0 +1,193 @@
+package ansible
+
+module: panos_security_rule: {
+	module:            "panos_security_rule"
+	short_description: "Create security rule policy on PAN-OS devices or Panorama management console."
+	description: [
+		"Security policies allow you to enforce rules and take action, and can be as general or specific as needed. The policy rules are compared against the incoming traffic in sequence, and because the first rule that matches the traffic is applied, the more specific rules must precede the more general ones.",
+	]
+
+	author:        "Ivan Bojer (@ivanbojer), Robert Hagen (@rnh556)"
+	version_added: "2.4"
+	requirements: [
+		"pan-python can be obtained from PyPI U(https://pypi.org/project/pan-python/)",
+		"pandevice can be obtained from PyPI U(https://pypi.org/project/pandevice/)",
+		"xmltodict can be obtained from PyPI U(https://pypi.org/project/xmltodict/)",
+	]
+	deprecated: {
+		alternative: "Use U(https://galaxy.ansible.com/PaloAltoNetworks/paloaltonetworks) instead."
+		removed_in:  "2.12"
+		why:         "Consolidating code base."
+	}
+	notes: [
+		"Checkmode is not supported.",
+		"Panorama is supported.",
+	]
+	options: {
+		ip_address: {
+			description: [
+				"IP address (or hostname) of PAN-OS device being configured.",
+			]
+			required: true
+		}
+		username: {
+			description: [
+				"Username credentials to use for auth unless I(api_key) is set.",
+			]
+			default: "admin"
+		}
+		password: {
+			description: [
+				"Password credentials to use for auth unless I(api_key) is set.",
+			]
+			required: true
+		}
+		api_key: description: [
+			"API key that can be used instead of I(username)/I(password) credentials.",
+		]
+		operation: {
+			description: [
+				"The action to be taken.  Supported values are I(add)/I(update)/I(find)/I(delete).",
+			]
+			default: "add"
+			choices: [
+				"add",
+				"update",
+				"delete",
+				"find",
+			]
+		}
+		category: {
+			description: [
+				"The category.",
+			]
+			type: "list"
+			default: ["any"]
+		}
+		rule_name: {
+			description: [
+				"Name of the security rule.",
+			]
+			required: true
+		}
+		rule_type: {
+			description: [
+				"Type of security rule (version 6.1 of PanOS and above).",
+			]
+			default: "universal"
+		}
+		description: description: [
+			"Description for the security rule.",
+		]
+		tag_name: description: [
+			"Administrative tags that can be added to the rule. Note, tags must be already defined.",
+		]
+		source_zone: {
+			description: [
+				"List of source zones.",
+			]
+			default: "any"
+		}
+		destination_zone: {
+			description: [
+				"List of destination zones.",
+			]
+			default: "any"
+		}
+		source_ip: {
+			description: [
+				"List of source addresses.",
+			]
+			default: "any"
+		}
+		source_user: {
+			description: [
+				"Use users to enforce policy for individual users or a group of users.",
+			]
+			default: "any"
+		}
+		hip_profiles: {
+			description: """
+		- If you are using GlobalProtect with host information profile (HIP) enabled, you can also base the policy on information collected by GlobalProtect. For example, the user access level can be determined HIP that notifies the firewall about the user's local configuration.
+
+		"""
+
+			default: "any"
+		}
+		destination_ip: {
+			description: [
+				"List of destination addresses.",
+			]
+			default: "any"
+		}
+		application: {
+			description: [
+				"List of applications.",
+			]
+			default: "any"
+		}
+		service: {
+			description: [
+				"List of services.",
+			]
+			default: "application-default"
+		}
+		log_start: {
+			description: [
+				"Whether to log at session start.",
+			]
+			type: "bool"
+		}
+		log_end: {
+			description: [
+				"Whether to log at session end.",
+			]
+			default: true
+			type:    "bool"
+		}
+		action: {
+			description: [
+				"Action to apply once rules maches.",
+			]
+			default: "allow"
+		}
+		group_profile: description: """
+		- Security profile group that is already defined in the system. This property supersedes antivirus, vulnerability, spyware, url_filtering, file_blocking, data_filtering, and wildfire_analysis properties.
+
+		"""
+
+		antivirus: description: [
+			"Name of the already defined antivirus profile.",
+		]
+		vulnerability: description: [
+			"Name of the already defined vulnerability profile.",
+		]
+		spyware: description: [
+			"Name of the already defined spyware profile.",
+		]
+		url_filtering: description: [
+			"Name of the already defined url_filtering profile.",
+		]
+		file_blocking: description: [
+			"Name of the already defined file_blocking profile.",
+		]
+		data_filtering: description: [
+			"Name of the already defined data_filtering profile.",
+		]
+		wildfire_analysis: description: [
+			"Name of the already defined wildfire_analysis profile.",
+		]
+		devicegroup: description: """
+		- Device groups are used for the Panorama interaction with Firewall(s). The group must exists on Panorama. If device group is not define we assume that we are contacting Firewall.
+
+		"""
+
+		commit: {
+			description: [
+				"Commit configuration if changed.",
+			]
+			type:    "bool"
+			default: "yes"
+		}
+	}
+}

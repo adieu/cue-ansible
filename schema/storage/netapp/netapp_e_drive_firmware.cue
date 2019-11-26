@@ -1,0 +1,48 @@
+package ansible
+
+module: netapp_e_drive_firmware: {
+	module:            "netapp_e_drive_firmware"
+	version_added:     "2.9"
+	short_description: "NetApp E-Series manage drive firmware"
+	description: [
+		"Ensure drive firmware version is activated on specified drive model.",
+	]
+	author: [
+		"Nathan Swartz (@ndswartz)",
+	]
+	extends_documentation_fragment: [
+		"netapp.eseries",
+	]
+	options: {
+		firmware: {
+			description: [
+				"list of drive firmware file paths.",
+				"NetApp E-Series drives require special firmware which can be downloaded from https://mysupport.netapp.com/NOW/download/tools/diskfw_eseries/",
+			]
+			type:     "list"
+			required: true
+		}
+		wait_for_completion: {
+			description: [
+				"This flag will cause module to wait for any upgrade actions to complete.",
+			]
+			type:    "bool"
+			default: false
+		}
+		ignore_inaccessible_drives: {
+			description: [
+				"This flag will determine whether drive firmware upgrade should fail if any affected drives are inaccessible.",
+			]
+			type:    "bool"
+			default: false
+		}
+		upgrade_drives_online: {
+			description: [
+				"This flag will determine whether drive firmware can be upgrade while drives are accepting I/O.",
+				"When I(upgrade_drives_online==False) stop all I/O before running task.",
+			]
+			type:    "bool"
+			default: true
+		}
+	}
+}

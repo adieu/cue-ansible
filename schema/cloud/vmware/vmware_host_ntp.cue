@@ -1,0 +1,67 @@
+package ansible
+
+module: vmware_host_ntp: {
+	module:            "vmware_host_ntp"
+	short_description: "Manage NTP server configuration of an ESXi host"
+	description: [
+		"This module can be used to configure, add or remove NTP servers from an ESXi host.",
+		"If C(state) is not given, the NTP servers will be configured in the exact sequence.",
+		"User can specify an ESXi hostname or Cluster name. In case of cluster name, all ESXi hosts are updated.",
+	]
+	version_added: "2.5"
+	author: [
+		"Abhijeet Kasurde (@Akasurde)",
+		"Christian Kotte (@ckotte)",
+	]
+	notes: [
+		"Tested on vSphere 6.5",
+	]
+	requirements: [
+		"python >= 2.6",
+		"PyVmomi",
+	]
+	options: {
+		esxi_hostname: {
+			description: [
+				"Name of the host system to work with.",
+				"This parameter is required if C(cluster_name) is not specified.",
+			]
+			type: "str"
+		}
+		cluster_name: {
+			description: [
+				"Name of the cluster from which all host systems will be used.",
+				"This parameter is required if C(esxi_hostname) is not specified.",
+			]
+			type: "str"
+		}
+		ntp_servers: {
+			description: [
+				"IP or FQDN of NTP server(s).",
+				"This accepts a list of NTP servers. For multiple servers, please look at the examples.",
+			]
+			type:     "list"
+			required: true
+		}
+		state: {
+			description: [
+				"present: Add NTP server(s), if specified server(s) are absent else do nothing.",
+				"absent: Remove NTP server(s), if specified server(s) are present else do nothing.",
+				"Specified NTP server(s) will be configured if C(state) isn't specified.",
+			]
+			choices: ["present", "absent"]
+			type: "str"
+		}
+		verbose: {
+			description: [
+				"Verbose output of the configuration change.",
+				"Explains if an NTP server was added, removed, or if the NTP server sequence was changed.",
+			]
+			type:          "bool"
+			required:      false
+			default:       false
+			version_added: 2.8
+		}
+	}
+	extends_documentation_fragment: "vmware.documentation"
+}

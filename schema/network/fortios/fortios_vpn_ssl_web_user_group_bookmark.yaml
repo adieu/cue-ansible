@@ -1,0 +1,223 @@
+
+---
+module: fortios_vpn_ssl_web_user_group_bookmark
+short_description: Configure SSL VPN user group bookmark in Fortinet's FortiOS and FortiGate.
+description:
+    - This module is able to configure a FortiGate or FortiOS (FOS) device by allowing the
+      user to set and modify vpn_ssl_web feature and user_group_bookmark category.
+      Examples include all parameters and values need to be adjusted to datasources before usage.
+      Tested with FOS v6.0.5
+version_added: "2.9"
+author:
+    - Miguel Angel Munoz (@mamunozgonzalez)
+    - Nicolas Thomas (@thomnico)
+notes:
+    - Requires fortiosapi library developed by Fortinet
+    - Run as a local_action in your playbook
+requirements:
+    - fortiosapi>=0.9.8
+options:
+    host:
+        description:
+            - FortiOS or FortiGate IP address.
+        type: str
+        required: false
+    username:
+        description:
+            - FortiOS or FortiGate username.
+        type: str
+        required: false
+    password:
+        description:
+            - FortiOS or FortiGate password.
+        type: str
+        default: ""
+    vdom:
+        description:
+            - Virtual domain, among those defined previously. A vdom is a
+              virtual instance of the FortiGate that can be configured and
+              used as a different unit.
+        type: str
+        default: root
+    https:
+        description:
+            - Indicates if the requests towards FortiGate must use HTTPS protocol.
+        type: bool
+        default: true
+    ssl_verify:
+        description:
+            - Ensures FortiGate certificate must be verified by a proper CA.
+        type: bool
+        default: true
+    state:
+        description:
+            - Indicates whether to create or remove the object.
+        type: str
+        required: true
+        choices:
+            - present
+            - absent
+    vpn_ssl_web_user_group_bookmark:
+        description:
+            - Configure SSL VPN user group bookmark.
+        default: null
+        type: dict
+        suboptions:
+            bookmarks:
+                description:
+                    - Bookmark table.
+                type: list
+                suboptions:
+                    additional_params:
+                        description:
+                            - Additional parameters.
+                        type: str
+                    apptype:
+                        description:
+                            - Application type.
+                        type: str
+                        choices:
+                            - citrix
+                            - ftp
+                            - portforward
+                            - rdp
+                            - smb
+                            - ssh
+                            - telnet
+                            - vnc
+                            - web
+                    description:
+                        description:
+                            - Description.
+                        type: str
+                    folder:
+                        description:
+                            - Network shared file folder parameter.
+                        type: str
+                    form_data:
+                        description:
+                            - Form data.
+                        type: list
+                        suboptions:
+                            name:
+                                description:
+                                    - Name.
+                                required: true
+                                type: str
+                            value:
+                                description:
+                                    - Value.
+                                type: str
+                    host:
+                        description:
+                            - Host name/IP parameter.
+                        type: str
+                    listening_port:
+                        description:
+                            - Listening port (0 - 65535).
+                        type: int
+                    load_balancing_info:
+                        description:
+                            - The load balancing information or cookie which should be provided to the connection broker.
+                        type: str
+                    logon_password:
+                        description:
+                            - Logon password.
+                        type: str
+                    logon_user:
+                        description:
+                            - Logon user.
+                        type: str
+                    name:
+                        description:
+                            - Bookmark name.
+                        required: true
+                        type: str
+                    port:
+                        description:
+                            - Remote port.
+                        type: int
+                    preconnection_blob:
+                        description:
+                            - An arbitrary string which identifies the RDP source.
+                        type: str
+                    preconnection_id:
+                        description:
+                            - The numeric ID of the RDP source (0-2147483648).
+                        type: int
+                    remote_port:
+                        description:
+                            - Remote port (0 - 65535).
+                        type: int
+                    security:
+                        description:
+                            - Security mode for RDP connection.
+                        type: str
+                        choices:
+                            - rdp
+                            - nla
+                            - tls
+                            - any
+                    server_layout:
+                        description:
+                            - Server side keyboard layout.
+                        type: str
+                        choices:
+                            - de-de-qwertz
+                            - en-gb-qwerty
+                            - en-us-qwerty
+                            - es-es-qwerty
+                            - fr-fr-azerty
+                            - fr-ch-qwertz
+                            - it-it-qwerty
+                            - ja-jp-qwerty
+                            - pt-br-qwerty
+                            - sv-se-qwerty
+                            - tr-tr-qwerty
+                            - failsafe
+                    show_status_window:
+                        description:
+                            - Enable/disable showing of status window.
+                        type: str
+                        choices:
+                            - enable
+                            - disable
+                    sso:
+                        description:
+                            - Single Sign-On.
+                        type: str
+                        choices:
+                            - disable
+                            - static
+                            - auto
+                    sso_credential:
+                        description:
+                            - Single sign-on credentials.
+                        type: str
+                        choices:
+                            - sslvpn-login
+                            - alternative
+                    sso_credential_sent_once:
+                        description:
+                            - Single sign-on credentials are only sent once to remote server.
+                        type: str
+                        choices:
+                            - enable
+                            - disable
+                    sso_password:
+                        description:
+                            - SSO password.
+                        type: str
+                    sso_username:
+                        description:
+                            - SSO user name.
+                        type: str
+                    url:
+                        description:
+                            - URL parameter.
+                        type: str
+            name:
+                description:
+                    - Group name. Source user.group.name.
+                required: true
+                type: str

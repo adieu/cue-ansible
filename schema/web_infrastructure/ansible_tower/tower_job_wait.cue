@@ -1,0 +1,36 @@
+package ansible
+
+module: tower_job_wait: {
+	module:            "tower_job_wait"
+	version_added:     "2.3"
+	author:            "Wayne Witzel III (@wwitzel3)"
+	short_description: "Wait for Ansible Tower job to finish."
+	description: [
+		"Wait for Ansible Tower job to finish and report success or failure. See U(https://www.ansible.com/tower) for an overview.",
+	]
+
+	options: {
+		job_id: {
+			description: [
+				"ID of the job to monitor.",
+			]
+			required: true
+		}
+		min_interval: {
+			description: [
+				"Minimum interval in seconds, to request an update from Tower.",
+			]
+			default: 1
+		}
+		max_interval: {
+			description: [
+				"Maximum interval in seconds, to request an update from Tower.",
+			]
+			default: 30
+		}
+		timeout: description: [
+			"Maximum time in seconds to wait for a job to finish.",
+		]
+	}
+	extends_documentation_fragment: "tower"
+}

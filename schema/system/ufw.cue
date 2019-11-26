@@ -1,0 +1,160 @@
+package ansible
+
+module: ufw: {
+	module:            "ufw"
+	short_description: "Manage firewall with UFW"
+	description: [
+		"Manage firewall with UFW.",
+	]
+	version_added: 1.6
+	author: [
+		"Aleksey Ovcharenko (@ovcharenko)",
+		"Jarno Keskikangas (@pyykkis)",
+		"Ahti Kitsik (@ahtik)",
+	]
+	notes: [
+		"See C(man ufw) for more examples.",
+	]
+	requirements: [
+		"C(ufw) package",
+	]
+	options: {
+		state: {
+			description: [
+				"C(enabled) reloads firewall and enables firewall on boot.",
+				"C(disabled) unloads firewall and disables firewall on boot.",
+				"C(reloaded) reloads firewall.",
+				"C(reset) disables and resets firewall to installation defaults.",
+			]
+			type: "str"
+			choices: ["disabled", "enabled", "reloaded", "reset"]
+		}
+		default: {
+			description: [
+				"Change the default policy for incoming or outgoing traffic.",
+			]
+			type: "str"
+			choices: ["allow", "deny", "reject"]
+			aliases: ["policy"]
+		}
+		direction: {
+			description: [
+				"Select direction for a rule or default policy command.",
+			]
+			type: "str"
+			choices: ["in", "incoming", "out", "outgoing", "routed"]
+		}
+		logging: {
+			description: [
+				"Toggles logging. Logged packets use the LOG_KERN syslog facility.",
+			]
+			type: "str"
+			choices: ["on", "off", "low", "medium", "high", "full"]
+		}
+		insert: {
+			description: [
+				"Insert the corresponding rule as rule number NUM.",
+				"Note that ufw numbers rules starting with 1.",
+			]
+			type: "int"
+		}
+		insert_relative_to: {
+			description: [
+				"Allows to interpret the index in I(insert) relative to a position.",
+				"C(zero) interprets the rule number as an absolute index (i.e. 1 is the first rule).",
+				"C(first-ipv4) interprets the rule number relative to the index of the first IPv4 rule, or relative to the position where the first IPv4 rule would be if there is currently none.",
+				"C(last-ipv4) interprets the rule number relative to the index of the last IPv4 rule, or relative to the position where the last IPv4 rule would be if there is currently none.",
+				"C(first-ipv6) interprets the rule number relative to the index of the first IPv6 rule, or relative to the position where the first IPv6 rule would be if there is currently none.",
+				"C(last-ipv6) interprets the rule number relative to the index of the last IPv6 rule, or relative to the position where the last IPv6 rule would be if there is currently none.",
+			]
+
+			type: "str"
+			choices: ["first-ipv4", "first-ipv6", "last-ipv4", "last-ipv6", "zero"]
+			default:       "zero"
+			version_added: "2.8"
+		}
+		rule: {
+			description: [
+				"Add firewall rule",
+			]
+			type: "str"
+			choices: ["allow", "deny", "limit", "reject"]
+		}
+		log: {
+			description: [
+				"Log new connections matched to this rule",
+			]
+			type: "bool"
+		}
+		from_ip: {
+			description: [
+				"Source IP address.",
+			]
+			type:    "str"
+			default: "any"
+			aliases: ["from", "src"]
+		}
+		from_port: {
+			description: [
+				"Source port.",
+			]
+			type: "str"
+		}
+		to_ip: {
+			description: [
+				"Destination IP address.",
+			]
+			type:    "str"
+			default: "any"
+			aliases: ["dest", "to"]
+		}
+		to_port: {
+			description: [
+				"Destination port.",
+			]
+			type: "str"
+			aliases: ["port"]
+		}
+		proto: {
+			description: [
+				"TCP/IP protocol.",
+			]
+			type: "str"
+			choices: ["any", "tcp", "udp", "ipv6", "esp", "ah", "gre", "igmp"]
+			aliases: ["protocol"]
+		}
+		name: {
+			description: [
+				"Use profile located in C(/etc/ufw/applications.d).",
+			]
+			type: "str"
+			aliases: ["app"]
+		}
+		delete: {
+			description: [
+				"Delete rule.",
+			]
+			type: "bool"
+		}
+		interface: {
+			description: [
+				"Specify interface for rule.",
+			]
+			type: "str"
+			aliases: ["if"]
+		}
+		route: {
+			description: [
+				"Apply the rule to routed/forwarded packets.",
+			]
+			type: "bool"
+		}
+		comment: {
+			description: [
+				"Add a comment to the rule. Requires UFW version >=0.35.",
+			]
+			type:          "str"
+			version_added: "2.4"
+		}
+	}
+}

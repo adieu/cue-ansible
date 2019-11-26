@@ -1,0 +1,51 @@
+package ansible
+
+module: atomic_image: {
+	module:            "atomic_image"
+	short_description: "Manage the container images on the atomic host platform"
+	description: [
+		"Manage the container images on the atomic host platform.",
+		"Allows to execute the commands specified by the RUN label in the container image when present.",
+	]
+	version_added: "2.2"
+	author: [
+		"Saravanan KR (@krsacme)",
+	]
+	notes: [
+		"Host should support C(atomic) command.",
+	]
+	requirements: [
+		"atomic",
+		"python >= 2.6",
+	]
+	options: {
+		backend: {
+			description: [
+				"Define the backend where the image is pulled.",
+			]
+			choices: ["docker", "ostree"]
+			version_added: "2.4"
+		}
+		name: {
+			description: [
+				"Name of the container image.",
+			]
+			required: true
+		}
+		state: {
+			description: [
+				"The state of the container image.",
+				"The state C(latest) will ensure container image is upgraded to the latest version and forcefully restart container, if running.",
+			]
+			choices: ["absent", "latest", "present"]
+			default: "latest"
+		}
+		started: {
+			description: [
+				"Start or Stop the container.",
+			]
+			type:    "bool"
+			default: "yes"
+		}
+	}
+}

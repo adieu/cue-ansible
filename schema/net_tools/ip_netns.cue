@@ -1,0 +1,26 @@
+package ansible
+
+module: ip_netns: {
+	module:            "ip_netns"
+	version_added:     2.5
+	author:            "Arie Bregman (@bregman-arie)"
+	short_description: "Manage network namespaces"
+	requirements: ["ip"]
+	description: [
+		"Create or delete network namespaces using the ip command.",
+	]
+	options: {
+		name: {
+			required: false
+			description: [
+				"Name of the namespace",
+			]
+		}
+		state: {
+			required: false
+			default:  "present"
+			choices: ["present", "absent"]
+			description: ["Whether the namespace should exist"]
+		}
+	}
+}

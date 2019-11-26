@@ -1,0 +1,149 @@
+package ansible
+
+module: fortios_router_prefix_list6: {
+	module:            "fortios_router_prefix_list6"
+	short_description: "Configure IPv6 prefix lists in Fortinet's FortiOS and FortiGate."
+	description: [
+		"This module is able to configure a FortiGate or FortiOS (FOS) device by allowing the user to set and modify router feature and prefix_list6 category. Examples include all parameters and values need to be adjusted to datasources before usage. Tested with FOS v6.0.5",
+	]
+
+	version_added: "2.9"
+	author: [
+		"Miguel Angel Munoz (@mamunozgonzalez)",
+		"Nicolas Thomas (@thomnico)",
+	]
+	notes: [
+		"Requires fortiosapi library developed by Fortinet",
+		"Run as a local_action in your playbook",
+	]
+	requirements: [
+		"fortiosapi>=0.9.8",
+	]
+	options: {
+		host: {
+			description: [
+				"FortiOS or FortiGate IP address.",
+			]
+			type:     "str"
+			required: false
+		}
+		username: {
+			description: [
+				"FortiOS or FortiGate username.",
+			]
+			type:     "str"
+			required: false
+		}
+		password: {
+			description: [
+				"FortiOS or FortiGate password.",
+			]
+			type:    "str"
+			default: ""
+		}
+		vdom: {
+			description: [
+				"Virtual domain, among those defined previously. A vdom is a virtual instance of the FortiGate that can be configured and used as a different unit.",
+			]
+
+			type:    "str"
+			default: "root"
+		}
+		https: {
+			description: [
+				"Indicates if the requests towards FortiGate must use HTTPS protocol.",
+			]
+			type:    "bool"
+			default: true
+		}
+		ssl_verify: {
+			description: [
+				"Ensures FortiGate certificate must be verified by a proper CA.",
+			]
+			type:    "bool"
+			default: true
+		}
+		state: {
+			description: [
+				"Indicates whether to create or remove the object.",
+			]
+			type:     "str"
+			required: true
+			choices: [
+				"present",
+				"absent",
+			]
+		}
+		router_prefix_list6: {
+			description: [
+				"Configure IPv6 prefix lists.",
+			]
+			default: null
+			type:    "dict"
+			suboptions: {
+				comments: {
+					description: [
+						"Comment.",
+					]
+					type: "str"
+				}
+				name: {
+					description: [
+						"Name.",
+					]
+					required: true
+					type:     "str"
+				}
+				rule: {
+					description: [
+						"IPv6 prefix list rule.",
+					]
+					type: "list"
+					suboptions: {
+						action: {
+							description: [
+								"Permit or deny packets that match this rule.",
+							]
+							type: "str"
+							choices: [
+								"permit",
+								"deny",
+							]
+						}
+						flags: {
+							description: [
+								"Flags.",
+							]
+							type: "int"
+						}
+						ge: {
+							description: [
+								"Minimum prefix length to be matched (0 - 128).",
+							]
+							type: "int"
+						}
+						id: {
+							description: [
+								"Rule ID.",
+							]
+							required: true
+							type:     "int"
+						}
+						le: {
+							description: [
+								"Maximum prefix length to be matched (0 - 128).",
+							]
+							type: "int"
+						}
+						prefix6: {
+							description: [
+								"IPv6 prefix to define regular filter criteria, such as \"any\" or subnets.",
+							]
+							type: "str"
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,244 @@
+package ansible
+
+module: ovirt_storage_domain: {
+	module:            "ovirt_storage_domain"
+	short_description: "Module to manage storage domains in oVirt/RHV"
+	version_added:     "2.3"
+	author:            "Ondra Machacek (@machacekondra)"
+	description: [
+		"Module to manage storage domains in oVirt/RHV",
+	]
+	options: {
+		id: {
+			description: [
+				"Id of the storage domain to be imported.",
+			]
+			version_added: "2.4"
+		}
+		name: description: [
+			"Name of the storage domain to manage. (Not required when state is I(imported))",
+		]
+		state: {
+			description: [
+				"Should the storage domain be present/absent/maintenance/unattached/imported/update_ovf_store",
+				"I(imported) is supported since version 2.4.",
+				"I(update_ovf_store) is supported since version 2.5, currently if C(wait) is (true), we don't wait for update.",
+			]
+			choices: ["present", "absent", "maintenance", "unattached", "imported", "update_ovf_store"]
+			default: "present"
+		}
+		description: description: [
+			"Description of the storage domain.",
+		]
+		comment: description: [
+			"Comment of the storage domain.",
+		]
+		data_center: description: [
+			"Data center name where storage domain should be attached.",
+			"This parameter isn't idempotent, it's not possible to change data center of storage domain.",
+		]
+		domain_function: {
+			description: [
+				"Function of the storage domain.",
+				"This parameter isn't idempotent, it's not possible to change domain function of storage domain.",
+			]
+			choices: ["data", "iso", "export"]
+			default: "data"
+			aliases: ["type"]
+		}
+		host: description: [
+			"Host to be used to mount storage.",
+		]
+		localfs: {
+			description: [
+				"Dictionary with values for localfs storage type:",
+				"Note that these parameters are not idempotent.",
+			]
+			suboptions: path: description: [
+				"Path of the mount point. E.g.: /path/to/my/data",
+			]
+			version_added: "2.4"
+		}
+		nfs: {
+			description: [
+				"Dictionary with values for NFS storage type:",
+				"Note that these parameters are not idempotent.",
+			]
+			suboptions: {
+				address: description: [
+					"Address of the NFS server. E.g.: myserver.mydomain.com",
+				]
+				path: description: [
+					"Path of the mount point. E.g.: /path/to/my/data",
+				]
+				version: description: [
+					"NFS version. One of: I(auto), I(v3), I(v4) or I(v4_1).",
+				]
+				timeout: description: [
+					"The time in tenths of a second to wait for a response before retrying NFS requests. Range 0 to 65535.",
+				]
+				retrans: description: [
+					"The number of times to retry a request before attempting further recovery actions. Range 0 to 65535.",
+				]
+				mount_options: description: [
+					"Option which will be passed when mounting storage.",
+				]
+			}
+		}
+		iscsi: {
+			description: [
+				"Dictionary with values for iSCSI storage type:",
+				"Note that these parameters are not idempotent.",
+			]
+			suboptions: {
+				address: description: [
+					"Address of the iSCSI storage server.",
+				]
+				port: description: [
+					"Port of the iSCSI storage server.",
+				]
+				target: description: [
+					"The target IQN for the storage device.",
+				]
+				lun_id: description: [
+					"LUN id(s).",
+				]
+				username: description: [
+					"A CHAP user name for logging into a target.",
+				]
+				password: description: [
+					"A CHAP password for logging into a target.",
+				]
+				override_luns: {
+					description: [
+						"If I(True) ISCSI storage domain luns will be overridden before adding.",
+					]
+					type: "bool"
+				}
+				target_lun_map: {
+					description: [
+						"List of dictionary containing targets and LUNs.",
+					]
+					version_added: 2.5
+				}
+			}
+		}
+		posixfs: {
+			description: [
+				"Dictionary with values for PosixFS storage type:",
+				"Note that these parameters are not idempotent.",
+			]
+			suboptions: {
+				path: description: [
+					"Path of the mount point. E.g.: /path/to/my/data",
+				]
+				vfs_type: description: [
+					"Virtual File System type.",
+				]
+				mount_options: description: [
+					"Option which will be passed when mounting storage.",
+				]
+			}
+		}
+		glusterfs: {
+			description: [
+				"Dictionary with values for GlusterFS storage type:",
+				"Note that these parameters are not idempotent.",
+			]
+			suboptions: {
+				address: description: [
+					"Address of the Gluster server. E.g.: myserver.mydomain.com",
+				]
+				path: description: [
+					"Path of the mount point. E.g.: /path/to/my/data",
+				]
+				mount_options: description: [
+					"Option which will be passed when mounting storage.",
+				]
+			}
+		}
+		managed_block_storage: {
+			description: [
+				"Dictionary with values for managed block storage type",
+				"Note: available from ovirt 4.3",
+			]
+			suboptions: {
+				driver_options: description: [
+					"The options to be passed when creating a storage domain using a cinder driver.",
+					"List of dictionary containing C(name) and C(value) of driver option",
+				]
+				driver_sensitive_options: description: [
+					"Parameters containing sensitive information, to be passed when creating a storage domain using a cinder driver.",
+					"List of dictionary containing C(name) and C(value) of driver sensitive option",
+				]
+			}
+			version_added: "2.9"
+		}
+		fcp: {
+			description: [
+				"Dictionary with values for fibre channel storage type:",
+				"Note that these parameters are not idempotent.",
+			]
+			suboptions: {
+				lun_id: description: [
+					"LUN id.",
+				]
+				override_luns: {
+					description: [
+						"If I(True) FCP storage domain LUNs will be overridden before adding.",
+					]
+					type: "bool"
+				}
+			}
+		}
+		wipe_after_delete: {
+			description: [
+				"Boolean flag which indicates whether the storage domain should wipe the data after delete.",
+			]
+			type:          "bool"
+			version_added: "2.5"
+		}
+		backup: {
+			description: [
+				"Boolean flag which indicates whether the storage domain is configured as backup or not.",
+			]
+			type:          "bool"
+			version_added: "2.5"
+		}
+		critical_space_action_blocker: {
+			description: [
+				"Indicates the minimal free space the storage domain should contain in percentages.",
+			]
+			version_added: "2.5"
+		}
+		warning_low_space: {
+			description: [
+				"Indicates the minimum percentage of a free space in a storage domain to present a warning.",
+			]
+			version_added: "2.5"
+		}
+		destroy: {
+			description: [
+				"Logical remove of the storage domain. If I(true) retains the storage domain's data for import.",
+				"This parameter is relevant only when C(state) is I(absent).",
+			]
+			type: "bool"
+		}
+		format: {
+			description: [
+				"If I(True) storage domain will be formatted after removing it from oVirt/RHV.",
+				"This parameter is relevant only when C(state) is I(absent).",
+			]
+			type: "bool"
+		}
+		discard_after_delete: {
+			description: [
+				"If I(True) storage domain blocks will be discarded upon deletion. Enabled by default.",
+				"This parameter is relevant only for block based storage domains.",
+			]
+			type:          "bool"
+			version_added: 2.5
+		}
+	}
+	extends_documentation_fragment: "ovirt"
+}

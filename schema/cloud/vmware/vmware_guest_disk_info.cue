@@ -1,0 +1,79 @@
+package ansible
+
+module: vmware_guest_disk_info: {
+	module:            "vmware_guest_disk_info"
+	short_description: "Gather info about disks of given virtual machine"
+	description: [
+		"This module can be used to gather information about disks belonging to given virtual machine.",
+		"All parameters and VMware object names are case sensitive.",
+	]
+	version_added: "2.9"
+	author: [
+		"Abhijeet Kasurde (@Akasurde) <akasurde@redhat.com>",
+	]
+	notes: [
+		"Tested on vSphere 6.0 and 6.5.",
+		"Disk UUID information is added in version 2.8.",
+		"Additional information about guest disk backings added in version 2.8.",
+	]
+	requirements: [
+		"python >= 2.6",
+		"PyVmomi",
+	]
+	options: {
+		name: {
+			description: [
+				"Name of the virtual machine.",
+				"This is required parameter, if parameter C(uuid) or C(moid) is not supplied.",
+			]
+			type: "str"
+		}
+		uuid: {
+			description: [
+				"UUID of the instance to gather information if known, this is VMware's unique identifier.",
+				"This is required parameter, if parameter C(name) or C(moid) is not supplied.",
+			]
+			type: "str"
+		}
+		moid: {
+			description: [
+				"Managed Object ID of the instance to manage if known, this is a unique identifier only within a single vCenter instance.",
+				"This is required if C(name) or C(uuid) is not supplied.",
+			]
+			type: "str"
+		}
+		use_instance_uuid: {
+			description: [
+				"Whether to use the VMware instance UUID rather than the BIOS UUID.",
+			]
+			default: false
+			type:    "bool"
+		}
+		folder: {
+			description: [
+				"Destination folder, absolute or relative path to find an existing guest.",
+				"This is required parameter, only if multiple VMs are found with same name.",
+				"The folder should include the datacenter. ESX's datacenter is ha-datacenter",
+				"Examples:",
+				"   folder: /ha-datacenter/vm",
+				"   folder: ha-datacenter/vm",
+				"   folder: /datacenter1/vm",
+				"   folder: datacenter1/vm",
+				"   folder: /datacenter1/vm/folder1",
+				"   folder: datacenter1/vm/folder1",
+				"   folder: /folder1/datacenter1/vm",
+				"   folder: folder1/datacenter1/vm",
+				"   folder: /folder1/datacenter1/vm/folder2",
+			]
+			type: "str"
+		}
+		datacenter: {
+			description: [
+				"The datacenter name to which virtual machine belongs to.",
+			]
+			required: true
+			type:     "str"
+		}
+	}
+	extends_documentation_fragment: "vmware.documentation"
+}

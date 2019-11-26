@@ -1,0 +1,55 @@
+
+---
+module: meraki_content_filtering
+short_description: Edit Meraki MX content filtering policies
+version_added: "2.8"
+description:
+- Allows for setting policy on content filtering.
+
+options:
+    auth_key:
+        description:
+        - Authentication key provided by the dashboard. Required if environmental variable MERAKI_KEY is not set.
+        type: str
+    net_name:
+        description:
+        - Name of a network.
+        aliases: [ network ]
+        type: str
+    net_id:
+        description:
+        - ID number of a network.
+        type: str
+    state:
+        description:
+        - States that a policy should be created or modified.
+        choices: [present, query]
+        default: present
+        type: str
+    allowed_urls:
+        description:
+        - List of URL patterns which should be allowed.
+        type: list
+    blocked_urls:
+        description:
+        - List of URL patterns which should be blocked.
+        type: list
+    blocked_categories:
+        description:
+        - List of content categories which should be blocked.
+        - Use the C(meraki_content_filtering_facts) module for a full list of categories.
+        type: list
+    category_list_size:
+        description:
+        - Determines whether a network filters fo rall URLs in a category or only the list of top blocked sites.
+        choices: [ top sites, full list ]
+        type: str
+    subset:
+        description:
+        - Display only certain facts.
+        choices: [categories, policy]
+        type: str
+        version_added: '2.9'
+author:
+    - Kevin Breit (@kbreit)
+extends_documentation_fragment: meraki

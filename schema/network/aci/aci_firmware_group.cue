@@ -1,0 +1,43 @@
+package ansible
+
+module: aci_firmware_group: {
+	module: "aci_firmware_group"
+
+	short_description: "This module creates a firmware group"
+
+	version_added: "2.8"
+
+	description: [
+		"This module creates a firmware group, so that you can apply firmware policy to nodes.",
+	]
+	options: {
+		group: {
+			description: [
+				"This the name of the firmware group",
+			]
+			type:     "str"
+			required: true
+		}
+		firmwarepol: {
+			description: [
+				"This is the name of the firmware policy, which was create by aci_firmware_policy. It is important that",
+				"you use the same name as the policy created with aci_firmware_policy",
+			]
+			type: "str"
+		}
+		state: {
+			description: [
+				"Use C(present) or C(absent) for adding or removing.",
+				"Use C(query) for listing an object or multiple objects.",
+			]
+			type:    "str"
+			default: "present"
+			choices: ["absent", "present", "query"]
+		}
+	}
+
+	extends_documentation_fragment: [
+		"aci",
+	]
+	author: ["Steven Gerhart (@sgerhart)"]
+}

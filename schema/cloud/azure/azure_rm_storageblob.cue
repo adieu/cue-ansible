@@ -1,0 +1,134 @@
+package ansible
+
+module: azure_rm_storageblob: {
+	module:            "azure_rm_storageblob"
+	short_description: "Manage blob containers and blob objects"
+	version_added:     "2.1"
+	description: [
+		"Create, update and delete blob containers and blob objects.",
+		"Use to upload a file and store it as a blob object, or download a blob object to a file.",
+	]
+	options: {
+		storage_account_name: {
+			description: [
+				"Name of the storage account to use.",
+			]
+			required: true
+			aliases: [
+				"account_name",
+				"storage_account",
+			]
+		}
+		blob: {
+			description: [
+				"Name of a blob object within the container.",
+			]
+			aliases: [
+				"blob_name",
+			]
+		}
+		blob_type: {
+			description: [
+				"Type of blob object.",
+			]
+			default: "block"
+			choices: [
+				"block",
+				"page",
+			]
+			version_added: "2.5"
+		}
+		container: {
+			description: [
+				"Name of a blob container within the storage account.",
+			]
+			required: true
+			aliases: [
+				"container_name",
+			]
+		}
+		content_type: description: [
+			"Set the blob content-type header. For example C(image/png).",
+		]
+		cache_control: description: [
+			"Set the blob cache-control header.",
+		]
+		content_disposition: description: [
+			"Set the blob content-disposition header.",
+		]
+		content_encoding: description: [
+			"Set the blob encoding header.",
+		]
+		content_language: description: [
+			"Set the blob content-language header.",
+		]
+		content_md5: description: [
+			"Set the blob md5 hash value.",
+		]
+		dest: {
+			description: [
+				"Destination file path. Use with state C(present) to download a blob.",
+			]
+			aliases: [
+				"destination",
+			]
+		}
+		force: {
+			description: [
+				"Overwrite existing blob or file when uploading or downloading. Force deletion of a container that contains blobs.",
+			]
+			type:    "bool"
+			default: false
+		}
+		resource_group: {
+			description: [
+				"Name of the resource group to use.",
+			]
+			required: true
+			aliases: [
+				"resource_group_name",
+			]
+		}
+		src: {
+			description: [
+				"Source file path. Use with state C(present) to upload a blob.",
+			]
+			aliases: [
+				"source",
+			]
+		}
+		state: {
+			description: [
+				"State of a container or blob.",
+				"Use state C(absent) with a container value only to delete a container. Include a blob value to remove a specific blob. A container will not be deleted, if it contains blobs. Use the I(force) option to override, deleting the container and all associated blobs.",
+				"Use state C(present) to create or update a container and upload or download a blob. If the container does not exist, it will be created. If it exists, it will be updated with configuration options. Provide a blob name and either src or dest to upload or download. Provide a src path to upload and a dest path to download. If a blob (uploading) or a file (downloading) already exists, it will not be overwritten unless I(force=true).",
+			]
+
+			default: "present"
+			choices: [
+				"absent",
+				"present",
+			]
+		}
+		public_access: {
+			description: [
+				"A container's level of public access. By default containers are private.",
+				"Can only be set at time of container creation.",
+			]
+			choices: [
+				"container",
+				"blob",
+			]
+		}
+	}
+
+	extends_documentation_fragment: [
+		"azure",
+		"azure_tags",
+	]
+
+	author: [
+		"Chris Houseknecht (@chouseknecht)",
+		"Matt Davis (@nitzmahone)",
+	]
+}

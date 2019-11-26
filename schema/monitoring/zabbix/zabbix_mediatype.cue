@@ -1,0 +1,207 @@
+package ansible
+
+module: zabbix_mediatype: {
+	module:            "zabbix_mediatype"
+	short_description: "Create/Update/Delete Zabbix media types"
+	description: [
+		"This module allows you to create, modify and delete Zabbix media types.",
+	]
+	version_added: "2.9"
+	author: [
+		"Ruben Tsirunyan (@rubentsirunyan)",
+	]
+	requirements: [
+		"zabbix-api",
+	]
+
+	options: {
+		name: {
+			type: "str"
+			description: [
+				"Name of the media type.",
+			]
+			required: true
+		}
+		state: {
+			type: "str"
+			description: [
+				"Desired state of the mediatype.",
+				"On C(present), it will create a mediatype if it does not exist or update the mediatype if the associated data is different.",
+				"On C(absent), it will remove the mediatype if it exists.",
+			]
+			choices: [
+				"present",
+				"absent",
+			]
+			default:  "present"
+			required: true
+		}
+		type: {
+			type: "str"
+			description: [
+				"Type of the media type.",
+			]
+			choices: [
+				"email",
+				"script",
+				"sms",
+				"jabber",
+				"ez_texting",
+			]
+			required: true
+		}
+		status: {
+			type: "str"
+			description: [
+				"Whether the media type is enabled or no.",
+			]
+			choices: [
+				"enabled",
+				"disabled",
+			]
+			default: "enabled"
+		}
+		max_sessions: {
+			type: "int"
+			description: [
+				"The maximum number of alerts that can be processed in parallel.",
+				"Possible value is 1 when I(type=sms) and 0-100 otherwise.",
+			]
+			default: 1
+		}
+		max_attempts: {
+			type: "int"
+			description: [
+				"The maximum number of attempts to send an alert.",
+				"Possible range is 0-10",
+			]
+			default: 3
+		}
+		attempt_interval: {
+			type: "int"
+			description: [
+				"The interval between retry attempts.",
+				"Possible range is 0-60",
+			]
+			default: 10
+		}
+		script_name: {
+			type: "str"
+			description: [
+				"The name of the executed script.",
+				"Required when I(type=script).",
+			]
+		}
+		script_params: {
+			type: "list"
+			description: [
+				"List of script parameters.",
+				"Required when I(type=script).",
+			]
+		}
+		gsm_modem: {
+			type: "str"
+			description: [
+				"Serial device name of the gsm modem.",
+				"Required when I(type=sms).",
+			]
+		}
+		username: {
+			type: "str"
+			description: [
+				"Username or Jabber identifier.",
+				"Required when I(type=jabber) or I(type=ez_texting).",
+				"Required when I(type=email) and I(smtp_authentication=true).",
+			]
+		}
+		password: {
+			type: "str"
+			description: [
+				"Authentication password.",
+				"Required when I(type=jabber) or I(type=ez_texting).",
+				"Required when I(type=email) and I(smtp_authentication=true).",
+			]
+		}
+		smtp_server: {
+			type: "str"
+			description: [
+				"SMTP server host.",
+				"Required when I(type=email).",
+			]
+			default: "localhost"
+		}
+		smtp_server_port: {
+			type: "int"
+			description: [
+				"SMTP server port.",
+				"Required when I(type=email).",
+			]
+			default: 25
+		}
+		smtp_helo: {
+			type: "str"
+			description: [
+				"SMTP HELO.",
+				"Required when I(type=email).",
+			]
+			default: "localhost"
+		}
+		smtp_email: {
+			type: "str"
+			description: [
+				"Email address from which notifications will be sent.",
+				"Required when I(type=email).",
+			]
+		}
+		smtp_authentication: {
+			type: "bool"
+			description: [
+				"Whether SMTP authentication with username and password should be enabled or not.",
+				"If set to C(true), C(username) and C(password) should be specified.",
+			]
+			default: false
+		}
+		smtp_security: {
+			type: "str"
+			description: [
+				"SMTP connection security level to use.",
+			]
+			choices: [
+				"None",
+				"STARTTLS",
+				"SSL/TLS",
+			]
+		}
+		smtp_verify_host: {
+			type: "bool"
+			description: [
+				"SSL verify host for SMTP.",
+				"Can be specified when I(smtp_security=STARTTLS) or I(smtp_security=SSL/TLS)",
+			]
+			default: false
+		}
+		smtp_verify_peer: {
+			type: "bool"
+			description: [
+				"SSL verify peer for SMTP.",
+				"Can be specified when I(smtp_security=STARTTLS) or I(smtp_security=SSL/TLS)",
+			]
+			default: false
+		}
+		message_text_limit: {
+			type: "str"
+			description: [
+				"The message text limit.",
+				"Required when I(type=ez_texting).",
+				"160 characters for USA and 136 characters for Canada.",
+			]
+			choices: [
+				"USA",
+				"Canada",
+			]
+		}
+	}
+	extends_documentation_fragment: [
+		"zabbix",
+	]
+}

@@ -1,0 +1,52 @@
+package ansible
+
+module: na_ontap_vserver_peer: {
+	author: "NetApp Ansible Team (@carchi8py) <ng-ansibleteam@netapp.com>"
+	description: [
+		"Create/Delete vserver peer",
+	]
+	extends_documentation_fragment: [
+		"netapp.na_ontap",
+	]
+	module: "na_ontap_vserver_peer"
+	options: {
+		state: {
+			choices: ["present", "absent"]
+			description: [
+				"Whether the specified vserver peer should exist or not.",
+			]
+			default: "present"
+		}
+		vserver: description: [
+			"Specifies name of the source Vserver in the relationship.",
+		]
+		applications: {
+			choices: ["snapmirror", "file_copy", "lun_copy", "flexcache"]
+			description: [
+				"List of applications which can make use of the peering relationship.",
+				"FlexCache supported from ONTAP 9.5 onwards.",
+			]
+		}
+		peer_vserver: description: [
+			"Specifies name of the peer Vserver in the relationship.",
+		]
+		peer_cluster: description: [
+			"Specifies name of the peer Cluster.",
+			"Required for creating the vserver peer relationship with a remote cluster",
+		]
+		dest_hostname: description: [
+			"Destination hostname or IP address.",
+			"Required for creating the vserver peer relationship with a remote cluster",
+		]
+		dest_username: description: [
+			"Destination username.",
+			"Optional if this is same as source username.",
+		]
+		dest_password: description: [
+			"Destination password.",
+			"Optional if this is same as source password.",
+		]
+	}
+	short_description: "NetApp ONTAP Vserver peering"
+	version_added:     "2.7"
+}

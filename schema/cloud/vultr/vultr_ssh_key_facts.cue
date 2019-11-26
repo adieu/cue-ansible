@@ -1,0 +1,17 @@
+package ansible
+
+module: vultr_ssh_key_facts: {
+	module:            "vultr_ssh_key_facts"
+	short_description: "Gather facts about the Vultr SSH keys available."
+	description: [
+		"Gather facts about SSH keys available.",
+	]
+	version_added: "2.7"
+	author:        "Yanis Guenane (@Spredzy)"
+	deprecated: {
+		removed_in:  "2.12"
+		why:         "Transformed into an info module."
+		alternative: "Use M(vultr_ssh_key_info) instead."
+	}
+	extends_documentation_fragment: "vultr"
+}

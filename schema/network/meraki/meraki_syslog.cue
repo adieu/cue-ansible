@@ -1,0 +1,80 @@
+package ansible
+
+module: meraki_syslog: {
+	module:            "meraki_syslog"
+	short_description: "Manage syslog server settings in the Meraki cloud."
+	version_added:     "2.8"
+	description: [
+		"Allows for creation and management of Syslog servers within Meraki.",
+	]
+	notes: [
+		"Changes to existing syslog servers replaces existing configuration. If you need to add to an existing configuration set state to query to gather the existing configuration and then modify or add.",
+	]
+
+	options: {
+		auth_key: {
+			description: [
+				"Authentication key provided by the dashboard. Required if environmental variable MERAKI_KEY is not set.",
+			]
+			type: "str"
+		}
+		state: {
+			description: [
+				"Query or edit syslog servers",
+				"To delete a syslog server, do not include server in list of servers",
+			]
+			choices: ["present", "query"]
+			default: "present"
+			type:    "str"
+		}
+		net_name: {
+			description: [
+				"Name of a network.",
+			]
+			aliases: ["name", "network"]
+			type: "str"
+		}
+		net_id: {
+			description: [
+				"ID number of a network.",
+			]
+			type: "str"
+		}
+		servers: {
+			description: [
+				"List of syslog server settings",
+			]
+			suboptions: {
+				host: description: [
+					"IP address or hostname of Syslog server.",
+				]
+				port: {
+					description: [
+						"Port number Syslog server is listening on.",
+					]
+					default: "514"
+				}
+				roles: {
+					description: [
+						"List of applicable Syslog server roles.",
+					]
+					choices: [
+						"Wireless event log",
+						"Appliance event log",
+						"Switch event log",
+						"Air Marshal events",
+						"Flows",
+						"URLs",
+						"IDS alerts",
+						"Security events",
+					]
+				}
+			}
+		}
+	}
+
+	author: [
+		"Kevin Breit (@kbreit)",
+	]
+	extends_documentation_fragment: "meraki"
+}

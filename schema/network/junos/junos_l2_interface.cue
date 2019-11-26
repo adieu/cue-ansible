@@ -1,0 +1,97 @@
+package ansible
+
+module: junos_l2_interface: {
+	module:            "junos_l2_interface"
+	version_added:     "2.5"
+	author:            "Ganesh Nalawade (@ganeshrn)"
+	short_description: "Manage Layer-2 interface on Juniper JUNOS network devices"
+	description: [
+		"This module provides declarative management of Layer-2 interface on Juniper JUNOS network devices.",
+	]
+
+	deprecated: {
+		removed_in:  "2.13"
+		why:         "Updated modules released with more functionality"
+		alternative: "Use M(junos_l2_interfaces) instead."
+	}
+	options: {
+		name: description: [
+			"Name of the interface excluding any logical unit number.",
+		]
+		description: description: [
+			"Description of Interface.",
+		]
+		aggregate: description: [
+			"List of Layer-2 interface definitions.",
+		]
+		mode: {
+			description: [
+				"Mode in which interface needs to be configured.",
+			]
+			choices: ["access", "trunk"]
+		}
+		access_vlan: description: [
+			"Configure given VLAN in access port. The value of C(access_vlan) should be vlan name.",
+		]
+
+		trunk_vlans: description: [
+			"List of VLAN names to be configured in trunk port. The value of C(trunk_vlans) should be list of vlan names.",
+		]
+
+		native_vlan: description: [
+			"Native VLAN to be configured in trunk port. The value of C(native_vlan) should be vlan id.",
+		]
+
+		enhanced_layer: {
+			description: [
+				"True if your device has Enhanced Layer 2 Software (ELS).",
+			]
+			default:       true
+			type:          "bool"
+			version_added: "2.7"
+		}
+		unit: {
+			description: [
+				"Logical interface number. Value of C(unit) should be of type integer.",
+			]
+
+			default: 0
+		}
+		filter_input: {
+			description: [
+				"The name of input filter of ethernet-switching.",
+			]
+			version_added: "2.8"
+		}
+		filter_output: {
+			description: [
+				"The name of output filter of ethernet-switching.",
+			]
+			version_added: "2.8"
+		}
+		state: {
+			description: [
+				"State of the Layer-2 Interface configuration.",
+			]
+			default: "present"
+			choices: ["present", "absent"]
+		}
+		active: {
+			description: [
+				"Specifies whether or not the configuration is active or deactivated",
+			]
+			default: true
+			type:    "bool"
+		}
+	}
+	requirements: [
+		"ncclient (>=v0.5.2)",
+	]
+	notes: [
+		"This module requires the netconf system service be enabled on the remote device being managed.",
+		"Tested against vqfx-10000 JUNOS Version 15.1X53-D60.4.",
+		"Recommended connection is C(netconf). See L(the Junos OS Platform Options,../network/user_guide/platform_junos.html).",
+		"This module also works with C(local) connections for legacy playbooks.",
+	]
+	extends_documentation_fragment: "junos"
+}

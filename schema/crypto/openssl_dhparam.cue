@@ -1,0 +1,88 @@
+package ansible
+
+module: openssl_dhparam: {
+	module:            "openssl_dhparam"
+	version_added:     "2.5"
+	short_description: "Generate OpenSSL Diffie-Hellman Parameters"
+	description: [
+		"This module allows one to (re)generate OpenSSL DH-params.",
+		"This module uses file common arguments to specify generated file permissions.",
+		"Please note that the module regenerates existing DH params if they don't match the module's options. If you are concerned that this could overwrite your existing DH params, consider using the I(backup) option.",
+		"The module can use the cryptography Python library, or the C(openssl) executable. By default, it tries to detect which one is available. This can be overridden with the I(select_crypto_backend) option.",
+	]
+
+	requirements: [
+		"Either cryptography >= 2.0",
+		"Or OpenSSL binary C(openssl)",
+	]
+	author: [
+		"Thom Wiggers (@thomwiggers)",
+	]
+	options: {
+		state: {
+			description: [
+				"Whether the parameters should exist or not, taking action if the state is different from what is stated.",
+			]
+
+			type:    "str"
+			default: "present"
+			choices: ["absent", "present"]
+		}
+		size: {
+			description: [
+				"Size (in bits) of the generated DH-params.",
+			]
+			type:    "int"
+			default: 4096
+		}
+		force: {
+			description: [
+				"Should the parameters be regenerated even it it already exists.",
+			]
+			type:    "bool"
+			default: false
+		}
+		path: {
+			description: [
+				"Name of the file in which the generated parameters will be saved.",
+			]
+			type:     "path"
+			required: true
+		}
+		backup: {
+			description: [
+				"Create a backup file including a timestamp so you can get the original DH params back if you overwrote them with new ones by accident.",
+			]
+
+			type:          "bool"
+			default:       false
+			version_added: "2.8"
+		}
+		select_crypto_backend: {
+			description: [
+				"Determines which crypto backend to use.",
+				"The default choice is C(auto), which tries to use C(cryptography) if available, and falls back to C(openssl).",
+				"If set to C(openssl), will try to use the OpenSSL C(openssl) executable.",
+				"If set to C(cryptography), will try to use the L(cryptography,https://cryptography.io/) library.",
+			]
+			type:    "str"
+			default: "auto"
+			choices: ["auto", "cryptography", "openssl"]
+			version_added: "2.10"
+		}
+	}
+	extends_documentation_fragment: [
+		"files",
+	]
+	seealso: [{
+		module: "openssl_certificate"
+	}, {
+		module: "openssl_csr"
+	}, {
+		module: "openssl_pkcs12"
+	}, {
+		module: "openssl_privatekey"
+	}, {
+		module: "openssl_publickey"
+	}]
+}

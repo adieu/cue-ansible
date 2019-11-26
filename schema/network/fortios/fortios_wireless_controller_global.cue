@@ -1,0 +1,208 @@
+package ansible
+
+module: fortios_wireless_controller_global: {
+	module:            "fortios_wireless_controller_global"
+	short_description: "Configure wireless controller global settings in Fortinet's FortiOS and FortiGate."
+	description: [
+		"This module is able to configure a FortiGate or FortiOS (FOS) device by allowing the user to set and modify wireless_controller feature and global category. Examples include all parameters and values need to be adjusted to datasources before usage. Tested with FOS v6.0.5",
+	]
+
+	version_added: "2.8"
+	author: [
+		"Miguel Angel Munoz (@mamunozgonzalez)",
+		"Nicolas Thomas (@thomnico)",
+	]
+	notes: [
+		"Requires fortiosapi library developed by Fortinet",
+		"Run as a local_action in your playbook",
+	]
+	requirements: [
+		"fortiosapi>=0.9.8",
+	]
+	options: {
+		host: {
+			description: [
+				"FortiOS or FortiGate IP address.",
+			]
+			type:     "str"
+			required: false
+		}
+		username: {
+			description: [
+				"FortiOS or FortiGate username.",
+			]
+			type:     "str"
+			required: false
+		}
+		password: {
+			description: [
+				"FortiOS or FortiGate password.",
+			]
+			type:    "str"
+			default: ""
+		}
+		vdom: {
+			description: [
+				"Virtual domain, among those defined previously. A vdom is a virtual instance of the FortiGate that can be configured and used as a different unit.",
+			]
+
+			type:    "str"
+			default: "root"
+		}
+		https: {
+			description: [
+				"Indicates if the requests towards FortiGate must use HTTPS protocol.",
+			]
+			type:    "bool"
+			default: true
+		}
+		ssl_verify: {
+			description: [
+				"Ensures FortiGate certificate must be verified by a proper CA.",
+			]
+			type:          "bool"
+			default:       true
+			version_added: 2.9
+		}
+		wireless_controller_global: {
+			description: [
+				"Configure wireless controller global settings.",
+			]
+			default: null
+			type:    "dict"
+			suboptions: {
+				ap_log_server: {
+					description: [
+						"Enable/disable configuring APs or FortiAPs to send log messages to a syslog server .",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				ap_log_server_ip: {
+					description: [
+						"IP address that APs or FortiAPs send log messages to.",
+					]
+					type: "str"
+				}
+				ap_log_server_port: {
+					description: [
+						"Port that APs or FortiAPs send log messages to.",
+					]
+					type: "int"
+				}
+				control_message_offload: {
+					description: [
+						"Configure CAPWAP control message data channel offload.",
+					]
+					type: "str"
+					choices: [
+						"ebp-frame",
+						"aeroscout-tag",
+						"ap-list",
+						"sta-list",
+						"sta-cap-list",
+						"stats",
+						"aeroscout-mu",
+					]
+				}
+				data_ethernet_II: {
+					description: [
+						"Configure the wireless controller to use Ethernet II or 802.3 frames with 802.3 data tunnel mode .",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				discovery_mc_addr: {
+					description: [
+						"Multicast IP address for AP discovery .",
+					]
+					type: "str"
+				}
+				fiapp_eth_type: {
+					description: [
+						"Ethernet type for Fortinet Inter-Access Point Protocol (IAPP), or IEEE 802.11f, packets (0 - 65535).",
+					]
+					type: "int"
+				}
+				image_download: {
+					description: [
+						"Enable/disable WTP image download at join time.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				ipsec_base_ip: {
+					description: [
+						"Base IP address for IPsec VPN tunnels between the access points and the wireless controller .",
+					]
+					type: "str"
+				}
+				link_aggregation: {
+					description: [
+						"Enable/disable calculating the CAPWAP transmit hash to load balance sessions to link aggregation nodes .",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				location: {
+					description: [
+						"Description of the location of the wireless controller.",
+					]
+					type: "str"
+				}
+				max_clients: {
+					description: [
+						"Maximum number of clients that can connect simultaneously .",
+					]
+					type: "int"
+				}
+				max_retransmit: {
+					description: [
+						"Maximum number of tunnel packet retransmissions (0 - 64).",
+					]
+					type: "int"
+				}
+				mesh_eth_type: {
+					description: [
+						"Mesh Ethernet identifier included in backhaul packets (0 - 65535).",
+					]
+					type: "int"
+				}
+				name: {
+					description: [
+						"Name of the wireless controller.",
+					]
+					type: "str"
+				}
+				rogue_scan_mac_adjacency: {
+					description: [
+						"Maximum numerical difference between an AP's Ethernet and wireless MAC values to match for rogue detection (0 - 31).",
+					]
+					type: "int"
+				}
+				wtp_share: {
+					description: [
+						"Enable/disable sharing of WTPs between VDOMs.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,61 @@
+package ansible
+
+module: azure_rm_mysqlfirewallrule: {
+	module:            "azure_rm_mysqlfirewallrule"
+	version_added:     "2.8"
+	short_description: "Manage MySQL firewall rule instance"
+	description: [
+		"Create, update and delete instance of MySQL firewall rule.",
+	]
+
+	options: {
+		resource_group: {
+			description: [
+				"The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.",
+			]
+			required: true
+		}
+		server_name: {
+			description: [
+				"The name of the server.",
+			]
+			required: true
+		}
+		name: {
+			description: [
+				"The name of the MySQL firewall rule.",
+			]
+			required: true
+		}
+		start_ip_address: {
+			description: [
+				"The start IP address of the MySQL firewall rule. Must be IPv4 format.",
+			]
+			required: true
+		}
+		end_ip_address: {
+			description: [
+				"The end IP address of the MySQL firewall rule. Must be IPv4 format.",
+			]
+			required: true
+		}
+		state: {
+			description: [
+				"Assert the state of the MySQL firewall rule. Use C(present) to create or update a rule and C(absent) to ensure it is not present.",
+			]
+			default: "present"
+			choices: [
+				"absent",
+				"present",
+			]
+		}
+	}
+
+	extends_documentation_fragment: [
+		"azure",
+	]
+
+	author: [
+		"Zim Kalinowski (@zikalino)",
+	]
+}

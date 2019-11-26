@@ -1,0 +1,142 @@
+package ansible
+
+module: gcp_mlengine_model: {
+	module: "gcp_mlengine_model"
+	description: [
+		"Represents a machine learning solution.",
+		"A model can have multiple versions, each of which is a deployed, trained model ready to receive prediction requests. The model itself is just a container.",
+	]
+
+	short_description: "Creates a GCP Model"
+	version_added:     "2.9"
+	author:            "Google Inc. (@googlecloudplatform)"
+	requirements: [
+		"python >= 2.6",
+		"requests >= 2.18.4",
+		"google-auth >= 1.3.0",
+	]
+	options: {
+		state: {
+			description: [
+				"Whether the given object should exist in GCP",
+			]
+			choices: [
+				"present",
+				"absent",
+			]
+			default: "present"
+			type:    "str"
+		}
+		name: {
+			description: [
+				"The name specified for the model.",
+			]
+			required: true
+			type:     "str"
+		}
+		description: {
+			description: [
+				"The description specified for the model when it was created.",
+			]
+			required: false
+			type:     "str"
+		}
+		default_version: {
+			description: [
+				"The default version of the model. This version will be used to handle prediction requests that do not specify a version.",
+			]
+
+			required: false
+			type:     "dict"
+			suboptions: name: {
+				description: [
+					"The name specified for the version when it was created.",
+				]
+				required: false
+				type:     "str"
+			}
+		}
+		regions: {
+			description: [
+				"The list of regions where the model is going to be deployed.",
+				"Currently only one region per model is supported .",
+			]
+			required: false
+			type:     "list"
+		}
+		online_prediction_logging: {
+			description: [
+				"If true, online prediction access logs are sent to StackDriver Logging.",
+			]
+			required: false
+			type:     "bool"
+		}
+		online_prediction_console_logging: {
+			description: [
+				"If true, online prediction nodes send stderr and stdout streams to Stackdriver Logging.",
+			]
+
+			required: false
+			type:     "bool"
+		}
+		labels: {
+			description: [
+				"One or more labels that you can add, to organize your models.",
+			]
+			required: false
+			type:     "dict"
+		}
+		project: {
+			description: [
+				"The Google Cloud Platform project to use.",
+			]
+			type: "str"
+		}
+		auth_kind: {
+			description: [
+				"The type of credential used.",
+			]
+			type:     "str"
+			required: true
+			choices: [
+				"application",
+				"machineaccount",
+				"serviceaccount",
+			]
+		}
+		service_account_contents: {
+			description: [
+				"The contents of a Service Account JSON file, either in a dictionary or as a JSON string that represents it.",
+			]
+
+			type: "jsonarg"
+		}
+		service_account_file: {
+			description: [
+				"The path of a Service Account JSON file if serviceaccount is selected as type.",
+			]
+			type: "path"
+		}
+		service_account_email: {
+			description: [
+				"An optional service account email address if machineaccount is selected and the user does not wish to use the default email.",
+			]
+
+			type: "str"
+		}
+		scopes: {
+			description: [
+				"Array of scopes to be used",
+			]
+			type: "list"
+		}
+		env_type: {
+			description: [
+				"Specifies which Ansible environment you're running this module within.",
+				"This should not be set unless you know what you're doing.",
+				"This only alters the User Agent string for any API requests.",
+			]
+			type: "str"
+		}
+	}
+}

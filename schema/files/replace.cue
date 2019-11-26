@@ -1,0 +1,98 @@
+package ansible
+
+module: replace: {
+	module: "replace"
+	author: "Evan Kaufman (@EvanK)"
+	extends_documentation_fragment: [
+		"files",
+		"validate",
+	]
+	short_description: "Replace all instances of a particular string in a file using a back-referenced regular expression"
+
+	description: [
+		"This module will replace all instances of a pattern within a file.",
+		"It is up to the user to maintain idempotence by ensuring that the same pattern would never match any replacements made.",
+	]
+
+	version_added: "1.6"
+	options: {
+		path: {
+			description: [
+				"The file to modify.",
+				"Before Ansible 2.3 this option was only usable as I(dest), I(destfile) and I(name).",
+			]
+			type:     "path"
+			required: true
+			aliases: ["dest", "destfile", "name"]
+		}
+		regexp: {
+			description: [
+				"The regular expression to look for in the contents of the file.",
+				"Uses Python regular expressions; see U(http://docs.python.org/2/library/re.html).",
+				"Uses MULTILINE mode, which means C(^) and C($) match the beginning and end of the file, as well as the beginning and end respectively of I(each line) of the file.",
+				"Does not use DOTALL, which means the C(.) special character matches any character I(except newlines). A common mistake is to assume that a negated character set like C([^#]) will also not match newlines.",
+				"In order to exclude newlines, they must be added to the set like C([^#\\n]).",
+				"Note that, as of Ansible 2.0, short form tasks should have any escape sequences backslash-escaped in order to prevent them being parsed as string literal escapes. See the examples.",
+			]
+
+			type:     "str"
+			required: true
+		}
+		replace: {
+			description: [
+				"The string to replace regexp matches.",
+				"May contain backreferences that will get expanded with the regexp capture groups if the regexp matches.",
+				"If not set, matches are removed entirely.",
+				"Backreferences can be used ambiguously like C(\\1), or explicitly like C(\\g<1>).",
+			]
+			type: "str"
+		}
+		after: {
+			description: [
+				"If specified, only content after this match will be replaced/removed.",
+				"Can be used in combination with C(before).",
+				"Uses Python regular expressions; see U(http://docs.python.org/2/library/re.html).",
+				"Uses DOTALL, which means the C(.) special character I(can match newlines).",
+			]
+			type:          "str"
+			version_added: "2.4"
+		}
+		before: {
+			description: [
+				"If specified, only content before this match will be replaced/removed.",
+				"Can be used in combination with C(after).",
+				"Uses Python regular expressions; see U(http://docs.python.org/2/library/re.html).",
+				"Uses DOTALL, which means the C(.) special character I(can match newlines).",
+			]
+			type:          "str"
+			version_added: "2.4"
+		}
+		backup: {
+			description: [
+				"Create a backup file including the timestamp information so you can get the original file back if you somehow clobbered it incorrectly.",
+			]
+
+			type:    "bool"
+			default: false
+		}
+		others: {
+			description: [
+				"All arguments accepted by the M(file) module also work here.",
+			]
+			type: "str"
+		}
+		encoding: {
+			description: [
+				"The character encoding for reading and writing the file.",
+			]
+			type:          "str"
+			default:       "utf-8"
+			version_added: "2.4"
+		}
+	}
+	notes: [
+		"As of Ansible 2.3, the I(dest) option has been changed to I(path) as default, but I(dest) still works as well.",
+		"As of Ansible 2.7.10, the combined use of I(before) and I(after) works properly. If you were relying on the previous incorrect behavior, you may be need to adjust your tasks. See U(https://github.com/ansible/ansible/issues/31354) for details.",
+		"Option I(follow) has been removed in Ansible 2.5, because this module modifies the contents of the file so I(follow=no) doesn't make sense.",
+	]
+}

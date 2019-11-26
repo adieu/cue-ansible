@@ -1,0 +1,111 @@
+package ansible
+
+module: ovirt_auth: {
+	module:            "ovirt_auth"
+	short_description: "Module to manage authentication to oVirt/RHV"
+	author:            "Ondra Machacek (@machacekondra)"
+	version_added:     "2.2"
+	description: [
+		"This module authenticates to oVirt/RHV engine and creates SSO token, which should be later used in all other oVirt/RHV modules, so all modules don't need to perform login and logout. This module returns an Ansible fact called I(ovirt_auth). Every module can use this fact as C(auth) parameter, to perform authentication.",
+	]
+
+	options: {
+		state: {
+			default: "present"
+			choices: ["present", "absent"]
+			description: [
+				"Specifies if a token should be created or revoked.",
+			]
+		}
+		username: {
+			required: false
+			description: [
+				"The name of the user. For example: I(admin@internal) Default value is set by I(OVIRT_USERNAME) environment variable.",
+			]
+		}
+
+		password: {
+			required: false
+			description: [
+				"The password of the user. Default value is set by I(OVIRT_PASSWORD) environment variable.",
+			]
+		}
+		token: {
+			required: false
+			description: [
+				"SSO token to be used instead of login with username/password. Default value is set by I(OVIRT_TOKEN) environment variable.",
+			]
+
+			version_added: 2.5
+		}
+		url: {
+			required: false
+			description: [
+				"A string containing the API URL of the server. For example: I(https://server.example.com/ovirt-engine/api). Default value is set by I(OVIRT_URL) environment variable.",
+				"Either C(url) or C(hostname) is required.",
+			]
+		}
+		hostname: {
+			required: false
+			description: [
+				"A string containing the hostname of the server. For example: I(server.example.com). Default value is set by I(OVIRT_HOSTNAME) environment variable.",
+				"Either C(url) or C(hostname) is required.",
+			]
+			version_added: "2.6"
+		}
+		insecure: {
+			required: false
+			description: [
+				"A boolean flag that indicates if the server TLS certificate and host name should be checked.",
+			]
+			type: "bool"
+		}
+		ca_file: {
+			required: false
+			description: [
+				"A PEM file containing the trusted CA certificates. The certificate presented by the server will be verified using these CA certificates. If C(ca_file) parameter is not set, system wide CA certificate store is used. Default value is set by I(OVIRT_CAFILE) environment variable.",
+			]
+		}
+
+		timeout: {
+			required: false
+			description: [
+				"The maximum total time to wait for the response, in seconds. A value of zero (the default) means wait forever. If the timeout expires before the response is received an exception will be raised.",
+			]
+		}
+
+		compress: {
+			required: false
+			description: [
+				"A boolean flag indicating if the SDK should ask the server to send compressed responses. The default is I(True). Note that this is a hint for the server, and that it may return uncompressed data even when this parameter is set to I(True).",
+			]
+
+			type: "bool"
+		}
+		kerberos: {
+			required: false
+			description: [
+				"A boolean flag indicating if Kerberos authentication should be used instead of the default basic authentication.",
+			]
+
+			type: "bool"
+		}
+		headers: {
+			required: false
+			description: [
+				"A dictionary of HTTP headers to be added to each API call.",
+			]
+			version_added: "2.4"
+		}
+	}
+
+	requirements: [
+		"python >= 2.7",
+		"ovirt-engine-sdk-python >= 4.3.0",
+	]
+	notes: [
+		"Everytime you use ovirt_auth module to obtain ticket, you need to also revoke the ticket, when you no longer need it, otherwise the ticket would be revoked by engine when it expires. For an example of how to achieve that, please take a look at I(examples) section.",
+		"In order to use this module you have to install oVirt/RHV Python SDK. To ensure it's installed with correct version you can create the following task: I(pip: name=ovirt-engine-sdk-python version=4.3.0)",
+		"Note that in oVirt/RHV 4.1 if you want to use a user which is not administrator you must enable the I(ENGINE_API_FILTER_BY_DEFAULT) variable in engine. In oVirt/RHV 4.2 and later it's enabled by default.",
+	]
+}

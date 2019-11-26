@@ -1,0 +1,57 @@
+package ansible
+
+module: interfaces_file: {
+	module:                         "interfaces_file"
+	short_description:              "Tweak settings in /etc/network/interfaces files"
+	extends_documentation_fragment: "files"
+	description: [
+		"Manage (add, remove, change) individual interface options in an interfaces-style file without having to manage the file as a whole with, say, M(template) or M(assemble). Interface has to be presented in a file.",
+		"Read information about interfaces from interfaces-styled files",
+	]
+	version_added: "2.4"
+	options: {
+		dest: {
+			description: [
+				"Path to the interfaces file",
+			]
+			default: "/etc/network/interfaces"
+		}
+		iface: description: [
+			"Name of the interface, required for value changes or option remove",
+		]
+		address_family: {
+			description: [
+				"Address family of the interface, useful if same interface name is used for both inet and inet6",
+			]
+			version_added: "2.8"
+		}
+		option: description: [
+			"Name of the option, required for value changes or option remove",
+		]
+		value: description: [
+			"If I(option) is not presented for the I(interface) and I(state) is C(present) option will be added. If I(option) already exists and is not C(pre-up), C(up), C(post-up) or C(down), it's value will be updated. C(pre-up), C(up), C(post-up) and C(down) options can't be updated, only adding new options, removing existing ones or cleaning the whole option set are supported",
+		]
+
+		backup: {
+			description: [
+				"Create a backup file including the timestamp information so you can get the original file back if you somehow clobbered it incorrectly.",
+			]
+
+			type:    "bool"
+			default: "no"
+		}
+		state: {
+			description: [
+				"If set to C(absent) the option or section will be removed if present instead of created.",
+			]
+			default: "present"
+			choices: ["present", "absent"]
+		}
+	}
+
+	notes: [
+		"If option is defined multiple times last one will be updated but all will be deleted in case of an absent state",
+	]
+	requirements: []
+	author: "Roman Belyakovsky (@hryamzik)"
+}

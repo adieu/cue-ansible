@@ -1,0 +1,134 @@
+package ansible
+
+module: ucs_lan_connectivity: {
+	module:            "ucs_lan_connectivity"
+	short_description: "Configures LAN Connectivity Policies on Cisco UCS Manager"
+	description: [
+		"Configures LAN Connectivity Policies on Cisco UCS Manager.",
+		"Examples can be used with the UCS Platform Emulator U(https://communities.cisco.com/ucspe).",
+	]
+	extends_documentation_fragment: "ucs"
+	options: {
+		state: {
+			description: [
+				"If C(present), will verify LAN Connectivity Policies are present and will create if needed.",
+				"If C(absent), will verify LAN Connectivity Policies are absent and will delete if needed.",
+			]
+			choices: ["present", "absent"]
+			default: "present"
+		}
+		name: {
+			description: [
+				"The name of the LAN Connectivity Policy.",
+				"This name can be between 1 and 16 alphanumeric characters.",
+				"You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period).",
+				"You cannot change this name after the policy is created.",
+			]
+			required: true
+		}
+		description: {
+			description: [
+				"A description of the LAN Connectivity Policy.",
+				"Cisco recommends including information about where and when to use the policy.",
+				"Enter up to 256 characters.",
+				"You can use any characters or spaces except the following:",
+				"` (accent mark),  (backslash), ^ (carat), \" (double quote), = (equal sign), > (greater than), < (less than), or ' (single quote).",
+			]
+			aliases: ["descr"]
+		}
+		vnic_list: {
+			description: [
+				"List of vNICs used by the LAN Connectivity Policy.",
+				"vNICs used by the LAN Connectivity Policy must be created from a vNIC template.",
+			]
+			suboptions: {
+				name: {
+					description: [
+						"The name of the vNIC.",
+					]
+					required: true
+				}
+				vnic_template: {
+					description: [
+						"The name of the vNIC template.",
+					]
+					required: true
+				}
+				adapter_policy: description: [
+					"The name of the Ethernet adapter policy.",
+					"A user defined policy can be used, or one of the system defined policies.",
+				]
+				order: {
+					description: [
+						"String specifying the vNIC assignment order (e.g., '1', '2').",
+					]
+					default: "unspecified"
+				}
+				state: {
+					description: [
+						"If C(present), will verify vnic is configured within policy. If C(absent), will verify vnic is absent from policy.",
+					]
+
+					choices: ["present", "absent"]
+					default: "present"
+				}
+			}
+			version_added: "2.8"
+		}
+		iscsi_vnic_list: {
+			description: [
+				"List of iSCSI vNICs used by the LAN Connectivity Policy.",
+			]
+			suboptions: {
+				name: {
+					description: [
+						"The name of the iSCSI vNIC.",
+					]
+					required: true
+				}
+				overlay_vnic: description: [
+					"The LAN vNIC associated with this iSCSI vNIC.",
+				]
+				iscsi_adapter_policy: description: [
+					"The iSCSI adapter policy associated with this iSCSI vNIC.",
+				]
+				mac_address: {
+					description: [
+						"The MAC address associated with this iSCSI vNIC.",
+						"If the MAC address is not set, Cisco UCS Manager uses a derived MAC address.",
+					]
+					default: "derived"
+				}
+				vlan_name: {
+					description: [
+						"The VLAN used for the iSCSI vNIC.",
+					]
+					default: "default"
+				}
+				state: {
+					description: [
+						"If C(present), will verify iscsi vnic is configured within policy. If C(absent), will verify iscsi vnic is absent from policy.",
+					]
+
+					choices: ["present", "absent"]
+					default: "present"
+				}
+			}
+			version_added: "2.8"
+		}
+		org_dn: {
+			description: [
+				"Org dn (distinguished name)",
+			]
+			default: "org-root"
+		}
+	}
+	requirements: [
+		"ucsmsdk",
+	]
+	author: [
+		"David Soper (@dsoper2)",
+		"CiscoUcs (@CiscoUcs)",
+	]
+	version_added: "2.5"
+}

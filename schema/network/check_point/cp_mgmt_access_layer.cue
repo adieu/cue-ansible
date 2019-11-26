@@ -1,0 +1,147 @@
+package ansible
+
+module: cp_mgmt_access_layer: {
+	module:            "cp_mgmt_access_layer"
+	short_description: "Manages access-layer objects on Check Point over Web Services API"
+	description: [
+		"Manages access-layer objects on Check Point devices including creating, updating and removing objects.",
+		"All operations are performed over Web Services API.",
+	]
+	version_added: "2.9"
+	author:        "Or Soffer (@chkp-orso)"
+	options: {
+		name: {
+			description: [
+				"Object name.",
+			]
+			type:     "str"
+			required: true
+		}
+		add_default_rule: {
+			description: [
+				"Indicates whether to include a cleanup rule in the new layer.",
+			]
+			type: "bool"
+		}
+		applications_and_url_filtering: {
+			description: [
+				"Whether to enable Applications & URL Filtering blade on the layer.",
+			]
+			type: "bool"
+		}
+		content_awareness: {
+			description: [
+				"Whether to enable Content Awareness blade on the layer.",
+			]
+			type: "bool"
+		}
+		detect_using_x_forward_for: {
+			description: [
+				"Whether to use X-Forward-For HTTP header, which is added by the  proxy server to keep track of the original source IP.",
+			]
+			type: "bool"
+		}
+		firewall: {
+			description: [
+				"Whether to enable Firewall blade on the layer.",
+			]
+			type: "bool"
+		}
+		implicit_cleanup_action: {
+			description: [
+				"The default \"catch-all\" action for traffic that does not match any explicit or implied rules in the layer.",
+			]
+			type: "str"
+			choices: ["drop", "accept"]
+		}
+		mobile_access: {
+			description: [
+				"Whether to enable Mobile Access blade on the layer.",
+			]
+			type: "bool"
+		}
+		shared: {
+			description: [
+				"Whether this layer is shared.",
+			]
+			type: "bool"
+		}
+		tags: {
+			description: [
+				"Collection of tag identifiers.",
+			]
+			type: "list"
+		}
+		color: {
+			description: [
+				"Color of the object. Should be one of existing colors.",
+			]
+			type: "str"
+			choices: [
+				"aquamarine",
+				"black",
+				"blue",
+				"crete blue",
+				"burlywood",
+				"cyan",
+				"dark green",
+				"khaki",
+				"orchid",
+				"dark orange",
+				"dark sea green",
+				"pink",
+				"turquoise",
+				"dark blue",
+				"firebrick",
+				"brown",
+				"forest green",
+				"gold",
+				"dark gold",
+				"gray",
+				"dark gray",
+				"light green",
+				"lemon chiffon",
+				"coral",
+				"sea green",
+				"sky blue",
+				"magenta",
+				"purple",
+				"slate blue",
+				"violet red",
+				"navy blue",
+				"olive",
+				"orange",
+				"red",
+				"sienna",
+				"yellow",
+			]
+		}
+		comments: {
+			description: [
+				"Comments string.",
+			]
+			type: "str"
+		}
+		details_level: {
+			description: [
+				"The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed representation of the object.",
+			]
+
+			type: "str"
+			choices: ["uid", "standard", "full"]
+		}
+		ignore_warnings: {
+			description: [
+				"Apply changes ignoring warnings.",
+			]
+			type: "bool"
+		}
+		ignore_errors: {
+			description: [
+				"Apply changes ignoring errors. You won't be able to publish such a changes. If ignore-warnings flag was omitted - warnings will also be ignored.",
+			]
+			type: "bool"
+		}
+	}
+	extends_documentation_fragment: "checkpoint_objects"
+}

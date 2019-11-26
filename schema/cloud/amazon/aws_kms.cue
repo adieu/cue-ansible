@@ -1,0 +1,204 @@
+package ansible
+
+module: aws_kms: {
+	module:            "aws_kms"
+	short_description: "Perform various KMS management tasks."
+	description: [
+		"Manage role/user access to a KMS key. Not designed for encrypting/decrypting.",
+	]
+	version_added: "2.3"
+	options: {
+		alias: {
+			description: "An alias for a key. For safety, even though KMS does not require keys to have an alias, this module expects all new keys to be given an alias to make them easier to manage. Existing keys without an alias may be referred to by I(key_id). Use M(aws_kms_info) to find key ids. Required if I(key_id) is not given. Note that passing a I(key_id) and I(alias) will only cause a new alias to be added, an alias will never be renamed. The 'alias/' prefix is optional."
+
+			required: false
+			aliases: [
+				"key_alias",
+			]
+			type: "str"
+		}
+		key_id: {
+			description: [
+				"Key ID or ARN of the key. One of C(alias) or C(key_id) are required.",
+			]
+			required: false
+			aliases: [
+				"key_arn",
+			]
+			type: "str"
+		}
+		policy_mode: {
+			description: [
+				"(deprecated) Grant or deny access.",
+				"Used for modifying the Key Policy rather than modifying a grant and only works on the default policy created through the AWS Console.",
+				"This option has been deprecated, and will be removed in 2.13. Use I(policy) instead.",
+			]
+			default: "grant"
+			choices: ["grant", "deny"]
+			aliases: [
+				"mode",
+			]
+			type: "str"
+		}
+		policy_role_name: {
+			description: [
+				"(deprecated) Role to allow/deny access. One of C(policy_role_name) or C(policy_role_arn) are required.",
+				"Used for modifying the Key Policy rather than modifying a grant and only works on the default policy created through the AWS Console.",
+				"This option has been deprecated, and will be removed in 2.13. Use I(policy) instead.",
+			]
+			required: false
+			aliases: [
+				"role_name",
+			]
+			type: "str"
+		}
+		policy_role_arn: {
+			description: [
+				"(deprecated) ARN of role to allow/deny access. One of C(policy_role_name) or C(policy_role_arn) are required.",
+				"Used for modifying the Key Policy rather than modifying a grant and only works on the default policy created through the AWS Console.",
+				"This option has been deprecated, and will be removed in 2.13. Use I(policy) instead.",
+			]
+			type:     "str"
+			required: false
+			aliases: [
+				"role_arn",
+			]
+		}
+		policy_grant_types: {
+			description: [
+				"(deprecated) List of grants to give to user/role. Likely \"role,role grant\" or \"role,role grant,admin\". Required when C(policy_mode=grant).",
+				"Used for modifying the Key Policy rather than modifying a grant and only works on the default policy created through the AWS Console.",
+				"This option has been deprecated, and will be removed in 2.13. Use I(policy) instead.",
+			]
+			required: false
+			aliases: [
+				"grant_types",
+			]
+			type:     "list"
+			elements: "str"
+		}
+		policy_clean_invalid_entries: {
+			description: [
+				"(deprecated) If adding/removing a role and invalid grantees are found, remove them. These entries will cause an update to fail in all known cases.",
+				"Only cleans if changes are being made.",
+				"Used for modifying the Key Policy rather than modifying a grant and only works on the default policy created through the AWS Console.",
+				"This option has been deprecated, and will be removed in 2.13. Use I(policy) instead.",
+			]
+			type:    "bool"
+			default: true
+			aliases: [
+				"clean_invalid_entries",
+			]
+		}
+		state: {
+			description: "Whether a key should be present or absent. Note that making an existing key absent only schedules a key for deletion.  Passing a key that is scheduled for deletion with state present will cancel key deletion."
+
+			required: false
+			choices: [
+				"present",
+				"absent",
+			]
+			default:       "present"
+			version_added: 2.8
+			type:          "str"
+		}
+		enabled: {
+			description:   "Whether or not a key is enabled"
+			default:       true
+			version_added: 2.8
+			type:          "bool"
+		}
+		description: {
+			description:
+				"A description of the CMK. Use a description that helps you decide whether the CMK is appropriate for a task."
+
+			version_added: 2.8
+			type:          "str"
+		}
+		tags: {
+			description:   "A dictionary of tags to apply to a key."
+			version_added: 2.8
+			type:          "dict"
+		}
+		purge_tags: {
+			description: "Whether the I(tags) argument should cause tags not in the list to be removed"
+
+			version_added: 2.8
+			default:       false
+			type:          "bool"
+		}
+		purge_grants: {
+			description: "Whether the I(grants) argument should cause grants not in the list to be removed"
+
+			default:       false
+			version_added: 2.8
+			type:          "bool"
+		}
+		grants: {
+			description: [
+				"A list of grants to apply to the key. Each item must contain I(grantee_principal). Each item can optionally contain I(retiring_principal), I(operations), I(constraints), I(name).",
+				"I(grantee_principal) and I(retiring_principal) must be ARNs",
+				"For full documentation of suboptions see the boto3 documentation:",
+				"U(https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kms.html#KMS.Client.create_grant)",
+			]
+			version_added: 2.8
+			type:          "list"
+			elements:      "dict"
+			suboptions: {
+				grantee_principal: {
+					description: "The full ARN of the principal being granted permissions."
+					required:    true
+					type:        "str"
+				}
+				retiring_principal: {
+					description: "The full ARN of the principal permitted to revoke/retire the grant."
+					type:        "str"
+				}
+				operations: {
+					type:     "list"
+					elements: "str"
+					description: [
+						"A list of operations that the grantee may perform using the CMK.",
+					]
+					choices: [
+						"Decrypt",
+						"Encrypt",
+						"GenerateDataKey",
+						"GenerateDataKeyWithoutPlaintext",
+						"ReEncryptFrom",
+						"ReEncryptTo",
+						"CreateGrant",
+						"RetireGrant",
+						"DescribeKey",
+						"Verify",
+						"Sign",
+					]
+				}
+				constraints: {
+					description: [
+						"Constraints is a dict containing C(encryption_context_subset) or C(encryption_context_equals), either or both being a dict specifying an encryption context match. See U(https://docs.aws.amazon.com/kms/latest/APIReference/API_GrantConstraints.html) or U(https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kms.html#KMS.Client.create_grant)",
+					]
+
+					type: "dict"
+				}
+			}
+		}
+		policy: {
+			description: [
+				"policy to apply to the KMS key",
+				"See U(https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html)",
+			]
+			type:          "str"
+			version_added: 2.8
+		}
+	}
+	author: [
+		"Ted Timmons (@tedder)",
+		"Will Thames (@willthames)",
+		"Mark Chappell (@tremble)",
+	]
+	extends_documentation_fragment: [
+		"aws",
+		"ec2",
+	]
+}

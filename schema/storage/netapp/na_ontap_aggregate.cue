@@ -1,0 +1,155 @@
+package ansible
+
+module: na_ontap_aggregate: {
+	module:            "na_ontap_aggregate"
+	short_description: "NetApp ONTAP manage aggregates."
+	extends_documentation_fragment: [
+		"netapp.na_ontap",
+	]
+	version_added: "2.6"
+	author:        "NetApp Ansible Team (@carchi8py) <ng-ansibleteam@netapp.com>"
+
+	description: [
+		"Create, delete, or manage aggregates on ONTAP.",
+	]
+
+	options: {
+
+		state: {
+			description: [
+				"Whether the specified aggregate should exist or not.",
+			]
+			choices: ["present", "absent"]
+			default: "present"
+		}
+
+		service_state: {
+			description: [
+				"Whether the specified aggregate should be enabled or disabled. Creates aggregate if doesnt exist.",
+			]
+			choices: ["online", "offline"]
+		}
+
+		name: {
+			required: true
+			description: [
+				"The name of the aggregate to manage.",
+			]
+		}
+
+		from_name: {
+			description: [
+				"Name of the aggregate to be renamed.",
+			]
+			version_added: "2.7"
+		}
+
+		nodes: description: [
+			"Node(s) for the aggregate to be created on.  If no node specified, mgmt lif home will be used.",
+			"If multiple nodes specified an aggr stripe will be made.",
+		]
+
+		disk_type: {
+			description: [
+				"Type of disk to use to build aggregate",
+			]
+			choices: ["ATA", "BSAS", "FCAL", "FSAS", "LUN", "MSATA", "SAS", "SSD", "VMDISK"]
+			version_added: "2.7"
+		}
+
+		disk_count: description: [
+			"Number of disks to place into the aggregate, including parity disks.",
+			"The disks in this newly-created aggregate come from the spare disk pool.",
+			"The smallest disks in this pool join the aggregate first, unless the C(disk-size) argument is provided.",
+			"Either C(disk-count) or C(disks) must be supplied. Range [0..2^31-1].",
+			"Required when C(state=present).",
+		]
+
+		disk_size: {
+			description: [
+				"Disk size to use in 4K block size.  Disks within 10% of specified size will be used.",
+			]
+			version_added: "2.7"
+		}
+
+		raid_size: {
+			description: [
+				"Sets the maximum number of drives per raid group.",
+			]
+			version_added: "2.7"
+		}
+
+		raid_type: {
+			description: [
+				"Specifies the type of RAID groups to use in the new aggregate.",
+			]
+			choices: ["raid4", "raid_dp", "raid_tec"]
+			version_added: "2.7"
+		}
+
+		unmount_volumes: {
+			type: "bool"
+			description: [
+				"If set to \"TRUE\", this option specifies that all of the volumes hosted by the given aggregate are to be unmounted",
+				"before the offline operation is executed.",
+				"By default, the system will reject any attempt to offline an aggregate that hosts one or more online volumes.",
+			]
+		}
+
+		disks: {
+			type: "list"
+			description: [
+				"Specific list of disks to use for the new aggregate.",
+				"To create a \"mirrored\" aggregate with a specific list of disks, both 'disks' and 'mirror_disks' options must be supplied. Additionally, the same number of disks must be supplied in both lists.",
+			]
+
+			version_added: "2.8"
+		}
+
+		is_mirrored: {
+			type: "bool"
+			description: [
+				"Specifies that the new aggregate be mirrored (have two plexes).",
+				"If set to true, then the indicated disks will be split across the two plexes. By default, the new aggregate will not be mirrored.",
+				"This option cannot be used when a specific list of disks is supplied with either the 'disks' or 'mirror_disks' options.",
+			]
+			version_added: "2.8"
+		}
+
+		mirror_disks: {
+			type: "list"
+			description: [
+				"List of mirror disks to use. It must contain the same number of disks specified in 'disks'.",
+			]
+			version_added: "2.8"
+		}
+
+		spare_pool: {
+			description: [
+				"Specifies the spare pool from which to select spare disks to use in creation of a new aggregate.",
+			]
+			choices: ["Pool0", "Pool1"]
+			version_added: "2.8"
+		}
+
+		wait_for_online: {
+			description: [
+				"Set this parameter to 'true' for synchronous execution during create (wait until aggregate status is online)",
+				"Set this parameter to 'false' for asynchronous execution",
+				"For asynchronous, execution exits as soon as the request is sent, without checking aggregate status",
+			]
+			type:          "bool"
+			default:       false
+			version_added: "2.8"
+		}
+
+		time_out: {
+			description: [
+				"time to wait for aggregate creation in seconds",
+				"default is set to 100 seconds",
+			]
+			default:       100
+			version_added: "2.8"
+		}
+	}
+}

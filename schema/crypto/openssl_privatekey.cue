@@ -1,0 +1,172 @@
+package ansible
+
+module: openssl_privatekey: {
+	module:            "openssl_privatekey"
+	version_added:     "2.3"
+	short_description: "Generate OpenSSL private keys"
+	description: [
+		"This module allows one to (re)generate OpenSSL private keys.",
+		"One can generate L(RSA,https://en.wikipedia.org/wiki/RSA_(cryptosystem)), L(DSA,https://en.wikipedia.org/wiki/Digital_Signature_Algorithm), L(ECC,https://en.wikipedia.org/wiki/Elliptic-curve_cryptography) or L(EdDSA,https://en.wikipedia.org/wiki/EdDSA) private keys.",
+		"Keys are generated in PEM format.",
+		"Please note that the module regenerates private keys if they don't match the module's options. In particular, if you provide another passphrase (or specify none), change the keysize, etc., the private key will be regenerated. If you are concerned that this could **overwrite your private key**, consider using the I(backup) option.",
+		"The module can use the cryptography Python library, or the pyOpenSSL Python library. By default, it tries to detect which one is available. This can be overridden with the I(select_crypto_backend) option. Please note that the PyOpenSSL backend was deprecated in Ansible 2.9 and will be removed in Ansible 2.13.\"",
+	]
+
+	requirements: [
+		"Either cryptography >= 1.2.3 (older versions might work as well)",
+		"Or pyOpenSSL",
+	]
+	author: [
+		"Yanis Guenane (@Spredzy)",
+		"Felix Fontein (@felixfontein)",
+	]
+	options: {
+		state: {
+			description: [
+				"Whether the private key should exist or not, taking action if the state is different from what is stated.",
+			]
+			type:    "str"
+			default: "present"
+			choices: ["absent", "present"]
+		}
+		size: {
+			description: [
+				"Size (in bits) of the TLS/SSL key to generate.",
+			]
+			type:    "int"
+			default: 4096
+		}
+		type: {
+			description: [
+				"The algorithm used to generate the TLS/SSL private key.",
+				"Note that C(ECC), C(X25519), C(X448), C(Ed25519) and C(Ed448) require the C(cryptography) backend. C(X25519) needs cryptography 2.5 or newer, while C(X448), C(Ed25519) and C(Ed448) require cryptography 2.6 or newer. For C(ECC), the minimal cryptography version required depends on the I(curve) option.",
+			]
+
+			type:    "str"
+			default: "RSA"
+			choices: ["DSA", "ECC", "Ed25519", "Ed448", "RSA", "X25519", "X448"]
+		}
+		curve: {
+			description: [
+				"Note that not all curves are supported by all versions of C(cryptography).",
+				"For maximal interoperability, C(secp384r1) or C(secp256r1) should be used.",
+				"We use the curve names as defined in the L(IANA registry for TLS,https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-8).",
+			]
+
+			type: "str"
+			choices: [
+				"secp384r1",
+				"secp521r1",
+				"secp224r1",
+				"secp192r1",
+				"secp256r1",
+				"secp256k1",
+				"brainpoolP256r1",
+				"brainpoolP384r1",
+				"brainpoolP512r1",
+				"sect571k1",
+				"sect409k1",
+				"sect283k1",
+				"sect233k1",
+				"sect163k1",
+				"sect571r1",
+				"sect409r1",
+				"sect283r1",
+				"sect233r1",
+				"sect163r2",
+			]
+			version_added: "2.8"
+		}
+		force: {
+			description: [
+				"Should the key be regenerated even if it already exists.",
+			]
+			type:    "bool"
+			default: false
+		}
+		path: {
+			description: [
+				"Name of the file in which the generated TLS/SSL private key will be written. It will have 0600 mode.",
+			]
+			type:     "path"
+			required: true
+		}
+		passphrase: {
+			description: [
+				"The passphrase for the private key.",
+			]
+			type:          "str"
+			version_added: "2.4"
+		}
+		cipher: {
+			description: [
+				"The cipher to encrypt the private key. (Valid values can be found by running `openssl list -cipher-algorithms` or `openssl list-cipher-algorithms`, depending on your OpenSSL version.)",
+				"When using the C(cryptography) backend, use C(auto).",
+			]
+			type:          "str"
+			version_added: "2.4"
+		}
+		select_crypto_backend: {
+			description: [
+				"Determines which crypto backend to use.",
+				"The default choice is C(auto), which tries to use C(cryptography) if available, and falls back to C(pyopenssl).",
+				"If set to C(pyopenssl), will try to use the L(pyOpenSSL,https://pypi.org/project/pyOpenSSL/) library.",
+				"If set to C(cryptography), will try to use the L(cryptography,https://cryptography.io/) library.",
+				"Please note that the C(pyopenssl) backend has been deprecated in Ansible 2.9, and will be removed in Ansible 2.13. From that point on, only the C(cryptography) backend will be available.",
+			]
+
+			type:    "str"
+			default: "auto"
+			choices: ["auto", "cryptography", "pyopenssl"]
+			version_added: "2.8"
+		}
+		format: {
+			description: [
+				"Determines which format the private key is written in. By default, PKCS1 (traditional OpenSSL format) is used for all keys which support it. Please note that not every key can be exported in any format.",
+				"The value C(auto) selects a fromat based on the key format. The value C(auto_ignore) does the same, but for existing private key files, it will not force a regenerate when its format is not the automatically selected one for generation.",
+				"Note that if the format for an existing private key mismatches, the key is *regenerated* by default. To change this behavior, use the I(format_mismatch) option.",
+				"The I(format) option is only supported by the C(cryptography) backend. The C(pyopenssl) backend will fail if a value different from C(auto_ignore) is used.",
+			]
+
+			type:    "str"
+			default: "auto_ignore"
+			choices: ["pkcs1", "pkcs8", "raw", "auto", "auto_ignore"]
+			version_added: "2.10"
+		}
+		format_mismatch: {
+			description: [
+				"Determines behavior of the module if the format of a private key does not match the expected format, but all other parameters are as expected.",
+				"If set to C(regenerate) (default), generates a new private key.",
+				"If set to C(convert), the key will be converted to the new format instead.",
+				"Only supported by the C(cryptography) backend.",
+			]
+			type:    "str"
+			default: "regenerate"
+			choices: ["regenerate", "convert"]
+			version_added: "2.10"
+		}
+		backup: {
+			description: [
+				"Create a backup file including a timestamp so you can get the original private key back if you overwrote it with a new one by accident.",
+			]
+
+			type:          "bool"
+			default:       false
+			version_added: "2.8"
+		}
+	}
+	extends_documentation_fragment: [
+		"files",
+	]
+	seealso: [{
+		module: "openssl_certificate"
+	}, {
+		module: "openssl_csr"
+	}, {
+		module: "openssl_dhparam"
+	}, {
+		module: "openssl_pkcs12"
+	}, {
+		module: "openssl_publickey"
+	}]
+}

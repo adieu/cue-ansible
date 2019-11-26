@@ -1,0 +1,67 @@
+package ansible
+
+module: logicmonitor_facts: {
+	module:            "logicmonitor_facts"
+	short_description: "Collect facts about LogicMonitor objects"
+	description: [
+		"LogicMonitor is a hosted, full-stack, infrastructure monitoring platform.",
+		"This module collects facts about hosts and host groups within your LogicMonitor account.",
+	]
+	version_added: "2.2"
+	author: ["Ethan Culler-Mayeno (@ethanculler)", "Jeff Wozniak (@woz5999)"]
+	notes: [
+		"You must have an existing LogicMonitor account for this module to function.",
+	]
+	requirements: ["An existing LogicMonitor account", "Linux"]
+	options: {
+		target: {
+			description: [
+				"The LogicMonitor object you wish to manage.",
+			]
+			required: true
+			choices: ["host", "hostgroup"]
+		}
+		company: {
+			description: [
+				"The LogicMonitor account company name. If you would log in to your account at \"superheroes.logicmonitor.com\" you would use \"superheroes\".",
+			]
+			required: true
+		}
+		user: {
+			description: [
+				"A LogicMonitor user name. The module will authenticate and perform actions on behalf of this user.",
+			]
+			required: true
+		}
+		password: {
+			description: [
+				"The password for the chosen LogicMonitor User.",
+				"If an md5 hash is used, the digest flag must be set to true.",
+			]
+			required: true
+		}
+		collector: description: [
+			"The fully qualified domain name of a collector in your LogicMonitor account.",
+			"This is optional for querying a LogicMonitor host when a displayname is specified.",
+			"This is required for querying a LogicMonitor host when a displayname is not specified.",
+		]
+		hostname: {
+			description: [
+				"The hostname of a host in your LogicMonitor account, or the desired hostname of a device to add into monitoring.",
+				"Required for managing hosts (target=host).",
+			]
+			default: "hostname -f"
+		}
+		displayname: {
+			description: [
+				"The display name of a host in your LogicMonitor account or the desired display name of a device to add into monitoring.",
+			]
+			default: "hostname -f"
+		}
+		fullpath: description: [
+			"The fullpath of the hostgroup object you would like to manage.",
+			"Recommend running on a single ansible host.",
+			"Required for management of LogicMonitor host groups (target=hostgroup).",
+		]
+	}
+}

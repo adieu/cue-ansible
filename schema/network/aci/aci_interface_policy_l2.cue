@@ -1,0 +1,66 @@
+package ansible
+
+module: aci_interface_policy_l2: {
+	module:            "aci_interface_policy_l2"
+	short_description: "Manage Layer 2 interface policies (l2:IfPol)"
+	description: [
+		"Manage Layer 2 interface policies on Cisco ACI fabrics.",
+	]
+	version_added: "2.4"
+	options: {
+		l2_policy: {
+			description: [
+				"The name of the Layer 2 interface policy.",
+			]
+			type:     "str"
+			required: true
+			aliases: ["name"]
+		}
+		description: {
+			description: [
+				"The description of the Layer 2 interface policy.",
+			]
+			type: "str"
+			aliases: ["descr"]
+		}
+		qinq: {
+			description: [
+				"Determines if QinQ is disabled or if the port should be considered a core or edge port.",
+				"The APIC defaults to C(disabled) when unset during creation.",
+			]
+			type: "str"
+			choices: ["core", "disabled", "edge"]
+		}
+		vepa: {
+			description: [
+				"Determines if Virtual Ethernet Port Aggregator is disabled or enabled.",
+				"The APIC defaults to C(no) when unset during creation.",
+			]
+			type: "bool"
+		}
+		vlan_scope: {
+			description: [
+				"The scope of the VLAN.",
+				"The APIC defaults to C(global) when unset during creation.",
+			]
+			type: "str"
+			choices: ["global", "portlocal"]
+		}
+		state: {
+			description: [
+				"Use C(present) or C(absent) for adding or removing.",
+				"Use C(query) for listing an object or multiple objects.",
+			]
+			type: "str"
+			choices: ["absent", "present", "query"]
+			default: "present"
+		}
+	}
+	extends_documentation_fragment: "aci"
+	seealso: [{
+		name:        "APIC Management Information Model reference"
+		description: "More information about the internal APIC class B(l2:IfPol)."
+		link:        "https://developer.cisco.com/docs/apic-mim-ref/"
+	}]
+	author: ["Dag Wieers (@dagwieers)"]
+}

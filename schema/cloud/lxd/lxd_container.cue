@@ -1,0 +1,146 @@
+package ansible
+
+module: lxd_container: {
+	module:            "lxd_container"
+	short_description: "Manage LXD Containers"
+	version_added:     "2.2"
+	description: [
+		"Management of LXD containers",
+	]
+	author: "Hiroaki Nakamura (@hnakamur)"
+	options: {
+		name: {
+			description: [
+				"Name of a container.",
+			]
+			required: true
+		}
+		architecture: {
+			description: [
+				"The architecture for the container (e.g. \"x86_64\" or \"i686\"). See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#post-1)",
+			]
+
+			required: false
+		}
+		config: {
+			description: [
+				"The config for the container (e.g. {\"limits.cpu\": \"2\"}). See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#post-1)",
+				"If the container already exists and its \"config\" value in metadata obtained from GET /1.0/containers/<name> U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#10containersname) are different, they this module tries to apply the configurations.",
+				"The key starts with 'volatile.' are ignored for this comparison.",
+				"Not all config values are supported to apply the existing container. Maybe you need to delete and recreate a container.",
+			]
+
+			required: false
+		}
+		devices: {
+			description: [
+				"The devices for the container (e.g. { \"rootfs\": { \"path\": \"/dev/kvm\", \"type\": \"unix-char\" }). See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#post-1)",
+			]
+
+			required: false
+		}
+		ephemeral: {
+			description: [
+				"Whether or not the container is ephemeral (e.g. true or false). See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#post-1)",
+			]
+
+			required: false
+			type:     "bool"
+		}
+		source: {
+			description: [
+				"The source for the container (e.g. { \"type\": \"image\", \"mode\": \"pull\", \"server\": \"https://images.linuxcontainers.org\", \"protocol\": \"lxd\", \"alias\": \"ubuntu/xenial/amd64\" }).",
+				"See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#post-1) for complete API documentation.",
+				"Note that C(protocol) accepts two choices: C(lxd) or C(simplestreams)",
+			]
+			required: false
+		}
+		state: {
+			choices: [
+				"started",
+				"stopped",
+				"restarted",
+				"absent",
+				"frozen",
+			]
+			description: [
+				"Define the state of a container.",
+			]
+			required: false
+			default:  "started"
+		}
+		timeout: {
+			description: [
+				"A timeout for changing the state of the container.",
+				"This is also used as a timeout for waiting until IPv4 addresses are set to the all network interfaces in the container after starting or restarting.",
+			]
+
+			required: false
+			default:  30
+		}
+		wait_for_ipv4_addresses: {
+			description: [
+				"If this is true, the C(lxd_container) waits until IPv4 addresses are set to the all network interfaces in the container after starting or restarting.",
+			]
+
+			required: false
+			default:  false
+			type:     "bool"
+		}
+		force_stop: {
+			description: [
+				"If this is true, the C(lxd_container) forces to stop the container when it stops or restarts the container.",
+			]
+
+			required: false
+			default:  false
+			type:     "bool"
+		}
+		url: {
+			description: [
+				"The unix domain socket path or the https URL for the LXD server.",
+			]
+			required: false
+			default:  "unix:/var/lib/lxd/unix.socket"
+		}
+		snap_url: {
+			description: [
+				"The unix domain socket path when LXD is installed by snap package manager.",
+			]
+			required:      false
+			default:       "unix:/var/snap/lxd/common/lxd/unix.socket"
+			version_added: "2.8"
+		}
+		client_key: {
+			description: [
+				"The client certificate key file path.",
+			]
+			required: false
+			default:  "\"{}/.config/lxc/client.key\" .format(os.environ[\"HOME\"])"
+			aliases: ["key_file"]
+		}
+		client_cert: {
+			description: [
+				"The client certificate file path.",
+			]
+			required: false
+			default:  "\"{}/.config/lxc/client.crt\" .format(os.environ[\"HOME\"])"
+			aliases: ["cert_file"]
+		}
+		trust_password: {
+			description: [
+				"The client trusted password.",
+				"You need to set this password on the LXD server before running this module using the following command. lxc config set core.trust_password <some random password> See U(https://www.stgraber.org/2016/04/18/lxd-api-direct-interaction/)",
+				"If trust_password is set, this module send a request for authentication before sending any requests.",
+			]
+
+			required: false
+		}
+	}
+	notes: [
+		"Containers must have a unique name. If you attempt to create a container with a name that already existed in the users namespace the module will simply return as \"unchanged\".",
+		"There are two ways to run commands in containers, using the command module or using the ansible lxd connection plugin bundled in Ansible >= 2.1, the later requires python to be installed in the container which can be done with the command module.",
+		"You can copy a file from the host to the container with the Ansible M(copy) and M(template) module and the `lxd` connection plugin. See the example below.",
+		"You can copy a file in the created container to the localhost with `command=lxc file pull container_name/dir/filename filename`. See the first example below.",
+	]
+}

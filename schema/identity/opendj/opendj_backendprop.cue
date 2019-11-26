@@ -1,0 +1,81 @@
+package ansible
+
+module: opendj_backendprop: {
+	module:            "opendj_backendprop"
+	short_description: "Will update the backend configuration of OpenDJ via the dsconfig set-backend-prop command."
+	description: [
+		"This module will update settings for OpenDJ with the command set-backend-prop.",
+		"It will check first via de get-backend-prop if configuration needs to be applied.",
+	]
+	version_added: "2.2"
+	author: [
+		"Werner Dijkerman (@dj-wasabi)",
+	]
+	options: {
+		opendj_bindir: {
+			description: [
+				"The path to the bin directory of OpenDJ.",
+			]
+			required: false
+			default:  "/opt/opendj/bin"
+		}
+		hostname: {
+			description: [
+				"The hostname of the OpenDJ server.",
+			]
+			required: true
+		}
+		port: {
+			description: [
+				"The Admin port on which the OpenDJ instance is available.",
+			]
+			required: true
+		}
+		username: {
+			description: [
+				"The username to connect to.",
+			]
+			required: false
+			default:  "cn=Directory Manager"
+		}
+		password: {
+			description: [
+				"The password for the cn=Directory Manager user.",
+				"Either password or passwordfile is needed.",
+			]
+			required: false
+		}
+		passwordfile: {
+			description: [
+				"Location to the password file which holds the password for the cn=Directory Manager user.",
+				"Either password or passwordfile is needed.",
+			]
+			required: false
+		}
+		backend: {
+			description: [
+				"The name of the backend on which the property needs to be updated.",
+			]
+			required: true
+		}
+		name: {
+			description: [
+				"The configuration setting to update.",
+			]
+			required: true
+		}
+		value: {
+			description: [
+				"The value for the configuration item.",
+			]
+			required: true
+		}
+		state: {
+			description: [
+				"If configuration needs to be added/updated",
+			]
+			required: false
+			default:  "present"
+		}
+	}
+}

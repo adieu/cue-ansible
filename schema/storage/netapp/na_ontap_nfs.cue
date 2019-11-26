@@ -1,0 +1,173 @@
+package ansible
+
+module: na_ontap_nfs: {
+	module:            "na_ontap_nfs"
+	short_description: "NetApp ONTAP NFS status"
+	extends_documentation_fragment: [
+		"netapp.na_ontap",
+	]
+	version_added: "2.6"
+	author:        "NetApp Ansible Team (@carchi8py) <ng-ansibleteam@netapp.com>"
+	description: [
+		"Enable or disable NFS on ONTAP",
+	]
+	options: {
+		state: {
+			description: [
+				"Whether NFS should exist or not.",
+			]
+			choices: ["present", "absent"]
+			default: "present"
+		}
+		service_state: {
+			description: [
+				"Whether the specified NFS should be enabled or disabled. Creates NFS service if does not exist.",
+			]
+			choices: ["started", "stopped"]
+		}
+		vserver: {
+			description: [
+				"Name of the vserver to use.",
+			]
+			required: true
+		}
+		nfsv3: {
+			description: [
+				"status of NFSv3.",
+			]
+			choices: ["enabled", "disabled"]
+		}
+		nfsv3_fsid_change: {
+			description: [
+				"status of if NFSv3 clients see change in FSID as they traverse filesystems.",
+			]
+			choices: ["enabled", "disabled"]
+			version_added: "2.7"
+		}
+		nfsv4_fsid_change: {
+			description: [
+				"status of if NFSv4 clients see change in FSID as they traverse filesystems.",
+			]
+			choices: ["enabled", "disabled"]
+			version_added: "2.9"
+		}
+		nfsv4: {
+			description: [
+				"status of NFSv4.",
+			]
+			choices: ["enabled", "disabled"]
+		}
+		nfsv41: {
+			description: [
+				"status of NFSv41.",
+			]
+			aliases: ["nfsv4.1"]
+			choices: ["enabled", "disabled"]
+		}
+		nfsv41_pnfs: {
+			description: [
+				"status of NFSv41 pNFS.",
+			]
+			choices: ["enabled", "disabled"]
+			version_added: "2.9"
+		}
+		nfsv4_numeric_ids: {
+			description: [
+				"status of NFSv4 numeric ID's.",
+			]
+			choices: ["enabled", "disabled"]
+			version_added: "2.9"
+		}
+		vstorage_state: {
+			description: [
+				"status of vstorage_state.",
+			]
+			choices: ["enabled", "disabled"]
+		}
+		nfsv4_id_domain: description: [
+			"Name of the nfsv4_id_domain to use.",
+		]
+		nfsv40_acl: {
+			description: [
+				"status of NFS v4.0 ACL feature",
+			]
+			choices: ["enabled", "disabled"]
+			version_added: "2.7"
+		}
+		nfsv40_read_delegation: {
+			description: [
+				"status for NFS v4.0 read delegation feature.",
+			]
+			choices: ["enabled", "disabled"]
+			version_added: "2.7"
+		}
+		nfsv40_write_delegation: {
+			description: [
+				"status for NFS v4.0 write delegation feature.",
+			]
+			choices: ["enabled", "disabled"]
+			version_added: "2.7"
+		}
+		nfsv41_acl: {
+			description: [
+				"status of NFS v4.1 ACL feature",
+			]
+			choices: ["enabled", "disabled"]
+			version_added: "2.7"
+		}
+		nfsv41_read_delegation: {
+			description: [
+				"status for NFS v4.1 read delegation feature.",
+			]
+			choices: ["enabled", "disabled"]
+			version_added: "2.7"
+		}
+		nfsv41_write_delegation: {
+			description: [
+				"status for NFS v4.1 write delegation feature.",
+			]
+			choices: ["enabled", "disabled"]
+			version_added: "2.7"
+		}
+		nfsv40_referrals: {
+			description: [
+				"status for NFS v4.0 referrals.",
+			]
+			choices: ["enabled", "disabled"]
+			version_added: "2.9"
+		}
+		nfsv41_referrals: {
+			description: [
+				"status for NFS v4.1 referrals.",
+			]
+			choices: ["enabled", "disabled"]
+			version_added: "2.9"
+		}
+		tcp: {
+			description: [
+				"Enable TCP (support from ONTAP 9.3 onward).",
+			]
+			choices: ["enabled", "disabled"]
+		}
+		udp: {
+			description: [
+				"Enable UDP (support from ONTAP 9.3 onward).",
+			]
+			choices: ["enabled", "disabled"]
+		}
+		showmount: {
+			description: [
+				"Whether SVM allows showmount",
+			]
+			choices: ["enabled", "disabled"]
+			version_added: "2.7"
+		}
+		tcp_max_xfer_size: {
+			description: [
+				"TCP Maximum Transfer Size (bytes). The default value is 65536.",
+			]
+			version_added: "2.8"
+			type:          "int"
+		}
+	}
+}

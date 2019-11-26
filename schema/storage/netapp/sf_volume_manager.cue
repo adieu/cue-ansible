@@ -1,0 +1,83 @@
+package ansible
+
+module: sf_volume_manager: {
+	module: "sf_volume_manager"
+	deprecated: {
+		removed_in:  "2.11"
+		why:         "This Module has been replaced"
+		alternative: "please use M(na_elementsw_volume)"
+	}
+	short_description: "Manage SolidFire volumes"
+	extends_documentation_fragment: [
+		"netapp.solidfire",
+	]
+	version_added: "2.3"
+	author:        "Sumit Kumar (@timuster) <sumit4@netapp.com>"
+	description: [
+		"Create, destroy, or update volumes on SolidFire",
+	]
+
+	options: {
+
+		state: {
+			description: [
+				"Whether the specified volume should exist or not.",
+			]
+			required: true
+			choices: ["present", "absent"]
+		}
+
+		name: {
+			description: [
+				"The name of the volume to manage.",
+			]
+			required: true
+		}
+
+		account_id: {
+			description: [
+				"Account ID for the owner of this volume.",
+			]
+			required: true
+		}
+
+		"512emulation": description: [
+			"Should the volume provide 512-byte sector emulation?",
+			"Required when C(state=present)",
+		]
+
+		qos: description: "Initial quality of service settings for this volume. Configure as dict in playbooks."
+
+		attributes: description: "A YAML dictionary of attributes that you would like to apply on this volume."
+
+		volume_id: description: [
+			"The ID of the volume to manage or update.",
+			"In order to create multiple volumes with the same name, but different volume_ids, please declare the I(volume_id) parameter with an arbitrary value. However, the specified volume_id will not be assigned to the newly created volume (since it's an auto-generated property).",
+		]
+
+		size: description: [
+			"The size of the volume in (size_unit).",
+			"Required when C(state = present).",
+		]
+
+		size_unit: {
+			description: [
+				"The unit used to interpret the size parameter.",
+			]
+			choices: ["bytes", "b", "kb", "mb", "gb", "tb", "pb", "eb", "zb", "yb"]
+			default: "gb"
+		}
+
+		access: {
+			description: [
+				"Access allowed for the volume.",
+				"readOnly: Only read operations are allowed.",
+				"readWrite: Reads and writes are allowed.",
+				"locked: No reads or writes are allowed.",
+				"replicationTarget: Identify a volume as the target volume for a paired set of volumes. If the volume is not paired, the access status is locked.",
+				"If unspecified, the access settings of the clone will be the same as the source.",
+			]
+			choices: ["readOnly", "readWrite", "locked", "replicationTarget"]
+		}
+	}
+}

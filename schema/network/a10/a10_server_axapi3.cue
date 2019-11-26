@@ -1,0 +1,64 @@
+package ansible
+
+module: a10_server_axapi3: {
+	module:            "a10_server_axapi3"
+	version_added:     2.3
+	short_description: "Manage A10 Networks AX/SoftAX/Thunder/vThunder devices"
+	description: [
+		"Manage SLB (Server Load Balancer) server objects on A10 Networks devices via aXAPIv3.",
+	]
+	author: [
+		"Eric Chou (@ericchou1)",
+	]
+	extends_documentation_fragment: [
+		"a10",
+		"url",
+	]
+	options: {
+		server_name: {
+			description: [
+				"The SLB (Server Load Balancer) server name.",
+			]
+			required: true
+			aliases: ["server"]
+		}
+		server_ip: {
+			description: [
+				"The SLB (Server Load Balancer) server IPv4 address.",
+			]
+			required: true
+			aliases: ["ip", "address"]
+		}
+		server_status: {
+			description: [
+				"The SLB (Server Load Balancer) virtual server status.",
+			]
+			default: "enable"
+			aliases: ["action"]
+			choices: ["enable", "disable"]
+		}
+		server_ports: {
+			description: [
+				"A list of ports to create for the server. Each list item should be a dictionary which specifies the C(port:) and C(protocol:).",
+			]
+
+			aliases: ["port"]
+		}
+		operation: {
+			description: [
+				"Create, Update or Remove SLB server. For create and update operation, we use the IP address and server name specified in the POST message. For delete operation, we use the server name in the request URI.",
+			]
+
+			default: "create"
+			choices: ["create", "update", "remove"]
+		}
+		validate_certs: {
+			description: [
+				"If C(no), SSL certificates will not be validated. This should only be used on personally controlled devices using self-signed certificates.",
+			]
+
+			type:    "bool"
+			default: "yes"
+		}
+	}
+}

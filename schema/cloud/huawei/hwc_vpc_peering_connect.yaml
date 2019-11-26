@@ -1,0 +1,61 @@
+
+---
+module: hwc_vpc_peering_connect
+description:
+    - vpc peering management.
+short_description: Creates a resource of Vpc/PeeringConnect in Huawei Cloud
+version_added: '2.10'
+author: Huawei Inc. (@huaweicloud)
+requirements:
+    - keystoneauth1 >= 3.6.0
+options:
+    state:
+        description:
+            - Whether the given object should exist in Huawei Cloud.
+        type: str
+        choices: ['present', 'absent']
+        default: 'present'
+    timeouts:
+        description:
+            - The timeouts for each operations.
+        type: dict
+        suboptions:
+            create:
+                description:
+                    - The timeouts for create operation.
+                type: str
+                default: '15m'
+    local_vpc_id:
+        description:
+            - Specifies the ID of local VPC.
+        type: str
+        required: true
+    name:
+        description:
+            - Specifies the name of the VPC peering connection. The value can
+              contain 1 to 64 characters.
+        type: str
+        required: true
+    peering_vpc:
+        description:
+            - Specifies information about the peering VPC.
+        type: dict
+        required: true
+        suboptions:
+            vpc_id:
+                description:
+                    - Specifies the ID of peering VPC.
+                type: str
+                required: true
+            project_id:
+                description:
+                    - Specifies the ID of the project which the peering vpc
+                      belongs to.
+                type: str
+                required: false
+    description:
+        description:
+            - The description of vpc peering connection.
+        type: str
+        required: false
+extends_documentation_fragment: hwc

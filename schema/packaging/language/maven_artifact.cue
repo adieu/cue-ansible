@@ -1,0 +1,132 @@
+package ansible
+
+module: maven_artifact: {
+	module:            "maven_artifact"
+	short_description: "Downloads an Artifact from a Maven Repository"
+	version_added:     "2.0"
+	description: [
+		"Downloads an artifact from a maven repository given the maven coordinates provided to the module.",
+		"Can retrieve snapshots or release versions of the artifact and will resolve the latest available version if one is not available.",
+	]
+
+	author: "Chris Schmidt (@chrisisbeef)"
+	requirements: [
+		"lxml",
+		"boto if using a S3 repository (s3://...)",
+	]
+	options: {
+		group_id: {
+			description: [
+				"The Maven groupId coordinate",
+			]
+			required: true
+		}
+		artifact_id: {
+			description: [
+				"The maven artifactId coordinate",
+			]
+			required: true
+		}
+		version: description: [
+			"The maven version coordinate",
+			"Mutually exclusive with I(version_by_spec).",
+		]
+		version_by_spec: {
+			description: [
+				"The maven dependency version ranges.",
+				"See supported version ranges on U(https://cwiki.apache.org/confluence/display/MAVENOLD/Dependency+Mediation+and+Conflict+Resolution)",
+				"The range type \"(,1.0],[1.2,)\" and \"(,1.1),(1.1,)\" is not supported.",
+				"Mutually exclusive with I(version).",
+			]
+			version_added: "2.10"
+		}
+		classifier: description: [
+			"The maven classifier coordinate",
+		]
+		extension: {
+			description: [
+				"The maven type/extension coordinate",
+			]
+			default: "jar"
+		}
+		repository_url: {
+			description: [
+				"The URL of the Maven Repository to download from.",
+				"Use s3://... if the repository is hosted on Amazon S3, added in version 2.2.",
+				"Use file://... if the repository is local, added in version 2.6",
+			]
+			default: "http://repo1.maven.org/maven2"
+		}
+		username: {
+			description: [
+				"The username to authenticate as to the Maven Repository. Use AWS secret key of the repository is hosted on S3",
+			]
+			aliases: ["aws_secret_key"]
+		}
+		password: {
+			description: [
+				"The password to authenticate with to the Maven Repository. Use AWS secret access key of the repository is hosted on S3",
+			]
+			aliases: ["aws_secret_access_key"]
+		}
+		headers: {
+			description: [
+				"Add custom HTTP headers to a request in hash/dict format.",
+			]
+			type:          "dict"
+			version_added: "2.8"
+		}
+		dest: {
+			description: [
+				"The path where the artifact should be written to",
+				"If file mode or ownerships are specified and destination path already exists, they affect the downloaded file",
+			]
+			required: true
+		}
+		state: {
+			description: [
+				"The desired state of the artifact",
+			]
+			default: "present"
+			choices: ["present", "absent"]
+		}
+		timeout: {
+			description: [
+				"Specifies a timeout in seconds for the connection attempt",
+			]
+			default:       10
+			version_added: "2.3"
+		}
+		validate_certs: {
+			description: [
+				"If C(no), SSL certificates will not be validated. This should only be set to C(no) when no other option exists.",
+			]
+			type:          "bool"
+			default:       "yes"
+			version_added: "1.9.3"
+		}
+		keep_name: {
+			description: [
+				"If C(yes), the downloaded artifact's name is preserved, i.e the version number remains part of it.",
+				"This option only has effect when C(dest) is a directory and C(version) is set to C(latest) or C(version_by_spec) is defined.",
+			]
+
+			type:          "bool"
+			default:       "no"
+			version_added: "2.4"
+		}
+		verify_checksum: {
+			description: [
+				"If C(never), the md5 checksum will never be downloaded and verified.",
+				"If C(download), the md5 checksum will be downloaded and verified only after artifact download. This is the default.",
+				"If C(change), the md5 checksum will be downloaded and verified if the destination already exist, to verify if they are identical. This was the behaviour before 2.6. Since it downloads the md5 before (maybe) downloading the artifact, and since some repository software, when acting as a proxy/cache, return a 404 error if the artifact has not been cached yet, it may fail unexpectedly. If you still need it, you should consider using C(always) instead - if you deal with a checksum, it is better to use it to verify integrity after download.",
+				"C(always) combines C(download) and C(change).",
+			]
+			required: false
+			default:  "download"
+			choices: ["never", "download", "change", "always"]
+			version_added: "2.6"
+		}
+	}
+	extends_documentation_fragment: ["files"]
+}

@@ -1,0 +1,41 @@
+package ansible
+
+module: na_ontap_iscsi: {
+	module: "na_ontap_iscsi"
+
+	short_description: "NetApp ONTAP manage iSCSI service"
+	extends_documentation_fragment: [
+		"netapp.na_ontap",
+	]
+	version_added: "2.6"
+	author:        "NetApp Ansible Team (@carchi8py) <ng-ansibleteam@netapp.com>"
+
+	description: [
+		"create, delete, start, stop iSCSI service on SVM.",
+	]
+
+	options: {
+
+		state: {
+			description: [
+				"Whether the service should be present or deleted.",
+			]
+			choices: ["present", "absent"]
+			default: "present"
+		}
+
+		service_state: {
+			description: [
+				"Whether the specified service should running .",
+			]
+			choices: ["started", "stopped"]
+		}
+
+		vserver: {
+			required: true
+			description: [
+				"The name of the vserver to use.",
+			]
+		}
+	}
+}

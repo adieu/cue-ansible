@@ -1,0 +1,187 @@
+package ansible
+
+module: vmware_dvswitch: {
+	module:            "vmware_dvswitch"
+	short_description: "Create or remove a Distributed Switch"
+	description: [
+		"This module can be used to create, remove a Distributed Switch.",
+	]
+	version_added: 2.0
+	author: [
+		"Joseph Callen (@jcpowermac)",
+		"Abhijeet Kasurde (@Akasurde)",
+		"Christian Kotte (@ckotte)",
+	]
+	notes: [
+		"Tested on vSphere 6.5 and 6.7",
+	]
+	requirements: [
+		"python >= 2.6",
+		"PyVmomi",
+	]
+	options: {
+		datacenter_name: {
+			description: [
+				"The name of the datacenter that will contain the Distributed Switch.",
+				"This parameter is optional, if C(folder) is provided.",
+				"Mutually exclusive with C(folder) parameter.",
+			]
+			required: false
+			aliases: ["datacenter"]
+			type: "str"
+		}
+		switch_name: {
+			description: [
+				"The name of the distribute vSwitch to create or remove.",
+			]
+			required: true
+			aliases: ["switch", "dvswitch"]
+			type: "str"
+		}
+		switch_version: {
+			description: [
+				"The version of the Distributed Switch to create.",
+				"Can be 6.0.0, 5.5.0, 5.1.0, 5.0.0 with a vCenter running vSphere 6.0 and 6.5.",
+				"Can be 6.6.0, 6.5.0, 6.0.0 with a vCenter running vSphere 6.7.",
+				"The version must match the version of the ESXi hosts you want to connect.",
+				"The version of the vCenter server is used if not specified.",
+				"Required only if C(state) is set to C(present).",
+			]
+			version_added: 2.5
+			choices: ["5.0.0", "5.1.0", "5.5.0", "6.0.0", "6.5.0", "6.6.0"]
+			aliases: ["version"]
+			type: "str"
+		}
+		mtu: {
+			description: [
+				"The switch maximum transmission unit.",
+				"Required parameter for C(state) both C(present) and C(absent), before Ansible 2.6 version.",
+				"Required only if C(state) is set to C(present), for Ansible 2.6 and onwards.",
+				"Accepts value between 1280 to 9000 (both inclusive).",
+			]
+			type:    "int"
+			default: 1500
+		}
+		multicast_filtering_mode: {
+			description: [
+				"The multicast filtering mode.",
+				"C(basic) mode: multicast traffic for virtual machines is forwarded according to the destination MAC address of the multicast group.",
+				"C(snooping) mode: the Distributed Switch provides IGMP and MLD snooping according to RFC 4541.",
+			]
+			type: "str"
+			choices: ["basic", "snooping"]
+			default:       "basic"
+			version_added: 2.8
+		}
+		uplink_quantity: {
+			description: [
+				"Quantity of uplink per ESXi host added to the Distributed Switch.",
+				"The uplink quantity can be increased or decreased, but a decrease will only be successfull if the uplink isn't used by a portgroup.",
+				"Required parameter for C(state) both C(present) and C(absent), before Ansible 2.6 version.",
+				"Required only if C(state) is set to C(present), for Ansible 2.6 and onwards.",
+			]
+			type: "int"
+		}
+		uplink_prefix: {
+			description: [
+				"The prefix used for the naming of the uplinks.",
+				"Only valid if the Distributed Switch will be created. Not used if the Distributed Switch is already present.",
+				"Uplinks are created as Uplink 1, Uplink 2, etc. pp. by default.",
+			]
+			default:       "Uplink "
+			version_added: 2.8
+			type:          "str"
+		}
+		discovery_proto: {
+			description: [
+				"Link discovery protocol between Cisco and Link Layer discovery.",
+				"Required parameter for C(state) both C(present) and C(absent), before Ansible 2.6 version.",
+				"Required only if C(state) is set to C(present), for Ansible 2.6 and onwards.",
+				"C(cdp): Use Cisco Discovery Protocol (CDP).",
+				"C(lldp): Use Link Layer Discovery Protocol (LLDP).",
+				"C(disabled): Do not use a discovery protocol.",
+			]
+			choices: ["cdp", "lldp", "disabled"]
+			default: "cdp"
+			aliases: ["discovery_protocol"]
+			type: "str"
+		}
+		discovery_operation: {
+			description: [
+				"Select the discovery operation.",
+				"Required parameter for C(state) both C(present) and C(absent), before Ansible 2.6 version.",
+				"Required only if C(state) is set to C(present), for Ansible 2.6 and onwards.",
+			]
+			choices: ["both", "advertise", "listen"]
+			default: "listen"
+			type:    "str"
+		}
+		contact: {
+			description: [
+				"Dictionary which configures administrator contact name and description for the Distributed Switch.",
+				"Valid attributes are:",
+				"- C(name) (str): Administrator name.",
+				"- C(description) (str): Description or other details.",
+			]
+			type:          "dict"
+			version_added: 2.8
+		}
+		description: {
+			description: [
+				"Description of the Distributed Switch.",
+			]
+			type:          "str"
+			version_added: 2.8
+		}
+		health_check: {
+			description: [
+				"Dictionary which configures Health Check for the Distributed Switch.",
+				"Valid attributes are:",
+				"- C(vlan_mtu) (bool): VLAN and MTU health check. (default: False)",
+				"- C(teaming_failover) (bool): Teaming and failover health check. (default: False)",
+				"- C(vlan_mtu_interval) (int): VLAN and MTU health check interval (minutes). (default: 0)",
+				"- The default for C(vlan_mtu_interval) is 1 in the vSphere Client if the VLAN and MTU health check is enabled.",
+				"- C(teaming_failover_interval) (int): Teaming and failover health check interval (minutes). (default: 0)",
+				"- The default for C(teaming_failover_interval) is 1 in the vSphere Client if the Teaming and failover health check is enabled.",
+			]
+			type: "dict"
+			default: {
+				vlan_mtu:                  false
+				teaming_failover:          false
+				vlan_mtu_interval:         0
+				teaming_failover_interval: 0
+			}
+
+			version_added: 2.8
+		}
+		state: {
+			description: [
+				"If set to C(present) and the Distributed Switch doesn't exists then the Distributed Switch will be created.",
+				"If set to C(absent) and the Distributed Switch exists then the Distributed Switch will be deleted.",
+			]
+			default: "present"
+			choices: ["present", "absent"]
+			type: "str"
+		}
+		folder: {
+			description: [
+				"Destination folder, absolute path to place dvswitch in.",
+				"The folder should include the datacenter.",
+				"This parameter is case sensitive.",
+				"This parameter is optional, if C(datacenter) is provided.",
+				"Examples:",
+				"   folder: /datacenter1/network",
+				"   folder: datacenter1/network",
+				"   folder: /datacenter1/network/folder1",
+				"   folder: datacenter1/network/folder1",
+				"   folder: /folder1/datacenter1/network",
+				"   folder: folder1/datacenter1/network",
+				"   folder: /folder1/datacenter1/network/folder2",
+			]
+			required:      false
+			type:          "str"
+			version_added: 2.9
+		}
+	}
+	extends_documentation_fragment: "vmware.documentation"
+}

@@ -1,0 +1,70 @@
+package ansible
+
+module: junos_ping: {
+	module:            "junos_ping"
+	short_description: "Tests reachability using ping from devices running Juniper JUNOS"
+	description: [
+		"Tests reachability using ping from devices running Juniper JUNOS to a remote destination.",
+		"Tested against Junos (17.3R1.10)",
+		"For a general purpose network module, see the M(net_ping) module.",
+		"For Windows targets, use the M(win_ping) module instead.",
+		"For targets running Python, use the M(ping) module instead.",
+	]
+	author: [
+		"Nilashish Chakraborty (@NilashishC)",
+	]
+	version_added: "2.8"
+	options: {
+		dest: {
+			description: [
+				"The IP Address or hostname (resolvable by the device) of the remote node.",
+			]
+			required: true
+		}
+		count: {
+			description: [
+				"Number of packets to send to check reachability.",
+			]
+			type:    "int"
+			default: 5
+		}
+		source: description: [
+			"The IP Address to use while sending the ping packet(s).",
+		]
+		interface: description: [
+			"The source interface to use while sending the ping packet(s).",
+		]
+		ttl: {
+			description: [
+				"The time-to-live value for the ICMP packet(s).",
+			]
+			type: "int"
+		}
+		size: {
+			description: [
+				"Determines the size (in bytes) of the ping packet(s).",
+			]
+			type: "int"
+		}
+		interval: {
+			description: [
+				"Determines the interval (in seconds) between consecutive pings.",
+			]
+			type: "int"
+		}
+		state: {
+			description: [
+				"Determines if the expected result is success or fail.",
+			]
+			choices: ["absent", "present"]
+			default: "present"
+		}
+	}
+	notes: [
+		"For a general purpose network module, see the M(net_ping) module.",
+		"For Windows targets, use the M(win_ping) module instead.",
+		"For targets running Python, use the M(ping) module instead.",
+		"This module works only with connection C(network_cli).",
+	]
+	extends_documentation_fragment: "junos"
+}

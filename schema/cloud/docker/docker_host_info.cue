@@ -1,0 +1,112 @@
+package ansible
+
+module: docker_host_info: {
+	module: "docker_host_info"
+
+	short_description: "Retrieves facts about docker host and lists of objects of the services."
+
+	description: [
+		"Retrieves facts about a docker host.",
+		"Essentially returns the output of C(docker system info).",
+		"The module also allows to list object names for containers, images, networks and volumes. It also allows to query information on disk usage.",
+		"The output differs depending on API version of the docker daemon.",
+		"If the docker daemon cannot be contacted or does not meet the API version requirements, the module will fail.",
+	]
+
+	version_added: "2.8"
+
+	options: {
+		containers: {
+			description: [
+				"Whether to list containers.",
+			]
+			type:    "bool"
+			default: false
+		}
+		containers_filters: {
+			description: [
+				"A dictionary of filter values used for selecting containers to delete.",
+				"For example, C(until: 24h).",
+				"See L(the docker documentation,https://docs.docker.com/engine/reference/commandline/container_prune/#filtering) for more information on possible filters.",
+			]
+
+			type: "dict"
+		}
+		images: {
+			description: [
+				"Whether to list images.",
+			]
+			type:    "bool"
+			default: false
+		}
+		images_filters: {
+			description: [
+				"A dictionary of filter values used for selecting images to delete.",
+				"For example, C(dangling: true).",
+				"See L(the docker documentation,https://docs.docker.com/engine/reference/commandline/image_prune/#filtering) for more information on possible filters.",
+			]
+
+			type: "dict"
+		}
+		networks: {
+			description: [
+				"Whether to list networks.",
+			]
+			type:    "bool"
+			default: false
+		}
+		networks_filters: {
+			description: [
+				"A dictionary of filter values used for selecting networks to delete.",
+				"See L(the docker documentation,https://docs.docker.com/engine/reference/commandline/network_prune/#filtering) for more information on possible filters.",
+			]
+
+			type: "dict"
+		}
+		volumes: {
+			description: [
+				"Whether to list volumes.",
+			]
+			type:    "bool"
+			default: false
+		}
+		volumes_filters: {
+			description: [
+				"A dictionary of filter values used for selecting volumes to delete.",
+				"See L(the docker documentation,https://docs.docker.com/engine/reference/commandline/volume_prune/#filtering) for more information on possible filters.",
+			]
+
+			type: "dict"
+		}
+		disk_usage: {
+			description: [
+				"Summary information on used disk space by all Docker layers.",
+				"The output is a sum of images, volumes, containers and build cache.",
+			]
+			type:    "bool"
+			default: false
+		}
+		verbose_output: {
+			description: [
+				"When set to C(yes) and I(networks), I(volumes), I(images), I(containers) or I(disk_usage) is set to C(yes) then output will contain verbose information about objects matching the full output of API method. For details see the documentation of your version of Docker API at L(https://docs.docker.com/engine/api/).",
+				"The verbose output in this module contains only subset of information returned by I(_info) module for each type of the objects.",
+			]
+
+			type:    "bool"
+			default: false
+		}
+	}
+	extends_documentation_fragment: [
+		"docker",
+		"docker.docker_py_1_documentation",
+	]
+
+	author: [
+		"Piotr Wojciechowski (@WojciechowskiPiotr)",
+	]
+
+	requirements: [
+		"L(Docker SDK for Python,https://docker-py.readthedocs.io/en/stable/) >= 1.10.0 (use L(docker-py,https://pypi.org/project/docker-py/) for Python 2.6)",
+		"Docker API >= 1.21",
+	]
+}

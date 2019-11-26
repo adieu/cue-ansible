@@ -1,0 +1,30 @@
+
+---
+module: avi_gslbservice_patch_member
+author: Gaurav Rastogi (@grastogi23) <grastogi@avinetworks.com>
+
+short_description: Avi API Module
+description:
+    - This module can be used for calling any resources defined in Avi REST API. U(https://avinetworks.com/)
+    - This module is useful for invoking HTTP Patch methods and accessing resources that do not have an REST object associated with them.
+version_added: 2.5
+requirements: [ avisdk ]
+options:
+    data:
+        description:
+            - HTTP body of GSLB Service Member in YAML or JSON format.
+    params:
+        description:
+            - Query parameters passed to the HTTP API.
+    name:
+        description:
+            - Name of the GSLB Service
+        required: true
+    state:
+        description:
+            - The state that should be applied to the member. Member is
+            - identified using field member.ip.addr.
+        default: present
+        choices: ["absent","present"]
+extends_documentation_fragment:
+    - avi

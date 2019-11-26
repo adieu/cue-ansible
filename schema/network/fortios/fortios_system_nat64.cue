@@ -1,0 +1,153 @@
+package ansible
+
+module: fortios_system_nat64: {
+	module:            "fortios_system_nat64"
+	short_description: "Configure NAT64 in Fortinet's FortiOS and FortiGate."
+	description: [
+		"This module is able to configure a FortiGate or FortiOS (FOS) device by allowing the user to set and modify system feature and nat64 category. Examples include all parameters and values need to be adjusted to datasources before usage. Tested with FOS v6.0.5",
+	]
+
+	version_added: "2.9"
+	author: [
+		"Miguel Angel Munoz (@mamunozgonzalez)",
+		"Nicolas Thomas (@thomnico)",
+	]
+	notes: [
+		"Requires fortiosapi library developed by Fortinet",
+		"Run as a local_action in your playbook",
+	]
+	requirements: [
+		"fortiosapi>=0.9.8",
+	]
+	options: {
+		host: {
+			description: [
+				"FortiOS or FortiGate IP address.",
+			]
+			type:     "str"
+			required: false
+		}
+		username: {
+			description: [
+				"FortiOS or FortiGate username.",
+			]
+			type:     "str"
+			required: false
+		}
+		password: {
+			description: [
+				"FortiOS or FortiGate password.",
+			]
+			type:    "str"
+			default: ""
+		}
+		vdom: {
+			description: [
+				"Virtual domain, among those defined previously. A vdom is a virtual instance of the FortiGate that can be configured and used as a different unit.",
+			]
+
+			type:    "str"
+			default: "root"
+		}
+		https: {
+			description: [
+				"Indicates if the requests towards FortiGate must use HTTPS protocol.",
+			]
+			type:    "bool"
+			default: true
+		}
+		ssl_verify: {
+			description: [
+				"Ensures FortiGate certificate must be verified by a proper CA.",
+			]
+			type:    "bool"
+			default: true
+		}
+		system_nat64: {
+			description: [
+				"Configure NAT64.",
+			]
+			default: null
+			type:    "dict"
+			suboptions: {
+				always_synthesize_aaaa_record: {
+					description: [
+						"Enable/disable AAAA record synthesis .",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				generate_ipv6_fragment_header: {
+					description: [
+						"Enable/disable IPv6 fragment header generation.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				nat46_force_ipv4_packet_forwarding: {
+					description: [
+						"Enable/disable mandatory IPv4 packet forwarding in nat46.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				nat64_prefix: {
+					description: [
+						"NAT64 prefix must be ::/96 .",
+					]
+					type: "str"
+				}
+				secondary_prefix: {
+					description: [
+						"Secondary NAT64 prefix.",
+					]
+					type: "list"
+					suboptions: {
+						name: {
+							description: [
+								"NAT64 prefix name.",
+							]
+							required: true
+							type:     "str"
+						}
+						nat64_prefix: {
+							description: [
+								"NAT64 prefix.",
+							]
+							type: "str"
+						}
+					}
+				}
+				secondary_prefix_status: {
+					description: [
+						"Enable/disable secondary NAT64 prefix.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				status: {
+					description: [
+						"Enable/disable NAT64 .",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+			}
+		}
+	}
+}

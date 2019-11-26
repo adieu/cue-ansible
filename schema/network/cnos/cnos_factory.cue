@@ -1,0 +1,15 @@
+package ansible
+
+module: cnos_factory: {
+	module:            "cnos_factory"
+	author:            "Anil Kumar Muraleedharan (@amuraleedhar)"
+	short_description: "Reset the switch startup configuration to default (factory) on devices running Lenovo CNOS."
+
+	description: [
+		"This module allows you to reset a switch's startup configuration. The method provides a way to reset the startup configuration to its factory settings. This is helpful when you want to move the switch to another topology as a new network device. This module uses SSH to manage network device configuration. The result of the operation can be viewed in results directory.",
+	]
+
+	version_added:                  "2.3"
+	extends_documentation_fragment: "cnos"
+	options: {}
+}

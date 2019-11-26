@@ -1,0 +1,108 @@
+package ansible
+
+module: meraki_snmp: {
+	module:            "meraki_snmp"
+	short_description: "Manage organizations in the Meraki cloud"
+	version_added:     "2.6"
+	description: [
+		"Allows for management of SNMP settings for Meraki.",
+	]
+	options: {
+		state: {
+			description: [
+				"Specifies whether SNMP information should be queried or modified.",
+			]
+			choices: ["query", "present"]
+			default: "present"
+		}
+		v2c_enabled: {
+			description: [
+				"Specifies whether SNMPv2c is enabled.",
+			]
+			type: "bool"
+		}
+		v3_enabled: {
+			description: [
+				"Specifies whether SNMPv3 is enabled.",
+			]
+			type: "bool"
+		}
+		v3_auth_mode: {
+			description: [
+				"Sets authentication mode for SNMPv3.",
+			]
+			choices: ["MD5", "SHA"]
+		}
+		v3_auth_pass: description: [
+			"Authentication password for SNMPv3.",
+			"Must be at least 8 characters long.",
+		]
+		v3_priv_mode: {
+			description: [
+				"Specifies privacy mode for SNMPv3.",
+			]
+			choices: ["DES", "AES128"]
+		}
+		v3_priv_pass: description: [
+			"Privacy password for SNMPv3.",
+			"Must be at least 8 characters long.",
+		]
+		peer_ips: description: [
+			"Semi-colon delimited IP addresses which can perform SNMP queries.",
+		]
+		net_name: {
+			description: [
+				"Name of network.",
+			]
+			type:          "str"
+			version_added: "2.9"
+		}
+		net_id: {
+			description: [
+				"ID of network.",
+			]
+			type:          "str"
+			version_added: "2.9"
+		}
+		access: {
+			description: [
+				"Type of SNMP access.",
+			]
+			choices: ["community", "none", "users"]
+			type:          "str"
+			version_added: "2.9"
+		}
+		community_string: {
+			description: [
+				"SNMP community string.",
+				"Only relevant if C(access) is set to C(community).",
+			]
+			type:          "str"
+			version_added: "2.9"
+		}
+		users: {
+			description: [
+				"Information about users with access to SNMP.",
+				"Only relevant if C(access) is set to C(users).",
+			]
+			type:          "list"
+			version_added: "2.9"
+			suboptions: {
+				username: {
+					description:   "Username of user with access."
+					type:          "str"
+					version_added: "2.9"
+				}
+				passphrase: {
+					description:   "Passphrase for user SNMP access."
+					type:          "str"
+					version_added: "2.9"
+				}
+			}
+		}
+	}
+	author: [
+		"Kevin Breit (@kbreit)",
+	]
+	extends_documentation_fragment: "meraki"
+}

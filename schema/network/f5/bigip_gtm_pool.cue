@@ -1,0 +1,244 @@
+package ansible
+
+module: bigip_gtm_pool: {
+	module:            "bigip_gtm_pool"
+	short_description: "Manages F5 BIG-IP GTM pools"
+	description: [
+		"Manages F5 BIG-IP GTM pools.",
+	]
+	version_added: 2.4
+	options: {
+		state: {
+			description: [
+				"Pool state. When C(present), ensures that the pool is created and enabled. When C(absent), ensures that the pool is removed from the system. When C(enabled) or C(disabled), ensures that the pool is enabled or disabled (respectively) on the remote device.",
+			]
+
+			type: "str"
+			choices: [
+				"present",
+				"absent",
+				"enabled",
+				"disabled",
+			]
+			default: "present"
+		}
+		preferred_lb_method: {
+			description: [
+				"The load balancing mode that the system tries first.",
+			]
+			type: "str"
+			choices: [
+				"round-robin",
+				"return-to-dns",
+				"ratio",
+				"topology",
+				"static-persistence",
+				"global-availability",
+				"virtual-server-capacity",
+				"least-connections",
+				"lowest-round-trip-time",
+				"fewest-hops",
+				"packet-rate",
+				"cpu",
+				"completion-rate",
+				"quality-of-service",
+				"kilobytes-per-second",
+				"drop-packet",
+				"fallback-ip",
+				"virtual-server-score",
+			]
+		}
+		alternate_lb_method: {
+			description: [
+				"The load balancing mode that the system tries if the C(preferred_lb_method) is unsuccessful in picking a pool.",
+			]
+
+			type: "str"
+			choices: [
+				"round-robin",
+				"return-to-dns",
+				"none",
+				"ratio",
+				"topology",
+				"static-persistence",
+				"global-availability",
+				"virtual-server-capacity",
+				"packet-rate",
+				"drop-packet",
+				"fallback-ip",
+				"virtual-server-score",
+			]
+		}
+		fallback_lb_method: {
+			description: [
+				"The load balancing mode that the system tries if both the C(preferred_lb_method) and C(alternate_lb_method)s are unsuccessful in picking a pool.",
+			]
+
+			type: "str"
+			choices: [
+				"round-robin",
+				"return-to-dns",
+				"ratio",
+				"topology",
+				"static-persistence",
+				"global-availability",
+				"virtual-server-capacity",
+				"least-connections",
+				"lowest-round-trip-time",
+				"fewest-hops",
+				"packet-rate",
+				"cpu",
+				"completion-rate",
+				"quality-of-service",
+				"kilobytes-per-second",
+				"drop-packet",
+				"fallback-ip",
+				"virtual-server-score",
+				"none",
+			]
+		}
+		fallback_ip: {
+			description: [
+				"Specifies the IPv4, or IPv6 address of the server to which the system directs requests when it cannot use one of its pools to do so. Note that the system uses the fallback IP only if you select the C(fallback_ip) load balancing method.",
+			]
+
+			type: "str"
+		}
+		type: {
+			description: [
+				"The type of GTM pool that you want to create. On BIG-IP releases prior to version 12, this parameter is not required. On later versions of BIG-IP, this is a required parameter.",
+			]
+
+			type: "str"
+			choices: [
+				"a",
+				"aaaa",
+				"cname",
+				"mx",
+				"naptr",
+				"srv",
+			]
+		}
+		name: {
+			description: [
+				"Name of the GTM pool.",
+			]
+			type:     "str"
+			required: true
+		}
+		partition: {
+			description: [
+				"Device partition to manage resources on.",
+			]
+			type:          "str"
+			default:       "Common"
+			version_added: 2.5
+		}
+		members: {
+			description: [
+				"Members to assign to the pool.",
+				"The order of the members in this list is the order that they will be listed in the pool.",
+			]
+			suboptions: {
+				server: {
+					description: [
+						"Name of the server which the pool member is a part of.",
+					]
+					type:     "str"
+					required: true
+				}
+				virtual_server: {
+					description: [
+						"Name of the virtual server, associated with the server, that the pool member is a part of.",
+					]
+					type:     "str"
+					required: true
+				}
+			}
+			type:          "list"
+			version_added: 2.6
+		}
+		monitors: {
+			description: [
+				"Specifies the health monitors that the system currently uses to monitor this resource.",
+				"When C(availability_requirements.type) is C(require), you may only have a single monitor in the C(monitors) list.",
+			]
+
+			type:          "list"
+			version_added: 2.6
+		}
+		availability_requirements: {
+			description: [
+				"Specifies, if you activate more than one health monitor, the number of health monitors that must receive successful responses in order for the link to be considered available.",
+			]
+
+			suboptions: {
+				type: {
+					description: [
+						"Monitor rule type when C(monitors) is specified.",
+						"When creating a new pool, if this value is not specified, the default of 'all' will be used.",
+					]
+					type: "str"
+					choices: [
+						"all",
+						"at_least",
+						"require",
+					]
+				}
+				at_least: {
+					description: [
+						"Specifies the minimum number of active health monitors that must be successful before the link is considered up.",
+						"This parameter is only relevant when a C(type) of C(at_least) is used.",
+						"This parameter will be ignored if a type of either C(all) or C(require) is used.",
+					]
+					type: "int"
+				}
+				number_of_probes: {
+					description: [
+						"Specifies the minimum number of probes that must succeed for this server to be declared up.",
+						"When creating a new virtual server, if this parameter is specified, then the C(number_of_probers) parameter must also be specified.",
+						"The value of this parameter should always be B(lower) than, or B(equal to), the value of C(number_of_probers).",
+						"This parameter is only relevant when a C(type) of C(require) is used.",
+						"This parameter will be ignored if a type of either C(all) or C(at_least) is used.",
+					]
+					type: "int"
+				}
+				number_of_probers: {
+					description: [
+						"Specifies the number of probers that should be used when running probes.",
+						"When creating a new virtual server, if this parameter is specified, then the C(number_of_probes) parameter must also be specified.",
+						"The value of this parameter should always be B(higher) than, or B(equal to), the value of C(number_of_probers).",
+						"This parameter is only relevant when a C(type) of C(require) is used.",
+						"This parameter will be ignored if a type of either C(all) or C(at_least) is used.",
+					]
+					type: "int"
+				}
+			}
+			type:          "dict"
+			version_added: 2.6
+		}
+		max_answers_returned: {
+			description: [
+				"Specifies the maximum number of available virtual servers that the system lists in a response.",
+				"The maximum is 500.",
+			]
+			type:          "int"
+			version_added: 2.8
+		}
+		ttl: {
+			description: [
+				"Specifies the number of seconds that the IP address, once found, is valid.",
+			]
+			type:          "int"
+			version_added: 2.8
+		}
+	}
+	notes: [
+		"Support for TMOS versions below v12.x has been deprecated for this module, and will be removed in Ansible 2.12.",
+	]
+	extends_documentation_fragment: "f5"
+	author: [
+		"Tim Rupp (@caphrim007)",
+		"Wojciech Wypior (@wojtek0806)",
+	]
+}

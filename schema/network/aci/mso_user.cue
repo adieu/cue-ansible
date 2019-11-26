@@ -1,0 +1,91 @@
+package ansible
+
+module: mso_user: {
+	module:            "mso_user"
+	short_description: "Manage users"
+	description: [
+		"Manage users on Cisco ACI Multi-Site.",
+	]
+	author: [
+		"Dag Wieers (@dagwieers)",
+	]
+	version_added: "2.8"
+	options: {
+		user: {
+			description: [
+				"The name of the user.",
+			]
+			type:     "str"
+			required: true
+			aliases: ["name"]
+		}
+		user_password: {
+			description: [
+				"The password of the user.",
+			]
+			type: "str"
+		}
+		first_name: {
+			description: [
+				"The first name of the user.",
+				"This parameter is required when creating new users.",
+			]
+			type: "str"
+		}
+		last_name: {
+			description: [
+				"The last name of the user.",
+				"This parameter is required when creating new users.",
+			]
+			type: "str"
+		}
+		email: {
+			description: [
+				"The email address of the user.",
+				"This parameter is required when creating new users.",
+			]
+			type: "str"
+		}
+		phone: {
+			description: [
+				"The phone number of the user.",
+				"This parameter is required when creating new users.",
+			]
+			type: "str"
+		}
+		account_status: {
+			description: [
+				"The status of the user account.",
+			]
+			type: "str"
+			choices: ["active"]
+		}
+		domain: {
+			description: [
+				"The domain this user belongs to.",
+				"When creating new users, this defaults to C(Local).",
+			]
+			type: "str"
+		}
+		roles: {
+			description: [
+				"The roles for this user.",
+			]
+			type: "list"
+		}
+		state: {
+			description: [
+				"Use C(present) or C(absent) for adding or removing.",
+				"Use C(query) for listing an object or multiple objects.",
+			]
+			type: "str"
+			choices: ["absent", "present", "query"]
+			default: "present"
+		}
+	}
+	notes: [
+		"A default installation of ACI Multi-Site ships with admin password 'we1come!' which requires a password change on first login. See the examples of how to change the 'admin' password using Ansible.",
+	]
+
+	extends_documentation_fragment: "mso"
+}

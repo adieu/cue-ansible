@@ -1,0 +1,53 @@
+package ansible
+
+module: azure_rm_resourcegroup: {
+	module:            "azure_rm_resourcegroup"
+	version_added:     "2.1"
+	short_description: "Manage Azure resource groups"
+	description: [
+		"Create, update and delete a resource group.",
+	]
+	options: {
+		force_delete_nonempty: {
+			description: [
+				"Remove a resource group and all associated resources.",
+				"Use with I(state=absent) to delete a resource group that contains resources.",
+			]
+			type: "bool"
+			aliases: [
+				"force",
+			]
+			default: "no"
+		}
+		location: description: [
+			"Azure location for the resource group. Required when creating a new resource group.",
+			"Cannot be changed once resource group is created.",
+		]
+		name: {
+			description: [
+				"Name of the resource group.",
+			]
+			required: true
+		}
+		state: {
+			description: [
+				"Assert the state of the resource group. Use C(present) to create or update and C(absent) to delete.",
+				"When C(absent) a resource group containing resources will not be removed unless the I(force) option is used.",
+			]
+			default: "present"
+			choices: [
+				"absent",
+				"present",
+			]
+		}
+	}
+	extends_documentation_fragment: [
+		"azure",
+		"azure_tags",
+	]
+
+	author: [
+		"Chris Houseknecht (@chouseknecht)",
+		"Matt Davis (@nitzmahone)",
+	]
+}

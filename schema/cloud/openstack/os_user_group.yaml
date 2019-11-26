@@ -1,0 +1,30 @@
+
+---
+module: os_user_group
+short_description: Associate OpenStack Identity users and groups
+extends_documentation_fragment: openstack
+version_added: "2.0"
+author: "Monty Taylor (@emonty)"
+description:
+    - Add and remove users from groups
+options:
+   user:
+     description:
+        - Name or id for the user
+     required: true
+   group:
+     description:
+        - Name or id for the group.
+     required: true
+   state:
+     description:
+       - Should the user be present or absent in the group
+     choices: [present, absent]
+     default: present
+   availability_zone:
+     description:
+       - Ignored. Present for backwards compatibility
+     required: false
+requirements:
+    - "python >= 2.7"
+    - "openstacksdk"

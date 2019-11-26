@@ -1,0 +1,56 @@
+package ansible
+
+module: apache2_module: {
+	module:        "apache2_module"
+	version_added: 1.6
+	author: [
+		"Christian Berendt (@berendt)",
+		"Ralf Hertel (@n0trax)",
+		"Robin Roth (@robinro)",
+	]
+	short_description: "Enables/disables a module of the Apache2 webserver."
+	description: [
+		"Enables or disables a specified module of the Apache2 webserver.",
+	]
+	options: {
+		name: {
+			description: [
+				"Name of the module to enable/disable as given to C(a2enmod/a2dismod).",
+			]
+			required: true
+		}
+		identifier: {
+			description: [
+				"Identifier of the module as listed by C(apache2ctl -M). This is optional and usually determined automatically by the common convention of appending C(_module) to I(name) as well as custom exception for popular modules.",
+			]
+
+			required:      false
+			version_added: "2.5"
+		}
+		force: {
+			description: [
+				"Force disabling of default modules and override Debian warnings.",
+			]
+			required:      false
+			type:          "bool"
+			default:       false
+			version_added: "2.1"
+		}
+		state: {
+			description: [
+				"Desired state of the module.",
+			]
+			choices: ["present", "absent"]
+			default: "present"
+		}
+		ignore_configcheck: {
+			description: [
+				"Ignore configuration checks about inconsistent module configuration. Especially for mpm_* modules.",
+			]
+			type:          "bool"
+			default:       false
+			version_added: "2.3"
+		}
+	}
+	requirements: ["a2enmod", "a2dismod"]
+}

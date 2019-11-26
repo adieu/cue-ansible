@@ -1,0 +1,810 @@
+package ansible
+
+module: fortios_router_isis: {
+	module:            "fortios_router_isis"
+	short_description: "Configure IS-IS in Fortinet's FortiOS and FortiGate."
+	description: [
+		"This module is able to configure a FortiGate or FortiOS (FOS) device by allowing the user to set and modify router feature and isis category. Examples include all parameters and values need to be adjusted to datasources before usage. Tested with FOS v6.0.5",
+	]
+
+	version_added: "2.9"
+	author: [
+		"Miguel Angel Munoz (@mamunozgonzalez)",
+		"Nicolas Thomas (@thomnico)",
+	]
+	notes: [
+		"Requires fortiosapi library developed by Fortinet",
+		"Run as a local_action in your playbook",
+	]
+	requirements: [
+		"fortiosapi>=0.9.8",
+	]
+	options: {
+		host: {
+			description: [
+				"FortiOS or FortiGate IP address.",
+			]
+			type:     "str"
+			required: false
+		}
+		username: {
+			description: [
+				"FortiOS or FortiGate username.",
+			]
+			type:     "str"
+			required: false
+		}
+		password: {
+			description: [
+				"FortiOS or FortiGate password.",
+			]
+			type:    "str"
+			default: ""
+		}
+		vdom: {
+			description: [
+				"Virtual domain, among those defined previously. A vdom is a virtual instance of the FortiGate that can be configured and used as a different unit.",
+			]
+
+			type:    "str"
+			default: "root"
+		}
+		https: {
+			description: [
+				"Indicates if the requests towards FortiGate must use HTTPS protocol.",
+			]
+			type:    "bool"
+			default: true
+		}
+		ssl_verify: {
+			description: [
+				"Ensures FortiGate certificate must be verified by a proper CA.",
+			]
+			type:    "bool"
+			default: true
+		}
+		router_isis: {
+			description: [
+				"Configure IS-IS.",
+			]
+			default: null
+			type:    "dict"
+			suboptions: {
+				adjacency_check: {
+					description: [
+						"Enable/disable adjacency check.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				adjacency_check6: {
+					description: [
+						"Enable/disable IPv6 adjacency check.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				adv_passive_only: {
+					description: [
+						"Enable/disable IS-IS advertisement of passive interfaces only.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				adv_passive_only6: {
+					description: [
+						"Enable/disable IPv6 IS-IS advertisement of passive interfaces only.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				auth_keychain_l1: {
+					description: [
+						"Authentication key-chain for level 1 PDUs. Source router.key-chain.name.",
+					]
+					type: "str"
+				}
+				auth_keychain_l2: {
+					description: [
+						"Authentication key-chain for level 2 PDUs. Source router.key-chain.name.",
+					]
+					type: "str"
+				}
+				auth_mode_l1: {
+					description: [
+						"Level 1 authentication mode.",
+					]
+					type: "str"
+					choices: [
+						"password",
+						"md5",
+					]
+				}
+				auth_mode_l2: {
+					description: [
+						"Level 2 authentication mode.",
+					]
+					type: "str"
+					choices: [
+						"password",
+						"md5",
+					]
+				}
+				auth_password_l1: {
+					description: [
+						"Authentication password for level 1 PDUs.",
+					]
+					type: "str"
+				}
+				auth_password_l2: {
+					description: [
+						"Authentication password for level 2 PDUs.",
+					]
+					type: "str"
+				}
+				auth_sendonly_l1: {
+					description: [
+						"Enable/disable level 1 authentication send-only.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				auth_sendonly_l2: {
+					description: [
+						"Enable/disable level 2 authentication send-only.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				default_originate: {
+					description: [
+						"Enable/disable distribution of default route information.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				default_originate6: {
+					description: [
+						"Enable/disable distribution of default IPv6 route information.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				dynamic_hostname: {
+					description: [
+						"Enable/disable dynamic hostname.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				ignore_lsp_errors: {
+					description: [
+						"Enable/disable ignoring of LSP errors with bad checksums.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				is_type: {
+					description: [
+						"IS type.",
+					]
+					type: "str"
+					choices: [
+						"level-1-2",
+						"level-1",
+						"level-2-only",
+					]
+				}
+				isis_interface: {
+					description: [
+						"IS-IS interface configuration.",
+					]
+					type: "list"
+					suboptions: {
+						auth_keychain_l1: {
+							description: [
+								"Authentication key-chain for level 1 PDUs. Source router.key-chain.name.",
+							]
+							type: "str"
+						}
+						auth_keychain_l2: {
+							description: [
+								"Authentication key-chain for level 2 PDUs. Source router.key-chain.name.",
+							]
+							type: "str"
+						}
+						auth_mode_l1: {
+							description: [
+								"Level 1 authentication mode.",
+							]
+							type: "str"
+							choices: [
+								"md5",
+								"password",
+							]
+						}
+						auth_mode_l2: {
+							description: [
+								"Level 2 authentication mode.",
+							]
+							type: "str"
+							choices: [
+								"md5",
+								"password",
+							]
+						}
+						auth_password_l1: {
+							description: [
+								"Authentication password for level 1 PDUs.",
+							]
+							type: "str"
+						}
+						auth_password_l2: {
+							description: [
+								"Authentication password for level 2 PDUs.",
+							]
+							type: "str"
+						}
+						auth_send_only_l1: {
+							description: [
+								"Enable/disable authentication send-only for level 1 PDUs.",
+							]
+							type: "str"
+							choices: [
+								"enable",
+								"disable",
+							]
+						}
+						auth_send_only_l2: {
+							description: [
+								"Enable/disable authentication send-only for level 2 PDUs.",
+							]
+							type: "str"
+							choices: [
+								"enable",
+								"disable",
+							]
+						}
+						circuit_type: {
+							description: [
+								"IS-IS interface's circuit type",
+							]
+							type: "str"
+							choices: [
+								"level-1-2",
+								"level-1",
+								"level-2",
+							]
+						}
+						csnp_interval_l1: {
+							description: [
+								"Level 1 CSNP interval.",
+							]
+							type: "int"
+						}
+						csnp_interval_l2: {
+							description: [
+								"Level 2 CSNP interval.",
+							]
+							type: "int"
+						}
+						hello_interval_l1: {
+							description: [
+								"Level 1 hello interval.",
+							]
+							type: "int"
+						}
+						hello_interval_l2: {
+							description: [
+								"Level 2 hello interval.",
+							]
+							type: "int"
+						}
+						hello_multiplier_l1: {
+							description: [
+								"Level 1 multiplier for Hello holding time.",
+							]
+							type: "int"
+						}
+						hello_multiplier_l2: {
+							description: [
+								"Level 2 multiplier for Hello holding time.",
+							]
+							type: "int"
+						}
+						hello_padding: {
+							description: [
+								"Enable/disable padding to IS-IS hello packets.",
+							]
+							type: "str"
+							choices: [
+								"enable",
+								"disable",
+							]
+						}
+						lsp_interval: {
+							description: [
+								"LSP transmission interval (milliseconds).",
+							]
+							type: "int"
+						}
+						lsp_retransmit_interval: {
+							description: [
+								"LSP retransmission interval (sec).",
+							]
+							type: "int"
+						}
+						mesh_group: {
+							description: [
+								"Enable/disable IS-IS mesh group.",
+							]
+							type: "str"
+							choices: [
+								"enable",
+								"disable",
+							]
+						}
+						mesh_group_id: {
+							description: [
+								"Mesh group ID <0-4294967295>, 0: mesh-group blocked.",
+							]
+							type: "int"
+						}
+						metric_l1: {
+							description: [
+								"Level 1 metric for interface.",
+							]
+							type: "int"
+						}
+						metric_l2: {
+							description: [
+								"Level 2 metric for interface.",
+							]
+							type: "int"
+						}
+						name: {
+							description: [
+								"IS-IS interface name. Source system.interface.name.",
+							]
+							required: true
+							type:     "str"
+						}
+						network_type: {
+							description: [
+								"IS-IS interface's network type",
+							]
+							type: "str"
+							choices: [
+								"broadcast",
+								"point-to-point",
+								"loopback",
+							]
+						}
+						priority_l1: {
+							description: [
+								"Level 1 priority.",
+							]
+							type: "int"
+						}
+						priority_l2: {
+							description: [
+								"Level 2 priority.",
+							]
+							type: "int"
+						}
+						status: {
+							description: [
+								"Enable/disable interface for IS-IS.",
+							]
+							type: "str"
+							choices: [
+								"enable",
+								"disable",
+							]
+						}
+						status6: {
+							description: [
+								"Enable/disable IPv6 interface for IS-IS.",
+							]
+							type: "str"
+							choices: [
+								"enable",
+								"disable",
+							]
+						}
+						wide_metric_l1: {
+							description: [
+								"Level 1 wide metric for interface.",
+							]
+							type: "int"
+						}
+						wide_metric_l2: {
+							description: [
+								"Level 2 wide metric for interface.",
+							]
+							type: "int"
+						}
+					}
+				}
+				isis_net: {
+					description: [
+						"IS-IS net configuration.",
+					]
+					type: "list"
+					suboptions: {
+						id: {
+							description: [
+								"isis-net ID.",
+							]
+							required: true
+							type:     "int"
+						}
+						net: {
+							description: [
+								"IS-IS net xx.xxxx. ... .xxxx.xx.",
+							]
+							type: "str"
+						}
+					}
+				}
+				lsp_gen_interval_l1: {
+					description: [
+						"Minimum interval for level 1 LSP regenerating.",
+					]
+					type: "int"
+				}
+				lsp_gen_interval_l2: {
+					description: [
+						"Minimum interval for level 2 LSP regenerating.",
+					]
+					type: "int"
+				}
+				lsp_refresh_interval: {
+					description: [
+						"LSP refresh time in seconds.",
+					]
+					type: "int"
+				}
+				max_lsp_lifetime: {
+					description: [
+						"Maximum LSP lifetime in seconds.",
+					]
+					type: "int"
+				}
+				metric_style: {
+					description: [
+						"Use old-style (ISO 10589) or new-style packet formats",
+					]
+					type: "str"
+					choices: [
+						"narrow",
+						"wide",
+						"transition",
+						"narrow-transition",
+						"narrow-transition-l1",
+						"narrow-transition-l2",
+						"wide-l1",
+						"wide-l2",
+						"wide-transition",
+						"wide-transition-l1",
+						"wide-transition-l2",
+						"transition-l1",
+						"transition-l2",
+					]
+				}
+				overload_bit: {
+					description: [
+						"Enable/disable signal other routers not to use us in SPF.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				overload_bit_on_startup: {
+					description: [
+						"Overload-bit only temporarily after reboot.",
+					]
+					type: "int"
+				}
+				overload_bit_suppress: {
+					description: [
+						"Suppress overload-bit for the specific prefixes.",
+					]
+					type: "str"
+					choices: [
+						"external",
+						"interlevel",
+					]
+				}
+				redistribute: {
+					description: [
+						"IS-IS redistribute protocols.",
+					]
+					type: "list"
+					suboptions: {
+						level: {
+							description: [
+								"Level.",
+							]
+							type: "str"
+							choices: [
+								"level-1-2",
+								"level-1",
+								"level-2",
+							]
+						}
+						metric: {
+							description: [
+								"Metric.",
+							]
+							type: "int"
+						}
+						metric_type: {
+							description: [
+								"Metric type.",
+							]
+							type: "str"
+							choices: [
+								"external",
+								"internal",
+							]
+						}
+						protocol: {
+							description: [
+								"Protocol name.",
+							]
+							required: true
+							type:     "str"
+						}
+						routemap: {
+							description: [
+								"Route map name. Source router.route-map.name.",
+							]
+							type: "str"
+						}
+						status: {
+							description: [
+								"Status.",
+							]
+							type: "str"
+							choices: [
+								"enable",
+								"disable",
+							]
+						}
+					}
+				}
+				redistribute_l1: {
+					description: [
+						"Enable/disable redistribution of level 1 routes into level 2.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				redistribute_l1_list: {
+					description: [
+						"Access-list for route redistribution from l1 to l2. Source router.access-list.name.",
+					]
+					type: "str"
+				}
+				redistribute_l2: {
+					description: [
+						"Enable/disable redistribution of level 2 routes into level 1.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				redistribute_l2_list: {
+					description: [
+						"Access-list for route redistribution from l2 to l1. Source router.access-list.name.",
+					]
+					type: "str"
+				}
+				redistribute6: {
+					description: [
+						"IS-IS IPv6 redistribution for routing protocols.",
+					]
+					type: "list"
+					suboptions: {
+						level: {
+							description: [
+								"Level.",
+							]
+							type: "str"
+							choices: [
+								"level-1-2",
+								"level-1",
+								"level-2",
+							]
+						}
+						metric: {
+							description: [
+								"Metric.",
+							]
+							type: "int"
+						}
+						metric_type: {
+							description: [
+								"Metric type.",
+							]
+							type: "str"
+							choices: [
+								"external",
+								"internal",
+							]
+						}
+						protocol: {
+							description: [
+								"Protocol name.",
+							]
+							required: true
+							type:     "str"
+						}
+						routemap: {
+							description: [
+								"Route map name. Source router.route-map.name.",
+							]
+							type: "str"
+						}
+						status: {
+							description: [
+								"Enable/disable redistribution.",
+							]
+							type: "str"
+							choices: [
+								"enable",
+								"disable",
+							]
+						}
+					}
+				}
+				redistribute6_l1: {
+					description: [
+						"Enable/disable redistribution of level 1 IPv6 routes into level 2.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				redistribute6_l1_list: {
+					description: [
+						"Access-list for IPv6 route redistribution from l1 to l2. Source router.access-list6.name.",
+					]
+					type: "str"
+				}
+				redistribute6_l2: {
+					description: [
+						"Enable/disable redistribution of level 2 IPv6 routes into level 1.",
+					]
+					type: "str"
+					choices: [
+						"enable",
+						"disable",
+					]
+				}
+				redistribute6_l2_list: {
+					description: [
+						"Access-list for IPv6 route redistribution from l2 to l1. Source router.access-list6.name.",
+					]
+					type: "str"
+				}
+				spf_interval_exp_l1: {
+					description: [
+						"Level 1 SPF calculation delay.",
+					]
+					type: "str"
+				}
+				spf_interval_exp_l2: {
+					description: [
+						"Level 2 SPF calculation delay.",
+					]
+					type: "str"
+				}
+				summary_address: {
+					description: [
+						"IS-IS summary addresses.",
+					]
+					type: "list"
+					suboptions: {
+						id: {
+							description: [
+								"Summary address entry ID.",
+							]
+							required: true
+							type:     "int"
+						}
+						level: {
+							description: [
+								"Level.",
+							]
+							type: "str"
+							choices: [
+								"level-1-2",
+								"level-1",
+								"level-2",
+							]
+						}
+						prefix: {
+							description: [
+								"Prefix.",
+							]
+							type: "str"
+						}
+					}
+				}
+				summary_address6: {
+					description: [
+						"IS-IS IPv6 summary address.",
+					]
+					type: "list"
+					suboptions: {
+						id: {
+							description: [
+								"Prefix entry ID.",
+							]
+							required: true
+							type:     "int"
+						}
+						level: {
+							description: [
+								"Level.",
+							]
+							type: "str"
+							choices: [
+								"level-1-2",
+								"level-1",
+								"level-2",
+							]
+						}
+						prefix6: {
+							description: [
+								"IPv6 prefix.",
+							]
+							type: "str"
+						}
+					}
+				}
+			}
+		}
+	}
+}

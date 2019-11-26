@@ -1,0 +1,102 @@
+package ansible
+
+module: netapp_e_iscsi_interface: {
+	module:            "netapp_e_iscsi_interface"
+	short_description: "NetApp E-Series manage iSCSI interface configuration"
+	description: [
+		"Configure settings of an E-Series iSCSI interface",
+	]
+	version_added: "2.7"
+	author:        "Michael Price (@lmprice)"
+	extends_documentation_fragment: [
+		"netapp.eseries",
+	]
+	options: {
+		controller: {
+			description: [
+				"The controller that owns the port you want to configure.",
+				"Controller names are presented alphabetically, with the first controller as A, the second as B, and so on.",
+				"Current hardware models have either 1 or 2 available controllers, but that is not a guaranteed hard limitation and could change in the future.",
+			]
+
+			required: true
+			choices: [
+				"A",
+				"B",
+			]
+		}
+		name: {
+			description: [
+				"The channel of the port to modify the configuration of.",
+				"The list of choices is not necessarily comprehensive. It depends on the number of ports that are available in the system.",
+				"The numerical value represents the number of the channel (typically from left to right on the HIC), beginning with a value of 1.",
+			]
+
+			required: true
+			aliases: [
+				"channel",
+			]
+		}
+		state: {
+			description: [
+				"When enabled, the provided configuration will be utilized.",
+				"When disabled, the IPv4 configuration will be cleared and IPv4 connectivity disabled.",
+			]
+			choices: [
+				"enabled",
+				"disabled",
+			]
+			default: "enabled"
+		}
+		address: description: [
+			"The IPv4 address to assign to the interface.",
+			"Should be specified in xx.xx.xx.xx form.",
+			"Mutually exclusive with I(config_method=dhcp)",
+		]
+		subnet_mask: description: [
+			"The subnet mask to utilize for the interface.",
+			"Should be specified in xx.xx.xx.xx form.",
+			"Mutually exclusive with I(config_method=dhcp)",
+		]
+		gateway: description: [
+			"The IPv4 gateway address to utilize for the interface.",
+			"Should be specified in xx.xx.xx.xx form.",
+			"Mutually exclusive with I(config_method=dhcp)",
+		]
+		config_method: {
+			description: [
+				"The configuration method type to use for this interface.",
+				"dhcp is mutually exclusive with I(address), I(subnet_mask), and I(gateway).",
+			]
+			choices: [
+				"dhcp",
+				"static",
+			]
+			default: "dhcp"
+		}
+		mtu: {
+			description: [
+				"The maximum transmission units (MTU), in bytes.",
+				"This allows you to configure a larger value for the MTU, in order to enable jumbo frames (any value > 1500).",
+				"Generally, it is necessary to have your host, switches, and other components not only support jumbo frames, but also have it configured properly. Therefore, unless you know what you're doing, it's best to leave this at the default.",
+			]
+
+			default: 1500
+			aliases: [
+				"max_frame_size",
+			]
+		}
+		log_path: {
+			description: [
+				"A local path to a file to be used for debug logging",
+			]
+			required: false
+		}
+	}
+	notes: [
+		"Check mode is supported.",
+		"The interface settings are applied synchronously, but changes to the interface itself (receiving a new IP address via dhcp, etc), can take seconds or minutes longer to take effect.",
+		"This module will not be useful/usable on an E-Series system without any iSCSI interfaces.",
+		"This module requires a Web Services API version of >= 1.3.",
+	]
+}

@@ -1,0 +1,97 @@
+package ansible
+
+module: homebrew_cask: {
+	module: "homebrew_cask"
+	author: [
+		"Indrajit Raychaudhuri (@indrajitr)",
+		"Daniel Jaouen (@danieljaouen)",
+		"Enric Lluelles (@enriclluelles)",
+	]
+	requirements: [
+		"python >= 2.6",
+	]
+	short_description: "Install/uninstall homebrew casks."
+	description: [
+		"Manages Homebrew casks.",
+	]
+	version_added: "1.6"
+	options: {
+		name: {
+			description: [
+				"name of cask to install/remove",
+			]
+			required: true
+			aliases: ["pkg", "package", "cask"]
+		}
+		path: {
+			description: [
+				"':' separated list of paths to search for 'brew' executable.",
+			]
+			default: "/usr/local/bin"
+		}
+		state: {
+			description: [
+				"state of the cask",
+			]
+			choices: ["present", "absent", "upgraded"]
+			default: "present"
+		}
+		sudo_password: {
+			description: [
+				"The sudo password to be passed to SUDO_ASKPASS.",
+			]
+			required:      false
+			version_added: 2.8
+		}
+		update_homebrew: {
+			description: [
+				"update homebrew itself first. Note that C(brew cask update) is a synonym for C(brew update).",
+			]
+
+			type:    "bool"
+			default: "no"
+			aliases: ["update-brew"]
+			version_added: "2.2"
+		}
+		install_options: {
+			description: [
+				"options flags to install a package",
+			]
+			aliases: ["options"]
+			version_added: "2.2"
+		}
+		accept_external_apps: {
+			description: [
+				"allow external apps",
+			]
+			type:          "bool"
+			default:       "no"
+			version_added: "2.5.0"
+		}
+		upgrade_all: {
+			description: [
+				"upgrade all casks (mutually exclusive with `upgrade`)",
+			]
+			type:          "bool"
+			default:       "no"
+			version_added: "2.5.0"
+		}
+		upgrade: {
+			description: [
+				"upgrade all casks (mutually exclusive with `upgrade_all`)",
+			]
+			type:          "bool"
+			default:       "no"
+			version_added: "2.5.0"
+		}
+		greedy: {
+			description: [
+				"upgrade casks that auto update; passes --greedy to brew cask outdated when checking if an installed cask has a newer version available",
+			]
+
+			type:          "bool"
+			default:       "no"
+			version_added: "2.7.0"
+		}
+	}
+}

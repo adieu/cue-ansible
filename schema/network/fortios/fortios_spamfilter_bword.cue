@@ -1,0 +1,190 @@
+package ansible
+
+module: fortios_spamfilter_bword: {
+	module:            "fortios_spamfilter_bword"
+	short_description: "Configure AntiSpam banned word list in Fortinet's FortiOS and FortiGate."
+	description: [
+		"This module is able to configure a FortiGate or FortiOS (FOS) device by allowing the user to set and modify spamfilter feature and bword category. Examples include all parameters and values need to be adjusted to datasources before usage. Tested with FOS v6.0.5",
+	]
+
+	version_added: "2.9"
+	author: [
+		"Miguel Angel Munoz (@mamunozgonzalez)",
+		"Nicolas Thomas (@thomnico)",
+	]
+	notes: [
+		"Requires fortiosapi library developed by Fortinet",
+		"Run as a local_action in your playbook",
+	]
+	requirements: [
+		"fortiosapi>=0.9.8",
+	]
+	options: {
+		host: {
+			description: [
+				"FortiOS or FortiGate IP address.",
+			]
+			type:     "str"
+			required: false
+		}
+		username: {
+			description: [
+				"FortiOS or FortiGate username.",
+			]
+			type:     "str"
+			required: false
+		}
+		password: {
+			description: [
+				"FortiOS or FortiGate password.",
+			]
+			type:    "str"
+			default: ""
+		}
+		vdom: {
+			description: [
+				"Virtual domain, among those defined previously. A vdom is a virtual instance of the FortiGate that can be configured and used as a different unit.",
+			]
+
+			type:    "str"
+			default: "root"
+		}
+		https: {
+			description: [
+				"Indicates if the requests towards FortiGate must use HTTPS protocol.",
+			]
+			type:    "bool"
+			default: true
+		}
+		ssl_verify: {
+			description: [
+				"Ensures FortiGate certificate must be verified by a proper CA.",
+			]
+			type:    "bool"
+			default: true
+		}
+		state: {
+			description: [
+				"Indicates whether to create or remove the object.",
+			]
+			type:     "str"
+			required: true
+			choices: [
+				"present",
+				"absent",
+			]
+		}
+		spamfilter_bword: {
+			description: [
+				"Configure AntiSpam banned word list.",
+			]
+			default: null
+			type:    "dict"
+			suboptions: {
+				comment: {
+					description: [
+						"Optional comments.",
+					]
+					type: "str"
+				}
+				entries: {
+					description: [
+						"Spam filter banned word.",
+					]
+					type: "list"
+					suboptions: {
+						action: {
+							description: [
+								"Mark spam or good.",
+							]
+							type: "str"
+							choices: [
+								"spam",
+								"clear",
+							]
+						}
+						id: {
+							description: [
+								"Banned word entry ID.",
+							]
+							required: true
+							type:     "int"
+						}
+						language: {
+							description: [
+								"Language for the banned word.",
+							]
+							type: "str"
+							choices: [
+								"western",
+								"simch",
+								"trach",
+								"japanese",
+								"korean",
+								"french",
+								"thai",
+								"spanish",
+							]
+						}
+						pattern: {
+							description: [
+								"Pattern for the banned word.",
+							]
+							type: "str"
+						}
+						pattern_type: {
+							description: [
+								"Wildcard pattern or regular expression.",
+							]
+							type: "str"
+							choices: [
+								"wildcard",
+								"regexp",
+							]
+						}
+						score: {
+							description: [
+								"Score value.",
+							]
+							type: "int"
+						}
+						status: {
+							description: [
+								"Enable/disable status.",
+							]
+							type: "str"
+							choices: [
+								"enable",
+								"disable",
+							]
+						}
+						where: {
+							description: [
+								"Component of the email to be scanned.",
+							]
+							type: "str"
+							choices: [
+								"subject",
+								"body",
+								"all",
+							]
+						}
+					}
+				}
+				id: {
+					description: [
+						"ID.",
+					]
+					required: true
+					type:     "int"
+				}
+				name: {
+					description: [
+						"Name of table.",
+					]
+					type: "str"
+				}
+			}
+		}
+	}
+}

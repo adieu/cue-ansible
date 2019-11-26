@@ -1,0 +1,81 @@
+package ansible
+
+module: na_ontap_cifs_server: {
+	module:            "na_ontap_cifs_server"
+	short_description: "NetApp ONTAP CIFS server configuration"
+	extends_documentation_fragment: [
+		"netapp.na_ontap",
+	]
+	version_added: "2.6"
+	author:        "NetApp Ansible Team (@carchi8py) <ng-ansibleteam@netapp.com>"
+
+	description: [
+		"Creating / deleting and modifying the CIFS server .",
+	]
+
+	options: {
+
+		state: {
+			description: [
+				"Whether the specified cifs_server should exist or not.",
+			]
+			default: "present"
+			choices: ["present", "absent"]
+		}
+
+		service_state: {
+			description: [
+				"CIFS Server Administrative Status.",
+			]
+			choices: ["stopped", "started"]
+		}
+
+		name: {
+			description: [
+				"Specifies the cifs_server name.",
+			]
+			required: true
+			aliases: ["cifs_server_name"]
+		}
+
+		admin_user_name: description: [
+			"Specifies the cifs server admin username.",
+		]
+
+		admin_password: description: [
+			"Specifies the cifs server admin password.",
+		]
+
+		domain: description: [
+			"The Fully Qualified Domain Name of the Windows Active Directory this CIFS server belongs to.",
+		]
+
+		workgroup: description: [
+			"The NetBIOS name of the domain or workgroup this CIFS server belongs to.",
+		]
+
+		ou: {
+			description: [
+				"The Organizational Unit (OU) within the Windows Active Directory this CIFS server belongs to.",
+			]
+
+			version_added: "2.7"
+		}
+
+		force: {
+			type: "bool"
+			description: [
+				"If this is set and a machine account with the same name as specified in 'name' exists in the Active Directory, it will be overwritten and reused.",
+			]
+
+			version_added: "2.7"
+		}
+
+		vserver: {
+			description: [
+				"The name of the vserver to use.",
+			]
+			required: true
+		}
+	}
+}

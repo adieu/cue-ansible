@@ -1,0 +1,59 @@
+package ansible
+
+module: os_recordset: {
+	module:                         "os_recordset"
+	short_description:              "Manage OpenStack DNS recordsets"
+	extends_documentation_fragment: "openstack"
+	version_added:                  "2.2"
+	author:                         "Ricardo Carrillo Cruz (@rcarrillocruz)"
+	description: [
+		"Manage OpenStack DNS recordsets. Recordsets can be created, deleted or updated. Only the I(records), I(description), and I(ttl) values can be updated.",
+	]
+
+	options: {
+		zone: {
+			description: [
+				"Zone managing the recordset",
+			]
+			required: true
+		}
+		name: {
+			description: [
+				"Name of the recordset",
+			]
+			required: true
+		}
+		recordset_type: {
+			description: [
+				"Recordset type",
+			]
+			required: true
+		}
+		records: {
+			description: [
+				"List of recordset definitions",
+			]
+			required: true
+		}
+		description: description: [
+			"Description of the recordset",
+		]
+		ttl: description: [
+			"TTL (Time To Live) value in seconds",
+		]
+		state: {
+			description: [
+				"Should the resource be present or absent.",
+			]
+			choices: ["present", "absent"]
+			default: "present"
+		}
+		availability_zone: description: [
+			"Ignored. Present for backwards compatibility",
+		]
+	}
+	requirements: [
+		"python >= 2.7",
+		"openstacksdk",
+	]
+}

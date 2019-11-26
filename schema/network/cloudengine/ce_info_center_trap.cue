@@ -1,0 +1,85 @@
+package ansible
+
+module: ce_info_center_trap: {
+	module:            "ce_info_center_trap"
+	version_added:     "2.4"
+	short_description: "Manages information center trap configuration on HUAWEI CloudEngine switches."
+	description: [
+		"Manages information center trap configurations on HUAWEI CloudEngine switches.",
+	]
+	author: [
+		"wangdezhuang (@QijunPan)",
+	]
+	notes: [
+		"This module requires the netconf system service be enabled on the remote device being managed.",
+		"Recommended connection is C(netconf).",
+		"This module also works with C(local) connections for legacy playbooks.",
+	]
+	options: {
+		state: {
+			description: [
+				"Specify desired state of the resource.",
+			]
+			default: "present"
+			choices: ["present", "absent"]
+		}
+		trap_time_stamp: {
+			description: [
+				"Timestamp format of alarm information.",
+			]
+			choices: [
+				"date_boot",
+				"date_second",
+				"date_tenthsecond",
+				"date_millisecond",
+				"shortdate_second",
+				"shortdate_tenthsecond",
+				"shortdate_millisecond",
+				"formatdate_second",
+				"formatdate_tenthsecond",
+				"formatdate_millisecond",
+			]
+		}
+		trap_buff_enable: {
+			description: [
+				"Whether a trap buffer is enabled to output information.",
+			]
+			default: "no_use"
+			choices: ["no_use", "true", "false"]
+		}
+		trap_buff_size: description: [
+			"Size of a trap buffer. The value is an integer ranging from 0 to 1024. The default value is 256.",
+		]
+
+		module_name: description: [
+			"Module name of the rule. The value is a string of 1 to 31 case-insensitive characters. The default value is default. Please use lower-case letter, such as [aaa, acl, arp, bfd].",
+		]
+
+		channel_id: description: [
+			"Number of a channel. The value is an integer ranging from 0 to 9. The default value is 0.",
+		]
+
+		trap_enable: {
+			description: [
+				"Whether a device is enabled to output alarms.",
+			]
+			default: "no_use"
+			choices: ["no_use", "true", "false"]
+		}
+		trap_level: {
+			description: [
+				"Trap level permitted to output.",
+			]
+			choices: [
+				"emergencies",
+				"alert",
+				"critical",
+				"error",
+				"warning",
+				"notification",
+				"informational",
+				"debugging",
+			]
+		}
+	}
+}
