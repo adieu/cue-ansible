@@ -1,140 +1,170 @@
 package system
 
 net_banner :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	net_banner: {
 
-	// Specifies which banner that should be configured on the remote device.
+		// Specifies which banner that should be configured on the remote device.
 
-	banner: string
+		banner: string
 
-	// Specifies whether or not the configuration is present in the current devices active running configuration.
+		// Specifies whether or not the configuration is present in the current devices active running configuration.
 
-	state?: string
+		state?: string
 
-	// The banner text that should be present in the remote device running configuration.  This argument accepts a multiline string, with no empty lines. Requires I(state=present).
+		// The banner text that should be present in the remote device running configuration.  This argument accepts a multiline string, with no empty lines. Requires I(state=present).
 
-	text?: string
+		text?: string
+	}
 }
 
 net_logging :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	net_logging: {
 
-	// Purge logging not defined in the I(aggregate) parameter.
+		// State of the logging configuration.
 
-	purge?: string
+		state?: string
 
-	// State of the logging configuration.
+		// List of logging definitions.
 
-	state?: string
+		aggregate?: string
 
-	// List of logging definitions.
+		// Destination of the logs.
 
-	aggregate?: string
+		dest?: string
 
-	// Destination of the logs.
+		// Set logging facility.
 
-	dest?: string
+		facility?: string
 
-	// Set logging facility.
+		// Set logging severity levels.
 
-	facility?: string
+		level?: string
 
-	// Set logging severity levels.
+		// If value of C(dest) is I(host) it indicates file-name the host name to be notified.
 
-	level?: string
+		name?: string
 
-	// If value of C(dest) is I(host) it indicates file-name the host name to be notified.
+		// Purge logging not defined in the I(aggregate) parameter.
 
-	name?: string
+		purge?: string
+	}
 }
 
 net_ping :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	net_ping: {
 
-	// Number of packets to send.
+		// The VRF to use for forwarding.
 
-	count?: string
+		vrf?: string
 
-	// The IP Address or hostname (resolvable by switch) of the remote node.
+		// Number of packets to send.
 
-	dest: string
+		count?: string
 
-	// The source IP Address.
+		// The IP Address or hostname (resolvable by switch) of the remote node.
 
-	source?: string
+		dest: string
 
-	// Determines if the expected result is success or fail.
+		// The source IP Address.
 
-	state?: string
+		source?: string
 
-	// The VRF to use for forwarding.
+		// Determines if the expected result is success or fail.
 
-	vrf?: string
+		state?: string
+	}
 }
 
 net_system :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	net_system: {
 
-	// List of DNS name servers by IP address to use to perform name resolution lookups.  This argument accepts either a list of DNS servers See examples.
+		// List of DNS name servers by IP address to use to perform name resolution lookups.  This argument accepts either a list of DNS servers See examples.
 
-	name_servers?: string
+		name_servers?: string
 
-	// State of the configuration values in the device's current active configuration.  When set to I(present), the values should be configured in the device active configuration and when set to I(absent) the values should not be in the device active configuration
+		// State of the configuration values in the device's current active configuration.  When set to I(present), the values should be configured in the device active configuration and when set to I(absent) the values should not be in the device active configuration
 
-	state?: string
+		state?: string
 
-	// Configure the IP domain name on the remote device to the provided value. Value should be in the dotted name form and will be appended to the C(hostname) to create a fully-qualified domain name.
+		// Configure the IP domain name on the remote device to the provided value. Value should be in the dotted name form and will be appended to the C(hostname) to create a fully-qualified domain name.
 
-	domain_name?: string
+		domain_name?: string
 
-	// Provides the list of domain suffixes to append to the hostname for the purpose of doing name resolution. This argument accepts a name or list of names and will be reconciled with the current active configuration on the running node.
+		// Provides the list of domain suffixes to append to the hostname for the purpose of doing name resolution. This argument accepts a name or list of names and will be reconciled with the current active configuration on the running node.
 
-	domain_search?: string
+		domain_search?: string
 
-	// Configure the device hostname parameter. This option takes an ASCII string value.
+		// Configure the device hostname parameter. This option takes an ASCII string value.
 
-	hostname?: string
+		hostname?: string
 
-	// Provides one or more source interfaces to use for performing DNS lookups.  The interface provided in C(lookup_source) must be a valid interface configured on the device.
+		// Provides one or more source interfaces to use for performing DNS lookups.  The interface provided in C(lookup_source) must be a valid interface configured on the device.
 
-	lookup_source?: string
+		lookup_source?: string
+	}
 }
 
 net_user :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	net_user: {
 
-	// The set of username objects to be configured on the remote network device. The list entries can either be the username or a hash of username and properties. This argument is mutually exclusive with the C(name) argument.
+		// Instructs the module to consider the resource definition absolute. It will remove any previously configured usernames on the device with the exception of the `admin` user (the current defined set of users).
 
-	aggregate?: string
+		purge?: bool
 
-	// The username to be configured on the remote network device. This argument accepts a string value and is mutually exclusive with the C(aggregate) argument. Please note that this option is not same as C(provider username).
+		// Specifies the SSH public key to configure for the given username. This argument accepts a valid SSH key value.
 
-	name?: string
+		sshkey?: string
 
-	// Instructs the module to consider the resource definition absolute. It will remove any previously configured usernames on the device with the exception of the `admin` user (the current defined set of users).
+		// The username to be configured on the remote network device. This argument accepts a string value and is mutually exclusive with the C(aggregate) argument. Please note that this option is not same as C(provider username).
 
-	purge?: bool
+		name?: string
 
-	// Specifies the SSH public key to configure for the given username. This argument accepts a valid SSH key value.
+		// The password to be configured on the remote network device. The password needs to be provided in clear and it will be encrypted on the device. Please note that this option is not same as C(provider password).
 
-	sshkey?: string
+		configured_password?: string
 
-	// Configures the state of the username definition as it relates to the device operational configuration. When set to I(present), the username(s) should be configured in the device active configuration and when set to I(absent) the username(s) should not be in the device active configuration
+		// Defines the username without assigning a password. This will allow the user to login to the system without being authenticated by a password.
 
-	state?: string
+		nopassword?: bool
 
-	// Since passwords are encrypted in the device running config, this argument will instruct the module when to change the password.  When set to C(always), the password will always be updated in the device and when set to C(on_create) the password will be updated only if the username is created.
+		// The C(privilege) argument configures the privilege level of the user when logged into the system. This argument accepts integer values in the range of 1 to 15.
 
-	update_password?: string
+		privilege?: string
 
-	// The password to be configured on the remote network device. The password needs to be provided in clear and it will be encrypted on the device. Please note that this option is not same as C(provider password).
+		// Configures the role for the username in the device running configuration. The argument accepts a string value defining the role name. This argument does not check if the role has been configured on the device.
 
-	configured_password?: string
+		role?: string
 
-	// Defines the username without assigning a password. This will allow the user to login to the system without being authenticated by a password.
+		// Configures the state of the username definition as it relates to the device operational configuration. When set to I(present), the username(s) should be configured in the device active configuration and when set to I(absent) the username(s) should not be in the device active configuration
 
-	nopassword?: bool
+		state?: string
 
-	// The C(privilege) argument configures the privilege level of the user when logged into the system. This argument accepts integer values in the range of 1 to 15.
+		// Since passwords are encrypted in the device running config, this argument will instruct the module when to change the password.  When set to C(always), the password will always be updated in the device and when set to C(on_create) the password will be updated only if the username is created.
 
-	privilege?: string
+		update_password?: string
 
-	// Configures the role for the username in the device running configuration. The argument accepts a string value defining the role name. This argument does not check if the role has been configured on the device.
+		// The set of username objects to be configured on the remote network device. The list entries can either be the username or a hash of username and properties. This argument is mutually exclusive with the C(name) argument.
 
-	role?: string
+		aggregate?: string
+	}
 }

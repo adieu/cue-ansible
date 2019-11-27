@@ -1,443 +1,479 @@
 package oneandone
 
-oneandone_firewall_policy :: {
-
-	// Custom API URL. Overrides the ONEANDONE_API_URL environment variable.
-
-	api_url?: string
-
-	// A list of rule ids that will be removed from an existing firewall policy. Used in combination with update state.
-
-	remove_rules?: string
-
-	// Defines the number of seconds to wait when using the _wait_for methods
-
-	wait_interval?: string
-
-	// wait for the instance to be in state 'running' before returning
-
-	wait?: bool
-
-	// A list of server identifiers (id or name) to be assigned to a firewall policy. Used in combination with update state.
-
-	add_server_ips?: string
-
-	// Authenticating API token provided by 1&1.
-
-	auth_token: string
-
-	// A list of server IP ids to be unassigned from a firewall policy. Used in combination with update state.
-
-	remove_server_ips?: string
-
-	// A list of rules that will be set for the firewall policy. Each rule must contain protocol parameter, in addition to three optional parameters (port_from, port_to, and source)
-
-	rules?: string
-
-	// how long before wait gives up, in seconds
-
-	wait_timeout?: string
-
-	// A list of rules that will be added to an existing firewall policy. It is syntax is the same as the one used for rules parameter. Used in combination with update state.
-
-	add_rules?: string
-
-	// The identifier (id or name) of the firewall policy used with update state.
-
-	firewall_policy: string
-
-	// Firewall policy name used with present state. Used as identifier (id or name) when used with absent state. maxLength=128
-
-	name: string
-
-	// Firewall policy description. maxLength=256
-
-	description?: string
-
-	// Define a firewall policy state to create, remove, or update.
-
-	state?: string
-}
-
-oneandone_load_balancer :: {
-
-	// A list of server identifiers (id or name) to be assigned to a load balancer. Used in combination with update state.
-
-	add_server_ips?: string
-
-	// Regular expression to check. Required for HTTP health check. maxLength=64
-
-	health_check_parse?: string
-
-	// Url to call for checking. Required for HTTP health check. maxLength=1000
-
-	health_check_path?: string
-
-	// Type of the health check. At the moment, HTTP is not allowed.
-
-	health_check_test: string
-
-	// Custom API URL. Overrides the ONEANDONE_API_URL environement variable.
-
-	api_url?: string
-
-	// Persistence time in seconds. Required if persistence is enabled. minimum=30, maximum=1200, multipleOf=1
-
-	persistence_time: string
-
-	// Define a load balancer state to create, remove, or update.
-
-	state?: string
-
-	// wait for the instance to be in state 'running' before returning
-
-	wait?: bool
-
-	// Defines the number of seconds to wait when using the _wait_for methods
-
-	wait_interval?: string
-
-	// how long before wait gives up, in seconds
-
-	wait_timeout?: string
-
-	// Authenticating API token provided by 1&1.
-
-	auth_token: string
-
-	// Description of the load balancer. maxLength=256
-
-	description?: string
-
-	// The identifier (id or name) of the load balancer used with update state.
-
-	load_balancer: string
-
-	// Balancing procedure.
-
-	method: string
-
-	// Load balancer name used with present state. Used as identifier (id or name) when used with absent state. maxLength=128
-
-	name: string
-
-	// Persistence.
-
-	persistence: bool
-
-	// A list of server IP ids to be unassigned from a load balancer. Used in combination with update state.
-
-	remove_server_ips?: string
-
-	// A list of rules that will be added to an existing load balancer. It is syntax is the same as the one used for rules parameter. Used in combination with update state.
-
-	add_rules?: string
-
-	// ID or country code of the datacenter where the load balancer will be created.
-
-	datacenter?: string
-
-	// Health check period in seconds. minimum=5, maximum=300, multipleOf=1
-
-	health_check_interval: string
-
-	// A list of rule ids that will be removed from an existing load balancer. Used in combination with update state.
-
-	remove_rules?: string
-
-	// A list of rule objects that will be set for the load balancer. Each rule must contain protocol, port_balancer, and port_server parameters, in addition to source parameter, which is optional.
-
-	rules: string
-}
-
 oneandone_monitoring_policy :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	oneandone_monitoring_policy: {
 
-	// Monitoring policy name used with present state. Used as identifier (id or name) when used with absent state. maxLength=128
+		// Servers to remove from the monitoring policy.
 
-	name: string
+		remove_servers?: string
 
-	// wait for the instance to be in state 'running' before returning
+		// Monitoring policy thresholds. Each of the suboptions have warning and critical, which both have alert and value suboptions. Warning is used to set limits for warning alerts, critical is used to set critical alerts. alert enables alert, and value is used to advise when the value is exceeded.
 
-	wait?: bool
+		thresholds: string
 
-	// Ports to add to the monitoring policy.
+		// Ports to be updated on the monitoring policy.
 
-	add_ports?: string
+		update_ports?: string
 
-	// Custom API URL. Overrides the ONEANDONE_API_URL environement variable.
+		// Processes to be updated on the monitoring policy.
 
-	api_url?: string
+		update_processes?: string
 
-	// Monitoring policy description. maxLength=256
+		// how long before wait gives up, in seconds
 
-	description?: string
+		wait_timeout?: string
 
-	// User's email. maxLength=128
+		// Set true for using agent.
 
-	email: string
+		agent: string
 
-	// The identifier (id or name) of the monitoring policy used with update state.
+		// Servers to add to the monitoring policy.
 
-	monitoring_policy: string
+		add_servers?: string
 
-	// Array of ports that will be monitoring.
+		// Authenticating API token provided by 1&1.
 
-	ports: string
+		auth_token: string
 
-	// how long before wait gives up, in seconds
+		// User's email. maxLength=128
 
-	wait_timeout?: string
+		email: string
 
-	// Set true for using agent.
+		// The identifier (id or name) of the monitoring policy used with update state.
 
-	agent: string
+		monitoring_policy: string
 
-	// Authenticating API token provided by 1&1.
+		// Array of processes that will be monitoring.
 
-	auth_token: string
+		processes: string
 
-	// Array of processes that will be monitoring.
+		// Processes to remove from the monitoring policy.
 
-	processes: string
+		remove_processes?: string
 
-	// Monitoring policy thresholds. Each of the suboptions have warning and critical, which both have alert and value suboptions. Warning is used to set limits for warning alerts, critical is used to set critical alerts. alert enables alert, and value is used to advise when the value is exceeded.
+		// Defines the number of seconds to wait when using the _wait_for methods
 
-	thresholds: string
+		wait_interval?: string
 
-	// Ports to be updated on the monitoring policy.
+		// Processes to add to the monitoring policy.
 
-	update_ports?: string
+		add_processes?: string
 
-	// Defines the number of seconds to wait when using the _wait_for methods
+		// Ports to remove from the monitoring policy.
 
-	wait_interval?: string
+		remove_ports?: string
 
-	// Servers to add to the monitoring policy.
+		// Monitoring policy name used with present state. Used as identifier (id or name) when used with absent state. maxLength=128
 
-	add_servers?: string
+		name: string
 
-	// Ports to remove from the monitoring policy.
+		// Custom API URL. Overrides the ONEANDONE_API_URL environement variable.
 
-	remove_ports?: string
+		api_url?: string
 
-	// Processes to remove from the monitoring policy.
+		// Monitoring policy description. maxLength=256
 
-	remove_processes?: string
+		description?: string
 
-	// Servers to remove from the monitoring policy.
+		// Array of ports that will be monitoring.
 
-	remove_servers?: string
+		ports: string
 
-	// Define a monitoring policy's state to create, remove, update.
+		// Define a monitoring policy's state to create, remove, update.
 
-	state?: string
+		state?: string
 
-	// Processes to be updated on the monitoring policy.
+		// wait for the instance to be in state 'running' before returning
 
-	update_processes?: string
+		wait?: bool
 
-	// Processes to add to the monitoring policy.
+		// Ports to add to the monitoring policy.
 
-	add_processes?: string
+		add_ports?: string
+	}
 }
 
 oneandone_private_network :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	oneandone_private_network: {
 
-	// Custom API URL. Overrides the ONEANDONE_API_URL environement variable.
+		// List of server identifiers (name or id) to be added to the private network.
 
-	api_url?: string
+		add_members?: string
 
-	// The identifier of the datacenter where the private network will be created
+		// Set a private network space, i.e. 192.168.1.0
 
-	datacenter?: string
+		network_address?: string
 
-	// Set a description for the network.
+		// Set the netmask for the private network, i.e. 255.255.255.0
 
-	description?: string
+		subnet_mask?: string
 
-	// how long before wait gives up, in seconds
+		// how long before wait gives up, in seconds
 
-	wait_timeout?: string
+		wait_timeout?: string
 
-	// List of server identifiers (name or id) to be added to the private network.
+		// Custom API URL. Overrides the ONEANDONE_API_URL environement variable.
 
-	add_members?: string
+		api_url?: string
 
-	// Define a network's state to create, remove, or update.
+		// wait for the instance to be in state 'running' before returning
 
-	state?: string
+		wait?: bool
 
-	// Set the netmask for the private network, i.e. 255.255.255.0
+		// Private network name used with present state. Used as identifier (id or name) when used with absent state.
 
-	subnet_mask?: string
+		name: string
 
-	// Defines the number of seconds to wait when using the _wait_for methods
+		// List of server identifiers (name or id) to be removed from the private network.
 
-	wait_interval?: string
+		remove_members?: string
 
-	// Authenticating API token provided by 1&1.
+		// Defines the number of seconds to wait when using the _wait_for methods
 
-	auth_token: string
+		wait_interval?: string
 
-	// wait for the instance to be in state 'running' before returning
+		// Authenticating API token provided by 1&1.
 
-	wait?: bool
+		auth_token: string
 
-	// Private network name used with present state. Used as identifier (id or name) when used with absent state.
+		// The identifier of the datacenter where the private network will be created
 
-	name: string
+		datacenter?: string
 
-	// Set a private network space, i.e. 192.168.1.0
+		// Set a description for the network.
 
-	network_address?: string
+		description?: string
 
-	// The identifier (id or name) of the network used with update state.
+		// The identifier (id or name) of the network used with update state.
 
-	private_network: string
+		private_network: string
 
-	// List of server identifiers (name or id) to be removed from the private network.
+		// Define a network's state to create, remove, or update.
 
-	remove_members?: string
+		state?: string
+	}
 }
 
 oneandone_public_ip :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	oneandone_public_ip: {
 
-	// Custom API URL. Overrides the ONEANDONE_API_URL environement variable.
+		// Reverse DNS name. maxLength=256
 
-	api_url?: string
+		reverse_dns?: string
 
-	// ID of the datacenter where the IP will be created (only for unassigned IPs).
+		// Type of IP. Currently, only IPV4 is available.
 
-	datacenter?: string
+		type?: string
 
-	// how long before wait gives up, in seconds
+		// wait for the instance to be in state 'running' before returning
 
-	wait_timeout?: string
+		wait?: bool
 
-	// Defines the number of seconds to wait when using the _wait_for methods
+		// Defines the number of seconds to wait when using the _wait_for methods
 
-	wait_interval?: string
+		wait_interval?: string
 
-	// Authenticating API token provided by 1&1.
+		// Custom API URL. Overrides the ONEANDONE_API_URL environement variable.
 
-	auth_token: string
+		api_url?: string
 
-	// The ID of the public IP used with update and delete states.
+		// ID of the datacenter where the IP will be created (only for unassigned IPs).
 
-	public_ip_id: string
+		datacenter?: string
 
-	// Reverse DNS name. maxLength=256
+		// The ID of the public IP used with update and delete states.
 
-	reverse_dns?: string
+		public_ip_id: string
 
-	// Define a public ip state to create, remove, or update.
+		// Authenticating API token provided by 1&1.
 
-	state?: string
+		auth_token: string
 
-	// Type of IP. Currently, only IPV4 is available.
+		// Define a public ip state to create, remove, or update.
 
-	type?: string
+		state?: string
 
-	// wait for the instance to be in state 'running' before returning
+		// how long before wait gives up, in seconds
 
-	wait?: bool
+		wait_timeout?: string
+	}
 }
 
 oneandone_server :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	oneandone_server: {
 
-	// Authenticating API token provided by 1&1. Overrides the ONEANDONE_AUTH_TOKEN environement variable.
+		// The load balancer name or ID.
 
-	auth_token: string
+		load_balancer?: string
 
-	// The amount of RAM memory. It must be provided with with vcore, cores_per_processor, and hdds parameters.
+		// The total number of processors. It must be provided with cores_per_processor, ram, and hdds parameters.
 
-	ram?: string
+		vcore?: string
 
-	// Define a server's state to create, remove, start or stop it.
+		// Wait for the server to be in state 'running' before returning. Also used for delete operation (set to 'false' if you don't want to wait for each individual server to be deleted before moving on with other tasks.)
 
-	state?: string
+		wait?: bool
 
-	// Defines the number of seconds to wait when using the wait_for methods
+		// how long before wait gives up, in seconds
 
-	wait_interval?: string
+		wait_timeout?: string
 
-	// The type of server to be built.
+		// Authenticating API token provided by 1&1. Overrides the ONEANDONE_AUTH_TOKEN environement variable.
 
-	server_type?: string
+		auth_token: string
 
-	// The total number of processors. It must be provided with cores_per_processor, ram, and hdds parameters.
+		// The number of servers to create.
 
-	vcore?: string
+		count?: string
 
-	// Wait for the server to be in state 'running' before returning. Also used for delete operation (set to 'false' if you don't want to wait for each individual server to be deleted before moving on with other tasks.)
+		// The datacenter location.
 
-	wait?: bool
+		datacenter?: string
 
-	// Custom API URL. Overrides the ONEANDONE_API_URL environement variable.
+		// The description of the server.
 
-	api_url?: string
+		description?: string
 
-	// The number of servers to create.
+		// User's public SSH key (contents, not path).
 
-	count?: string
+		ssh_key?: string
 
-	// The firewall policy name or ID.
+		// Define a server's state to create, remove, start or stop it.
 
-	firewall_policy?: string
+		state?: string
 
-	// A list of hard disks with nested "size" and "is_main" properties. It must be provided with vcore, cores_per_processor, and ram parameters.
+		// The operating system name or ID for the server. It is required only for 'present' state.
 
-	hdds?: string
+		appliance?: string
 
-	// The private network name or ID.
+		// The firewall policy name or ID.
 
-	private_network?: string
+		firewall_policy?: string
 
-	// The operating system name or ID for the server. It is required only for 'present' state.
+		// A list of hard disks with nested "size" and "is_main" properties. It must be provided with vcore, cores_per_processor, and ram parameters.
 
-	appliance?: string
+		hdds?: string
 
-	// When creating multiple servers at once, whether to differentiate hostnames by appending a count after them or substituting the count where there is a %02d or %03d in the hostname string.
+		// Server identifier (ID or hostname). It is required for all states except 'running' and 'present'.
 
-	auto_increment?: bool
+		server?: string
 
-	// The description of the server.
+		// The monitoring policy name or ID.
 
-	description?: string
+		monitoring_policy?: string
 
-	// how long before wait gives up, in seconds
+		// The private network name or ID.
 
-	wait_timeout?: string
+		private_network?: string
 
-	// The monitoring policy name or ID.
+		// The amount of RAM memory. It must be provided with with vcore, cores_per_processor, and hdds parameters.
 
-	monitoring_policy?: string
+		ram?: string
 
-	// Server identifier (ID or hostname). It is required for all states except 'running' and 'present'.
+		// Defines the number of seconds to wait when using the wait_for methods
 
-	server?: string
+		wait_interval?: string
 
-	// User's public SSH key (contents, not path).
+		// Custom API URL. Overrides the ONEANDONE_API_URL environement variable.
 
-	ssh_key?: string
+		api_url?: string
 
-	// The number of cores per processor. It must be provided with vcore, ram, and hdds parameters.
+		// When creating multiple servers at once, whether to differentiate hostnames by appending a count after them or substituting the count where there is a %02d or %03d in the hostname string.
 
-	cores_per_processor?: string
+		auto_increment?: bool
 
-	// The datacenter location.
+		// The number of cores per processor. It must be provided with vcore, ram, and hdds parameters.
 
-	datacenter?: string
+		cores_per_processor?: string
 
-	// The instance size name or ID of the server. It is required only for 'present' state, and it is mutually exclusive with vcore, cores_per_processor, ram, and hdds parameters.
+		// The hostname or ID of the server. Only used when state is 'present'.
 
-	fixed_instance_size: string
+		hostname?: string
 
-	// The hostname or ID of the server. Only used when state is 'present'.
+		// The instance size name or ID of the server. It is required only for 'present' state, and it is mutually exclusive with vcore, cores_per_processor, ram, and hdds parameters.
 
-	hostname?: string
+		fixed_instance_size: string
 
-	// The load balancer name or ID.
+		// The type of server to be built.
 
-	load_balancer?: string
+		server_type?: string
+	}
+}
+
+oneandone_firewall_policy :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	oneandone_firewall_policy: {
+
+		// A list of rules that will be added to an existing firewall policy. It is syntax is the same as the one used for rules parameter. Used in combination with update state.
+
+		add_rules?: string
+
+		// A list of rule ids that will be removed from an existing firewall policy. Used in combination with update state.
+
+		remove_rules?: string
+
+		// Custom API URL. Overrides the ONEANDONE_API_URL environment variable.
+
+		api_url?: string
+
+		// Firewall policy name used with present state. Used as identifier (id or name) when used with absent state. maxLength=128
+
+		name: string
+
+		// Defines the number of seconds to wait when using the _wait_for methods
+
+		wait_interval?: string
+
+		// Firewall policy description. maxLength=256
+
+		description?: string
+
+		// wait for the instance to be in state 'running' before returning
+
+		wait?: bool
+
+		// Define a firewall policy state to create, remove, or update.
+
+		state?: string
+
+		// how long before wait gives up, in seconds
+
+		wait_timeout?: string
+
+		// A list of server identifiers (id or name) to be assigned to a firewall policy. Used in combination with update state.
+
+		add_server_ips?: string
+
+		// Authenticating API token provided by 1&1.
+
+		auth_token: string
+
+		// The identifier (id or name) of the firewall policy used with update state.
+
+		firewall_policy: string
+
+		// A list of server IP ids to be unassigned from a firewall policy. Used in combination with update state.
+
+		remove_server_ips?: string
+
+		// A list of rules that will be set for the firewall policy. Each rule must contain protocol parameter, in addition to three optional parameters (port_from, port_to, and source)
+
+		rules?: string
+	}
+}
+
+oneandone_load_balancer :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	oneandone_load_balancer: {
+
+		// A list of server identifiers (id or name) to be assigned to a load balancer. Used in combination with update state.
+
+		add_server_ips?: string
+
+		// Description of the load balancer. maxLength=256
+
+		description?: string
+
+		// Regular expression to check. Required for HTTP health check. maxLength=64
+
+		health_check_parse?: string
+
+		// Type of the health check. At the moment, HTTP is not allowed.
+
+		health_check_test: string
+
+		// The identifier (id or name) of the load balancer used with update state.
+
+		load_balancer: string
+
+		// Persistence time in seconds. Required if persistence is enabled. minimum=30, maximum=1200, multipleOf=1
+
+		persistence_time: string
+
+		// A list of server IP ids to be unassigned from a load balancer. Used in combination with update state.
+
+		remove_server_ips?: string
+
+		// A list of rules that will be added to an existing load balancer. It is syntax is the same as the one used for rules parameter. Used in combination with update state.
+
+		add_rules?: string
+
+		// Load balancer name used with present state. Used as identifier (id or name) when used with absent state. maxLength=128
+
+		name: string
+
+		// A list of rule ids that will be removed from an existing load balancer. Used in combination with update state.
+
+		remove_rules?: string
+
+		// Define a load balancer state to create, remove, or update.
+
+		state?: string
+
+		// wait for the instance to be in state 'running' before returning
+
+		wait?: bool
+
+		// how long before wait gives up, in seconds
+
+		wait_timeout?: string
+
+		// Balancing procedure.
+
+		method: string
+
+		// ID or country code of the datacenter where the load balancer will be created.
+
+		datacenter?: string
+
+		// Health check period in seconds. minimum=5, maximum=300, multipleOf=1
+
+		health_check_interval: string
+
+		// Persistence.
+
+		persistence: bool
+
+		// Custom API URL. Overrides the ONEANDONE_API_URL environement variable.
+
+		api_url?: string
+
+		// Url to call for checking. Required for HTTP health check. maxLength=1000
+
+		health_check_path?: string
+
+		// A list of rule objects that will be set for the load balancer. Each rule must contain protocol, port_balancer, and port_server parameters, in addition to source parameter, which is optional.
+
+		rules: string
+
+		// Defines the number of seconds to wait when using the _wait_for methods
+
+		wait_interval?: string
+
+		// Authenticating API token provided by 1&1.
+
+		auth_token: string
+	}
 }

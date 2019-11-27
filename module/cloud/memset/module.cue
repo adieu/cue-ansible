@@ -1,115 +1,151 @@
 package memset
 
+memset_dns_reload :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	memset_dns_reload: {
+
+		// The API key obtained from the Memset control panel.
+
+		api_key: string
+
+		// Boolean value, if set will poll the reload job's status and return when the job has completed (unless the 30 second timeout is reached first). If the timeout is reached then the task will not be marked as failed, but stderr will indicate that the polling failed.
+
+		poll?: bool
+	}
+}
+
 memset_memstore_info :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	memset_memstore_info: {
 
-	// The API key obtained from the Memset control panel.
+		// The Memstore product name (i.e. C(mstestyaa1)).
 
-	api_key: string
+		name: string
 
-	// The Memstore product name (i.e. C(mstestyaa1)).
+		// The API key obtained from the Memset control panel.
 
-	name: string
+		api_key: string
+	}
 }
 
 memset_server_info :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	memset_server_info: {
 
-	// The API key obtained from the Memset control panel.
+		// The API key obtained from the Memset control panel.
 
-	api_key: string
+		api_key: string
 
-	// The server product name (i.e. C(testyaa1)).
+		// The server product name (i.e. C(testyaa1)).
 
-	name: string
+		name: string
+	}
 }
 
 memset_zone :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	memset_zone: {
 
-	// The API key obtained from the Memset control panel.
+		// The API key obtained from the Memset control panel.
 
-	api_key: string
+		api_key: string
 
-	// Forces deletion of a zone and all zone domains/zone records it contains.
+		// Forces deletion of a zone and all zone domains/zone records it contains.
 
-	force?: bool
+		force?: bool
 
-	// The zone nickname; usually the same as the main domain. Ensure this value has at most 250 characters.
+		// The zone nickname; usually the same as the main domain. Ensure this value has at most 250 characters.
 
-	name: string
+		name: string
 
-	// Indicates desired state of resource.
+		// Indicates desired state of resource.
 
-	state: string
+		state: string
 
-	// The default TTL for all records created in the zone. This must be a valid int from U(https://www.memset.com/apidocs/methods_dns.html#dns.zone_create).
+		// The default TTL for all records created in the zone. This must be a valid int from U(https://www.memset.com/apidocs/methods_dns.html#dns.zone_create).
 
-	ttl?: string
+		ttl?: string
+	}
 }
 
 memset_zone_domain :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	memset_zone_domain: {
 
-	// The zone to add the domain to (this must already exist).
+		// The API key obtained from the Memset control panel.
 
-	zone: string
+		api_key: string
 
-	// The API key obtained from the Memset control panel.
+		// The zone domain name. Ensure this value has at most 250 characters.
 
-	api_key: string
+		domain: string
 
-	// The zone domain name. Ensure this value has at most 250 characters.
+		// Indicates desired state of resource.
 
-	domain: string
+		state?: string
 
-	// Indicates desired state of resource.
+		// The zone to add the domain to (this must already exist).
 
-	state?: string
+		zone: string
+	}
 }
 
 memset_zone_record :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	memset_zone_record: {
 
-	// C(SRV) and C(TXT) record priority, in the range 0 > 999 (inclusive).
+		// The API key obtained from the Memset control panel.
 
-	priority?: string
+		api_key: string
 
-	// If set then the current domain is added onto the address field for C(CNAME), C(MX), C(NS) and C(SRV)record types.
+		// The subdomain to create.
 
-	relative?: bool
+		record?: string
 
-	// The record's TTL in seconds (will inherit zone's TTL if not explicitly set). This must be a valid int from U(https://www.memset.com/apidocs/methods_dns.html#dns.zone_record_create).
+		// Indicates desired state of resource.
 
-	ttl?: string
+		state?: string
 
-	// The address for this record (can be IP or text string depending on record type).
+		// The record's TTL in seconds (will inherit zone's TTL if not explicitly set). This must be a valid int from U(https://www.memset.com/apidocs/methods_dns.html#dns.zone_record_create).
 
-	address: string
+		ttl?: string
 
-	// The API key obtained from the Memset control panel.
+		// The name of the zone to which to add the record to.
 
-	api_key: string
+		zone: string
 
-	// The subdomain to create.
+		// The address for this record (can be IP or text string depending on record type).
 
-	record?: string
+		address: string
 
-	// Indicates desired state of resource.
+		// C(SRV) and C(TXT) record priority, in the range 0 > 999 (inclusive).
 
-	state?: string
+		priority?: string
 
-	// The type of DNS record to create.
+		// If set then the current domain is added onto the address field for C(CNAME), C(MX), C(NS) and C(SRV)record types.
 
-	type: string
+		relative?: bool
 
-	// The name of the zone to which to add the record to.
+		// The type of DNS record to create.
 
-	zone: string
-}
-
-memset_dns_reload :: {
-
-	// Boolean value, if set will poll the reload job's status and return when the job has completed (unless the 30 second timeout is reached first). If the timeout is reached then the task will not be marked as failed, but stderr will indicate that the polling failed.
-
-	poll?: bool
-
-	// The API key obtained from the Memset control panel.
-
-	api_key: string
+		type: string
+	}
 }

@@ -1,247 +1,271 @@
 package keycloak
 
-keycloak_group :: {
-
-	// A dict of key/value pairs to set as custom attributes for the group.
-	// Values may be single values (e.g. a string) or a list of strings.
-
-	attributes?: {...}
-
-	// The unique identifier for this group.
-	// This parameter is not required for updating or deleting a group but providing it will reduce the number of API calls required.
-
-	id?: string
-
-	// Name of the group.
-	// This parameter is required only when creating or updating the group.
-
-	name?: string
-
-	// They Keycloak realm under which this group resides.
-
-	realm?: string
-
-	// State of the group.
-	// On C(present), the group will be created if it does not yet exist, or updated with the parameters you provide.
-	// On C(absent), the group will be removed if it exists.
-
-	state: string
-}
-
-onepassword_info :: {
-
-	// A dictionary containing authentication details. If this is set, M(onepassword_info) will attempt to sign in to 1Password automatically.
-	// Without this option, you must have already logged in via the 1Password CLI before running Ansible.
-	// It is B(highly) recommended to store 1Password credentials in an Ansible Vault. Ensure that the key used to encrypt the Ansible Vault is equal to or greater in strength than the 1Password master password.
-
-	auto_login?: {...}
-
-	// Used to specify the exact path to the C(op) command line interface
-
-	cli_path?: string
-
-	// A list of one or more search terms.
-	// Each search term can either be a simple string or it can be a dictionary for more control.
-	// When passing a simple string, I(field) is assumed to be C(password).
-	// When passing a dictionary, the following fields are available.
-
-	search_terms: [..._]
-}
-
 keycloak_client :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	keycloak_client: {
 
-	// Default URL to use when the auth server needs to redirect or link back to the client This is 'baseUrl' in the Keycloak REST API.
+		// If enabled, users have to consent to client access. This is 'consentRequired' in the Keycloak REST API.
 
-	base_url?: string
+		consent_required?: bool
 
-	// Is this client enabled or not?
+		// A dict of further attributes for this client. This can contain various configuration settings; an example is given in the examples section. While an exhaustive list of permissible options is not available; possible options as of Keycloak 3.4 are listed below. The Keycloak API does not validate whether a given option is appropriate for the protocol used; if specified anyway, Keycloak will simply not use it.
 
-	enabled?: bool
+		attributes?: string
 
-	// Cluster node re-registration timeout for this client. This is 'nodeReRegistrationTimeout' in the Keycloak REST API.
+		// a data structure defining the authorization settings for this client. For reference, please see the Keycloak API docs at U(http://www.keycloak.org/docs-api/3.3/rest-api/index.html#_resourceserverrepresentation). This is 'authorizationSettings' in the Keycloak REST API.
 
-	node_re_registration_timeout?: string
+		authorization_settings?: string
 
-	// Is the access type for this client public or not. This is 'publicClient' in the Keycloak REST API.
+		// Client id of client to be worked on. This is usually an alphanumeric name chosen by you. Either this or I(id) is required. If you specify both, I(id) takes precedence. This is 'clientId' in the Keycloak REST API.
 
-	public_client?: bool
+		client_id?: string
 
-	// Is frontchannel logout enabled for this client or not. This is 'frontchannelLogout' in the Keycloak REST API.
+		// Acceptable redirect URIs for this client. This is 'redirectUris' in the Keycloak REST API.
 
-	frontchannel_logout?: bool
+		redirect_uris?: string
 
-	// Name of the client (this is not the same as I(client_id))
+		// dict of registered cluster nodes (with C(nodename) as the key and last registration time as the value). This is 'registeredNodes' in the Keycloak REST API.
 
-	name?: string
+		registered_nodes?: string
 
-	// Revoke any tokens issued before this date for this client (this is a UNIX timestamp). This is 'notBefore' in the Keycloak REST API.
+		// Whether or not to use mapper configuration from the I(client_template). This is 'useTemplateMappers' in the Keycloak REST API.
 
-	not_before?: string
+		use_template_mappers?: bool
 
-	// Enable standard flow for this client or not (OpenID connect). This is 'standardFlowEnabled' in the Keycloak REST API.
+		// Whether or not to use scope configuration from the I(client_template). This is 'useTemplateScope' in the Keycloak REST API.
 
-	standard_flow_enabled?: bool
+		use_template_scope?: bool
 
-	// Whether or not to use configuration from the I(client_template). This is 'useTemplateConfig' in the Keycloak REST API.
+		// URL to the admin interface of the client This is 'adminUrl' in the Keycloak REST API.
 
-	use_template_config?: bool
+		admin_url?: string
 
-	// Whether or not to use scope configuration from the I(client_template). This is 'useTemplateScope' in the Keycloak REST API.
+		// The access type of this client is bearer-only. This is 'bearerOnly' in the Keycloak REST API.
 
-	use_template_scope?: bool
+		bearer_only?: bool
 
-	// Are authorization services enabled for this client or not (OpenID connect). This is 'authorizationServicesEnabled' in the Keycloak REST API.
+		// Is frontchannel logout enabled for this client or not. This is 'frontchannelLogout' in the Keycloak REST API.
 
-	authorization_services_enabled?: bool
+		frontchannel_logout?: bool
 
-	// If enabled, users have to consent to client access. This is 'consentRequired' in the Keycloak REST API.
+		// Enable implicit flow for this client or not (OpenID connect). This is 'implicitFlowEnabled' in the Keycloak REST API.
 
-	consent_required?: bool
+		implicit_flow_enabled?: bool
 
-	// State of the client
-	// On C(present), the client will be created (or updated if it exists already).
-	// On C(absent), the client will be removed if it exists
+		// Revoke any tokens issued before this date for this client (this is a UNIX timestamp). This is 'notBefore' in the Keycloak REST API.
 
-	state?: string
+		not_before?: string
 
-	// a data structure defining the authorization settings for this client. For reference, please see the Keycloak API docs at U(http://www.keycloak.org/docs-api/3.3/rest-api/index.html#_resourceserverrepresentation). This is 'authorizationSettings' in the Keycloak REST API.
+		// Enable standard flow for this client or not (OpenID connect). This is 'standardFlowEnabled' in the Keycloak REST API.
 
-	authorization_settings?: string
+		standard_flow_enabled?: bool
 
-	// Client id of client to be worked on. This is usually an alphanumeric name chosen by you. Either this or I(id) is required. If you specify both, I(id) takes precedence. This is 'clientId' in the Keycloak REST API.
+		// list of default roles for this client. If the client roles referenced do not exist yet, they will be created. This is 'defaultRoles' in the Keycloak REST API.
 
-	client_id?: string
+		default_roles?: string
 
-	// dict of registered cluster nodes (with C(nodename) as the key and last registration time as the value). This is 'registeredNodes' in the Keycloak REST API.
+		// Are direct access grants enabled for this client or not (OpenID connect). This is 'directAccessGrantsEnabled' in the Keycloak REST API.
 
-	registered_nodes?: string
+		direct_access_grants_enabled?: bool
 
-	// The access type of this client is bearer-only. This is 'bearerOnly' in the Keycloak REST API.
+		// Is this client enabled or not?
 
-	bearer_only?: bool
+		enabled?: bool
 
-	// list of default roles for this client. If the client roles referenced do not exist yet, they will be created. This is 'defaultRoles' in the Keycloak REST API.
+		// Is the "Full Scope Allowed" feature set for this client or not. This is 'fullScopeAllowed' in the Keycloak REST API.
 
-	default_roles?: string
+		full_scope_allowed?: bool
 
-	// Type of client (either C(openid-connect) or C(saml).
+		// Are authorization services enabled for this client or not (OpenID connect). This is 'authorizationServicesEnabled' in the Keycloak REST API.
 
-	protocol?: string
+		authorization_services_enabled?: bool
 
-	// The registration access token provides access for clients to the client registration service. This is 'registrationAccessToken' in the Keycloak REST API.
+		// Description of the client in Keycloak
 
-	registration_access_token?: string
+		description?: string
 
-	// When using I(client_authenticator_type) C(client-secret) (the default), you can specify a secret here (otherwise one will be generated if it does not exit). If changing this secret, the module will not register a change currently (but the changed secret will be saved).
+		// Default URL to use when the auth server needs to redirect or link back to the client This is 'baseUrl' in the Keycloak REST API.
 
-	secret?: string
+		base_url?: string
 
-	// Client template to use for this client. If it does not exist this field will silently be dropped. This is 'clientTemplate' in the Keycloak REST API.
+		// List of allowed CORS origins. This is 'webOrigins' in the Keycloak REST API.
 
-	client_template?: string
+		web_origins?: string
 
-	// Is the "Full Scope Allowed" feature set for this client or not. This is 'fullScopeAllowed' in the Keycloak REST API.
+		// Name of the client (this is not the same as I(client_id))
 
-	full_scope_allowed?: bool
+		name?: string
 
-	// Enable implicit flow for this client or not (OpenID connect). This is 'implicitFlowEnabled' in the Keycloak REST API.
+		// Cluster node re-registration timeout for this client. This is 'nodeReRegistrationTimeout' in the Keycloak REST API.
 
-	implicit_flow_enabled?: bool
+		node_re_registration_timeout?: string
 
-	// a list of dicts defining protocol mappers for this client. This is 'protocolMappers' in the Keycloak REST API.
+		// a list of dicts defining protocol mappers for this client. This is 'protocolMappers' in the Keycloak REST API.
 
-	protocol_mappers?: string
+		protocol_mappers?: string
 
-	// Root URL appended to relative URLs for this client This is 'rootUrl' in the Keycloak REST API.
+		// Root URL appended to relative URLs for this client This is 'rootUrl' in the Keycloak REST API.
 
-	root_url?: string
+		root_url?: string
 
-	// Whether or not surrogate auth is required. This is 'surrogateAuthRequired' in the Keycloak REST API.
+		// Are service accounts enabled for this client or not (OpenID connect). This is 'serviceAccountsEnabled' in the Keycloak REST API.
 
-	surrogate_auth_required?: bool
+		service_accounts_enabled?: bool
 
-	// A dict of further attributes for this client. This can contain various configuration settings; an example is given in the examples section. While an exhaustive list of permissible options is not available; possible options as of Keycloak 3.4 are listed below. The Keycloak API does not validate whether a given option is appropriate for the protocol used; if specified anyway, Keycloak will simply not use it.
+		// Whether or not to use configuration from the I(client_template). This is 'useTemplateConfig' in the Keycloak REST API.
 
-	attributes?: string
+		use_template_config?: bool
 
-	// Description of the client in Keycloak
+		// Client template to use for this client. If it does not exist this field will silently be dropped. This is 'clientTemplate' in the Keycloak REST API.
 
-	description?: string
+		client_template?: string
 
-	// Are direct access grants enabled for this client or not (OpenID connect). This is 'directAccessGrantsEnabled' in the Keycloak REST API.
+		// Id of client to be worked on. This is usually an UUID. Either this or I(client_id) is required. If you specify both, this takes precedence.
 
-	direct_access_grants_enabled?: bool
+		id?: string
 
-	// The realm to create the client in.
+		// The registration access token provides access for clients to the client registration service. This is 'registrationAccessToken' in the Keycloak REST API.
 
-	realm?: string
+		registration_access_token?: string
 
-	// Acceptable redirect URIs for this client. This is 'redirectUris' in the Keycloak REST API.
+		// Type of client (either C(openid-connect) or C(saml).
 
-	redirect_uris?: string
+		protocol?: string
 
-	// Are service accounts enabled for this client or not (OpenID connect). This is 'serviceAccountsEnabled' in the Keycloak REST API.
+		// The realm to create the client in.
 
-	service_accounts_enabled?: bool
+		realm?: string
 
-	// URL to the admin interface of the client This is 'adminUrl' in the Keycloak REST API.
+		// When using I(client_authenticator_type) C(client-secret) (the default), you can specify a secret here (otherwise one will be generated if it does not exit). If changing this secret, the module will not register a change currently (but the changed secret will be saved).
 
-	admin_url?: string
+		secret?: string
 
-	// How do clients authenticate with the auth server? Either C(client-secret) or C(client-jwt) can be chosen. When using C(client-secret), the module parameter I(secret) can set it, while for C(client-jwt), you can use the keys C(use.jwks.url), C(jwks.url), and C(jwt.credential.certificate) in the I(attributes) module parameter to configure its behavior. This is 'clientAuthenticatorType' in the Keycloak REST API.
+		// State of the client
+		// On C(present), the client will be created (or updated if it exists already).
+		// On C(absent), the client will be removed if it exists
 
-	client_authenticator_type?: string
+		state?: string
 
-	// Id of client to be worked on. This is usually an UUID. Either this or I(client_id) is required. If you specify both, this takes precedence.
+		// Whether or not surrogate auth is required. This is 'surrogateAuthRequired' in the Keycloak REST API.
 
-	id?: string
+		surrogate_auth_required?: bool
 
-	// Whether or not to use mapper configuration from the I(client_template). This is 'useTemplateMappers' in the Keycloak REST API.
+		// How do clients authenticate with the auth server? Either C(client-secret) or C(client-jwt) can be chosen. When using C(client-secret), the module parameter I(secret) can set it, while for C(client-jwt), you can use the keys C(use.jwks.url), C(jwks.url), and C(jwt.credential.certificate) in the I(attributes) module parameter to configure its behavior. This is 'clientAuthenticatorType' in the Keycloak REST API.
 
-	use_template_mappers?: bool
+		client_authenticator_type?: string
 
-	// List of allowed CORS origins. This is 'webOrigins' in the Keycloak REST API.
+		// Is the access type for this client public or not. This is 'publicClient' in the Keycloak REST API.
 
-	web_origins?: string
+		public_client?: bool
+	}
 }
 
 keycloak_clienttemplate :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	keycloak_clienttemplate: {
 
-	// Description of the client template in Keycloak
+		// a list of dicts defining protocol mappers for this client template. This is 'protocolMappers' in the Keycloak REST API.
 
-	description?: string
+		protocol_mappers?: string
 
-	// a list of dicts defining protocol mappers for this client template. This is 'protocolMappers' in the Keycloak REST API.
+		// Realm this client template is found in.
 
-	protocol_mappers?: string
+		realm?: string
 
-	// State of the client template
-	// On C(present), the client template will be created (or updated if it exists already).
-	// On C(absent), the client template will be removed if it exists
+		// State of the client template
+		// On C(present), the client template will be created (or updated if it exists already).
+		// On C(absent), the client template will be removed if it exists
 
-	state?: string
+		state?: string
 
-	// A dict of further attributes for this client template. This can contain various configuration settings, though in the default installation of Keycloak as of 3.4, none are documented or known, so this is usually empty.
+		// A dict of further attributes for this client template. This can contain various configuration settings, though in the default installation of Keycloak as of 3.4, none are documented or known, so this is usually empty.
 
-	attributes?: string
+		attributes?: string
 
-	// Is the "Full Scope Allowed" feature set for this client template or not. This is 'fullScopeAllowed' in the Keycloak REST API.
+		// Description of the client template in Keycloak
 
-	full_scope_allowed?: bool
+		description?: string
 
-	// Id of client template to be worked on. This is usually a UUID.
+		// Id of client template to be worked on. This is usually a UUID.
 
-	id?: string
+		id?: string
 
-	// Name of the client template
+		// Type of client template (either C(openid-connect) or C(saml).
 
-	name?: string
+		protocol?: string
 
-	// Type of client template (either C(openid-connect) or C(saml).
+		// Is the "Full Scope Allowed" feature set for this client template or not. This is 'fullScopeAllowed' in the Keycloak REST API.
 
-	protocol?: string
+		full_scope_allowed?: bool
 
-	// Realm this client template is found in.
+		// Name of the client template
 
-	realm?: string
+		name?: string
+	}
+}
+
+keycloak_group :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	keycloak_group: {
+
+		// A dict of key/value pairs to set as custom attributes for the group.
+		// Values may be single values (e.g. a string) or a list of strings.
+
+		attributes?: {...}
+
+		// The unique identifier for this group.
+		// This parameter is not required for updating or deleting a group but providing it will reduce the number of API calls required.
+
+		id?: string
+
+		// Name of the group.
+		// This parameter is required only when creating or updating the group.
+
+		name?: string
+
+		// They Keycloak realm under which this group resides.
+
+		realm?: string
+
+		// State of the group.
+		// On C(present), the group will be created if it does not yet exist, or updated with the parameters you provide.
+		// On C(absent), the group will be removed if it exists.
+
+		state: string
+	}
+}
+
+onepassword_info :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	onepassword_info: {
+
+		// A dictionary containing authentication details. If this is set, M(onepassword_info) will attempt to sign in to 1Password automatically.
+		// Without this option, you must have already logged in via the 1Password CLI before running Ansible.
+		// It is B(highly) recommended to store 1Password credentials in an Ansible Vault. Ensure that the key used to encrypt the Ansible Vault is equal to or greater in strength than the 1Password master password.
+
+		auto_login?: {...}
+
+		// Used to specify the exact path to the C(op) command line interface
+
+		cli_path?: string
+
+		// A list of one or more search terms.
+		// Each search term can either be a simple string or it can be a dictionary for more control.
+		// When passing a simple string, I(field) is assumed to be C(password).
+		// When passing a dictionary, the following fields are available.
+
+		search_terms: [...]
+	}
 }

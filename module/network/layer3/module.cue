@@ -1,51 +1,63 @@
 package layer3
 
 net_l3_interface :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	net_l3_interface: {
 
-	// IPv6 of the L3 interface.
+		// List of L3 interfaces definitions
 
-	ipv6?: string
+		aggregate?: string
 
-	// Name of the L3 interface.
+		// IPv4 of the L3 interface.
 
-	name?: string
+		ipv4?: string
 
-	// Purge L3 interfaces not defined in the I(aggregate) parameter.
+		// IPv6 of the L3 interface.
 
-	purge?: string
+		ipv6?: string
 
-	// State of the L3 interface configuration.
+		// Name of the L3 interface.
 
-	state?: string
+		name?: string
 
-	// List of L3 interfaces definitions
+		// Purge L3 interfaces not defined in the I(aggregate) parameter.
 
-	aggregate?: string
+		purge?: string
 
-	// IPv4 of the L3 interface.
+		// State of the L3 interface configuration.
 
-	ipv4?: string
+		state?: string
+	}
 }
 
 net_vrf :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	net_vrf: {
 
-	// List of interfaces the VRF should be configured on.
+		// Purge VRFs not defined in the I(aggregate) parameter.
 
-	interfaces?: string
+		purge?: string
 
-	// Name of the VRF.
+		// State of the VRF configuration.
 
-	name?: string
+		state?: string
 
-	// Purge VRFs not defined in the I(aggregate) parameter.
+		// List of VRFs definitions
 
-	purge?: string
+		aggregate?: string
 
-	// State of the VRF configuration.
+		// List of interfaces the VRF should be configured on.
 
-	state?: string
+		interfaces?: string
 
-	// List of VRFs definitions
+		// Name of the VRF.
 
-	aggregate?: string
+		name?: string
+	}
 }

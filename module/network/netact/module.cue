@@ -1,60 +1,66 @@
 package netact
 
 netact_cm_command :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	netact_cm_command: {
 
-	// NetAct Configurator will print more info
+		// Specifies a backup plan name
 
-	verbose?: string
+		backupPlanName?: string
 
-	// Specifies full path to plan file location for the import operation. This parameter (inputFile) or the fileName parameter must be filled. If both are present then the inputFile is used.
+		// Specifies if backup plan generation is enabled.
 
-	inputFile?: string
+		createBackupPlan?: bool
 
-	// Specifies a plan name.
+		// Specifies full path to plan file location for the import operation. This parameter (inputFile) or the fileName parameter must be filled. If both are present then the inputFile is used.
 
-	planName?: string
+		inputFile?: string
 
-	// Specifies the type of the export operation.
+		// Supported operations allow user to upload actual configuration from the network, to import and provision prepared plans, or export reference or actual configuration for planning purposes. Provision_Mass_Modification enables provisioning the same parameters to multiple network elements. This operation supports modifications only to one object class at a time. With this option NetAct Configurator creates and provisions a plan to the network with the given scope and options.
 
-	typeOption?: string
+		operation: string
 
-	// Indicates file format.
+		// user specified operation name
 
-	fileFormat?: string
+		opsName?: string
 
-	// Supported operations allow user to upload actual configuration from the network, to import and provision prepared plans, or export reference or actual configuration for planning purposes. Provision_Mass_Modification enables provisioning the same parameters to multiple network elements. This operation supports modifications only to one object class at a time. With this option NetAct Configurator creates and provisions a plan to the network with the given scope and options.
+		// Indicates file format.
 
-	operation: string
+		fileFormat?: string
 
-	// Sets the exact scope of the operation in form of a list of managed object Distinguished Names (DN) in the network. A single DN or a list of DNs can be given (comma separated list without spaces). Alternatively, if DN or a list of DNs is not given, working set (WS) or Maintenance Region (MR) must be provided as parameter to set the scope of operation.
+		// Specifies a plan name.
 
-	DN?: string
+		planName?: string
 
-	// Sets the scope of the operation to use one or more pre-defined working sets (WS) in NetAct. A working set contains network elements selected by user according to defined criteria. A single WS name, or multiple WSs can be provided (comma-separated list without spaces). Alternatively, if a WS name or a list of WSs is not given, Distinguished Name (DN) or Maintenance Region(MR) must be provided as parameter to set the scope of operation.
+		// Specifies the type of the export operation.
 
-	WS?: string
+		typeOption?: string
 
-	// Specifies a backup plan name
+		// NetAct Configurator will print more info
 
-	backupPlanName?: string
+		verbose?: string
 
-	// Specifies a file name. Valid for Import and Export operations.
+		// Sets the exact scope of the operation in form of a list of managed object Distinguished Names (DN) in the network. A single DN or a list of DNs can be given (comma separated list without spaces). Alternatively, if DN or a list of DNs is not given, working set (WS) or Maintenance Region (MR) must be provided as parameter to set the scope of operation.
 
-	fileName?: string
+		DN?: string
 
-	// Sets the scope of the operation to network elements assigned to a Maintenance Region (MR) Value can be set as MR IDs including the Maintenance Region Collection (MRC) information (for example MRC-FIN1/MR-Hel). Multiple MRs can be given (comma-separated list without spaces) The value of this parameter is searched through MR IDs under given MRC. If there is no match, then it is searched from all MR names. Alternatively, if MR ID or a list or MR IDs is not given, Distinguished Name (DN) or Working Set (WS) must be provided as parameter to set the scope of operation.
+		// Sets the scope of the operation to network elements assigned to a Maintenance Region (MR) Value can be set as MR IDs including the Maintenance Region Collection (MRC) information (for example MRC-FIN1/MR-Hel). Multiple MRs can be given (comma-separated list without spaces) The value of this parameter is searched through MR IDs under given MRC. If there is no match, then it is searched from all MR names. Alternatively, if MR ID or a list or MR IDs is not given, Distinguished Name (DN) or Working Set (WS) must be provided as parameter to set the scope of operation.
 
-	MR?: string
+		MR?: string
 
-	// Specifies if backup plan generation is enabled.
+		// Sets the scope of the operation to use one or more pre-defined working sets (WS) in NetAct. A working set contains network elements selected by user according to defined criteria. A single WS name, or multiple WSs can be provided (comma-separated list without spaces). Alternatively, if a WS name or a list of WSs is not given, Distinguished Name (DN) or Maintenance Region(MR) must be provided as parameter to set the scope of operation.
 
-	createBackupPlan?: bool
+		WS?: string
 
-	// Extra options to be set for operations. Check Configuration Management > Configuration Management Operating Procedures > Command Line Operations in Nokia NetAct user documentation for further information for extra options.
+		// Extra options to be set for operations. Check Configuration Management > Configuration Management Operating Procedures > Command Line Operations in Nokia NetAct user documentation for further information for extra options.
 
-	extra_opts?: string
+		extra_opts?: string
 
-	// user specified operation name
+		// Specifies a file name. Valid for Import and Export operations.
 
-	opsName?: string
+		fileName?: string
+	}
 }

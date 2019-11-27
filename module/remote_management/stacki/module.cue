@@ -1,51 +1,63 @@
 package stacki
 
 stacki_host :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	stacki_host: {
 
-	// Username for authenticating with Stacki API, but if not specified, the environment variable C(stacki_user) is used instead.
+		// Username for authenticating with Stacki API, but if not specified, the environment variable C(stacki_user) is used instead.
 
-	stacki_user: string
+		stacki_user: string
 
-	// Set value to True to force node into install state if it already exists in stacki.
+		// Set value to True to force node into install state if it already exists in stacki.
 
-	force_install?: bool
+		force_install?: bool
 
-	// Name of the host to be added to Stacki.
+		// Name of the host to be added to Stacki.
 
-	name: string
+		name: string
 
-	// Name of the primary network interface.
+		// Name of the primary network interface.
 
-	prim_intf?: string
+		prim_intf?: string
 
-	// IP Address for the primary network interface.
+		// IP Address for the primary network interface.
 
-	prim_intf_ip?: string
+		prim_intf_ip?: string
 
-	// MAC Address for the primary PXE boot network interface.
+		// MAC Address for the primary PXE boot network interface.
 
-	prim_intf_mac?: string
+		prim_intf_mac?: string
 
-	// URL for the Stacki API Endpoint.
+		// URL for the Stacki API Endpoint.
 
-	stacki_endpoint: string
+		stacki_endpoint: string
 
-	// Password for authenticating with Stacki API, but if not specified, the environment variable C(stacki_password) is used instead.
+		// Password for authenticating with Stacki API, but if not specified, the environment variable C(stacki_password) is used instead.
 
-	stacki_password: string
+		stacki_password: string
+	}
 }
 
 wakeonlan :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	wakeonlan: {
 
-	// UDP port to use for magic Wake-on-LAN packet.
+		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
 
-	port?: string
+		broadcast?: string
 
-	// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
+		// MAC address to send Wake-on-LAN broadcast packet for.
 
-	broadcast?: string
+		mac: string
 
-	// MAC address to send Wake-on-LAN broadcast packet for.
+		// UDP port to use for magic Wake-on-LAN packet.
 
-	mac: string
+		port?: string
+	}
 }

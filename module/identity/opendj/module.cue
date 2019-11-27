@@ -1,66 +1,78 @@
 package opendj
 
 onepassword_info :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	onepassword_info: {
 
-	// A dictionary containing authentication details. If this is set, M(onepassword_info) will attempt to sign in to 1Password automatically.
-	// Without this option, you must have already logged in via the 1Password CLI before running Ansible.
-	// It is B(highly) recommended to store 1Password credentials in an Ansible Vault. Ensure that the key used to encrypt the Ansible Vault is equal to or greater in strength than the 1Password master password.
+		// Used to specify the exact path to the C(op) command line interface
 
-	auto_login?: {...}
+		cli_path?: string
 
-	// Used to specify the exact path to the C(op) command line interface
+		// A list of one or more search terms.
+		// Each search term can either be a simple string or it can be a dictionary for more control.
+		// When passing a simple string, I(field) is assumed to be C(password).
+		// When passing a dictionary, the following fields are available.
 
-	cli_path?: string
+		search_terms: [...]
 
-	// A list of one or more search terms.
-	// Each search term can either be a simple string or it can be a dictionary for more control.
-	// When passing a simple string, I(field) is assumed to be C(password).
-	// When passing a dictionary, the following fields are available.
+		// A dictionary containing authentication details. If this is set, M(onepassword_info) will attempt to sign in to 1Password automatically.
+		// Without this option, you must have already logged in via the 1Password CLI before running Ansible.
+		// It is B(highly) recommended to store 1Password credentials in an Ansible Vault. Ensure that the key used to encrypt the Ansible Vault is equal to or greater in strength than the 1Password master password.
 
-	search_terms: [..._]
+		auto_login?: {...}
+	}
 }
 
 opendj_backendprop :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	opendj_backendprop: {
 
-	// The name of the backend on which the property needs to be updated.
+		// The value for the configuration item.
 
-	backend: string
+		value: string
 
-	// The Admin port on which the OpenDJ instance is available.
+		// The name of the backend on which the property needs to be updated.
 
-	port: string
+		backend: string
 
-	// If configuration needs to be added/updated
+		// The configuration setting to update.
 
-	state?: string
+		name: string
 
-	// The hostname of the OpenDJ server.
+		// The path to the bin directory of OpenDJ.
 
-	hostname: string
+		opendj_bindir?: string
 
-	// The configuration setting to update.
+		// Location to the password file which holds the password for the cn=Directory Manager user.
+		// Either password or passwordfile is needed.
 
-	name: string
+		passwordfile?: string
 
-	// The path to the bin directory of OpenDJ.
+		// If configuration needs to be added/updated
 
-	opendj_bindir?: string
+		state?: string
 
-	// The password for the cn=Directory Manager user.
-	// Either password or passwordfile is needed.
+		// The hostname of the OpenDJ server.
 
-	password?: string
+		hostname: string
 
-	// Location to the password file which holds the password for the cn=Directory Manager user.
-	// Either password or passwordfile is needed.
+		// The password for the cn=Directory Manager user.
+		// Either password or passwordfile is needed.
 
-	passwordfile?: string
+		password?: string
 
-	// The username to connect to.
+		// The Admin port on which the OpenDJ instance is available.
 
-	username?: string
+		port: string
 
-	// The value for the configuration item.
+		// The username to connect to.
 
-	value: string
+		username?: string
+	}
 }

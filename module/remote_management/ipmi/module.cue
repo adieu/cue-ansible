@@ -1,78 +1,96 @@
 package ipmi
 
+wakeonlan :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	wakeonlan: {
+
+		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
+
+		broadcast?: string
+
+		// MAC address to send Wake-on-LAN broadcast packet for.
+
+		mac: string
+
+		// UDP port to use for magic Wake-on-LAN packet.
+
+		port?: string
+	}
+}
+
 ipmi_boot :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ipmi_boot: {
 
-	// If set, request UEFI boot explicitly. Strictly speaking, the spec suggests that if not set, the system should BIOS boot and offers no "don't care" option. In practice, this flag not being set does not preclude UEFI boot on any system I've encountered.
+		// Password to connect to the BMC.
 
-	uefiboot?: bool
+		password: string
 
-	// Username to use to connect to the BMC.
+		// If set, ask that system firmware uses this device beyond next boot. Be aware many systems do not honor this.
 
-	user: string
+		persistent?: bool
 
-	// Set boot device to use on next reboot
+		// Remote RMCP port.
 
-	bootdev: string
+		port?: string
 
-	// Hostname or ip address of the BMC.
+		// Whether to ensure that boot devices is desired.
 
-	name: string
+		state?: string
 
-	// Password to connect to the BMC.
+		// If set, request UEFI boot explicitly. Strictly speaking, the spec suggests that if not set, the system should BIOS boot and offers no "don't care" option. In practice, this flag not being set does not preclude UEFI boot on any system I've encountered.
 
-	password: string
+		uefiboot?: bool
 
-	// If set, ask that system firmware uses this device beyond next boot. Be aware many systems do not honor this.
+		// Username to use to connect to the BMC.
 
-	persistent?: bool
+		user: string
 
-	// Remote RMCP port.
+		// Set boot device to use on next reboot
 
-	port?: string
+		bootdev: string
 
-	// Whether to ensure that boot devices is desired.
+		// Hostname or ip address of the BMC.
 
-	state?: string
+		name: string
+	}
 }
 
 ipmi_power :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ipmi_power: {
 
-	// Password to connect to the BMC.
+		// Remote RMCP port.
 
-	password: string
+		port?: string
 
-	// Remote RMCP port.
+		// Whether to ensure that the machine in desired state.
 
-	port?: string
+		state: string
 
-	// Whether to ensure that the machine in desired state.
+		// Maximum number of seconds before interrupt request.
 
-	state: string
+		timeout?: string
 
-	// Maximum number of seconds before interrupt request.
+		// Username to use to connect to the BMC.
 
-	timeout?: string
+		user: string
 
-	// Username to use to connect to the BMC.
+		// Hostname or ip address of the BMC.
 
-	user: string
+		name: string
 
-	// Hostname or ip address of the BMC.
+		// Password to connect to the BMC.
 
-	name: string
-}
-
-wakeonlan :: {
-
-	// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
-
-	broadcast?: string
-
-	// MAC address to send Wake-on-LAN broadcast packet for.
-
-	mac: string
-
-	// UDP port to use for magic Wake-on-LAN packet.
-
-	port?: string
+		password: string
+	}
 }

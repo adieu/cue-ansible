@@ -1,8 +1,14 @@
 package protocol
 
 net_lldp :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	net_lldp: {
 
-	// State of the LLDP service configuration.
+		state?: string
 
-	state?: string
+		// State of the LLDP service configuration.
+	}
 }

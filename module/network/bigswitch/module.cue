@@ -1,106 +1,124 @@
 package bigswitch
 
 bigmon_chain :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	bigmon_chain: {
 
-	// The controller IP address.
+		// Bigmon access token. If this isn't set, the environment variable C(BIGSWITCH_ACCESS_TOKEN) is used.
 
-	controller: string
+		access_token?: string
 
-	// The name of the chain.
+		// The controller IP address.
 
-	name: string
+		controller: string
 
-	// Whether the service chain should be present or absent.
+		// The name of the chain.
 
-	state?: string
+		name: string
 
-	// If C(false), SSL certificates will not be validated. This should only be used on personally controlled devices using self-signed certificates.
+		// Whether the service chain should be present or absent.
 
-	validate_certs?: bool
+		state?: string
 
-	// Bigmon access token. If this isn't set, the environment variable C(BIGSWITCH_ACCESS_TOKEN) is used.
+		// If C(false), SSL certificates will not be validated. This should only be used on personally controlled devices using self-signed certificates.
 
-	access_token?: string
+		validate_certs?: bool
+	}
 }
 
 bigmon_policy :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	bigmon_policy: {
 
-	// Bigmon access token. If this isn't set, the environment variable C(BIGSWITCH_ACCESS_TOKEN) is used.
+		// Bigmon access token. If this isn't set, the environment variable C(BIGSWITCH_ACCESS_TOKEN) is used.
 
-	access_token?: string
+		access_token?: string
 
-	// Run policy for duration duration or until delivery_packet_count packets are delivered, whichever comes first.
+		// Forward matching packets to delivery interfaces, Drop is for measure rate of matching packets, but do not forward to delivery interfaces, capture packets and write to a PCAP file, or enable NetFlow generation.
 
-	duration?: string
+		action?: string
 
-	// Description of policy.
+		// Description of policy.
 
-	policy_description?: string
+		policy_description?: string
 
-	// A priority associated with this policy. The higher priority policy takes precedence over a lower priority.
+		// If C(false), SSL certificates will not be validated. This should only be used on personally controlled devices using self-signed certificates.
 
-	priority?: string
+		validate_certs?: bool
 
-	// Whether the policy should be present or absent.
+		// Date the policy becomes active
 
-	state?: string
+		start_time?: string
 
-	// If C(false), SSL certificates will not be validated. This should only be used on personally controlled devices using self-signed certificates.
+		// Whether the policy should be present or absent.
 
-	validate_certs?: bool
+		state?: string
 
-	// Forward matching packets to delivery interfaces, Drop is for measure rate of matching packets, but do not forward to delivery interfaces, capture packets and write to a PCAP file, or enable NetFlow generation.
+		// The controller address.
 
-	action?: string
+		controller: string
 
-	// The controller address.
+		// Run policy until delivery_packet_count packets are delivered.
 
-	controller: string
+		delivery_packet_count?: string
 
-	// Run policy until delivery_packet_count packets are delivered.
+		// Run policy for duration duration or until delivery_packet_count packets are delivered, whichever comes first.
 
-	delivery_packet_count?: string
+		duration?: string
 
-	// The name of the policy.
+		// The name of the policy.
 
-	name: string
+		name: string
 
-	// Date the policy becomes active
+		// A priority associated with this policy. The higher priority policy takes precedence over a lower priority.
 
-	start_time?: string
+		priority?: string
+	}
 }
 
 bcf_switch :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	bcf_switch: {
 
-	// The MAC address of the switch.
+		// The leaf group of the switch if the switch is a leaf.
 
-	mac: string
+		leaf_group?: string
 
-	// The name of the switch.
+		// The MAC address of the switch.
 
-	name: string
+		mac: string
 
-	// Whether the switch should be present or absent.
+		// The name of the switch.
 
-	state?: string
+		name: string
 
-	// If C(false), SSL certificates will not be validated. This should only be used on personally controlled devices using self-signed certificates.
+		// Whether the switch should be present or absent.
 
-	validate_certs?: bool
+		state?: string
 
-	// Big Cloud Fabric access token. If this isn't set then the environment variable C(BIGSWITCH_ACCESS_TOKEN) is used.
+		// If C(false), SSL certificates will not be validated. This should only be used on personally controlled devices using self-signed certificates.
 
-	access_token?: string
+		validate_certs?: bool
 
-	// The controller IP address.
+		// Big Cloud Fabric access token. If this isn't set then the environment variable C(BIGSWITCH_ACCESS_TOKEN) is used.
 
-	controller: string
+		access_token?: string
 
-	// Fabric role of the switch.
+		// The controller IP address.
 
-	fabric_role: string
+		controller: string
 
-	// The leaf group of the switch if the switch is a leaf.
+		// Fabric role of the switch.
 
-	leaf_group?: string
+		fabric_role: string
+	}
 }

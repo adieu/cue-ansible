@@ -1,23 +1,35 @@
 package inventory
 
 add_host :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	add_host: {
 
-	// The groups to add the hostname to.
+		// The groups to add the hostname to.
 
-	groups?: [..._]
+		groups?: [...]
 
-	// The hostname/ip of the host to add to the inventory, can include a colon and a port number.
+		// The hostname/ip of the host to add to the inventory, can include a colon and a port number.
 
-	name: string
+		name: string
+	}
 }
 
 group_by :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	group_by: {
 
-	// The variables whose values will be used as groups.
+		// The variables whose values will be used as groups.
 
-	key: string
+		key: string
 
-	// The list of the parent groups.
+		// The list of the parent groups.
 
-	parents?: [..._]
+		parents?: [...]
+	}
 }

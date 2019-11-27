@@ -1,59 +1,77 @@
 package atomic
 
 atomic_container :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	atomic_container: {
 
-	// Define the rootfs of the image
+		// Define the backend to use for the container
 
-	rootfs?: string
+		backend: string
 
-	// State of the container
+		// The image to use to install the container
 
-	state: string
+		image: string
 
-	// Values for the installation of the container.  This option is permitted only with mode 'user' or 'system'. The values specified here will be used at installation time as --set arguments for atomic install.
+		// Define if it is an user or a system container
 
-	values?: string
+		mode: string
 
-	// Define the backend to use for the container
+		// Name of the container
 
-	backend: string
+		name: string
 
-	// The image to use to install the container
+		// Define the rootfs of the image
 
-	image: string
+		rootfs?: string
 
-	// Define if it is an user or a system container
+		// State of the container
 
-	mode: string
+		state: string
 
-	// Name of the container
+		// Values for the installation of the container.  This option is permitted only with mode 'user' or 'system'. The values specified here will be used at installation time as --set arguments for atomic install.
 
-	name: string
+		values?: string
+	}
 }
 
 atomic_host :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	atomic_host: {
 
-	// The version number of the atomic host to be deployed. Providing C(latest) will upgrade to the latest available version.
+		revision?: string
 
-	revision?: string
+		// The version number of the atomic host to be deployed. Providing C(latest) will upgrade to the latest available version.
+	}
 }
 
 atomic_image :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	atomic_image: {
 
-	// Define the backend where the image is pulled.
+		// Name of the container image.
 
-	backend?: string
+		name: string
 
-	// Name of the container image.
+		// Start or Stop the container.
 
-	name: string
+		started?: bool
 
-	// Start or Stop the container.
+		// The state of the container image.
+		// The state C(latest) will ensure container image is upgraded to the latest version and forcefully restart container, if running.
 
-	started?: bool
+		state?: string
 
-	// The state of the container image.
-	// The state C(latest) will ensure container image is upgraded to the latest version and forcefully restart container, if running.
+		// Define the backend where the image is pulled.
 
-	state?: string
+		backend?: string
+	}
 }

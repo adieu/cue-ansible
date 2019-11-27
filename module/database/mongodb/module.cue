@@ -1,220 +1,244 @@
 package mongodb
 
 mongodb_user :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	mongodb_user: {
 
-	// The port to connect to
+		// The database where login credentials are stored
 
-	login_port?: string
+		login_database?: string
 
-	// The username used to authenticate with
+		// The password used to authenticate with
 
-	login_user?: string
+		login_password?: string
 
-	// The name of the user to add or remove
+		// Specifies whether a certificate is required from the other side of the connection, and whether it will be validated if provided.
 
-	name: string
+		ssl_cert_reqs?: string
 
-	// The password to use for the user
+		// The name of the database to add/remove the user from
 
-	password?: string
+		database: string
 
-	// Replica set to connect to (automatically connects to primary for writes)
+		// The name of the user to add or remove
 
-	replica_set?: string
+		name: string
 
-	// The database user state
+		// The password to use for the user
 
-	state?: string
+		password?: string
 
-	// C(always) will update passwords if they differ.  C(on_create) will only set the password for newly created users.
+		// The database user state
 
-	update_password?: string
+		state?: string
 
-	// The password used to authenticate with
+		// C(always) will update passwords if they differ.  C(on_create) will only set the password for newly created users.
 
-	login_password?: string
+		update_password?: string
 
-	// The database user roles valid values could either be one or more of the following strings: 'read', 'readWrite', 'dbAdmin', 'userAdmin', 'clusterAdmin', 'readAnyDatabase', 'readWriteAnyDatabase', 'userAdminAnyDatabase', 'dbAdminAnyDatabase'
+		// The host running the database
 
-	// Or the following dictionary '{ db: DATABASE_NAME, role: ROLE_NAME }'.
-	// This param requires pymongo 2.5+. If it is a string, mongodb 2.4+ is also required. If it is a dictionary, mongo 2.6+  is required.
+		login_host?: string
 
-	roles?: string
+		// The database user roles valid values could either be one or more of the following strings: 'read', 'readWrite', 'dbAdmin', 'userAdmin', 'clusterAdmin', 'readAnyDatabase', 'readWriteAnyDatabase', 'userAdminAnyDatabase', 'dbAdminAnyDatabase'
 
-	// Whether to use an SSL connection when connecting to the database
+		// Or the following dictionary '{ db: DATABASE_NAME, role: ROLE_NAME }'.
+		// This param requires pymongo 2.5+. If it is a string, mongodb 2.4+ is also required. If it is a dictionary, mongo 2.6+  is required.
 
-	ssl?: bool
+		roles?: string
 
-	// The host running the database
+		// Whether to use an SSL connection when connecting to the database
 
-	login_host?: string
+		ssl?: bool
 
-	// Specifies whether a certificate is required from the other side of the connection, and whether it will be validated if provided.
+		// The port to connect to
 
-	ssl_cert_reqs?: string
+		login_port?: string
 
-	// The database where login credentials are stored
+		// The username used to authenticate with
 
-	login_database?: string
+		login_user?: string
 
-	// The name of the database to add/remove the user from
+		// Replica set to connect to (automatically connects to primary for writes)
 
-	database: string
+		replica_set?: string
+	}
 }
 
 mongodb_parameter :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	mongodb_parameter: {
 
-	// Replica set to connect to (automatically connects to primary for writes)
+		// Define the parameter value (str, int)
 
-	replica_set?: string
+		param_type?: string
 
-	// Whether to use an SSL connection when connecting to the database
+		// Whether to use an SSL connection when connecting to the database
 
-	ssl?: bool
+		ssl?: bool
 
-	// The name of the database to add/remove the user from
+		// MongoDB administrative parameter value to set
 
-	database: string
+		value: string
 
-	// The host running the database
+		// The name of the database to add/remove the user from
 
-	login_host?: string
+		database: string
 
-	// The password used to authenticate with
+		// The port to connect to
 
-	login_password?: string
+		login_port?: string
 
-	// The port to connect to
+		// MongoDB administrative parameter to modify
 
-	login_port?: string
+		param: string
 
-	// The username used to authenticate with
+		// The username used to authenticate with
 
-	login_user?: string
+		login_user?: string
 
-	// Define the parameter value (str, int)
+		// Replica set to connect to (automatically connects to primary for writes)
 
-	param_type?: string
+		replica_set?: string
 
-	// The database where login credentials are stored
+		// The database where login credentials are stored
 
-	login_database?: string
+		login_database?: string
 
-	// MongoDB administrative parameter to modify
+		// The host running the database
 
-	param: string
+		login_host?: string
 
-	// MongoDB administrative parameter value to set
+		// The password used to authenticate with
 
-	value: string
+		login_password?: string
+	}
 }
 
 mongodb_replicaset :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	mongodb_replicaset: {
 
-	// The database where login credentials are stored.
+		// The time limit in milliseconds for detecting when a replicaset's primary is unreachable.
 
-	login_database?: string
+		election_timeout_millis?: int
 
-	// The password to authenticate with.
+		// Performs some basic validation on the provided replicaset config.
 
-	login_password?: string
+		validate?: bool
 
-	// The MongoDB port to login to.
+		// When I(settings.chaining_allowed=true), the replicaset allows secondary members to replicate from other secondary members.
+		// When I(settings.chaining_allowed=false), secondaries can replicate only from the primary.
 
-	login_port?: int
+		chaining_allowed?: bool
 
-	// A comma-separated string or a yaml list consisting of the replicaset members.
-	// Supply as a simple csv string, i.e. mongodb1:27017,mongodb2:27017,mongodb3:27017.
-	// If a port number is not provided then 27017 is assumed.
+		// Number of seconds that the replicaset members wait for a successful heartbeat from each other.
+		// If a member does not respond in time, other members mark the delinquent member as inaccessible.
+		// The setting only applies when using I(protocol_version=0). When using I(protocol_version=1) the relevant setting is I(settings.election_timeout_millis).
 
-	members?: [..._]
+		heartbeat_timeout_secs?: int
 
-	// Performs some basic validation on the provided replicaset config.
+		// A comma-separated string or a yaml list consisting of the replicaset members.
+		// Supply as a simple csv string, i.e. mongodb1:27017,mongodb2:27017,mongodb3:27017.
+		// If a port number is not provided then 27017 is assumed.
 
-	validate?: bool
+		members?: [...]
 
-	// Identifies the position of the member in the array that is an arbiter.
+		// Specifies whether a certificate is required from the other side of the connection, and whether it will be validated if provided.
 
-	arbiter_at_index?: int
+		ssl_cert_reqs?: string
 
-	// When I(settings.chaining_allowed=true), the replicaset allows secondary members to replicate from other secondary members.
-	// When I(settings.chaining_allowed=false), secondaries can replicate only from the primary.
+		// The MongoDB hostname.
 
-	chaining_allowed?: bool
+		login_host?: string
 
-	// Number of seconds that the replicaset members wait for a successful heartbeat from each other.
-	// If a member does not respond in time, other members mark the delinquent member as inaccessible.
-	// The setting only applies when using I(protocol_version=0). When using I(protocol_version=1) the relevant setting is I(settings.election_timeout_millis).
+		// Version of the replicaset election protocol.
 
-	heartbeat_timeout_secs?: int
+		protocol_version?: int
 
-	// Version of the replicaset election protocol.
+		// Replicaset name.
 
-	protocol_version?: int
+		replica_set?: string
 
-	// Replicaset name.
+		// Whether to use an SSL connection when connecting to the database
 
-	replica_set?: string
+		ssl?: bool
 
-	// The time limit in milliseconds for detecting when a replicaset's primary is unreachable.
+		// Identifies the position of the member in the array that is an arbiter.
 
-	election_timeout_millis?: int
+		arbiter_at_index?: int
 
-	// The username to authenticate with.
+		// The database where login credentials are stored.
 
-	login_user?: string
+		login_database?: string
 
-	// The MongoDB hostname.
+		// The password to authenticate with.
 
-	login_host?: string
+		login_password?: string
 
-	// Whether to use an SSL connection when connecting to the database
+		// The MongoDB port to login to.
 
-	ssl?: bool
+		login_port?: int
 
-	// Specifies whether a certificate is required from the other side of the connection, and whether it will be validated if provided.
+		// The username to authenticate with.
 
-	ssl_cert_reqs?: string
+		login_user?: string
+	}
 }
 
 mongodb_shard :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	mongodb_shard: {
 
-	// Whether the shard should be present or absent from the Cluster.
+		// The port to login to.
 
-	state?: string
+		login_port?: string
 
-	// The database where login credentials are stored.
+		// The user to login with.
 
-	login_database?: string
+		login_user?: string
 
-	// The port to login to.
+		// Whether to use an SSL connection when connecting to the database.
 
-	login_port?: string
+		ssl?: bool
 
-	// The shard connection string.
-	// Should be supplied in the form <replicaset>/host:port as detailed in U(https://docs.mongodb.com/manual/tutorial/add-shards-to-shard-cluster/).
-	// For example rs0/example1.mongodb.com:27017.
+		// Specifies whether a certificate is required from the other side of the connection, and whether it will be validated if provided.
 
-	shard: string
+		ssl_cert_reqs?: string
 
-	// Whether to use an SSL connection when connecting to the database.
+		// The database where login credentials are stored.
 
-	ssl?: bool
+		login_database?: string
 
-	// The host to login to.
-	// This must be a mongos.
+		// The host to login to.
+		// This must be a mongos.
 
-	login_host?: string
+		login_host?: string
 
-	// The password used to authenticate with.
+		// The password used to authenticate with.
 
-	login_password?: string
+		login_password?: string
 
-	// The user to login with.
+		// The shard connection string.
+		// Should be supplied in the form <replicaset>/host:port as detailed in U(https://docs.mongodb.com/manual/tutorial/add-shards-to-shard-cluster/).
+		// For example rs0/example1.mongodb.com:27017.
 
-	login_user?: string
+		shard: string
 
-	// Specifies whether a certificate is required from the other side of the connection, and whether it will be validated if provided.
+		// Whether the shard should be present or absent from the Cluster.
 
-	ssl_cert_reqs?: string
+		state?: string
+	}
 }

@@ -1,48 +1,54 @@
 package hpe3par
 
 ss_3par_cpg :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ss_3par_cpg: {
 
-	// Specifies that the threshold(in MiB, GiB or TiB) of used logical disk space when exceeded results in a warning alert.
+		// Name of the CPG.
 
-	growth_warning?: string
+		cpg_name: string
 
-	// Specifies that the layout must support the failure of one port pair, one cage, or one magazine.
+		// Specifies that physical disks must have the specified device type.
 
-	high_availability?: string
+		disk_type?: string
 
-	// Specifies the RAID type for the logical disk.
+		// Specifies the growth increment(in MiB, GiB or TiB) the amount of logical disk storage created on each auto-grow operation.
 
-	raid_type?: string
+		growth_increment?: string
 
-	// Specifies whether the certificate needs to be validated while communicating.
+		// Specifies that the autogrow operation is limited to the specified storage amount that sets the growth limit(in MiB, GiB or TiB).
 
-	secure?: bool
+		growth_limit?: string
 
-	// Whether the specified CPG should exist or not.
+		// Specifies that the threshold(in MiB, GiB or TiB) of used logical disk space when exceeded results in a warning alert.
 
-	state: string
+		growth_warning?: string
 
-	// Specifies the name of the domain in which the object will reside.
+		// Specifies the set size in the number of chunklets.
 
-	domain?: string
+		set_size?: int
 
-	// Specifies that physical disks must have the specified device type.
+		// Whether the specified CPG should exist or not.
 
-	disk_type?: string
+		state: string
 
-	// Specifies the growth increment(in MiB, GiB or TiB) the amount of logical disk storage created on each auto-grow operation.
+		// Specifies the name of the domain in which the object will reside.
 
-	growth_increment?: string
+		domain?: string
 
-	// Specifies that the autogrow operation is limited to the specified storage amount that sets the growth limit(in MiB, GiB or TiB).
+		// Specifies that the layout must support the failure of one port pair, one cage, or one magazine.
 
-	growth_limit?: string
+		high_availability?: string
 
-	// Specifies the set size in the number of chunklets.
+		// Specifies the RAID type for the logical disk.
 
-	set_size?: int
+		raid_type?: string
 
-	// Name of the CPG.
+		// Specifies whether the certificate needs to be validated while communicating.
 
-	cpg_name: string
+		secure?: bool
+	}
 }

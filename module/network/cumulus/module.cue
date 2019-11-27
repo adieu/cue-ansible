@@ -1,28 +1,34 @@
 package cumulus
 
 nclu :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	nclu: {
 
-	// Boolean. When true, perform a 'net abort' before the block. This cleans out any uncommitted changes in the buffer. Mutually exclusive with I(atomic).
+		// Commit description that will be recorded to the commit log if I(commit) or I(atomic) are true.
 
-	abort?: bool
+		description?: string
 
-	// When true, equivalent to both I(commit) and I(abort) being true. Mutually exclusive with I(commit) and I(atomic).
+		// A single, multi-line string with jinja2 formatting. This string will be broken by lines, and each line will be run through net. Mutually exclusive with I(commands).
 
-	atomic?: bool
+		template?: string
 
-	// A list of strings containing the net commands to run. Mutually exclusive with I(template).
+		// Boolean. When true, perform a 'net abort' before the block. This cleans out any uncommitted changes in the buffer. Mutually exclusive with I(atomic).
 
-	commands?: string
+		abort?: bool
 
-	// When true, performs a 'net commit' at the end of the block. Mutually exclusive with I(atomic).
+		// When true, equivalent to both I(commit) and I(abort) being true. Mutually exclusive with I(commit) and I(atomic).
 
-	commit?: bool
+		atomic?: bool
 
-	// Commit description that will be recorded to the commit log if I(commit) or I(atomic) are true.
+		// A list of strings containing the net commands to run. Mutually exclusive with I(template).
 
-	description?: string
+		commands?: string
 
-	// A single, multi-line string with jinja2 formatting. This string will be broken by lines, and each line will be run through net. Mutually exclusive with I(commands).
+		// When true, performs a 'net commit' at the end of the block. Mutually exclusive with I(atomic).
 
-	template?: string
+		commit?: bool
+	}
 }

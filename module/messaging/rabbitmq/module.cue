@@ -1,319 +1,379 @@
 package rabbitmq
 
-rabbitmq_binding :: {
-
-	// Whether the bindings should be present or absent.
-
-	state?: string
-
-	// extra arguments for exchange. If defined this argument is a key/value dictionary
-
-	arguments?: string
-
-	// destination exchange or queue for the binding.
-
-	destination: string
-
-	// Either queue or exchange.
-
-	destination_type: string
-
-	// source exchange to create binding on.
-
-	name: string
-
-	// routing key for the binding.
-
-	routing_key?: string
-}
-
 rabbitmq_exchange :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	rabbitmq_exchange: {
 
-	// extra arguments for exchange. If defined this argument is a key/value dictionary
+		// whether exchange is durable or not
 
-	arguments?: string
+		durable?: bool
 
-	// if the exchange should delete itself after all queues/exchanges unbound from it
+		// type for the exchange
 
-	auto_delete?: bool
+		exchange_type?: string
 
-	// whether exchange is durable or not
+		// exchange is available only for other exchanges
 
-	durable?: bool
+		internal?: bool
 
-	// type for the exchange
+		// Name of the exchange to create
 
-	exchange_type?: string
+		name: string
 
-	// exchange is available only for other exchanges
+		// Whether the exchange should be present or absent
 
-	internal?: bool
+		state?: string
 
-	// Name of the exchange to create
+		// extra arguments for exchange. If defined this argument is a key/value dictionary
 
-	name: string
+		arguments?: string
 
-	// Whether the exchange should be present or absent
+		// if the exchange should delete itself after all queues/exchanges unbound from it
 
-	state?: string
-}
-
-rabbitmq_user :: {
-
-	// Regular expression to restrict configure actions on a resource for the specified vhost.
-	// By default all actions are restricted.
-	// This option will be ignored when permissions option is used.
-
-	read_priv?: string
-
-	// Specify if user is to be added or removed
-
-	state?: string
-
-	// Name of user to add
-
-	user: string
-
-	// vhost to apply access privileges.
-	// This option will be ignored when permissions option is used.
-
-	vhost?: string
-
-	// Regular expression to restrict configure actions on a resource for the specified vhost.
-	// By default all actions are restricted.
-	// This option will be ignored when permissions option is used.
-
-	write_priv?: string
-
-	// Deletes and recreates the user.
-
-	force?: bool
-
-	// erlang node name of the rabbit we wish to configure
-
-	node?: string
-
-	// a list of dicts, each dict contains vhost, configure_priv, write_priv, and read_priv, and represents a permission rule for that vhost.
-	// This option should be preferable when you care about all permissions of the user.
-	// You should use vhost, configure_priv, write_priv, and read_priv options instead if you care about permissions for just some vhosts.
-
-	permissions?: string
-
-	// User tags specified as comma delimited
-
-	tags?: string
-
-	// C(on_create) will only set the password for newly created users.  C(always) will update passwords if they differ.
-
-	update_password?: string
-
-	// Regular expression to restrict configure actions on a resource for the specified vhost.
-	// By default all actions are restricted.
-	// This option will be ignored when permissions option is used.
-
-	configure_priv?: string
-
-	// Password of user to add.
-	// To change the password of an existing user, you must also specify C(update_password=always).
-
-	password?: string
-}
-
-rabbitmq_vhost_limits :: {
-
-	// Name of the virtual host to manage.
-
-	vhost?: string
-
-	// Max number of concurrent client connections.
-	// Negative value means "no limit".
-	// Ignored when the I(state) is C(absent).
-
-	max_connections?: string
-
-	// Max number of queues.
-	// Negative value means "no limit".
-	// Ignored when the I(state) is C(absent).
-
-	max_queues?: string
-
-	// Name of the RabbitMQ Erlang node to manage.
-
-	node?: string
-
-	// Specify whether the limits are to be set or cleared.
-	// If set to C(absent), the limits of both I(max_connections) and I(max-queues) will be cleared.
-
-	state?: string
+		auto_delete?: bool
+	}
 }
 
 rabbitmq_global_parameter :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	rabbitmq_global_parameter: {
 
-	// erlang node name of the rabbit we wish to configure
+		// erlang node name of the rabbit we wish to configure
 
-	node?: string
+		node?: string
 
-	// Specify if user is to be added or removed
+		// Specify if user is to be added or removed
 
-	state?: string
+		state?: string
 
-	// Value of the global parameter, as a JSON term
+		// Value of the global parameter, as a JSON term
 
-	value?: string
+		value?: string
 
-	// Name of the global parameter being set
+		// Name of the global parameter being set
 
-	name: string
+		name: string
+	}
 }
 
 rabbitmq_parameter :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	rabbitmq_parameter: {
 
-	// Name of the component of which the parameter is being set
+		// erlang node name of the rabbit we wish to configure
 
-	component: string
+		node?: string
 
-	// Name of the parameter being set
+		// Specify if user is to be added or removed
 
-	name: string
+		state?: string
 
-	// erlang node name of the rabbit we wish to configure
+		// Value of the parameter, as a JSON term
 
-	node?: string
+		value?: string
 
-	// Specify if user is to be added or removed
+		// vhost to apply access privileges.
 
-	state?: string
+		vhost?: string
 
-	// Value of the parameter, as a JSON term
+		// Name of the component of which the parameter is being set
 
-	value?: string
+		component: string
 
-	// vhost to apply access privileges.
+		// Name of the parameter being set
 
-	vhost?: string
+		name: string
+	}
 }
 
-rabbitmq_plugin :: {
+rabbitmq_user :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	rabbitmq_user: {
 
-	// Comma-separated list of plugin names. Also, accepts plugin name.
+		// Regular expression to restrict configure actions on a resource for the specified vhost.
+		// By default all actions are restricted.
+		// This option will be ignored when permissions option is used.
 
-	names: string
+		configure_priv?: string
 
-	// Only enable missing plugins.
-	// Does not disable plugins that are not in the names list.
+		// Password of user to add.
+		// To change the password of an existing user, you must also specify C(update_password=always).
 
-	new_only?: bool
+		password?: string
 
-	// Specify a custom install prefix to a Rabbit.
+		// Regular expression to restrict configure actions on a resource for the specified vhost.
+		// By default all actions are restricted.
+		// This option will be ignored when permissions option is used.
 
-	prefix?: string
+		read_priv?: string
 
-	// Specify if plugins are to be enabled or disabled.
+		// Specify if user is to be added or removed
 
-	state?: string
+		state?: string
+
+		// User tags specified as comma delimited
+
+		tags?: string
+
+		// vhost to apply access privileges.
+		// This option will be ignored when permissions option is used.
+
+		vhost?: string
+
+		// Regular expression to restrict configure actions on a resource for the specified vhost.
+		// By default all actions are restricted.
+		// This option will be ignored when permissions option is used.
+
+		write_priv?: string
+
+		// Deletes and recreates the user.
+
+		force?: bool
+
+		// erlang node name of the rabbit we wish to configure
+
+		node?: string
+
+		// a list of dicts, each dict contains vhost, configure_priv, write_priv, and read_priv, and represents a permission rule for that vhost.
+		// This option should be preferable when you care about all permissions of the user.
+		// You should use vhost, configure_priv, write_priv, and read_priv options instead if you care about permissions for just some vhosts.
+
+		permissions?: string
+
+		// C(on_create) will only set the password for newly created users.  C(always) will update passwords if they differ.
+
+		update_password?: string
+
+		// Name of user to add
+
+		user: string
+	}
+}
+
+rabbitmq_vhost_limits :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	rabbitmq_vhost_limits: {
+
+		// Max number of concurrent client connections.
+		// Negative value means "no limit".
+		// Ignored when the I(state) is C(absent).
+
+		max_connections?: string
+
+		// Max number of queues.
+		// Negative value means "no limit".
+		// Ignored when the I(state) is C(absent).
+
+		max_queues?: string
+
+		// Name of the RabbitMQ Erlang node to manage.
+
+		node?: string
+
+		// Specify whether the limits are to be set or cleared.
+		// If set to C(absent), the limits of both I(max_connections) and I(max-queues) will be cleared.
+
+		state?: string
+
+		// Name of the virtual host to manage.
+
+		vhost?: string
+	}
+}
+
+rabbitmq_binding :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	rabbitmq_binding: {
+
+		// Whether the bindings should be present or absent.
+
+		state?: string
+
+		// extra arguments for exchange. If defined this argument is a key/value dictionary
+
+		arguments?: string
+
+		// destination exchange or queue for the binding.
+
+		destination: string
+
+		// Either queue or exchange.
+
+		destination_type: string
+
+		// source exchange to create binding on.
+
+		name: string
+
+		// routing key for the binding.
+
+		routing_key?: string
+	}
 }
 
 rabbitmq_policy :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	rabbitmq_policy: {
 
-	// The priority of the policy.
+		// The priority of the policy.
 
-	priority?: string
+		priority?: string
 
-	// The state of the policy.
+		// The state of the policy.
 
-	state?: string
+		state?: string
 
-	// A dict or string describing the policy. Required when C(state=present). This option is no longer required as of Ansible 2.9.
+		// A dict or string describing the policy. Required when C(state=present). This option is no longer required as of Ansible 2.9.
 
-	tags?: string
+		tags?: string
 
-	// The name of the vhost to apply to.
+		// The name of the vhost to apply to.
 
-	vhost?: string
+		vhost?: string
 
-	// What the policy applies to. Requires RabbitMQ 3.2.0 or later.
+		// What the policy applies to. Requires RabbitMQ 3.2.0 or later.
 
-	apply_to?: string
+		apply_to?: string
 
-	// The name of the policy to manage.
+		// The name of the policy to manage.
 
-	name: string
+		name: string
 
-	// Erlang node name of the rabbit we wish to configure.
+		// Erlang node name of the rabbit we wish to configure.
 
-	node?: string
+		node?: string
 
-	// A regex of queues to apply the policy to. Required when C(state=present). This option is no longer required as of Ansible 2.9.
+		// A regex of queues to apply the policy to. Required when C(state=present). This option is no longer required as of Ansible 2.9.
 
-	pattern?: string
+		pattern?: string
+	}
 }
 
 rabbitmq_queue :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	rabbitmq_queue: {
 
-	// Whether the queue should be present or absent
+		// Optional name of an exchange to which messages will be republished if they
+		// are rejected or expire
 
-	state?: string
+		dead_letter_exchange?: string
 
-	// Optional name of an exchange to which messages will be republished if they
-	// are rejected or expire
+		// Optional replacement routing key to use when a message is dead-lettered.
+		// Original routing key will be used if unset
 
-	dead_letter_exchange?: string
+		dead_letter_routing_key?: string
 
-	// whether queue is durable or not
+		// whether queue is durable or not
 
-	durable?: bool
+		durable?: bool
 
-	// Maximum number of priority levels for the queue to support.
-	// If not set, the queue will not support message priorities.
-	// Larger numbers indicate higher priority.
+		// How many messages can the queue contain before it starts rejecting
 
-	max_priority?: string
+		max_length?: string
 
-	// Optional replacement routing key to use when a message is dead-lettered.
-	// Original routing key will be used if unset
+		// How long a message can live in queue before it is discarded (milliseconds)
 
-	dead_letter_routing_key?: string
+		message_ttl?: string
 
-	// How many messages can the queue contain before it starts rejecting
+		// extra arguments for queue. If defined this argument is a key/value dictionary
 
-	max_length?: string
+		arguments?: string
 
-	// How long a message can live in queue before it is discarded (milliseconds)
+		// if the queue should delete itself after all queues/queues unbound from it
 
-	message_ttl?: string
+		auto_delete?: bool
 
-	// Name of the queue
+		// How long a queue can be unused before it is automatically deleted (milliseconds)
 
-	name: string
+		auto_expires?: string
 
-	// extra arguments for queue. If defined this argument is a key/value dictionary
+		// Whether the queue should be present or absent
 
-	arguments?: string
+		state?: string
 
-	// if the queue should delete itself after all queues/queues unbound from it
+		// Maximum number of priority levels for the queue to support.
+		// If not set, the queue will not support message priorities.
+		// Larger numbers indicate higher priority.
 
-	auto_delete?: bool
+		max_priority?: string
 
-	// How long a queue can be unused before it is automatically deleted (milliseconds)
+		// Name of the queue
 
-	auto_expires?: string
+		name: string
+	}
 }
 
 rabbitmq_vhost :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	rabbitmq_vhost: {
 
-	// erlang node name of the rabbit we wish to configure
+		// The state of vhost
 
-	node?: string
+		state?: string
 
-	// The state of vhost
+		// Enable/disable tracing for a vhost
 
-	state?: string
+		tracing?: bool
 
-	// Enable/disable tracing for a vhost
+		// The name of the vhost to manage
 
-	tracing?: bool
+		name: string
 
-	// The name of the vhost to manage
+		// erlang node name of the rabbit we wish to configure
 
-	name: string
+		node?: string
+	}
+}
+
+rabbitmq_plugin :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	rabbitmq_plugin: {
+
+		// Comma-separated list of plugin names. Also, accepts plugin name.
+
+		names: string
+
+		// Only enable missing plugins.
+		// Does not disable plugins that are not in the names list.
+
+		new_only?: bool
+
+		// Specify a custom install prefix to a Rabbit.
+
+		prefix?: string
+
+		// Specify if plugins are to be enabled or disabled.
+
+		state?: string
+	}
 }

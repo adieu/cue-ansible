@@ -1,83 +1,95 @@
 package ovh
 
 ovh_ip_failover :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ovh_ip_failover: {
 
-	// The application secret to use
+		// The consumer key to use
 
-	application_secret: string
+		consumer_key: string
 
-	// The IP address to manage (can be a single IP like 1.1.1.1 or a block like 1.1.1.1/28 )
+		// The IP address to manage (can be a single IP like 1.1.1.1 or a block like 1.1.1.1/28 )
 
-	name: string
+		name: string
 
-	// The timeout in seconds used to wait for a task to be completed. Default is 120 seconds.
+		// If true, the module will wait for the IP address to be moved. If false, exit without waiting. The taskId will be returned in module output
 
-	timeout?: string
+		wait_completion?: bool
 
-	// If true, the module will wait for the IP address to be moved. If false, exit without waiting. The taskId will be returned in module output
+		// If not 0, the module will wait for this task id to be completed. Use wait_task_completion if you want to wait for completion of a previously executed task with wait_completion=false. You can execute this module repeatedly on a list of failover IPs using wait_completion=false (see examples)
 
-	wait_completion?: bool
+		wait_task_completion?: string
 
-	// If not 0, the module will wait for this task id to be completed. Use wait_task_completion if you want to wait for completion of a previously executed task with wait_completion=false. You can execute this module repeatedly on a list of failover IPs using wait_completion=false (see examples)
+		// The applicationKey to use
 
-	wait_task_completion?: string
+		application_key: string
 
-	// The applicationKey to use
+		// The application secret to use
 
-	application_key: string
+		application_secret: string
 
-	// The consumer key to use
+		// The endpoint to use ( for instance ovh-eu)
 
-	consumer_key: string
+		endpoint: string
 
-	// The endpoint to use ( for instance ovh-eu)
+		// The name of the OVH service this IP address should be routed
 
-	endpoint: string
+		service: string
 
-	// The name of the OVH service this IP address should be routed
+		// The timeout in seconds used to wait for a task to be completed. Default is 120 seconds.
 
-	service: string
+		timeout?: string
+	}
 }
 
 ovh_ip_loadbalancing_backend :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ovh_ip_loadbalancing_backend: {
 
-	// The application secret to use
+		// The applicationKey to use
 
-	application_secret: string
+		application_key: string
 
-	// The IP address of the backend to update / modify / delete
+		// The application secret to use
 
-	backend: string
+		application_secret: string
 
-	// The endpoint to use ( for instance ovh-eu)
+		// Determines the type of probe to use for this backend
 
-	endpoint: string
+		probe?: string
 
-	// Name of the LoadBalancing internal name (ip-X.X.X.X)
+		// Determines the weight for this backend
 
-	name: string
+		weight?: string
 
-	// Determines the type of probe to use for this backend
+		// Determines whether the backend is to be created/modified or deleted
 
-	probe?: string
+		state?: string
 
-	// The applicationKey to use
+		// The timeout in seconds used to wait for a task to be completed.
 
-	application_key: string
+		timeout?: string
 
-	// The consumer key to use
+		// The IP address of the backend to update / modify / delete
 
-	consumer_key: string
+		backend: string
 
-	// Determines whether the backend is to be created/modified or deleted
+		// The consumer key to use
 
-	state?: string
+		consumer_key: string
 
-	// The timeout in seconds used to wait for a task to be completed.
+		// The endpoint to use ( for instance ovh-eu)
 
-	timeout?: string
+		endpoint: string
 
-	// Determines the weight for this backend
+		// Name of the LoadBalancing internal name (ip-X.X.X.X)
 
-	weight?: string
+		name: string
+	}
 }

@@ -1,127 +1,163 @@
 package infinidat
 
-infini_vol :: {
-
-	// Volume Name
-
-	name: string
-
-	// Pool that volume will reside on
-
-	pool: string
-
-	// Volume size in MB, GB or TB units. See examples.
-
-	size?: string
-
-	// Creates/Modifies volume when present or removes when absent
-
-	state?: string
-}
-
 infini_export :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	infini_export: {
 
-	// List of dictionaries with client entries. See examples. Check infini_export_client module to modify individual NFS client entries for export.
+		// List of dictionaries with client entries. See examples. Check infini_export_client module to modify individual NFS client entries for export.
 
-	client_list?: string
+		client_list?: string
 
-	// Name of exported file system.
+		// Name of exported file system.
 
-	filesystem: string
+		filesystem: string
 
-	// Internal path of the export.
+		// Internal path of the export.
 
-	inner_path?: string
+		inner_path?: string
 
-	// Export name. Should always start with C(/). (ex. name=/data)
+		// Export name. Should always start with C(/). (ex. name=/data)
 
-	name: string
+		name: string
 
-	// Creates/Modifies export when present and removes when absent.
+		// Creates/Modifies export when present and removes when absent.
 
-	state?: string
+		state?: string
+	}
 }
 
 infini_export_client :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	infini_export_client: {
 
-	// Name of the export.
+		// Read Write or Read Only Access.
 
-	export: string
+		access_mode?: string
 
-	// Don't squash root user to anonymous. Will be set to "no" on creation if not specified explicitly.
+		// Client IP or Range. Ranges can be defined as follows 192.168.0.1-192.168.0.254.
 
-	no_root_squash?: bool
+		client: string
 
-	// Creates/Modifies client when present and removes when absent.
+		// Name of the export.
 
-	state?: string
+		export: string
 
-	// Read Write or Read Only Access.
+		// Don't squash root user to anonymous. Will be set to "no" on creation if not specified explicitly.
 
-	access_mode?: string
+		no_root_squash?: bool
 
-	// Client IP or Range. Ranges can be defined as follows 192.168.0.1-192.168.0.254.
+		// Creates/Modifies client when present and removes when absent.
 
-	client: string
+		state?: string
+	}
 }
 
 infini_fs :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	infini_fs: {
 
-	// File system name.
+		// File system size in MB, GB or TB units. See examples.
 
-	name: string
+		size?: string
 
-	// Pool that will host file system.
+		// Creates/Modifies file system when present or removes when absent.
 
-	pool: string
+		state?: string
 
-	// File system size in MB, GB or TB units. See examples.
+		// File system name.
 
-	size?: string
+		name: string
 
-	// Creates/Modifies file system when present or removes when absent.
+		// Pool that will host file system.
 
-	state?: string
+		pool: string
+	}
 }
 
 infini_host :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	infini_host: {
 
-	// Creates/Modifies Host when present or removes when absent
+		// Volume name to map to the host
 
-	state?: string
+		volume?: string
 
-	// Volume name to map to the host
+		// List of wwns of the host
 
-	volume?: string
+		wwns?: string
 
-	// List of wwns of the host
+		// Host Name
 
-	wwns?: string
+		name: string
 
-	// Host Name
+		// Creates/Modifies Host when present or removes when absent
 
-	name: string
+		state?: string
+	}
 }
 
 infini_pool :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	infini_pool: {
 
-	// Pool Physical Capacity in MB, GB or TB units. If pool size is not set on pool creation, size will be equal to 1TB. See examples.
+		// Pool Name
 
-	size?: string
+		name: string
 
-	// Enable/Disable SSD Cache on Pool
+		// Pool Physical Capacity in MB, GB or TB units. If pool size is not set on pool creation, size will be equal to 1TB. See examples.
 
-	ssd_cache?: bool
+		size?: string
 
-	// Creates/Modifies Pool when present or removes when absent
+		// Enable/Disable SSD Cache on Pool
 
-	state?: string
+		ssd_cache?: bool
 
-	// Pool Virtual Capacity in MB, GB or TB units. If pool vsize is not set on pool creation, Virtual Capacity will be equal to Physical Capacity. See examples.
+		// Creates/Modifies Pool when present or removes when absent
 
-	vsize?: string
+		state?: string
 
-	// Pool Name
+		// Pool Virtual Capacity in MB, GB or TB units. If pool vsize is not set on pool creation, Virtual Capacity will be equal to Physical Capacity. See examples.
 
-	name: string
+		vsize?: string
+	}
+}
+
+infini_vol :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	infini_vol: {
+
+		// Volume Name
+
+		name: string
+
+		// Pool that volume will reside on
+
+		pool: string
+
+		// Volume size in MB, GB or TB units. See examples.
+
+		size?: string
+
+		// Creates/Modifies volume when present or removes when absent
+
+		state?: string
+	}
 }

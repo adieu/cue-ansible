@@ -1,32 +1,38 @@
 package routing
 
 net_static_route :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	net_static_route: {
 
-	// Next hop IP of the static route.
+		// Network prefix of the static route.
 
-	next_hop: string
+		prefix: string
 
-	// Network prefix of the static route.
+		// Purge static routes not defined in the I(aggregate) parameter.
 
-	prefix: string
+		purge?: string
 
-	// Purge static routes not defined in the I(aggregate) parameter.
+		// State of the static route configuration.
 
-	purge?: string
+		state?: string
 
-	// State of the static route configuration.
+		// Admin distance of the static route.
 
-	state?: string
+		admin_distance?: string
 
-	// Admin distance of the static route.
+		// List of static route definitions
 
-	admin_distance?: string
+		aggregate?: string
 
-	// List of static route definitions
+		// Network prefix mask of the static route.
 
-	aggregate?: string
+		mask: string
 
-	// Network prefix mask of the static route.
+		// Next hop IP of the static route.
 
-	mask: string
+		next_hop: string
+	}
 }

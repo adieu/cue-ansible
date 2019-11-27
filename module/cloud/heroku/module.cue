@@ -1,24 +1,30 @@
 package heroku
 
 heroku_collaborator :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	heroku_collaborator: {
 
-	// Create or remove the heroku collaborator
+		// List of Heroku App names
 
-	state?: string
+		apps: string
 
-	// Suppress email invitation when creating collaborator
+		// Create or remove the heroku collaborator
 
-	suppress_invitation?: bool
+		state?: string
 
-	// User ID or e-mail
+		// Suppress email invitation when creating collaborator
 
-	user: string
+		suppress_invitation?: bool
 
-	// Heroku API key
+		// User ID or e-mail
 
-	api_key?: string
+		user: string
 
-	// List of Heroku App names
+		// Heroku API key
 
-	apps: string
+		api_key?: string
+	}
 }

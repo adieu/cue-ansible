@@ -1,98 +1,116 @@
 package skydive
 
-skydive_node :: {
-
-	// State of the Skydive Node. If value is I(present) new node will be created else if it is I(absent) it will be deleted.
-
-	state?: string
-
-	// To define host for the node.
-
-	host?: string
-
-	// To define metadata for the node.
-
-	metadata?: string
-
-	// To define name for the node.
-
-	name: string
-
-	// To define type for the node.
-
-	node_type: string
-
-	// used to generate the UUID of the node
-
-	seed?: string
-}
-
 skydive_capture :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	skydive_capture: {
 
-	// To define flow capture name.
+		// To define flow capture interface type.
 
-	capture_name?: string
+		type?: string
 
-	// Configures a text string to be associated with the instance of this object.
+		// Configures a text string to be associated with the instance of this object.
 
-	description?: string
+		description?: string
 
-	// To define flow capture interface name.
+		// To define flow capture ExtraTCPMetric.
 
-	interface_name?: string
+		extra_tcp_metric?: bool
 
-	// To define flow capture Layer KeyMode.
+		// To define flow capture IPDefrag.
 
-	layer_key_mode?: string
+		ip_defrag?: bool
 
-	// To define flow capture ExtraTCPMetric.
+		// State of the flow capture. If value is I(present) flow capture will be created else if it is I(absent) it will be deleted.
 
-	extra_tcp_metric?: bool
+		state?: string
 
-	// To define flow capture IPDefrag.
+		// To define flow capture ReassembleTCP.
 
-	ip_defrag?: bool
+		reassemble_tcp?: bool
 
-	// It's the complete gremlin query which the users can input, I(G.V().Has('Name', 'eth0', 'Type', 'device')), to create the capture. And, if the user directly inputs the gremlin query then user is not required to input any other module parameter as gremlin query takes care of creating the flow capture.
+		// To define flow capture name.
 
-	query?: string
+		capture_name?: string
 
-	// To define flow capture ReassembleTCP.
+		// To define flow capture interface name.
 
-	reassemble_tcp?: bool
+		interface_name?: string
 
-	// State of the flow capture. If value is I(present) flow capture will be created else if it is I(absent) it will be deleted.
+		// To define flow capture Layer KeyMode.
 
-	state?: string
+		layer_key_mode?: string
 
-	// To define flow capture interface type.
+		// It's the complete gremlin query which the users can input, I(G.V().Has('Name', 'eth0', 'Type', 'device')), to create the capture. And, if the user directly inputs the gremlin query then user is not required to input any other module parameter as gremlin query takes care of creating the flow capture.
 
-	type?: string
+		query?: string
+	}
 }
 
 skydive_edge :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	skydive_edge: {
 
-	// To defined the first node of the link, it can be either an ID or a gremlin expression
+		// State of the Skydive Edge. If value is I(present) new edge will be created else if it is I(absent) it will be deleted.
 
-	parent_node: string
+		state?: string
 
-	// To define relation type of the node I(ownership, layer2, layer3).
+		// To defined the second node of the link, it can be either an ID or a gremlin expression
 
-	relation_type: string
+		child_node: string
 
-	// State of the Skydive Edge. If value is I(present) new edge will be created else if it is I(absent) it will be deleted.
+		// To define the host of the node.
 
-	state?: string
+		host?: string
 
-	// To defined the second node of the link, it can be either an ID or a gremlin expression
+		// To define metadata for the edge.
 
-	child_node: string
+		metadata?: string
 
-	// To define the host of the node.
+		// To defined the first node of the link, it can be either an ID or a gremlin expression
 
-	host?: string
+		parent_node: string
 
-	// To define metadata for the edge.
+		// To define relation type of the node I(ownership, layer2, layer3).
 
-	metadata?: string
+		relation_type: string
+	}
+}
+
+skydive_node :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	skydive_node: {
+
+		// To define host for the node.
+
+		host?: string
+
+		// To define metadata for the node.
+
+		metadata?: string
+
+		// To define name for the node.
+
+		name: string
+
+		// To define type for the node.
+
+		node_type: string
+
+		// used to generate the UUID of the node
+
+		seed?: string
+
+		// State of the Skydive Node. If value is I(present) new node will be created else if it is I(absent) it will be deleted.
+
+		state?: string
+	}
 }

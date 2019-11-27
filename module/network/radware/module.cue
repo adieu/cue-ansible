@@ -1,182 +1,200 @@
 package radware
 
 vdirect_commit :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vdirect_commit: {
 
-	// List of Radware Alteon device names for commit operations.
+		// vDirect server username, may be set as C(VDIRECT_USER) environment variable.
 
-	devices: string
+		vdirect_user: string
 
-	// vDirect server HTTP port number, may be set as C(VDIRECT_HTTP_PORT) environment variable.
+		// If C(no), SSL certificates will not be validated,
+		// may be set as C(VDIRECT_VALIDATE_CERTS) or C(VDIRECT_VERIFY) environment variable.
+		// This should only set to C(no) used on personally controlled sites using self-signed certificates.
 
-	vdirect_http_port?: string
+		validate_certs?: bool
 
-	// vDirect server password, may be set as C(VDIRECT_PASSWORD) environment variable.
+		// vDirect server HTTPS port number, may be set as C(VDIRECT_HTTPS_PORT) environment variable.
 
-	vdirect_password: string
+		vdirect_https_port?: string
 
-	// vDirect server username, may be set as C(VDIRECT_USER) environment variable.
+		// vDirect server password, may be set as C(VDIRECT_PASSWORD) environment variable.
 
-	vdirect_user: string
+		vdirect_password: string
 
-	// vDirect server HTTPS port number, may be set as C(VDIRECT_HTTPS_PORT) environment variable.
+		// If C(no), sync action will not be performed. Relevant for ADC devices only.
 
-	vdirect_https_port?: string
+		sync?: bool
 
-	// Wait for async operation to complete, may be set as C(VDIRECT_WAIT) environment variable.
+		// Secondary vDirect server IP address, may be set as C(VDIRECT_SECONDARY_IP) environment variable.
 
-	vdirect_wait?: bool
+		vdirect_secondary_ip?: string
 
-	// If C(no), save action will not be performed. Relevant for ADC devices only.
+		// Amount of time to wait for async operation completion [seconds],
+		// may be set as C(VDIRECT_TIMEOUT) environment variable.
 
-	save?: bool
+		vdirect_timeout?: string
 
-	// If C(no), an HTTP connection will be used instead of the default HTTPS connection,
-	// may be set as C(VDIRECT_HTTPS) or C(VDIRECT_USE_SSL) environment variable.
+		// If C(no), apply action will not be performed. Relevant for ADC devices only.
 
-	vdirect_use_ssl?: bool
+		apply?: bool
 
-	// Amount of time to wait for async operation completion [seconds],
-	// may be set as C(VDIRECT_TIMEOUT) environment variable.
+		// If C(no), save action will not be performed. Relevant for ADC devices only.
 
-	vdirect_timeout?: string
+		save?: bool
 
-	// If C(no), apply action will not be performed. Relevant for ADC devices only.
+		// Primary vDirect server IP address, may be set as C(VDIRECT_IP) environment variable.
 
-	apply?: bool
+		vdirect_ip: string
 
-	// If C(no), sync action will not be performed. Relevant for ADC devices only.
+		// Wait for async operation to complete, may be set as C(VDIRECT_WAIT) environment variable.
 
-	sync?: bool
+		vdirect_wait?: bool
 
-	// If C(no), SSL certificates will not be validated,
-	// may be set as C(VDIRECT_VALIDATE_CERTS) or C(VDIRECT_VERIFY) environment variable.
-	// This should only set to C(no) used on personally controlled sites using self-signed certificates.
+		// List of Radware Alteon device names for commit operations.
 
-	validate_certs?: bool
+		devices: string
 
-	// Primary vDirect server IP address, may be set as C(VDIRECT_IP) environment variable.
+		// vDirect server HTTP port number, may be set as C(VDIRECT_HTTP_PORT) environment variable.
 
-	vdirect_ip: string
+		vdirect_http_port?: string
 
-	// Secondary vDirect server IP address, may be set as C(VDIRECT_SECONDARY_IP) environment variable.
+		// If C(no), an HTTP connection will be used instead of the default HTTPS connection,
+		// may be set as C(VDIRECT_HTTPS) or C(VDIRECT_USE_SSL) environment variable.
 
-	vdirect_secondary_ip?: string
+		vdirect_use_ssl?: bool
+	}
 }
 
 vdirect_file :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vdirect_file: {
 
-	// vDirect server HTTP port number, may be set as VDIRECT_HTTP_PORT environment variable.
+		// Wait for async operation to complete, may be set as VDIRECT_WAIT environment variable.
 
-	vdirect_http_port?: string
+		vdirect_wait?: bool
 
-	// vDirect server HTTPS port number, may be set as VDIRECT_HTTPS_PORT environment variable.
+		// vDirect runnable file name to be uploaded.
+		// May be velocity configuration template (.vm) or workflow template zip file (.zip).
 
-	vdirect_https_port?: string
+		file_name: string
 
-	// vDirect server password, may be set as VDIRECT_PASSWORD environment variable.
+		// Primary vDirect server IP address, may be set as VDIRECT_IP environment variable.
 
-	vdirect_password: string
+		vdirect_ip: string
 
-	// Secondary vDirect server IP address, may be set as VDIRECT_SECONDARY_IP environment variable.
+		// vDirect server password, may be set as VDIRECT_PASSWORD environment variable.
 
-	vdirect_secondary_ip?: string
+		vdirect_password: string
 
-	// Amount of time to wait for async operation completion [seconds],
-	// may be set as VDIRECT_TIMEOUT environment variable.
+		// Secondary vDirect server IP address, may be set as VDIRECT_SECONDARY_IP environment variable.
 
-	vdirect_timeout?: string
+		vdirect_secondary_ip?: string
 
-	// If C(no), an HTTP connection will be used instead of the default HTTPS connection,
-	// may be set as VDIRECT_HTTPS or VDIRECT_USE_SSL environment variable.
+		// If C(no), an HTTP connection will be used instead of the default HTTPS connection,
+		// may be set as VDIRECT_HTTPS or VDIRECT_USE_SSL environment variable.
 
-	vdirect_use_ssl?: bool
+		vdirect_use_ssl?: bool
 
-	// vDirect runnable file name to be uploaded.
-	// May be velocity configuration template (.vm) or workflow template zip file (.zip).
+		// vDirect server username, may be set as VDIRECT_USER environment variable.
 
-	file_name: string
+		vdirect_user: string
 
-	// If C(no), SSL certificates will not be validated,
-	// may be set as VDIRECT_VALIDATE_CERTS or VDIRECT_VERIFY environment variable.
-	// This should only set to C(no) used on personally controlled sites using self-signed certificates.
+		// If C(no), SSL certificates will not be validated,
+		// may be set as VDIRECT_VALIDATE_CERTS or VDIRECT_VERIFY environment variable.
+		// This should only set to C(no) used on personally controlled sites using self-signed certificates.
 
-	validate_certs?: bool
+		validate_certs?: bool
 
-	// Wait for async operation to complete, may be set as VDIRECT_WAIT environment variable.
+		// vDirect server HTTP port number, may be set as VDIRECT_HTTP_PORT environment variable.
 
-	vdirect_wait?: bool
+		vdirect_http_port?: string
 
-	// Primary vDirect server IP address, may be set as VDIRECT_IP environment variable.
+		// vDirect server HTTPS port number, may be set as VDIRECT_HTTPS_PORT environment variable.
 
-	vdirect_ip: string
+		vdirect_https_port?: string
 
-	// vDirect server username, may be set as VDIRECT_USER environment variable.
+		// Amount of time to wait for async operation completion [seconds],
+		// may be set as VDIRECT_TIMEOUT environment variable.
 
-	vdirect_user: string
+		vdirect_timeout?: string
+	}
 }
 
 vdirect_runnable :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vdirect_runnable: {
 
-	// vDirect server password, may be set as C(VDIRECT_PASSWORD) environment variable.
+		// If C(no), SSL certificates will not be validated,
+		// may be set as C(VDIRECT_VALIDATE_CERTS) or C(VDIRECT_VERIFY) environment variable.
+		// This should only set to C(no) used on personally controlled sites using self-signed certificates.
 
-	vdirect_password: string
+		validate_certs?: bool
 
-	// If C(no), an HTTP connection will be used instead of the default HTTPS connection,
-	// may be set as C(VDIRECT_HTTPS) or C(VDIRECT_USE_SSL) environment variable.
+		// If C(no), an HTTP connection will be used instead of the default HTTPS connection,
+		// may be set as C(VDIRECT_HTTPS) or C(VDIRECT_USE_SSL) environment variable.
 
-	vdirect_use_ssl?: bool
+		vdirect_use_ssl?: bool
 
-	// vDirect server HTTP port number, may be set as C(VDIRECT_HTTP_PORT) environment variable.
+		// vDirect server username, may be set as C(VDIRECT_USER) environment variable.
 
-	vdirect_http_port?: string
+		vdirect_user: string
 
-	// vDirect server username, may be set as C(VDIRECT_USER) environment variable.
+		// Amount of time to wait for async operation completion [seconds],
+		// may be set as C(VDIRECT_TIMEOUT) environment variable.
 
-	vdirect_user: string
+		vdirect_timeout?: string
 
-	// If C(no), SSL certificates will not be validated,
-	// may be set as C(VDIRECT_VALIDATE_CERTS) or C(VDIRECT_VERIFY) environment variable.
-	// This should only set to C(no) used on personally controlled sites using self-signed certificates.
+		// Workflow action name to run.
+		// Required if I(runnable_type=Workflow).
 
-	validate_certs?: bool
+		action_name?: string
 
-	// Action parameters dictionary. In case of C(ConfigurationTemplate) runnable type,
-	// the device connection details should always be passed as a parameter.
+		// vDirect runnable type.
 
-	parameters?: string
+		runnable_type: string
 
-	// vDirect runnable type.
+		// vDirect server HTTPS port number, may be set as C(VDIRECT_HTTPS_PORT) environment variable.
 
-	runnable_type: string
+		vdirect_https_port?: string
 
-	// vDirect server HTTPS port number, may be set as C(VDIRECT_HTTPS_PORT) environment variable.
+		// Primary vDirect server IP address, may be set as C(VDIRECT_IP) environment variable.
 
-	vdirect_https_port?: string
+		vdirect_ip: string
 
-	// Primary vDirect server IP address, may be set as C(VDIRECT_IP) environment variable.
+		// vDirect server password, may be set as C(VDIRECT_PASSWORD) environment variable.
 
-	vdirect_ip: string
+		vdirect_password: string
 
-	// Amount of time to wait for async operation completion [seconds],
-	// may be set as C(VDIRECT_TIMEOUT) environment variable.
+		// Action parameters dictionary. In case of C(ConfigurationTemplate) runnable type,
+		// the device connection details should always be passed as a parameter.
 
-	vdirect_timeout?: string
+		parameters?: string
 
-	// Workflow action name to run.
-	// Required if I(runnable_type=Workflow).
+		// vDirect runnable name to run.
+		// May be configuration template name, workflow template name or workflow instance name.
 
-	action_name?: string
+		runnable_name: string
 
-	// Secondary vDirect server IP address, may be set as C(VDIRECT_SECONDARY_IP) environment variable.
+		// vDirect server HTTP port number, may be set as C(VDIRECT_HTTP_PORT) environment variable.
 
-	vdirect_secondary_ip?: string
+		vdirect_http_port?: string
 
-	// Wait for async operation to complete, may be set as C(VDIRECT_WAIT) environment variable.
+		// Secondary vDirect server IP address, may be set as C(VDIRECT_SECONDARY_IP) environment variable.
 
-	vdirect_wait?: bool
+		vdirect_secondary_ip?: string
 
-	// vDirect runnable name to run.
-	// May be configuration template name, workflow template name or workflow instance name.
+		// Wait for async operation to complete, may be set as C(VDIRECT_WAIT) environment variable.
 
-	runnable_name: string
+		vdirect_wait?: bool
+	}
 }

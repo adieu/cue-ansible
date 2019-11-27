@@ -1,454 +1,562 @@
 package hcloud
 
+hcloud_subnetwork :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_subnetwork: {
+
+		// Name of network zone.
+
+		network_zone: string
+
+		// State of the subnetwork.
+
+		state?: string
+
+		// Type of subnetwork.
+
+		type: string
+
+		// IP range of the subnetwork.
+
+		ip_range: string
+
+		// The ID or Name  of the Hetzner Cloud Networks.
+
+		network: string
+	}
+}
+
 hcloud_floating_ip :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_floating_ip: {
 
-	// Force the assignment or deletion of the Floating IP.
+		// Type of the Floating IP.
+		// Required if Floating IP does not exists
 
-	force?: bool
+		type?: string
 
-	// Home Location of the Hetzner Cloud Floating IP.
-	// Required if no I(server) is given and Floating IP does not exists.
+		// The ID of the Hetzner Cloud Floating IPs to manage.
+		// Only required if no Floating IP I(name) is given.
 
-	home_location?: string
+		id?: int
 
-	// User-defined labels (key-value pairs).
+		// State of the Floating IP.
 
-	labels?: {...}
+		state?: string
 
-	// Server Name the Floating IP should be assigned to.
-	// Required if no I(home_location) is given and Floating IP does not exists.
+		// Force the assignment or deletion of the Floating IP.
 
-	server?: string
+		force?: bool
 
-	// State of the Floating IP.
+		// Home Location of the Hetzner Cloud Floating IP.
+		// Required if no I(server) is given and Floating IP does not exists.
 
-	state?: string
+		home_location?: string
 
-	// The Description of the Hetzner Cloud Floating IPs.
+		// User-defined labels (key-value pairs).
 
-	description?: string
+		labels?: {...}
 
-	// The ID of the Hetzner Cloud Floating IPs to manage.
-	// Only required if no Floating IP I(name) is given.
+		// The Name of the Hetzner Cloud Floating IPs to manage.
+		// Only required if no Floating IP I(id) is given or a Floating IP does not exists.
 
-	id?: int
+		name?: string
 
-	// The Name of the Hetzner Cloud Floating IPs to manage.
-	// Only required if no Floating IP I(id) is given or a Floating IP does not exists.
+		// Server Name the Floating IP should be assigned to.
+		// Required if no I(home_location) is given and Floating IP does not exists.
 
-	name?: string
+		server?: string
 
-	// Type of the Floating IP.
-	// Required if Floating IP does not exists
+		// Protect the Floating IP for deletion.
 
-	type?: string
+		delete_protection?: bool
 
-	// Protect the Floating IP for deletion.
+		// The Description of the Hetzner Cloud Floating IPs.
 
-	delete_protection?: bool
-}
-
-hcloud_ssh_key :: {
-
-	// The Name of the Hetzner Cloud ssh_key to manage.
-	// Only required if no ssh_key I(id) is given or a ssh_key does not exists.
-
-	name?: string
-
-	// The Public Key to add.
-	// Required if ssh_key does not exists.
-
-	public_key?: string
-
-	// State of the ssh_key.
-
-	state?: string
-
-	// The Fingerprint of the Hetzner Cloud ssh_key to manage.
-	// Only required if no ssh_key I(id) or I(name) is given.
-
-	fingerprint?: string
-
-	// The ID of the Hetzner Cloud ssh_key to manage.
-	// Only required if no ssh_key I(name) is given
-
-	id?: int
-
-	// User-defined labels (key-value pairs)
-
-	labels?: {...}
-}
-
-hcloud_ssh_key_info :: {
-
-	// The fingerprint of the ssh key you want to get.
-
-	fingerprint?: string
-
-	// The ID of the ssh key you want to get.
-
-	id?: int
-
-	// The label selector for the ssh key you want to get.
-
-	label_selector?: string
-
-	// The name of the ssh key you want to get.
-
-	name?: string
-}
-
-hcloud_network :: {
-
-	// Protect the Network for deletion.
-
-	delete_protection?: bool
-
-	// The ID of the Hetzner Cloud Networks to manage.
-	// Only required if no Network I(name) is given.
-
-	id?: int
-
-	// IP range of the Network.
-	// Required if Network does not exists.
-
-	ip_range?: string
-
-	// User-defined labels (key-value pairs).
-
-	labels?: {...}
-
-	// The Name of the Hetzner Cloud Network to manage.
-	// Only required if no Network I(id) is given or a Network does not exists.
-
-	name?: string
-
-	// State of the Network.
-
-	state?: string
-}
-
-hcloud_server_info :: {
-
-	// The ID of the server you want to get.
-
-	id?: int
-
-	// The label selector for the server you want to get.
-
-	label_selector?: string
-
-	// The name of the server you want to get.
-
-	name?: string
-}
-
-hcloud_server_type_info :: {
-
-	// The ID of the server type you want to get.
-
-	id?: int
-
-	// The name of the server type you want to get.
-
-	name?: string
-}
-
-hcloud_volume_info :: {
-
-	// The name of the Volume you want to get.
-
-	name?: string
-
-	// The ID of the Volume you want to get.
-
-	id?: int
-
-	// The label selector for the Volume you want to get.
-
-	label_selector?: string
-}
-
-hcloud_datacenter_info :: {
-
-	// The ID of the datacenter you want to get.
-
-	id?: int
-
-	// The name of the datacenter you want to get.
-
-	name?: string
-}
-
-hcloud_floating_ip_info :: {
-
-	// The ID of the Floating IP you want to get.
-
-	id?: int
-
-	// The label selector for the Floating IP you want to get.
-
-	label_selector?: string
-}
-
-hcloud_location_info :: {
-
-	// The ID of the location you want to get.
-
-	id?: int
-
-	// The name of the location you want to get.
-
-	name?: string
-}
-
-hcloud_network_info :: {
-
-	// The name of the network you want to get.
-
-	name?: string
-
-	// The ID of the network you want to get.
-
-	id?: int
-
-	// The label selector for the network you want to get.
-
-	label_selector?: string
+		description?: string
+	}
 }
 
 hcloud_server :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_server: {
 
-	// Datacenter of Server.
-	// Required of no I(location) is given and server does not exists.
+		// Enable or disable Backups for the given Server.
 
-	datacenter?: string
+		backups?: bool
 
-	// The ID of the Hetzner Cloud server to manage.
-	// Only required if no server I(name) is given
+		// Protect the Server for deletion.
+		// Needs to be the same as I(rebuild_protection).
 
-	id?: int
+		delete_protection?: bool
 
-	// Location of Server.
-	// Required if no I(datacenter) is given and server does not exists.
+		// Protect the Server for rebuild.
+		// Needs to be the same as I(delete_protection).
 
-	location?: string
+		rebuild_protection?: bool
 
-	// Protect the Server for rebuild.
-	// Needs to be the same as I(delete_protection).
+		// State of the server.
 
-	rebuild_protection?: bool
+		state?: string
 
-	// User Data to be passed to the server on creation.
-	// Only used if server does not exists.
+		// List of Volumes IDs that should be attached to the server on server creation.
 
-	user_data?: string
+		volumes?: [...]
 
-	// Image the server should be created from.
-	// Required if server does not exists.
+		// List of SSH key names
+		// The key names correspond to the SSH keys configured for your Hetzner Cloud account access.
 
-	image?: string
+		ssh_keys?: [...]
 
-	// User-defined labels (key-value pairs).
+		// Resize the disk size, when resizing a server.
+		// If you want to downgrade the server later, this value should be False.
 
-	labels?: {...}
+		upgrade_disk?: bool
 
-	// The Name of the Hetzner Cloud server to manage.
-	// Only required if no server I(id) is given or a server does not exists.
+		// The ID of the Hetzner Cloud server to manage.
+		// Only required if no server I(name) is given
 
-	name?: string
+		id?: int
 
-	// List of SSH key names
-	// The key names correspond to the SSH keys configured for your Hetzner Cloud account access.
+		// Image the server should be created from.
+		// Required if server does not exists.
 
-	ssh_keys?: [..._]
+		image?: string
 
-	// Force the upgrade of the server.
-	// Power off the server if it is running on upgrade.
+		// Add the Hetzner rescue system type you want the server to be booted into.
 
-	force_upgrade?: bool
+		rescue_mode?: string
 
-	// Add the Hetzner rescue system type you want the server to be booted into.
+		// The Server Type of the Hetzner Cloud server to manage.
+		// Required if server does not exists.
 
-	rescue_mode?: string
+		server_type?: string
 
-	// Resize the disk size, when resizing a server.
-	// If you want to downgrade the server later, this value should be False.
+		// The Name of the Hetzner Cloud server to manage.
+		// Only required if no server I(id) is given or a server does not exists.
 
-	upgrade_disk?: bool
+		name?: string
 
-	// List of Volumes IDs that should be attached to the server on server creation.
+		// User Data to be passed to the server on creation.
+		// Only used if server does not exists.
 
-	volumes?: [..._]
+		user_data?: string
 
-	// Enable or disable Backups for the given Server.
+		// Datacenter of Server.
+		// Required of no I(location) is given and server does not exists.
 
-	backups?: bool
+		datacenter?: string
 
-	// Protect the Server for deletion.
-	// Needs to be the same as I(rebuild_protection).
+		// Force the upgrade of the server.
+		// Power off the server if it is running on upgrade.
 
-	delete_protection?: bool
+		force_upgrade?: bool
 
-	// The Server Type of the Hetzner Cloud server to manage.
-	// Required if server does not exists.
+		// User-defined labels (key-value pairs).
 
-	server_type?: string
+		labels?: {...}
 
-	// State of the server.
+		// Location of Server.
+		// Required if no I(datacenter) is given and server does not exists.
 
-	state?: string
+		location?: string
+	}
+}
+
+hcloud_server_info :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_server_info: {
+
+		// The ID of the server you want to get.
+
+		id?: int
+
+		// The label selector for the server you want to get.
+
+		label_selector?: string
+
+		// The name of the server you want to get.
+
+		name?: string
+	}
+}
+
+hcloud_ssh_key_info :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_ssh_key_info: {
+
+		// The fingerprint of the ssh key you want to get.
+
+		fingerprint?: string
+
+		// The ID of the ssh key you want to get.
+
+		id?: int
+
+		// The label selector for the ssh key you want to get.
+
+		label_selector?: string
+
+		// The name of the ssh key you want to get.
+
+		name?: string
+	}
+}
+
+hcloud_floating_ip_info :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_floating_ip_info: {
+
+		// The ID of the Floating IP you want to get.
+
+		id?: int
+
+		// The label selector for the Floating IP you want to get.
+
+		label_selector?: string
+	}
 }
 
 hcloud_image_info :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_image_info: {
 
-	// The label selector for the images you want to get.
+		// The label selector for the images you want to get.
 
-	type?: string
+		label_selector?: string
 
-	// The ID of the image you want to get.
+		// The name of the image you want to get.
 
-	id?: int
+		name?: string
 
-	// The label selector for the images you want to get.
+		// The label selector for the images you want to get.
 
-	label_selector?: string
+		type?: string
 
-	// The name of the image you want to get.
+		// The ID of the image you want to get.
 
-	name?: string
+		id?: int
+	}
 }
 
 hcloud_rdns :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_rdns: {
 
-	// State of the reverse DNS entry.
+		// The DNS address the I(ip_address) should resolve to.
+		// Omit the param to reset the reverse DNS entry to the default value.
 
-	state?: string
+		dns_ptr?: string
 
-	// The DNS address the I(ip_address) should resolve to.
-	// Omit the param to reset the reverse DNS entry to the default value.
+		// The IP address that should point to I(dns_ptr).
 
-	dns_ptr?: string
+		ip_address: string
 
-	// The IP address that should point to I(dns_ptr).
+		// The name of the Hetzner Cloud server you want to add the reverse DNS entry to.
 
-	ip_address: string
+		server: string
 
-	// The name of the Hetzner Cloud server you want to add the reverse DNS entry to.
+		// State of the reverse DNS entry.
 
-	server: string
-}
-
-hcloud_route :: {
-
-	// Destination network or host of this route.
-
-	destination: string
-
-	// Gateway for the route.
-
-	gateway: string
-
-	// The name of the Hetzner Cloud Network.
-
-	network: string
-
-	// State of the route.
-
-	state?: string
-}
-
-hcloud_server_network :: {
-
-	// Alias IPs the server has.
-
-	alias_ips?: [..._]
-
-	// The IP the server should have.
-
-	ip?: string
-
-	// The name of the Hetzner Cloud Networks.
-
-	network: string
-
-	// The name of the Hetzner Cloud server.
-
-	server: string
-
-	// State of the server_network.
-
-	state?: string
-}
-
-hcloud_subnetwork :: {
-
-	// IP range of the subnetwork.
-
-	ip_range: string
-
-	// The ID or Name  of the Hetzner Cloud Networks.
-
-	network: string
-
-	// Name of network zone.
-
-	network_zone: string
-
-	// State of the subnetwork.
-
-	state?: string
-
-	// Type of subnetwork.
-
-	type: string
+		state?: string
+	}
 }
 
 hcloud_volume :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_volume: {
 
-	// User-defined key-value pairs.
+		// Automatically mount the Volume.
 
-	labels?: {...}
+		automount?: bool
 
-	// Location of the Hetzner Cloud Volume.
-	// Required if no I(server) is given and Volume does not exists.
+		// Location of the Hetzner Cloud Volume.
+		// Required if no I(server) is given and Volume does not exists.
 
-	location?: string
+		location?: string
 
-	// The Name of the Hetzner Cloud Block Volume to manage.
-	// Only required if no volume I(id) is given or a volume does not exists.
+		// The size of the Block Volume in GB.
+		// Required if volume does not yet exists.
 
-	name?: string
+		size?: int
 
-	// Server Name the Volume should be assigned to.
-	// Required if no I(location) is given and Volume does not exists.
+		// State of the Volume.
 
-	server?: string
+		state?: string
 
-	// State of the Volume.
+		// Protect the Volume for deletion.
 
-	state?: string
+		delete_protection?: bool
 
-	// Automatically Format the volume on creation
-	// Can only be used in case the Volume does not exists.
+		// Automatically Format the volume on creation
+		// Can only be used in case the Volume does not exists.
 
-	format?: string
+		format?: string
 
-	// The ID of the Hetzner Cloud Block Volume to manage.
-	// Only required if no volume I(name) is given
+		// The ID of the Hetzner Cloud Block Volume to manage.
+		// Only required if no volume I(name) is given
 
-	id?: int
+		id?: int
 
-	// The size of the Block Volume in GB.
-	// Required if volume does not yet exists.
+		// User-defined key-value pairs.
 
-	size?: int
+		labels?: {...}
 
-	// Automatically mount the Volume.
+		// The Name of the Hetzner Cloud Block Volume to manage.
+		// Only required if no volume I(id) is given or a volume does not exists.
 
-	automount?: bool
+		name?: string
 
-	// Protect the Volume for deletion.
+		// Server Name the Volume should be assigned to.
+		// Required if no I(location) is given and Volume does not exists.
 
-	delete_protection?: bool
+		server?: string
+	}
+}
+
+hcloud_server_type_info :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_server_type_info: {
+
+		// The ID of the server type you want to get.
+
+		id?: int
+
+		// The name of the server type you want to get.
+
+		name?: string
+	}
+}
+
+hcloud_ssh_key :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_ssh_key: {
+
+		// The ID of the Hetzner Cloud ssh_key to manage.
+		// Only required if no ssh_key I(name) is given
+
+		id?: int
+
+		// User-defined labels (key-value pairs)
+
+		labels?: {...}
+
+		// The Name of the Hetzner Cloud ssh_key to manage.
+		// Only required if no ssh_key I(id) is given or a ssh_key does not exists.
+
+		name?: string
+
+		// The Public Key to add.
+		// Required if ssh_key does not exists.
+
+		public_key?: string
+
+		// State of the ssh_key.
+
+		state?: string
+
+		// The Fingerprint of the Hetzner Cloud ssh_key to manage.
+		// Only required if no ssh_key I(id) or I(name) is given.
+
+		fingerprint?: string
+	}
+}
+
+hcloud_location_info :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_location_info: {
+
+		// The name of the location you want to get.
+
+		name?: string
+
+		// The ID of the location you want to get.
+
+		id?: int
+	}
+}
+
+hcloud_network :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_network: {
+
+		// Protect the Network for deletion.
+
+		delete_protection?: bool
+
+		// The ID of the Hetzner Cloud Networks to manage.
+		// Only required if no Network I(name) is given.
+
+		id?: int
+
+		// IP range of the Network.
+		// Required if Network does not exists.
+
+		ip_range?: string
+
+		// User-defined labels (key-value pairs).
+
+		labels?: {...}
+
+		// The Name of the Hetzner Cloud Network to manage.
+		// Only required if no Network I(id) is given or a Network does not exists.
+
+		name?: string
+
+		// State of the Network.
+
+		state?: string
+	}
+}
+
+hcloud_network_info :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_network_info: {
+
+		// The name of the network you want to get.
+
+		name?: string
+
+		// The ID of the network you want to get.
+
+		id?: int
+
+		// The label selector for the network you want to get.
+
+		label_selector?: string
+	}
+}
+
+hcloud_route :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_route: {
+
+		// Destination network or host of this route.
+
+		destination: string
+
+		// Gateway for the route.
+
+		gateway: string
+
+		// The name of the Hetzner Cloud Network.
+
+		network: string
+
+		// State of the route.
+
+		state?: string
+	}
+}
+
+hcloud_datacenter_info :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_datacenter_info: {
+
+		// The ID of the datacenter you want to get.
+
+		id?: int
+
+		// The name of the datacenter you want to get.
+
+		name?: string
+	}
+}
+
+hcloud_server_network :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_server_network: {
+
+		// Alias IPs the server has.
+
+		alias_ips?: [...]
+
+		// The IP the server should have.
+
+		ip?: string
+
+		// The name of the Hetzner Cloud Networks.
+
+		network: string
+
+		// The name of the Hetzner Cloud server.
+
+		server: string
+
+		// State of the server_network.
+
+		state?: string
+	}
+}
+
+hcloud_volume_info :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hcloud_volume_info: {
+
+		// The ID of the Volume you want to get.
+
+		id?: int
+
+		// The label selector for the Volume you want to get.
+
+		label_selector?: string
+
+		// The name of the Volume you want to get.
+
+		name?: string
+	}
 }

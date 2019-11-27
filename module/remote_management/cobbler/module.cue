@@ -1,95 +1,113 @@
 package cobbler
 
 cobbler_sync :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	cobbler_sync: {
 
-	// The name or IP address of the Cobbler system.
+		// The name or IP address of the Cobbler system.
 
-	host?: string
+		host?: string
 
-	// The password to log in to Cobbler.
+		// The password to log in to Cobbler.
 
-	password: string
+		password: string
 
-	// Port number to be used for REST connection.
-	// The default value depends on parameter C(use_ssl).
+		// Port number to be used for REST connection.
+		// The default value depends on parameter C(use_ssl).
 
-	port?: string
+		port?: string
 
-	// If C(no), an HTTP connection will be used instead of the default HTTPS connection.
+		// If C(no), an HTTP connection will be used instead of the default HTTPS connection.
 
-	use_ssl?: bool
+		use_ssl?: bool
 
-	// The username to log in to Cobbler.
+		// The username to log in to Cobbler.
 
-	username?: string
+		username?: string
 
-	// If C(no), SSL certificates will not be validated.
-	// This should only set to C(no) when used on personally controlled sites using self-signed certificates.
+		// If C(no), SSL certificates will not be validated.
+		// This should only set to C(no) when used on personally controlled sites using self-signed certificates.
 
-	validate_certs?: bool
+		validate_certs?: bool
+	}
 }
 
 cobbler_system :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	cobbler_system: {
 
-	// Whether the system should be present, absent or a query is made.
+		// A dictionary with system properties.
 
-	state?: string
+		properties?: string
 
-	// The username to log in to Cobbler.
+		// Sync on changes.
+		// Concurrently syncing Cobbler is bound to fail.
 
-	username?: string
+		sync?: bool
 
-	// If C(no), SSL certificates will not be validated.
-	// This should only set to C(no) when used on personally controlled sites using self-signed certificates.
+		// The username to log in to Cobbler.
 
-	validate_certs?: bool
+		username?: string
 
-	// The name or IP address of the Cobbler system.
+		// If C(no), SSL certificates will not be validated.
+		// This should only set to C(no) when used on personally controlled sites using self-signed certificates.
 
-	host?: string
+		validate_certs?: bool
 
-	// The system name to manage.
+		// The system name to manage.
 
-	name?: string
+		name?: string
 
-	// Port number to be used for REST connection.
-	// The default value depends on parameter C(use_ssl).
+		// Port number to be used for REST connection.
+		// The default value depends on parameter C(use_ssl).
 
-	port?: string
+		port?: string
 
-	// A dictionary with system properties.
+		// The password to log in to Cobbler.
 
-	properties?: string
+		password: string
 
-	// A list of dictionaries containing interface options.
+		// Whether the system should be present, absent or a query is made.
 
-	interfaces?: string
+		state?: string
 
-	// The password to log in to Cobbler.
+		// If C(no), an HTTP connection will be used instead of the default HTTPS connection.
 
-	password: string
+		use_ssl?: bool
 
-	// Sync on changes.
-	// Concurrently syncing Cobbler is bound to fail.
+		// The name or IP address of the Cobbler system.
 
-	sync?: bool
+		host?: string
 
-	// If C(no), an HTTP connection will be used instead of the default HTTPS connection.
+		// A list of dictionaries containing interface options.
 
-	use_ssl?: bool
+		interfaces?: string
+	}
 }
 
 wakeonlan :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	wakeonlan: {
 
-	// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
+		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
 
-	broadcast?: string
+		broadcast?: string
 
-	// MAC address to send Wake-on-LAN broadcast packet for.
+		// MAC address to send Wake-on-LAN broadcast packet for.
 
-	mac: string
+		mac: string
 
-	// UDP port to use for magic Wake-on-LAN packet.
+		// UDP port to use for magic Wake-on-LAN packet.
 
-	port?: string
+		port?: string
+	}
 }

@@ -1,52 +1,58 @@
 package cloudvision
 
 cv_server_provision :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	cv_server_provision: {
 
-	// The port number to use when making API calls to the CVP node. This will default to the default port for the specified protocol. Port 80 for http and port 443 for https.
+		// The action for the module to take. The actions are add, which applies the specified template config to port, remove, which defaults the specified interface configuration, and show, which will return the current port configuration with no changes.
 
-	port?: string
+		action?: string
 
-	// The hostname or identifier for the server that is having it's switch port provisioned.
+		// The hostname or IP address of the CVP node being connected to.
 
-	server_name: string
+		host: string
 
-	// A path to a Jinja formatted template file that contains the configuration block that will be applied to the specified switch port. This template will have variable fields replaced by the module before being applied to the switch configuration.
+		// The password of the user that will be used to connect to CVP for API calls.
 
-	template: string
+		password: string
 
-	// The user that will be used to connect to CVP for making API calls.
+		// The vlan that should be applied to the port for this server. This parameter is dependent on a proper template that supports single vlan provisioning with it. If a port vlan is specified by the template specified does not support this the module will exit out with no changes. If a template is specified that requires a port vlan but no port vlan is specified the module will exit out with no changes.
 
-	username: string
+		port_vlan?: string
 
-	// Flag that determines whether or not the module will execute the CVP task spawned as a result of changes to a switch configlet. When an add or remove action is taken which results in a change to a switch configlet, CVP will spawn a task that needs to be executed for the configuration to be applied to the switch. If this option is True then the module will determined the task number created by the configuration change, execute it and wait for the task to complete. If the option is False then the task will remain in the Pending state in CVP for a network administrator to review and execute.
+		// The protocol to use when making API calls to CVP. CVP defaults to https and newer versions of CVP no longer support http.
 
-	auto_run?: bool
+		protocol?: string
 
-	// The hostname or IP address of the CVP node being connected to.
+		// The hostname or identifier for the server that is having it's switch port provisioned.
 
-	host: string
+		server_name: string
 
-	// The vlan that should be applied to the port for this server. This parameter is dependent on a proper template that supports single vlan provisioning with it. If a port vlan is specified by the template specified does not support this the module will exit out with no changes. If a template is specified that requires a port vlan but no port vlan is specified the module will exit out with no changes.
+		// The user that will be used to connect to CVP for making API calls.
 
-	port_vlan?: string
+		username: string
 
-	// The protocol to use when making API calls to CVP. CVP defaults to https and newer versions of CVP no longer support http.
+		// Flag that determines whether or not the module will execute the CVP task spawned as a result of changes to a switch configlet. When an add or remove action is taken which results in a change to a switch configlet, CVP will spawn a task that needs to be executed for the configuration to be applied to the switch. If this option is True then the module will determined the task number created by the configuration change, execute it and wait for the task to complete. If the option is False then the task will remain in the Pending state in CVP for a network administrator to review and execute.
 
-	protocol?: string
+		auto_run?: bool
 
-	// The hostname of the switch is being configured for the server being provisioned.
+		// The port number to use when making API calls to the CVP node. This will default to the default port for the specified protocol. Port 80 for http and port 443 for https.
 
-	switch_name: string
+		port?: string
 
-	// The physical port number on the switch that the new server is connected to.
+		// The hostname of the switch is being configured for the server being provisioned.
 
-	switch_port: string
+		switch_name: string
 
-	// The action for the module to take. The actions are add, which applies the specified template config to port, remove, which defaults the specified interface configuration, and show, which will return the current port configuration with no changes.
+		// The physical port number on the switch that the new server is connected to.
 
-	action?: string
+		switch_port: string
 
-	// The password of the user that will be used to connect to CVP for API calls.
+		// A path to a Jinja formatted template file that contains the configuration block that will be applied to the specified switch port. This template will have variable fields replaced by the module before being applied to the switch configuration.
 
-	password: string
+		template: string
+	}
 }

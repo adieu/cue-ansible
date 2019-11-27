@@ -1,840 +1,941 @@
 package exoscale
 
-haproxy :: {
+nmcli :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	nmcli: {
 
-	// Name of the HAProxy backend pool.
-	// If this parameter is unset, it will be auto-detected.
+		// This is only used with bond - ARP interval.
 
-	backend?: string
+		arp_interval?: int
 
-	// Wait until the server has no active connections or until the timeout determined by wait_interval and wait_retries is reached.
-	// Continue only after the status changes to 'MAINT'.
-	// This overrides the shutdown_sessions option.
+		// DHCP Client Identifier sent to the DHCP server.
 
-	drain?: bool
+		dhcp_client_id?: string
 
-	// Name of the backend host to change.
+		// This is only used with bond - downdelay.
 
-	host: string
+		downdelay?: int
 
-	// Number of seconds to wait between retries.
+		// This is only used with bridge - [hello-time <1-10>] STP hello time, in seconds.
 
-	wait_interval?: int
+		hellotime?: int
 
-	// The value passed in argument.
-	// If the value ends with the `%` sign, then the new weight will be relative to the initially configured weight.
-	// Relative weights are only permitted between 0 and 100% and absolute weights are permitted between 0 and 256.
+		// This is only used with VLAN - VLAN ingress priority mapping.
 
-	weight?: string
+		ingress?: string
 
-	// Fail whenever trying to enable/disable a backend host that does not exist
+		// This is the type of device or network connection that you wish to create for a bond, team or bridge.
 
-	fail_on_not_found?: bool
+		mode?: string
 
-	// When disabling a server, immediately terminate all the sessions attached to the specified server.
-	// This can be used to terminate long-running sessions after a server is put into maintenance mode. Overridden by the drain option.
+		// This is only used with bond - updelay.
 
-	shutdown_sessions?: bool
+		updelay?: int
 
-	// Path to the HAProxy socket file.
+		// This is only used with bridge - [ageing-time <0-1000000>] the Ethernet MAC address aging time, in seconds.
 
-	socket?: string
+		ageingtime?: int
 
-	// Desired state of the provided backend host.
-	// Note that C(drain) state was added in version 2.4.
-	// It is supported only by HAProxy version 1.5 or later,
-	// When used on versions < 1.5, it will be ignored.
+		// This is only used with bridge and controls whether Spanning Tree Protocol (STP) is enabled for this bridge.
 
-	state: string
+		stp?: bool
 
-	// Wait until the server reports a status of 'UP' when C(state=enabled), status of 'MAINT' when C(state=disabled) or status of 'DRAIN' when C(state=drain)
+		// This is only used with VLAN - flags.
 
-	wait?: bool
+		flags?: string
 
-	// Number of times to check for status after changing the state.
+		// This is only used with bond - ARP IP target.
 
-	wait_retries?: int
-}
+		arp_ip_target?: string
 
-exo_dns_record :: {
+		// A list of up to 3 dns servers.
+		// IPv4 format e.g. to add two IPv4 DNS server addresses, use C(192.0.2.53 198.51.100.53).
 
-	// Type of the record.
+		dns4?: [...]
 
-	record_type?: string
+		// A list of DNS search domains.
 
-	// State of the record.
+		dns4_search?: [...]
 
-	state?: string
+		// The interface to bind the connection to.
+		// The connection will only be applicable to this interface name.
+		// A special value of C('*') can be used for interface-independent connections.
+		// The ifname argument is mandatory for all connection types except bond, team, bridge and vlan.
+		// This parameter defaults to C(conn_name) when left unset.
 
-	// TTL of the record in seconds.
+		ifname?: string
 
-	ttl?: int
+		// This is used with IPIP/SIT - IPIP/SIT destination IP address.
 
-	// Content of the record.
-	// Required if C(state=present) or C(multiple=yes).
+		ip_tunnel_remote?: string
 
-	content?: string
+		// This is only used with bond - miimon.
+		// This parameter defaults to C(100) when unset.
 
-	// Domain the record is related to.
+		miimon?: int
 
-	domain: string
+		// This is only used with VXLAN - VXLAN local IP address.
 
-	// Whether there are more than one records with similar I(name) and I(record_type).
-	// Only allowed for a few record types, e.g. C(record_type=A), C(record_type=NS) or C(record_type=MX).
-	// I(content) will not be updated, instead it is used as a key to find existing records.
+		vxlan_local?: string
 
-	multiple?: bool
+		// Whether the connection should start on boot.
+		// Whether the connection profile can be automatically activated
 
-	// Name of the record.
+		autoconnect?: bool
 
-	name?: string
+		// This is only used with VLAN - VLAN egress priority mapping.
 
-	// Priority of the record.
+		egress?: string
 
-	prio?: int
-}
+		// The IPv4 gateway for this interface.
+		// Use the format C(192.0.2.1).
 
-ipinfoio_facts :: {
+		gw4?: string
 
-	// Set http user agent
+		// The IPv6 gateway for this interface.
+		// Use the format C(2001:db8::1).
 
-	http_agent?: string
+		gw6?: string
 
-	// HTTP connection timeout in seconds
+		// Master <master (ifname, or connection UUID or conn_name) of bridge, team, bond master connection profile.
 
-	timeout?: string
-}
+		master?: string
 
-lldp :: {
+		// This is only used with bond and is the primary interface name (for "active-backup" mode), this is the usually the 'ifname'.
+
+		primary?: string
+
+		// Whether the device should exist or not, taking action if the state is different from what is stated.
+
+		state: string
+
+		// This is only used with VLAN - VLAN ID in range <0-4095>.
+
+		vlanid?: int
+
+		// A list of up to 3 dns servers.
+		// IPv6 format e.g. to add two IPv6 DNS server addresses, use C(2001:4860:4860::8888 2001:4860:4860::8844).
+
+		dns6?: [...]
+
+		// A list of DNS search domains.
+
+		dns6_search?: [...]
+
+		// This is only used with bridge - [forward-delay <2-30>] STP forwarding delay, in seconds.
+
+		forwarddelay?: int
+
+		// The connection MTU, e.g. 9000. This can't be applied when creating the interface and is done once the interface has been created.
+		// Can be used when modifying Team, VLAN, Ethernet (Future plans to implement wifi, pppoe, infiniband)
+		// This parameter defaults to C(1500) when unset.
+
+		mtu?: int
+
+		// This is only used with 'bridge-slave' - [<1-65535>] - STP port cost for destinations via this slave.
+
+		path_cost?: int
+
+		// This is only used with 'bridge' - sets STP priority.
+
+		priority?: int
+
+		// This is the type of device or network connection that you wish to create or modify.
+		// Type C(generic) is added in Ansible 2.5.
+
+		type?: string
+
+		// This is only used with VXLAN - VXLAN ID.
+
+		vxlan_id?: int
+
+		// The name used to call the connection. Pattern is <type>[-<ifname>][-<num>].
+
+		conn_name: string
+
+		// This is only used with VLAN - parent device this VLAN is on, can use ifname.
+
+		vlandev?: string
+
+		// This is used with IPIP/SIT - parent device this IPIP/SIT tunnel, can use ifname.
+
+		ip_tunnel_dev?: string
+
+		// This is used with IPIP/SIT - IPIP/SIT local IP address.
+
+		ip_tunnel_local?: string
+
+		// The IPv4 address to this interface.
+		// Use the format C(192.0.2.24/24).
+
+		ip4?: string
+
+		// The IPv6 address to this interface.
+		// Use the format C(abbe::cafe).
+
+		ip6?: string
+
+		// This is only used with bridge - MAC address of the bridge.
+		// Note this requires a recent kernel feature, originally introduced in 3.15 upstream kernel.
+
+		mac?: string
+
+		// This is only used with bridge - [max-age <6-42>] STP maximum message age, in seconds.
+
+		maxage?: int
+
+		// This is only used with 'bridge-slave' - [<0-63>] - STP priority of this slave.
+
+		slavepriority?: int
+
+		// This is only used with VXLAN - VXLAN destination IP address.
+
+		vxlan_remote?: string
+
+		// This is only used with 'bridge-slave' - 'hairpin mode' for the slave, which allows frames to be sent back out through the slave the frame was received on.
+
+		hairpin?: bool
+	}
 }
 
 nsupdate :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	nsupdate: {
 
-	// Sets the record TTL.
+		// Sets the transport protocol (TCP or UDP). TCP is the recommended and a more robust option.
 
-	ttl?: string
+		protocol?: string
 
-	// Use TSIG key name to authenticate against DNS C(server)
+		// Sets the DNS record to modify. When zone is omitted this has to be absolute (ending with a dot).
 
-	key_name?: string
+		record: string
 
-	// Use this TCP port when connecting to C(server).
+		// Manage DNS record.
 
-	port?: string
+		state?: string
 
-	// Sets the transport protocol (TCP or UDP). TCP is the recommended and a more robust option.
+		// Sets the record TTL.
 
-	protocol?: string
+		ttl?: string
 
-	// Manage DNS record.
+		// Sets the record type.
 
-	state?: string
+		type?: string
 
-	// Sets the record type.
+		// Sets the record value.
 
-	type?: string
+		value?: string
 
-	// Sets the record value.
+		// DNS record will be modified on this C(zone).
+		// When omitted DNS will be queried to attempt finding the correct zone.
+		// Starting with Ansible 2.7 this parameter is optional.
 
-	value?: string
+		zone?: string
 
-	// DNS record will be modified on this C(zone).
-	// When omitted DNS will be queried to attempt finding the correct zone.
-	// Starting with Ansible 2.7 this parameter is optional.
+		// Use this TCP port when connecting to C(server).
 
-	zone?: string
+		port?: string
 
-	// Specify key algorithm used by C(key_secret).
+		// Use TSIG key name to authenticate against DNS C(server)
 
-	key_algorithm?: string
+		key_name?: string
 
-	// Use TSIG key secret, associated with C(key_name), to authenticate against C(server)
+		// Use TSIG key secret, associated with C(key_name), to authenticate against C(server)
 
-	key_secret?: string
+		key_secret?: string
 
-	// Sets the DNS record to modify. When zone is omitted this has to be absolute (ending with a dot).
+		// Apply DNS modification on this server.
 
-	record: string
+		server: string
 
-	// Apply DNS modification on this server.
+		// Specify key algorithm used by C(key_secret).
 
-	server: string
-}
-
-dnsmadeeasy :: {
-
-	// Quaternary IP address for the failover.
-
-	ip4?: string
-
-	// Port used by the monitor.
-
-	port: string
-
-	// record's "Time to live".  Number of seconds the record remains cached in DNS servers.
-
-	record_ttl?: string
-
-	// Domain to work with. Can be the domain name (e.g. "mydomain.com") or the numeric ID of the domain in DNS Made Easy (e.g. "839989") for faster resolution
-
-	domain: string
-
-	// The string in the httpFile that the monitor queries for HTTP or HTTPS.
-
-	httpQueryString?: string
-
-	// whether the record should exist or not
-
-	state: string
-
-	// Record name to get/create/delete/update. If record_name is not specified; all records for the domain will be returned in "result" regardless of the state argument.
-
-	record_name?: string
-
-	// Record type.
-
-	record_type?: string
-
-	// Secondary IP address for the failover.
-	// Required if adding or changing the failover.
-
-	ip2?: string
-
-	// Tertiary IP address for the failover.
-
-	ip3?: string
-
-	// If C(yes), add or change the monitor.  This is applicable only for A records.
-
-	monitor?: bool
-
-	// Protocol used by the monitor.
-
-	protocol: string
-
-	// Quinary IP address for the failover.
-
-	ip5?: string
-
-	// Number of emails sent to the contact list by the monitor.
-
-	maxEmails: string
-
-	// Account Secret Key.
-
-	account_secret: string
-
-	// The fully qualified domain name used by the monitor.
-
-	httpFqdn?: string
-
-	// Name or id of the contact list that the monitor will notify.
-	// The default C('') means the Account Owner.
-
-	contactList: string
-
-	// Primary IP address for the failover.
-	// Required if adding or changing the monitor or failover.
-
-	ip1?: string
-
-	// Number of checks the monitor performs before a failover occurs where Low = 8, Medium = 5,and High = 3.
-
-	sensitivity: string
-
-	// If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
-
-	validate_certs?: bool
-
-	// If true, fallback to the primary IP address is manual after a failover.
-	// If false, fallback to the primary IP address is automatic after a failover.
-
-	autoFailover?: bool
-
-	// If C(yes), add or change the failover.  This is applicable only for A records.
-
-	failover?: bool
-
-	// The file at the Fqdn that the monitor queries for HTTP or HTTPS.
-
-	httpFile?: string
-
-	// Decides if the sandbox API should be used. Otherwise (default) the production API of DNS Made Easy is used.
-
-	sandbox?: bool
-
-	// Account API Key.
-
-	account_key: string
-
-	// Record value. HTTPRED: <redirection URL>, MX: <priority> <target name>, NS: <name server>, PTR: <target name>, SRV: <priority> <weight> <port> <target name>, TXT: <text value>"
-
-	// If record_value is not specified; no changes will be made and the record will be returned in 'result' (in other words, this module can be used to fetch a record's current id, type, and ttl)
-
-
-	record_value?: string
-
-	// Description used by the monitor.
-
-	systemDescription: string
-}
-
-exo_dns_domain :: {
-
-	// Name of the record.
-
-	name: string
-
-	// State of the resource.
-
-	state?: string
-}
-
-hetzner_failover_ip_info :: {
-
-	// The failover IP address.
-
-	failover_ip: string
-}
-
-nmcli :: {
-
-	// This is only used with bridge - [forward-delay <2-30>] STP forwarding delay, in seconds.
-
-	forwarddelay?: int
-
-	// This is only used with bond and is the primary interface name (for "active-backup" mode), this is the usually the 'ifname'.
-
-	primary?: string
-
-	// This is only used with 'bridge-slave' - [<0-63>] - STP priority of this slave.
-
-	slavepriority?: int
-
-	// This is only used with VXLAN - VXLAN ID.
-
-	vxlan_id?: int
-
-	// This is only used with bridge - [ageing-time <0-1000000>] the Ethernet MAC address aging time, in seconds.
-
-	ageingtime?: int
-
-	// This is only used with VLAN - VLAN egress priority mapping.
-
-	egress?: string
-
-	// This is only used with VLAN - flags.
-
-	flags?: string
-
-	// This is only used with bridge - MAC address of the bridge.
-	// Note this requires a recent kernel feature, originally introduced in 3.15 upstream kernel.
-
-	mac?: string
-
-	// Master <master (ifname, or connection UUID or conn_name) of bridge, team, bond master connection profile.
-
-	master?: string
-
-	// The IPv6 gateway for this interface.
-	// Use the format C(2001:db8::1).
-
-	gw6?: string
-
-	// This is used with IPIP/SIT - IPIP/SIT local IP address.
-
-	ip_tunnel_local?: string
-
-	// This is only used with bond - miimon.
-	// This parameter defaults to C(100) when unset.
-
-	miimon?: int
-
-	// The connection MTU, e.g. 9000. This can't be applied when creating the interface and is done once the interface has been created.
-	// Can be used when modifying Team, VLAN, Ethernet (Future plans to implement wifi, pppoe, infiniband)
-	// This parameter defaults to C(1500) when unset.
-
-	mtu?: int
-
-	// This is only used with VXLAN - VXLAN local IP address.
-
-	vxlan_local?: string
-
-	// This is only used with bridge and controls whether Spanning Tree Protocol (STP) is enabled for this bridge.
-
-	stp?: bool
-
-	// This is the type of device or network connection that you wish to create or modify.
-	// Type C(generic) is added in Ansible 2.5.
-
-	type?: string
-
-	// A list of DNS search domains.
-
-	dns6_search?: [..._]
-
-	// The IPv4 gateway for this interface.
-	// Use the format C(192.0.2.1).
-
-	gw4?: string
-
-	// This is only used with bridge - [max-age <6-42>] STP maximum message age, in seconds.
-
-	maxage?: int
-
-	// This is only used with 'bridge' - sets STP priority.
-
-	priority?: int
-
-	// Whether the device should exist or not, taking action if the state is different from what is stated.
-
-	state: string
-
-	// This is only used with bond - ARP IP target.
-
-	arp_ip_target?: string
-
-	// A list of up to 3 dns servers.
-	// IPv4 format e.g. to add two IPv4 DNS server addresses, use C(192.0.2.53 198.51.100.53).
-
-	dns4?: [..._]
-
-	// This is only used with bridge - [hello-time <1-10>] STP hello time, in seconds.
-
-	hellotime?: int
-
-	// This is only used with VLAN - VLAN ingress priority mapping.
-
-	ingress?: string
-
-	// This is only used with VLAN - VLAN ID in range <0-4095>.
-
-	vlanid?: int
-
-	// Whether the connection should start on boot.
-	// Whether the connection profile can be automatically activated
-
-	autoconnect?: bool
-
-	// DHCP Client Identifier sent to the DHCP server.
-
-	dhcp_client_id?: string
-
-	// The interface to bind the connection to.
-	// The connection will only be applicable to this interface name.
-	// A special value of C('*') can be used for interface-independent connections.
-	// The ifname argument is mandatory for all connection types except bond, team, bridge and vlan.
-	// This parameter defaults to C(conn_name) when left unset.
-
-	ifname?: string
-
-	// This is only used with 'bridge-slave' - [<1-65535>] - STP port cost for destinations via this slave.
-
-	path_cost?: int
-
-	// This is only used with bond - updelay.
-
-	updelay?: int
-
-	// This is the type of device or network connection that you wish to create for a bond, team or bridge.
-
-	mode?: string
-
-	// This is only used with VLAN - parent device this VLAN is on, can use ifname.
-
-	vlandev?: string
-
-	// The name used to call the connection. Pattern is <type>[-<ifname>][-<num>].
-
-	conn_name: string
-
-	// A list of up to 3 dns servers.
-	// IPv6 format e.g. to add two IPv6 DNS server addresses, use C(2001:4860:4860::8888 2001:4860:4860::8844).
-
-	dns6?: [..._]
-
-	// This is only used with 'bridge-slave' - 'hairpin mode' for the slave, which allows frames to be sent back out through the slave the frame was received on.
-
-	hairpin?: bool
-
-	// This is used with IPIP/SIT - IPIP/SIT destination IP address.
-
-	ip_tunnel_remote?: string
-
-	// The IPv6 address to this interface.
-	// Use the format C(abbe::cafe).
-
-	ip6?: string
-
-	// This is only used with VXLAN - VXLAN destination IP address.
-
-	vxlan_remote?: string
-
-	// This is only used with bond - ARP interval.
-
-	arp_interval?: int
-
-	// A list of DNS search domains.
-
-	dns4_search?: [..._]
-
-	// This is only used with bond - downdelay.
-
-	downdelay?: int
-
-	// This is used with IPIP/SIT - parent device this IPIP/SIT tunnel, can use ifname.
-
-	ip_tunnel_dev?: string
-
-	// The IPv4 address to this interface.
-	// Use the format C(192.0.2.24/24).
-
-	ip4?: string
+		key_algorithm?: string
+	}
 }
 
 omapi_host :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	omapi_host: {
 
-	// Sets OMAPI server host to interact with.
+		// Enable dynamic DNS updates for this host.
 
-	host?: string
+		ddns?: bool
 
-	// Sets the lease host IP address.
+		// Sets the TSIG key content for authenticating against OMAPI server.
 
-	ip?: string
+		key: string
 
-	// Sets the TSIG key content for authenticating against OMAPI server.
+		// Attach a list of OMAPI DHCP statements with host lease (without ending semicolon).
 
-	key: string
+		statements?: [...]
 
-	// Sets the TSIG key name for authenticating against OMAPI server.
+		// Sets OMAPI server host to interact with.
 
-	key_name: string
+		host?: string
 
-	// Sets the lease host MAC address.
+		// Sets the host lease hostname (mandatory if state=present).
 
-	macaddr: string
+		hostname?: string
 
-	// Attach a list of OMAPI DHCP statements with host lease (without ending semicolon).
+		// Sets the lease host IP address.
 
-	statements?: [..._]
+		ip?: string
 
-	// Enable dynamic DNS updates for this host.
+		// Sets the TSIG key name for authenticating against OMAPI server.
 
-	ddns?: bool
+		key_name: string
 
-	// Sets the host lease hostname (mandatory if state=present).
+		// Sets the lease host MAC address.
 
-	hostname?: string
+		macaddr: string
 
-	// Sets the OMAPI server port to interact with.
+		// Sets the OMAPI server port to interact with.
 
-	port?: int
+		port?: int
 
-	// Create or remove OMAPI host.
+		// Create or remove OMAPI host.
 
-	state: string
+		state: string
+	}
 }
 
-cloudflare_dns :: {
+exo_dns_record :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	exo_dns_record: {
 
-	// Account email. Required for api keys authentication.
+		// State of the record.
 
-	account_email?: string
+		state?: string
 
-	// Whether the record(s) should exist or not.
+		// TTL of the record in seconds.
 
-	state?: string
+		ttl?: int
 
-	// The name of the Zone to work with (e.g. "example.com").
-	// The Zone must already exist.
+		// Content of the record.
+		// Required if C(state=present) or C(multiple=yes).
 
-	zone: string
+		content?: string
 
-	// Account API key.
-	// Required for api keys authentication.
-	// You can obtain your API key from the bottom of the Cloudflare 'My Account' page, found here: U(https://dash.cloudflare.com/)
+		// Domain the record is related to.
 
-	account_api_key?: string
+		domain: string
 
-	// Certificate usage number.
-	// Required for C(type=TLSA) when C(state=present).
+		// Whether there are more than one records with similar I(name) and I(record_type).
+		// Only allowed for a few record types, e.g. C(record_type=A), C(record_type=NS) or C(record_type=MX).
+		// I(content) will not be updated, instead it is used as a key to find existing records.
 
-	cert_usage?: int
+		multiple?: bool
 
-	// Hash type number.
-	// Required for C(type=DS), C(type=SSHFP) and C(type=TLSA) when C(state=present).
+		// Name of the record.
 
-	hash_type?: int
+		name?: string
 
-	// DNSSEC key tag.
-	// Needed for C(type=DS) when C(state=present).
+		// Priority of the record.
 
-	key_tag?: int
+		prio?: int
 
-	// Proxy through Cloudflare network or just use DNS.
+		// Type of the record.
 
-	proxied?: bool
+		record_type?: string
+	}
+}
 
-	// Record to add.
-	// Required if C(state=present).
-	// Default is C(@) (e.g. the zone name).
+dnsmadeeasy :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	dnsmadeeasy: {
 
-	record?: string
+		// The file at the Fqdn that the monitor queries for HTTP or HTTPS.
 
-	// API token.
-	// Required for api token authentication.
-	// You can obtain your API token from the bottom of the Cloudflare 'My Account' page, found here: U(https://dash.cloudflare.com/)
+		httpFile?: string
 
-	api_token?: string
+		// The fully qualified domain name used by the monitor.
 
-	// Selector number.
-	// Required for C(type=TLSA) when C(state=present).
+		httpFqdn?: string
 
-	selector?: int
+		// Number of emails sent to the contact list by the monitor.
 
-	// Whether the record should be the only one for that record type and record name.
-	// Only use with C(state=present).
-	// This will delete all other records with the same record name and type.
+		maxEmails: string
 
-	solo?: bool
+		// Number of checks the monitor performs before a failover occurs where Low = 8, Medium = 5,and High = 3.
 
-	// Timeout for Cloudflare API calls.
+		sensitivity: string
 
-	timeout?: int
+		// Description used by the monitor.
 
-	// The TTL to give the new record.
-	// Must be between 120 and 2,147,483,647 seconds, or 1 for automatic.
+		systemDescription: string
 
-	ttl?: int
+		// Record value. HTTPRED: <redirection URL>, MX: <priority> <target name>, NS: <name server>, PTR: <target name>, SRV: <priority> <weight> <port> <target name>, TXT: <text value>"
 
-	// The type of DNS record to create. Required if C(state=present).
-	// C(type=DS), C(type=SSHFP) and C(type=TLSA) added in Ansible 2.7.
+		// If record_value is not specified; no changes will be made and the record will be returned in 'result' (in other words, this module can be used to fetch a record's current id, type, and ttl)
 
-	type?: string
+		record_value?: string
 
-	// The record value.
-	// Required for C(state=present).
+		// If true, fallback to the primary IP address is manual after a failover.
+		// If false, fallback to the primary IP address is automatic after a failover.
 
-	value?: string
+		autoFailover?: bool
 
-	// Service weight.
-	// Required for C(type=SRV).
+		// Tertiary IP address for the failover.
 
-	weight?: int
+		ip3?: string
 
-	// Algorithm number.
-	// Required for C(type=DS) and C(type=SSHFP) when C(state=present).
+		// Quinary IP address for the failover.
 
-	algorithm?: int
+		ip5?: string
 
-	// Record priority.
-	// Required for C(type=MX) and C(type=SRV)
+		// Record type.
 
-	priority?: string
+		record_type?: string
 
-	// Service protocol. Required for C(type=SRV) and C(type=TLSA).
-	// Common values are TCP and UDP.
-	// Before Ansible 2.6 only TCP and UDP were available.
+		// Account Secret Key.
 
-	proto?: string
+		account_secret: string
 
-	// Record service.
-	// Required for C(type=SRV)
+		// Quaternary IP address for the failover.
 
-	service?: string
+		ip4?: string
 
-	// Service port.
-	// Required for C(type=SRV) and C(type=TLSA).
+		// Decides if the sandbox API should be used. Otherwise (default) the production API of DNS Made Easy is used.
 
-	port?: int
+		sandbox?: bool
+
+		// whether the record should exist or not
+
+		state: string
+
+		// Account API Key.
+
+		account_key: string
+
+		// Domain to work with. Can be the domain name (e.g. "mydomain.com") or the numeric ID of the domain in DNS Made Easy (e.g. "839989") for faster resolution
+
+		domain: string
+
+		// Name or id of the contact list that the monitor will notify.
+		// The default C('') means the Account Owner.
+
+		contactList: string
+
+		// If C(yes), add or change the failover.  This is applicable only for A records.
+
+		failover?: bool
+
+		// If C(yes), add or change the monitor.  This is applicable only for A records.
+
+		monitor?: bool
+
+		// Protocol used by the monitor.
+
+		protocol: string
+
+		// Primary IP address for the failover.
+		// Required if adding or changing the monitor or failover.
+
+		ip1?: string
+
+		// Secondary IP address for the failover.
+		// Required if adding or changing the failover.
+
+		ip2?: string
+
+		// Record name to get/create/delete/update. If record_name is not specified; all records for the domain will be returned in "result" regardless of the state argument.
+
+		record_name?: string
+
+		// If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
+
+		validate_certs?: bool
+
+		// The string in the httpFile that the monitor queries for HTTP or HTTPS.
+
+		httpQueryString?: string
+
+		// Port used by the monitor.
+
+		port: string
+
+		// record's "Time to live".  Number of seconds the record remains cached in DNS servers.
+
+		record_ttl?: string
+	}
+}
+
+exo_dns_domain :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	exo_dns_domain: {
+
+		// Name of the record.
+
+		name: string
+
+		// State of the resource.
+
+		state?: string
+	}
 }
 
 hetzner_failover_ip :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	hetzner_failover_ip: {
 
-	// The new value for the failover IP address.
-	// Required when setting I(state) to C(routed).
+		// The failover IP address.
 
-	value?: string
+		failover_ip: string
 
-	// The failover IP address.
+		// Defines whether the IP will be routed or not.
+		// If set to C(routed), I(value) must be specified.
 
-	failover_ip: string
+		state?: string
 
-	// Defines whether the IP will be routed or not.
-	// If set to C(routed), I(value) must be specified.
+		// Timeout to use when routing or unrouting the failover IP.
+		// Note that the API call returns when the failover IP has been successfully routed to the new address, respectively successfully unrouted.
 
-	state?: string
+		timeout?: int
 
-	// Timeout to use when routing or unrouting the failover IP.
-	// Note that the API call returns when the failover IP has been successfully routed to the new address, respectively successfully unrouted.
+		// The new value for the failover IP address.
+		// Required when setting I(state) to C(routed).
 
-	timeout?: int
-}
-
-ip_netns :: {
-
-	// Name of the namespace
-
-	name?: string
-
-	// Whether the namespace should exist
-
-	state?: string
+		value?: string
+	}
 }
 
 ipify_facts :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	ipify_facts: {
 
-	// URL of the ipify.org API service.
-	// C(?format=json) will be appended per default.
+		// URL of the ipify.org API service.
+		// C(?format=json) will be appended per default.
 
-	api_url?: string
+		api_url?: string
 
-	// HTTP connection timeout in seconds.
+		// HTTP connection timeout in seconds.
 
-	timeout?: int
+		timeout?: int
 
-	// When set to C(NO), SSL certificates will not be validated.
+		// When set to C(NO), SSL certificates will not be validated.
 
-	validate_certs?: bool
+		validate_certs?: bool
+	}
+}
+
+ipinfoio_facts :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	ipinfoio_facts: {
+
+		// Set http user agent
+
+		http_agent?: string
+
+		// HTTP connection timeout in seconds
+
+		timeout?: string
+	}
 }
 
 netcup_dns :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	netcup_dns: {
 
-	// Record type
+		// Record type
 
-	type: string
+		type: string
 
-	// API key for authentification, must be obtained via the netcup CCP (U(https://ccp.netcup.net))
+		// API password for authentification, must be obtained via the netcup CCP (https://ccp.netcup.net)
 
-	api_key: string
+		api_password: string
 
-	// Netcup customer id
+		// Netcup customer id
 
-	customer_id: string
+		customer_id: string
 
-	// Record to add or delete, supports wildcard (*). Default is C(@) (e.g. the zone name)
+		// Domainname the records should be added / removed
 
-	record?: string
+		domain: string
 
-	// Whether the record should be the only one for that record type and record name. Only use with C(state=present)
-	// This will delete all other records with the same record name and type.
+		// Whether the record should be the only one for that record type and record name. Only use with C(state=present)
+		// This will delete all other records with the same record name and type.
 
-	solo?: bool
+		solo?: bool
 
-	// Record value
+		// Whether the record should exist or not
 
-	value: string
+		state?: string
 
-	// API password for authentification, must be obtained via the netcup CCP (https://ccp.netcup.net)
+		// Record value
 
-	api_password: string
+		value: string
 
-	// Domainname the records should be added / removed
+		// API key for authentification, must be obtained via the netcup CCP (U(https://ccp.netcup.net))
 
-	domain: string
+		api_key: string
 
-	// Record priority. Required for C(type=MX)
+		// Record priority. Required for C(type=MX)
 
-	priority?: string
+		priority?: string
 
-	// Whether the record should exist or not
+		// Record to add or delete, supports wildcard (*). Default is C(@) (e.g. the zone name)
 
-	state?: string
+		record?: string
+	}
+}
+
+cloudflare_dns :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	cloudflare_dns: {
+
+		// Service protocol. Required for C(type=SRV) and C(type=TLSA).
+		// Common values are TCP and UDP.
+		// Before Ansible 2.6 only TCP and UDP were available.
+
+		proto?: string
+
+		// Proxy through Cloudflare network or just use DNS.
+
+		proxied?: bool
+
+		// The TTL to give the new record.
+		// Must be between 120 and 2,147,483,647 seconds, or 1 for automatic.
+
+		ttl?: int
+
+		// Service weight.
+		// Required for C(type=SRV).
+
+		weight?: int
+
+		// Account email. Required for api keys authentication.
+
+		account_email?: string
+
+		// Certificate usage number.
+		// Required for C(type=TLSA) when C(state=present).
+
+		cert_usage?: int
+
+		// Hash type number.
+		// Required for C(type=DS), C(type=SSHFP) and C(type=TLSA) when C(state=present).
+
+		hash_type?: int
+
+		// Service port.
+		// Required for C(type=SRV) and C(type=TLSA).
+
+		port?: int
+
+		// Record service.
+		// Required for C(type=SRV)
+
+		service?: string
+
+		// Whether the record should be the only one for that record type and record name.
+		// Only use with C(state=present).
+		// This will delete all other records with the same record name and type.
+
+		solo?: bool
+
+		// Whether the record(s) should exist or not.
+
+		state?: string
+
+		// The name of the Zone to work with (e.g. "example.com").
+		// The Zone must already exist.
+
+		zone: string
+
+		// Account API key.
+		// Required for api keys authentication.
+		// You can obtain your API key from the bottom of the Cloudflare 'My Account' page, found here: U(https://dash.cloudflare.com/)
+
+		account_api_key?: string
+
+		// Algorithm number.
+		// Required for C(type=DS) and C(type=SSHFP) when C(state=present).
+
+		algorithm?: int
+
+		// API token.
+		// Required for api token authentication.
+		// You can obtain your API token from the bottom of the Cloudflare 'My Account' page, found here: U(https://dash.cloudflare.com/)
+
+		api_token?: string
+
+		// Record priority.
+		// Required for C(type=MX) and C(type=SRV)
+
+		priority?: string
+
+		// Record to add.
+		// Required if C(state=present).
+		// Default is C(@) (e.g. the zone name).
+
+		record?: string
+
+		// Selector number.
+		// Required for C(type=TLSA) when C(state=present).
+
+		selector?: int
+
+		// The type of DNS record to create. Required if C(state=present).
+		// C(type=DS), C(type=SSHFP) and C(type=TLSA) added in Ansible 2.7.
+
+		type?: string
+
+		// DNSSEC key tag.
+		// Needed for C(type=DS) when C(state=present).
+
+		key_tag?: int
+
+		// Timeout for Cloudflare API calls.
+
+		timeout?: int
+
+		// The record value.
+		// Required for C(state=present).
+
+		value?: string
+	}
+}
+
+hetzner_failover_ip_info :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	hetzner_failover_ip_info: {
+
+		failover_ip: string
+
+		// The failover IP address.
+	}
+}
+
+ip_netns :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	ip_netns: {
+
+		// Name of the namespace
+
+		name?: string
+
+		// Whether the namespace should exist
+
+		state?: string
+	}
 }
 
 snmp_facts :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	snmp_facts: {
 
-	// Username for SNMPv3.
-	// Required if version is v3.
+		// Authentication level.
+		// Required if version is v3.
 
-	username?: string
+		level?: string
 
-	// Hashing algorithm.
-	// Required if version is v3.
+		// Encryption algorithm.
+		// Required if level is authPriv.
 
-	integrity?: string
+		privacy?: string
 
-	// Encryption key.
-	// Required if version is authPriv.
+		// Encryption key.
+		// Required if version is authPriv.
 
-	privkey?: string
+		privkey?: string
 
-	// Set to target snmp server (normally C({{ inventory_hostname }})).
+		// Hashing algorithm.
+		// Required if version is v3.
 
-	host: string
+		integrity?: string
 
-	// Authentication level.
-	// Required if version is v3.
+		// The SNMP community string, required if version is v2/v2c.
 
-	level?: string
+		community?: string
 
-	// Encryption algorithm.
-	// Required if level is authPriv.
+		// Set to target snmp server (normally C({{ inventory_hostname }})).
 
-	privacy?: string
+		host: string
 
-	// SNMP Version to use, v2/v2c or v3.
+		// Username for SNMPv3.
+		// Required if version is v3.
 
-	version: string
+		username?: string
 
-	// Authentication key.
-	// Required if version is v3.
+		// SNMP Version to use, v2/v2c or v3.
 
-	authkey?: string
+		version: string
 
-	// The SNMP community string, required if version is v2/v2c.
+		// Authentication key.
+		// Required if version is v3.
 
-	community?: string
+		authkey?: string
+	}
+}
+
+haproxy :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	haproxy: {
+
+		// Number of times to check for status after changing the state.
+
+		wait_retries?: int
+
+		// The value passed in argument.
+		// If the value ends with the `%` sign, then the new weight will be relative to the initially configured weight.
+		// Relative weights are only permitted between 0 and 100% and absolute weights are permitted between 0 and 256.
+
+		weight?: string
+
+		// Name of the HAProxy backend pool.
+		// If this parameter is unset, it will be auto-detected.
+
+		backend?: string
+
+		// Wait until the server has no active connections or until the timeout determined by wait_interval and wait_retries is reached.
+		// Continue only after the status changes to 'MAINT'.
+		// This overrides the shutdown_sessions option.
+
+		drain?: bool
+
+		// Number of seconds to wait between retries.
+
+		wait_interval?: int
+
+		// Path to the HAProxy socket file.
+
+		socket?: string
+
+		// Desired state of the provided backend host.
+		// Note that C(drain) state was added in version 2.4.
+		// It is supported only by HAProxy version 1.5 or later,
+		// When used on versions < 1.5, it will be ignored.
+
+		state: string
+
+		// Wait until the server reports a status of 'UP' when C(state=enabled), status of 'MAINT' when C(state=disabled) or status of 'DRAIN' when C(state=drain)
+
+		wait?: bool
+
+		// Fail whenever trying to enable/disable a backend host that does not exist
+
+		fail_on_not_found?: bool
+
+		// Name of the backend host to change.
+
+		host: string
+
+		// When disabling a server, immediately terminate all the sessions attached to the specified server.
+		// This can be used to terminate long-running sessions after a server is put into maintenance mode. Overridden by the drain option.
+
+		shutdown_sessions?: bool
+	}
+}
+
+lldp :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	lldp: {
+	}
 }
 
 dnsimple :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	dnsimple: {
 
-	// Account email. If omitted, the environment variables C(DNSIMPLE_EMAIL) and C(DNSIMPLE_API_TOKEN) will be looked for.
-	// If those aren't found, a C(.dnsimple) file will be looked for, see: U(https://github.com/mikemaccana/dnsimple-python#getting-started).
+		// whether the record should exist or not.
 
-	account_email?: string
+		state?: string
 
-	// Record priority.
+		// Account API token. See I(account_email) for more information.
 
-	priority?: int
+		account_api_token?: string
 
-	// Record to add, if blank a record for the domain will be created, supports the wildcard (*).
+		// Account email. If omitted, the environment variables C(DNSIMPLE_EMAIL) and C(DNSIMPLE_API_TOKEN) will be looked for.
+		// If those aren't found, a C(.dnsimple) file will be looked for, see: U(https://github.com/mikemaccana/dnsimple-python#getting-started).
 
-	record?: string
+		account_email?: string
 
-	// List of records to ensure they either exist or do not exist.
+		// Domain to work with. Can be the domain name (e.g. "mydomain.com") or the numeric ID of the domain in DNSimple.
+		// If omitted, a list of domains will be returned.
+		// If domain is present but the domain doesn't exist, it will be created.
 
-	record_ids?: [..._]
+		domain?: string
 
-	// Whether the record should be the only one for that record type and record name.
-	// Only use with C(state) is set to C(present) on a record.
+		// List of records to ensure they either exist or do not exist.
 
-	solo?: bool
+		record_ids?: [...]
 
-	// whether the record should exist or not.
+		// Whether the record should be the only one for that record type and record name.
+		// Only use with C(state) is set to C(present) on a record.
 
-	state?: string
+		solo?: bool
 
-	// The TTL to give the new record in seconds.
+		// Record priority.
 
-	ttl?: int
+		priority?: int
 
-	// Account API token. See I(account_email) for more information.
+		// Record to add, if blank a record for the domain will be created, supports the wildcard (*).
 
-	account_api_token?: string
+		record?: string
 
-	// Domain to work with. Can be the domain name (e.g. "mydomain.com") or the numeric ID of the domain in DNSimple.
-	// If omitted, a list of domains will be returned.
-	// If domain is present but the domain doesn't exist, it will be created.
+		// The TTL to give the new record in seconds.
 
-	domain?: string
+		ttl?: int
 
-	// The type of DNS record to create.
+		// The type of DNS record to create.
 
-	type?: string
+		type?: string
 
-	// Record value.
-	// Must be specified when trying to ensure a record exists.
+		// Record value.
+		// Must be specified when trying to ensure a record exists.
 
-	value?: string
+		value?: string
+	}
 }

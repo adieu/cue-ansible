@@ -1,311 +1,353 @@
 package proxysql
 
-proxysql_backend_servers :: {
-
-	// The ip address at which the mysqld instance can be contacted.
-
-	hostname: string
-
-	// Ping time is monitored regularly. If a host has a ping time greater than I(max_latency_ms) it is excluded from the connection pool (although the server stays ONLINE). If omitted the proxysql database default for I(max_latency_ms) is 0.
-
-	max_latency_ms?: string
-
-	// If greater than 0, ProxySQL will regularly monitor replication lag. If replication lag goes above I(max_replication_lag), proxysql will temporarily shun the server until replication catches up. If omitted the proxysql database default for I(max_replication_lag) is 0.
-
-	max_replication_lag?: string
-
-	// ONLINE - Backend server is fully operational. OFFLINE_SOFT - When a server is put into C(OFFLINE_SOFT) mode, connections are kept in use until the current transaction is completed. This allows to gracefully detach a backend. OFFLINE_HARD - When a server is put into C(OFFLINE_HARD) mode, the existing connections are dropped, while new incoming connections aren't accepted either.
-If omitted the proxysql database default for I(status) is C(ONLINE).
-
-	status?: string
-
-	// If I(use_ssl) is set to C(True), connections to this server will be made using SSL connections. If omitted the proxysql database default for I(use_ssl) is C(False).
-
-	use_ssl?: bool
-
-	// When C(present) - adds the host, when C(absent) - removes the host.
-
-	state?: string
-
-	// The bigger the weight of a server relative to other weights, the higher the probability of the server being chosen from the hostgroup. If omitted the proxysql database default for I(weight) is 1.
-
-	weight?: string
-
-	// Text field that can be used for any purposed defined by the user. Could be a description of what the host stores, a reminder of when the host was added or disabled, or a JSON processed by some checker script.
-
-	comment?: string
-
-	// If the value of I(compression) is greater than 0, new connections to that server will use compression. If omitted the proxysql database default for I(compression) is 0.
-
-	compression?: string
-
-	// The hostgroup in which this mysqld instance is included. An instance can be part of one or more hostgroups.
-
-	hostgroup_id?: string
-
-	// The maximum number of connections ProxySQL will open to this backend server. If omitted the proxysql database default for I(max_connections) is 1000.
-
-	max_connections?: string
-
-	// The port at which the mysqld instance can be contacted.
-
-	port?: string
-}
-
-proxysql_global_variables :: {
-
-	// Defines a value the variable specified using I(variable) should be set to.
-
-	value?: string
-
-	// Defines which variable should be returned, or if I(value) is specified which variable should be updated.
-
-	variable: string
-}
-
-proxysql_manage_config :: {
-
-	// The supplied I(action) combines with the supplied I(direction) to provide the semantics of how we want to move the I(config_settings) between the I(config_layers).
-
-	action: string
-
-	// RUNTIME - represents the in-memory data structures of ProxySQL used by the threads that are handling the requests. MEMORY - (sometimes also referred as main) represents the in-memory SQLite3 database. DISK - represents the on-disk SQLite3 database. CONFIG - is the classical config file. You can only LOAD FROM the config file.
-
-	config_layer: string
-
-	// The I(config_settings) specifies which configuration we're writing.
-
-	config_settings: string
-
-	// FROM - denotes we're reading values FROM the supplied I(config_layer) and writing to the next layer. TO - denotes we're reading from the previous layer and writing TO the supplied I(config_layer)."
-
-	direction: string
-}
-
-proxysql_mysql_users :: {
-
-	// If I(use_ssl) is set to C(True), connections by this user will be made using SSL connections. If omitted the proxysql database default for I(use_ssl) is C(False).
-
-	use_ssl?: bool
-
-	// If I(backend) is set to C(True), this (username, password) pair is used for authenticating to the ProxySQL instance.
-
-	backend?: bool
-
-	// If there is no matching rule for the queries sent by this user, the traffic it generates is sent to the specified hostgroup. If omitted the proxysql database default for I(use_ssl) is 0.
-
-	default_hostgroup?: string
-
-	// If I(fast_forward) is set to C(True), I(fast_forward) will bypass the query processing layer (rewriting, caching) and pass through the query directly as is to the backend server. If omitted the proxysql database default for I(fast_forward) is C(False).
-
-	fast_forward?: bool
-
-	// If I(frontend) is set to C(True), this (username, password) pair is used for authenticating to the mysqld servers against any hostgroup.
-
-	frontend?: bool
-
-	// The maximum number of connections ProxySQL will open to the backend for this user. If omitted the proxysql database default for I(max_connections) is 10000.
-
-	max_connections?: string
-
-	// Password of the user connecting to the mysqld or ProxySQL instance.
-
-	password?: string
-
-	// When C(present) - adds the user, when C(absent) - removes the user.
-
-	state?: string
-
-	// Name of the user connecting to the mysqld or ProxySQL instance.
-
-	username: string
-
-	// A user with I(active) set to C(False) will be tracked in the database, but will be never loaded in the in-memory data structures. If omitted the proxysql database default for I(active) is C(True).
-
-	active?: bool
-
-	// The schema to which the connection should change to by default.
-
-	default_schema?: string
-
-	// If this is set for the user with which the MySQL client is connecting to ProxySQL (thus a "frontend" user), transactions started within a hostgroup will remain within that hostgroup regardless of any other rules. If omitted the proxysql database default for I(transaction_persistent) is C(False).
-
-	transaction_persistent?: bool
-}
-
 proxysql_query_rules :: {
+	vars?:   {...}
+	when?:   string
+	tags?:   [...string]
+	notify?: string | [...string]
+	proxysql_query_rules: {
 
-	// The number of milliseconds for which to cache the result of the query. Note in ProxySQL 1.1 I(cache_ttl) was in seconds.
+		// If I(negate_match_pattern) is set to C(True), only queries not matching the query text will be considered as a match. This acts as a NOT operator in front of the regular expression matching against match_pattern.
 
-	cache_ttl?: string
+		negate_match_pattern?: bool
 
-	// Enables query mirroring. If set I(mirror_hostgroup) can be used to mirror queries to the same or different hostgroup.
+		// Number of milliseconds to delay the execution of the query. This is essentially a throttling mechanism and QoS, and allows a way to give priority to queries over others. This value is added to the mysql-default_query_delay global variable that applies to all queries.
 
-	mirror_hostgroup?: string
+		delay?: string
 
-	// Filtering criteria matching username.  If I(username) is non-NULL, a query will match only if the connection is made with the correct username.
+		// Match queries with a specific digest, as returned by stats_mysql_query_digest.digest.
 
-	username?: string
+		digest?: string
 
-	// Used in combination with I(flagIN) and apply to create chains of rules. When set, I(flagOUT) signifies the I(flagIN) to be used in the next chain of rules.
+		// Used in combination with I(flagIN) and apply to create chains of rules. When set, I(flagOUT) signifies the I(flagIN) to be used in the next chain of rules.
 
-	flagOUT?: string
+		flagOUT?: string
 
-	// This is the pattern with which to replace the matched pattern. Note that this is optional, and when omitted, the query processor will only cache, route, or set other parameters without rewriting.
+		// Enables query mirroring. If set I(mirror_flagOUT) can be used to evaluates the mirrored query against the specified chain of rules.
 
-	replace_pattern?: string
+		mirror_flagOUT?: string
 
-	// When C(present) - adds the rule, when C(absent) - removes the rule.
+		// The maximum timeout in milliseconds with which the matched or rewritten query should be executed. If a query run for longer than the specific threshold, the query is automatically killed. If timeout is not specified, the global variable mysql-default_query_timeout applies.
 
-	state?: string
+		timeout?: string
 
-	// Enables query mirroring. If set I(mirror_flagOUT) can be used to evaluates the mirrored query against the specified chain of rules.
+		// Used in combination with I(flagOUT) and I(apply) to create chains of rules.
 
-	mirror_flagOUT?: string
+		flagIN?: string
 
-	// Used in combination with I(flagIN) and I(flagOUT) to create chains of rules. Setting apply to True signifies the last rule to be applied.
+		// The maximum number of times a query needs to be re-executed in case of detected failure during the execution of the query. If retries is not specified, the global variable mysql-query_retries_on_failure applies.
 
-	apply?: bool
+		retries?: string
 
-	// Query will be blocked, and the specified error_msg will be returned to the client.
+		// Used in combination with I(flagIN) and I(flagOUT) to create chains of rules. Setting apply to True signifies the last rule to be applied.
 
-	error_msg?: string
+		apply?: bool
 
-	// Filtering criteria matching schemaname. If I(schemaname) is non-NULL, a query will match only if the connection uses schemaname as its default schema.
+		// Free form text field, usable for a descriptive comment of the query rule.
 
-	schemaname?: string
+		comment?: string
 
-	// The maximum timeout in milliseconds with which the matched or rewritten query should be executed. If a query run for longer than the specific threshold, the query is automatically killed. If timeout is not specified, the global variable mysql-default_query_timeout applies.
+		// Query will be logged.
 
-	timeout?: string
+		log?: bool
 
-	// A rule with I(active) set to C(False) will be tracked in the database, but will be never loaded in the in-memory data structures.
+		// Filtering criteria matching schemaname. If I(schemaname) is non-NULL, a query will match only if the connection uses schemaname as its default schema.
 
-	active?: bool
+		schemaname?: string
 
-	// By default we avoid deleting more than one schedule in a single batch, however if you need this behaviour and you're not concerned about the schedules deleted, you can set I(force_delete) to C(True).
+		// Query will be blocked, and the specified error_msg will be returned to the client.
 
-	force_delete?: bool
+		error_msg?: string
 
-	// If I(negate_match_pattern) is set to C(True), only queries not matching the query text will be considered as a match. This acts as a NOT operator in front of the regular expression matching against match_pattern.
+		// This is the pattern with which to replace the matched pattern. Note that this is optional, and when omitted, the query processor will only cache, route, or set other parameters without rewriting.
 
-	negate_match_pattern?: bool
+		replace_pattern?: string
 
-	// Match incoming traffic on a specific local port.
+		// Match traffic from a specific source.
 
-	proxy_port?: string
+		client_addr?: string
 
-	// The unique id of the rule. Rules are processed in rule_id order.
+		// Route matched queries to this hostgroup. This happens unless there is a started transaction and the logged in user has I(transaction_persistent) set to C(True) (see M(proxysql_mysql_users)).
 
-	rule_id?: string
+		destination_hostgroup?: string
 
-	// Free form text field, usable for a descriptive comment of the query rule.
+		// Enables query mirroring. If set I(mirror_hostgroup) can be used to mirror queries to the same or different hostgroup.
 
-	comment?: string
+		mirror_hostgroup?: string
 
-	// Number of milliseconds to delay the execution of the query. This is essentially a throttling mechanism and QoS, and allows a way to give priority to queries over others. This value is added to the mysql-default_query_delay global variable that applies to all queries.
+		// Match incoming traffic on a specific local port.
 
-	delay?: string
+		proxy_port?: string
 
-	// Match queries with a specific digest, as returned by stats_mysql_query_digest.digest.
+		// The unique id of the rule. Rules are processed in rule_id order.
 
-	digest?: string
+		rule_id?: string
 
-	// Regular expression that matches the query digest. The dialect of regular expressions used is that of re2 - https://github.com/google/re2
+		// When C(present) - adds the rule, when C(absent) - removes the rule.
 
-	match_digest?: string
+		state?: string
 
-	// Regular expression that matches the query text. The dialect of regular expressions used is that of re2 - https://github.com/google/re2
+		// Match incoming traffic on a specific local IP.
 
-	match_pattern?: string
+		proxy_addr?: string
 
-	// Match traffic from a specific source.
+		// By default we avoid deleting more than one schedule in a single batch, however if you need this behaviour and you're not concerned about the schedules deleted, you can set I(force_delete) to C(True).
 
-	client_addr?: string
+		force_delete?: bool
 
-	// Route matched queries to this hostgroup. This happens unless there is a started transaction and the logged in user has I(transaction_persistent) set to C(True) (see M(proxysql_mysql_users)).
+		// Filtering criteria matching username.  If I(username) is non-NULL, a query will match only if the connection is made with the correct username.
 
-	destination_hostgroup?: string
+		username?: string
 
-	// Query will be logged.
+		// A rule with I(active) set to C(False) will be tracked in the database, but will be never loaded in the in-memory data structures.
 
-	log?: bool
+		active?: bool
 
-	// The maximum number of times a query needs to be re-executed in case of detected failure during the execution of the query. If retries is not specified, the global variable mysql-query_retries_on_failure applies.
+		// The number of milliseconds for which to cache the result of the query. Note in ProxySQL 1.1 I(cache_ttl) was in seconds.
 
-	retries?: string
+		cache_ttl?: string
 
-	// Used in combination with I(flagOUT) and I(apply) to create chains of rules.
+		// Regular expression that matches the query digest. The dialect of regular expressions used is that of re2 - https://github.com/google/re2
 
-	flagIN?: string
+		match_digest?: string
 
-	// Match incoming traffic on a specific local IP.
+		// Regular expression that matches the query text. The dialect of regular expressions used is that of re2 - https://github.com/google/re2
 
-	proxy_addr?: string
+		match_pattern?: string
+	}
 }
 
 proxysql_replication_hostgroups :: {
+	vars?:   {...}
+	when?:   string
+	tags?:   [...string]
+	notify?: string | [...string]
+	proxysql_replication_hostgroups: {
 
-	// Id of the reader hostgroup.
+		// When C(present) - adds the replication hostgroup, when C(absent) - removes the replication hostgroup.
 
-	reader_hostgroup: string
+		state?: string
 
-	// When C(present) - adds the replication hostgroup, when C(absent) - removes the replication hostgroup.
+		// Id of the writer hostgroup.
 
-	state?: string
+		writer_hostgroup: string
 
-	// Id of the writer hostgroup.
+		// Text field that can be used for any purposes defined by the user.
 
-	writer_hostgroup: string
+		comment?: string
 
-	// Text field that can be used for any purposes defined by the user.
+		// Id of the reader hostgroup.
 
-	comment?: string
+		reader_hostgroup: string
+	}
 }
 
 proxysql_scheduler :: {
+	vars?:   {...}
+	when?:   string
+	tags?:   [...string]
+	notify?: string | [...string]
+	proxysql_scheduler: {
 
-	// When C(present) - adds the schedule, when C(absent) - removes the schedule.
+		// Argument that can be passed to the job.
 
-	state?: string
+		arg2?: string
 
-	// A schedule with I(active) set to C(False) will be tracked in the database, but will be never loaded in the in-memory data structures.
+		// Argument that can be passed to the job.
 
-	active?: bool
+		arg3?: string
 
-	// Argument that can be passed to the job.
+		// Text field that can be used for any purposed defined by the user.
 
-	arg3?: string
+		comment?: string
 
-	// Argument that can be passed to the job.
+		// How often (in millisecond) the job will be started. The minimum value for I(interval_ms) is 100 milliseconds.
 
-	arg4?: string
+		interval_ms?: string
 
-	// Text field that can be used for any purposed defined by the user.
+		// When C(present) - adds the schedule, when C(absent) - removes the schedule.
 
-	comment?: string
+		state?: string
 
-	// How often (in millisecond) the job will be started. The minimum value for I(interval_ms) is 100 milliseconds.
+		// By default we avoid deleting more than one schedule in a single batch, however if you need this behaviour and you're not concerned about the schedules deleted, you can set I(force_delete) to C(True).
 
-	interval_ms?: string
+		force_delete?: bool
 
-	// Argument that can be passed to the job.
+		// A schedule with I(active) set to C(False) will be tracked in the database, but will be never loaded in the in-memory data structures.
 
-	arg1?: string
+		active?: bool
 
-	// Argument that can be passed to the job.
+		// Argument that can be passed to the job.
 
-	arg2?: string
+		arg1?: string
 
-	// Argument that can be passed to the job.
+		// Argument that can be passed to the job.
 
-	arg5?: string
+		arg4?: string
 
-	// Full path of the executable to be executed.
+		// Argument that can be passed to the job.
 
-	filename: string
+		arg5?: string
 
-	// By default we avoid deleting more than one schedule in a single batch, however if you need this behaviour and you're not concerned about the schedules deleted, you can set I(force_delete) to C(True).
+		// Full path of the executable to be executed.
 
-	force_delete?: bool
+		filename: string
+	}
+}
+
+proxysql_backend_servers :: {
+	vars?:   {...}
+	when?:   string
+	tags?:   [...string]
+	notify?: string | [...string]
+	proxysql_backend_servers: {
+
+		// If I(use_ssl) is set to C(True), connections to this server will be made using SSL connections. If omitted the proxysql database default for I(use_ssl) is C(False).
+
+		use_ssl?: bool
+
+		// The ip address at which the mysqld instance can be contacted.
+
+		hostname: string
+
+		// The maximum number of connections ProxySQL will open to this backend server. If omitted the proxysql database default for I(max_connections) is 1000.
+
+		max_connections?: string
+
+		// If greater than 0, ProxySQL will regularly monitor replication lag. If replication lag goes above I(max_replication_lag), proxysql will temporarily shun the server until replication catches up. If omitted the proxysql database default for I(max_replication_lag) is 0.
+
+		max_replication_lag?: string
+
+		// The port at which the mysqld instance can be contacted.
+
+		port?: string
+
+		// When C(present) - adds the host, when C(absent) - removes the host.
+
+		state?: string
+
+		// ONLINE - Backend server is fully operational. OFFLINE_SOFT - When a server is put into C(OFFLINE_SOFT) mode, connections are kept in use until the current transaction is completed. This allows to gracefully detach a backend. OFFLINE_HARD - When a server is put into C(OFFLINE_HARD) mode, the existing connections are dropped, while new incoming connections aren't accepted either.
+If omitted the proxysql database default for I(status) is C(ONLINE).
+
+		status?: string
+
+		// Text field that can be used for any purposed defined by the user. Could be a description of what the host stores, a reminder of when the host was added or disabled, or a JSON processed by some checker script.
+
+		comment?: string
+
+		// If the value of I(compression) is greater than 0, new connections to that server will use compression. If omitted the proxysql database default for I(compression) is 0.
+
+		compression?: string
+
+		// The hostgroup in which this mysqld instance is included. An instance can be part of one or more hostgroups.
+
+		hostgroup_id?: string
+
+		// Ping time is monitored regularly. If a host has a ping time greater than I(max_latency_ms) it is excluded from the connection pool (although the server stays ONLINE). If omitted the proxysql database default for I(max_latency_ms) is 0.
+
+		max_latency_ms?: string
+
+		// The bigger the weight of a server relative to other weights, the higher the probability of the server being chosen from the hostgroup. If omitted the proxysql database default for I(weight) is 1.
+
+		weight?: string
+	}
+}
+
+proxysql_global_variables :: {
+	vars?:   {...}
+	when?:   string
+	tags?:   [...string]
+	notify?: string | [...string]
+	proxysql_global_variables: {
+
+		// Defines a value the variable specified using I(variable) should be set to.
+
+		value?: string
+
+		// Defines which variable should be returned, or if I(value) is specified which variable should be updated.
+
+		variable: string
+	}
+}
+
+proxysql_manage_config :: {
+	vars?:   {...}
+	when?:   string
+	tags?:   [...string]
+	notify?: string | [...string]
+	proxysql_manage_config: {
+
+		// The I(config_settings) specifies which configuration we're writing.
+
+		config_settings: string
+
+		// FROM - denotes we're reading values FROM the supplied I(config_layer) and writing to the next layer. TO - denotes we're reading from the previous layer and writing TO the supplied I(config_layer)."
+
+		direction: string
+
+		// The supplied I(action) combines with the supplied I(direction) to provide the semantics of how we want to move the I(config_settings) between the I(config_layers).
+
+		action: string
+
+		// RUNTIME - represents the in-memory data structures of ProxySQL used by the threads that are handling the requests. MEMORY - (sometimes also referred as main) represents the in-memory SQLite3 database. DISK - represents the on-disk SQLite3 database. CONFIG - is the classical config file. You can only LOAD FROM the config file.
+
+		config_layer: string
+	}
+}
+
+proxysql_mysql_users :: {
+	vars?:   {...}
+	when?:   string
+	tags?:   [...string]
+	notify?: string | [...string]
+	proxysql_mysql_users: {
+
+		// If I(frontend) is set to C(True), this (username, password) pair is used for authenticating to the mysqld servers against any hostgroup.
+
+		frontend?: bool
+
+		// The maximum number of connections ProxySQL will open to the backend for this user. If omitted the proxysql database default for I(max_connections) is 10000.
+
+		max_connections?: string
+
+		// Password of the user connecting to the mysqld or ProxySQL instance.
+
+		password?: string
+
+		// If I(use_ssl) is set to C(True), connections by this user will be made using SSL connections. If omitted the proxysql database default for I(use_ssl) is C(False).
+
+		use_ssl?: bool
+
+		// Name of the user connecting to the mysqld or ProxySQL instance.
+
+		username: string
+
+		// If I(backend) is set to C(True), this (username, password) pair is used for authenticating to the ProxySQL instance.
+
+		backend?: bool
+
+		// If there is no matching rule for the queries sent by this user, the traffic it generates is sent to the specified hostgroup. If omitted the proxysql database default for I(use_ssl) is 0.
+
+		default_hostgroup?: string
+
+		// The schema to which the connection should change to by default.
+
+		default_schema?: string
+
+		// If this is set for the user with which the MySQL client is connecting to ProxySQL (thus a "frontend" user), transactions started within a hostgroup will remain within that hostgroup regardless of any other rules. If omitted the proxysql database default for I(transaction_persistent) is C(False).
+
+		transaction_persistent?: bool
+
+		// A user with I(active) set to C(False) will be tracked in the database, but will be never loaded in the in-memory data structures. If omitted the proxysql database default for I(active) is C(True).
+
+		active?: bool
+
+		// If I(fast_forward) is set to C(True), I(fast_forward) will bypass the query processing layer (rewriting, caching) and pass through the query directly as is to the backend server. If omitted the proxysql database default for I(fast_forward) is C(False).
+
+		fast_forward?: bool
+
+		// When C(present) - adds the user, when C(absent) - removes the user.
+
+		state?: string
+	}
 }

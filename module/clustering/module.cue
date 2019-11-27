@@ -1,103 +1,121 @@
 package clustering
 
+znode :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	znode: {
+
+		// The value assigned to the znode.
+
+		value?: string
+
+		// A list of ZooKeeper servers (format '[server]:[port]').
+
+		hosts: string
+
+		// The path of the znode.
+
+		name: string
+
+		// An operation to perform. Mutually exclusive with state.
+
+		op?: string
+
+		// Recursively delete node and all its children.
+
+		recursive?: bool
+
+		// The state to enforce. Mutually exclusive with op.
+
+		state?: string
+
+		// The amount of time to wait for a node to appear.
+
+		timeout?: string
+	}
+}
+
 etcd3 :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	etcd3: {
 
-	// PEM formatted certificate chain file to be used for SSL client authentication.
-	// Required if I(client_key) is defined.
+		// The Certificate Authority to use to verify the etcd host.
+		// Required if I(client_cert) and I(client_key) are defined.
 
-	client_cert?: string
+		ca_cert?: string
 
-	// the IP address of the cluster
+		// PEM formatted certificate chain file to be used for SSL client authentication.
+		// Required if I(client_key) is defined.
 
-	host?: string
+		client_cert?: string
 
-	// The etcd user to authenticate with.
+		// PEM formatted file that contains your private key to be used for SSL client authentication.
+		// Required if I(client_cert) is defined.
 
-	user?: string
+		client_key?: string
 
-	// The Certificate Authority to use to verify the etcd host.
-	// Required if I(client_cert) and I(client_key) are defined.
+		// The socket level timeout in seconds.
 
-	ca_cert?: string
+		timeout?: string
 
-	// PEM formatted file that contains your private key to be used for SSL client authentication.
-	// Required if I(client_cert) is defined.
+		// the information stored
 
-	client_key?: string
+		value: string
 
-	// the key where the information is stored in the cluster
+		// The etcd user to authenticate with.
 
-	key: string
+		user?: string
 
-	// The password to use for authentication.
-	// Required if I(user) is defined.
+		// the IP address of the cluster
 
-	password?: string
+		host?: string
 
-	// the port number used to connect to the cluster
+		// the key where the information is stored in the cluster
 
-	port?: string
+		key: string
 
-	// the state of the value for the key.
-	// can be present or absent
+		// The password to use for authentication.
+		// Required if I(user) is defined.
 
-	state: string
+		password?: string
 
-	// The socket level timeout in seconds.
+		// the port number used to connect to the cluster
 
-	timeout?: string
+		port?: string
 
-	// the information stored
+		// the state of the value for the key.
+		// can be present or absent
 
-	value: string
+		state: string
+	}
 }
 
 pacemaker_cluster :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	pacemaker_cluster: {
 
-	// Force the change of the cluster state
+		// Force the change of the cluster state
 
-	force?: bool
+		force?: bool
 
-	// Specify which node of the cluster you want to manage. None == the cluster status itself, 'all' == check the status of all nodes.
+		// Specify which node of the cluster you want to manage. None == the cluster status itself, 'all' == check the status of all nodes.
 
-	node?: string
+		node?: string
 
-	// Indicate desired state of the cluster
+		// Indicate desired state of the cluster
 
-	state: string
+		state: string
 
-	// Timeout when the module should considered that the action has failed
+		// Timeout when the module should considered that the action has failed
 
-	timeout?: string
-}
-
-znode :: {
-
-	// An operation to perform. Mutually exclusive with state.
-
-	op?: string
-
-	// Recursively delete node and all its children.
-
-	recursive?: bool
-
-	// The state to enforce. Mutually exclusive with op.
-
-	state?: string
-
-	// The amount of time to wait for a node to appear.
-
-	timeout?: string
-
-	// The value assigned to the znode.
-
-	value?: string
-
-	// A list of ZooKeeper servers (format '[server]:[port]').
-
-	hosts: string
-
-	// The path of the znode.
-
-	name: string
+		timeout?: string
+	}
 }

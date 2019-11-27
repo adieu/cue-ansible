@@ -1,56 +1,62 @@
 package fortianalyzer
 
 faz_device :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	faz_device: {
 
-	// The serial number of the device being added to FortiAnalyzer.
+		// Add or delete devices. Or promote unregistered devices that are in the FortiAnalyzer "waiting pool"
 
-	device_serial?: string
+		mode?: string
 
-	// The desired "friendly" name of the device being added to FortiAnalyzer.
+		// Major OS rev of the device
 
-	device_unique_name?: string
+		os_ver: string
 
-	// Minor OS rev of the device.
+		// Required for determine the platform for VM platforms. ie FortiGate-VM64
 
-	os_minor_vers: string
+		platform_str?: string
 
-	// The os type of the device being added (default 0).
+		// The ADOM the configuration should belong to.
 
-	os_type: string
+		adom: string
 
-	// The ADOM the configuration should belong to.
+		// The desired "friendly" name of the device being added to FortiAnalyzer.
 
-	adom: string
+		device_unique_name?: string
 
-	// The IP of the device being added to FortiAnalyzer.
+		// Management Mode of the device you are adding.
 
-	device_ip?: string
+		mgmt_mode: string
 
-	// Specifies the quota for the device in FAZ
+		// The username of the device being added to FortiAnalyzer.
 
-	faz_quota?: string
+		device_username?: string
 
-	// Management Mode of the device you are adding.
+		// Specifies the quota for the device in FAZ
 
-	mgmt_mode: string
+		faz_quota?: string
 
-	// Add or delete devices. Or promote unregistered devices that are in the FortiAnalyzer "waiting pool"
+		// Minor OS rev of the device.
 
-	mode?: string
+		os_minor_vers: string
 
-	// Major OS rev of the device
+		// The os type of the device being added (default 0).
 
-	os_ver: string
+		os_type: string
 
-	// Required for determine the platform for VM platforms. ie FortiGate-VM64
+		// The IP of the device being added to FortiAnalyzer.
 
-	platform_str?: string
+		device_ip?: string
 
-	// The password of the device being added to FortiAnalyzer.
+		// The password of the device being added to FortiAnalyzer.
 
-	device_password?: string
+		device_password?: string
 
-	// The username of the device being added to FortiAnalyzer.
+		// The serial number of the device being added to FortiAnalyzer.
 
-	device_username?: string
+		device_serial?: string
+	}
 }

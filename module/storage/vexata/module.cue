@@ -1,39 +1,51 @@
 package vexata
 
-vexata_volume :: {
+vexata_eg :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vexata_eg: {
 
-	// Volume name.
+		// Initiator group name.
 
-	name: string
+		ig?: string
 
-	// Volume size in M, G, T units. M=2^20, G=2^30, T=2^40 bytes.
+		// Export group name.
 
-	size?: string
+		name: string
 
-	// Creates/Modifies volume when present or removes when absent.
+		// Port group name.
 
-	state?: string
+		pg?: string
+
+		// Creates export group when present or delete when absent.
+
+		state?: string
+
+		// Volume group name.
+
+		vg?: string
+	}
 }
 
-vexata_eg :: {
+vexata_volume :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vexata_volume: {
 
-	// Initiator group name.
+		// Volume name.
 
-	ig?: string
+		name: string
 
-	// Export group name.
+		// Volume size in M, G, T units. M=2^20, G=2^30, T=2^40 bytes.
 
-	name: string
+		size?: string
 
-	// Port group name.
+		// Creates/Modifies volume when present or removes when absent.
 
-	pg?: string
-
-	// Creates export group when present or delete when absent.
-
-	state?: string
-
-	// Volume group name.
-
-	vg?: string
+		state?: string
+	}
 }

@@ -1,3389 +1,3809 @@
 package cloudengine
 
-ce_acl_interface :: {
+ce_lldp :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_lldp: {
 
-	// ACL number or name. For a numbered rule group, the value ranging from 2000 to 4999. For a named rule group, the value is a string of 1 to 32 case-sensitive characters starting with a letter, spaces not supported.
+		// Specifies the delay time of the interface LLDP module from disabled state to re enable.
 
-	acl_name: string
+		restart_delay?: int
 
-	// Direction ACL to be applied in on the interface.
+		// Delay time for sending LLDP messages.
 
-	direction: string
+		transmit_delay?: int
 
-	// Interface name. Only support interface full name, such as "40GE2/0/1".
+		// Time multiplier for device information in neighbor devices.
 
-	interface: string
+		hold_multiplier?: int
 
-	// Determines whether the config should be present or not on the device.
+		// The management IP address of LLDP.
 
-	state?: string
-}
+		management_address?: string
 
-ce_ntp_auth :: {
+		// Delay time for sending MDN neighbor information change alarm.
 
-	// Specify authentication algorithm.
+		mdn_notification_interval?: int
 
-	auth_mode?: string
+		// Set global MDN enable state.
 
-	// Plain text with length of 1 to 255, encrypted text with length of 20 to 392.
+		mdnstatus?: string
 
-	auth_pwd?: string
+		// Suppression time for sending LLDP alarm.
 
-	// Whether the given password is in cleartext or has been encrypted. If in cleartext, the device will encrypt it before storing it.
+		notification_interval?: int
 
-	auth_type?: string
+		// Binding interface name.
 
-	// Configure ntp authentication enable or unconfigure ntp authentication enable.
+		bind_name?: string
 
-	authentication?: string
+		// The number of LLDP messages sent to the neighbor nodes by the specified device.
 
-	// Authentication key identifier (numeric).
+		fast_count?: int
 
-	key_id: string
+		// Frequency at which LLDP advertisements are sent (in seconds).
 
-	// Manage the state of the resource.
+		interval?: int
 
-	state?: string
+		// Set global LLDP enable state.
 
-	// Whether the given key is required to be supplied by a time source for the device to synchronize to the time source.
+		lldpenable?: string
 
-	trusted_key?: string
-}
+		// Manage the state of the resource.
 
-ce_vrf_interface :: {
-
-	// Manage the state of the resource.
-
-	state?: string
-
-	// An interface that can binding VPN instance, i.e. 40GE1/0/22, Vlanif10. Must be fully qualified interface name. Interface types, such as 10GE, 40GE, 100GE, LoopBack, MEth, Tunnel, Vlanif....
-
-	vpn_interface: string
-
-	// VPN instance, the length of vrf name is 1 ~ 31, i.e. "test", but can not be C(_public_).
-
-	vrf: string
-}
-
-ce_vxlan_tunnel :: {
-
-	// Specifies the number of an NVE interface. The value ranges from 1 to 2.
-
-	nve_name?: string
-
-	// Specifies the IP address of a remote VXLAN tunnel endpoints (VTEP). The value is in dotted decimal notation.
-
-	peer_list_ip?: string
-
-	// The operation type of routing protocol.
-
-	protocol_type?: string
-
-	// Specifies an IP address for a source VTEP. The value is in dotted decimal notation.
-
-	source_ip?: string
-
-	// Manage the state of the resource.
-
-	state?: string
-
-	// Specifies a VXLAN network identifier (VNI) ID. The value is an integer ranging from 1 to 16000000.
-
-	vni_id?: string
-
-	// Specifies a bridge domain ID. The value is an integer ranging from 1 to 16777215.
-
-	bridge_domain_id?: string
-
-	// Specifies the working mode of an NVE interface.
-
-	nve_mode?: string
-}
-
-ce_info_center_log :: {
-
-	// Determines whether the config should be present or not on the device.
-
-	state?: string
-
-	// Specifies a channel ID. The value is an integer ranging from 0 to 9.
-
-	channel_id?: string
-
-	// Enables the Switch to send logs to the log buffer.
-
-	log_buff_enable?: string
-
-	// Specifies the maximum number of logs in the log buffer. The value is an integer that ranges from 0 to 10240. If logbuffer-size is 0, logs are not displayed.
-
-	log_buff_size?: string
-
-	// Indicates whether log filtering is enabled.
-
-	log_enable?: string
-
-	// Specifies a log severity.
-
-	log_level?: string
-
-	// Sets the timestamp format of logs.
-
-	log_time_stamp?: string
-
-	// Specifies the name of a module. The value is a module name in registration logs.
-
-	module_name?: string
-}
-
-ce_reboot :: {
-
-	// Safeguard boolean. Set to true if you're sure you want to reboot.
-
-	confirm: bool
-
-	// Flag indicating whether to save the configuration.
-
-	save_config?: bool
+		state?: string
+	}
 }
 
 ce_rollback :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_rollback: {
 
-	// Specifies the number of configuration rollback points. The value is an integer that ranges from 1 to 80.
+		// Specifies the number of configuration rollback points. The value is an integer that ranges from 1 to 80.
 
-	oldest?: string
+		oldest?: string
 
-	// The operation of configuration rollback.
+		// The operation of configuration rollback.
 
-	action: string
+		action: string
 
-	// Specifies the label of the configuration rollback point to which system configurations are expected to roll back. The value is an integer that the system generates automatically.
+		// Specifies the label of the configuration rollback point to which system configurations are expected to roll back. The value is an integer that the system generates automatically.
 
-	commit_id?: string
+		commit_id?: string
 
-	// Specifies a configuration file for configuration rollback. The value is a string of 5 to 64 case-sensitive characters in the format of *.zip, *.cfg, or *.dat, spaces not supported.
+		// Specifies a configuration file for configuration rollback. The value is a string of 5 to 64 case-sensitive characters in the format of *.zip, *.cfg, or *.dat, spaces not supported.
 
-	filename?: string
+		filename?: string
 
-	// Specifies a user label for a configuration rollback point. The value is a string of 1 to 256 case-sensitive ASCII characters, spaces not supported. The value must start with a letter and cannot be presented in a single hyphen (-).
+		// Specifies a user label for a configuration rollback point. The value is a string of 1 to 256 case-sensitive ASCII characters, spaces not supported. The value must start with a letter and cannot be presented in a single hyphen (-).
 
-	label?: string
+		label?: string
 
-	// Specifies the number of configuration rollback points. The value is an integer that ranges from 1 to 80.
+		// Specifies the number of configuration rollback points. The value is an integer that ranges from 1 to 80.
 
-	last?: string
-}
-
-ce_snmp_contact :: {
-
-	// Contact information.
-
-	contact: string
-
-	// Manage the state of the resource.
-
-	state?: string
-}
-
-ce_startup :: {
-
-	// Position of the device.The value is a string of 1 to 32 characters. The possible value of slot is all, slave-board, or the specific slotID.
-
-	slot?: string
-
-	// File name of the system software that is applied for the next startup. The value is a string of 5 to 255 characters.
-
-	software_file?: string
-
-	// Display the startup information.
-
-	action?: string
-
-	// Name of the configuration file that is applied for the next startup. The value is a string of 5 to 255 characters.
-
-	cfg_file?: string
-
-	// Name of the patch file that is applied for the next startup.
-
-	patch_file?: string
-}
-
-ce_vrf :: {
-
-	// Description of the vrf, the string length is 1 - 242 .
-
-	description?: string
-
-	// Manage the state of the resource.
-
-	state?: string
-
-	// VPN instance, the length of vrf name is 1 - 31, i.e. "test", but can not be C(_public_).
-
-	vrf: string
-}
-
-ce_acl_advance :: {
-
-	// Type of packet fragmentation.
-
-	frag_type?: string
-
-	// ICMP name.
-
-	icmp_name?: string
-
-	// Matching mode of basic ACL rules.
-
-	rule_action?: string
-
-	// ACL number or name. For a numbered rule group, the value ranging from 3000 to 3999 indicates a advance ACL. For a named rule group, the value is a string of 1 to 32 case-sensitive characters starting with a letter, spaces not supported.
-
-	acl_name: string
-
-	// End port number of the destination port. The value is an integer ranging from 0 to 65535.
-
-	dest_port_end?: string
-
-	// Match established connections.
-
-	established?: bool
-
-	// Name of a basic ACL rule. The value is a string of 1 to 32 characters.
-
-	rule_name?: string
-
-	// Source IP address. The value is a string of 0 to 255 characters.The default value is 0.0.0.0. The value is in dotted decimal notation.
-
-	source_ip?: string
-
-	// Name of a source pool. The value is a string of 1 to 32 characters.
-
-	src_pool_name?: string
-
-	// ACL number. The value is an integer ranging from 3000 to 3999.
-
-	acl_num?: string
-
-	// Destination IP address. The value is a string of 0 to 255 characters.The default value is 0.0.0.0. The value is in dotted decimal notation.
-
-	dest_ip?: string
-
-	// Range type of the destination port.
-
-	dest_port_op?: string
-
-	// End port number of the source port. The value is an integer ranging from 0 to 65535.
-
-	src_port_end?: string
-
-	// Name of a source port pool. The value is a string of 1 to 32 characters.
-
-	src_port_pool_name?: string
-
-	// ACL step. The value is an integer ranging from 1 to 20. The default value is 5.
-
-	acl_step?: string
-
-	// Destination IP address mask. The value is an integer ranging from 1 to 32.
-
-	dest_mask?: string
-
-	// ICMP message code. Data packets can be filtered based on the ICMP message code. The value is an integer ranging from 0 to 255.
-
-	icmp_code?: string
-
-	// VPN instance name. The value is a string of 1 to 31 characters.The default value is _public_.
-
-	vrf_name?: string
-
-	// Data packets can be filtered based on the priority field. The value is an integer ranging from 0 to 7.
-
-	precedence?: string
-
-	// TCP flag value. The value is an integer ranging from 0 to 63.
-
-	syn_flag?: string
-
-	// Name of a time range in which an ACL rule takes effect.
-
-	time_range?: string
-
-	// Differentiated Services Code Point. The value is an integer ranging from 0 to 63.
-
-	dscp?: string
-
-	// TCP flag mask value. The value is an integer ranging from 0 to 63.
-
-	tcp_flag_mask?: string
-
-	// Description about an ACL rule.
-
-	rule_description?: string
-
-	// ID of a basic ACL rule in configuration mode. The value is an integer ranging from 0 to 4294967294.
-
-	rule_id?: string
-
-	// Source IP address mask. The value is an integer ranging from 1 to 32.
-
-	src_mask?: string
-
-	// Start port number of the destination port. The value is an integer ranging from 0 to 65535.
-
-	dest_port_begin?: string
-
-	// Name of a destination port pool. The value is a string of 1 to 32 characters.
-
-	dest_port_pool_name?: string
-
-	// Flag of logging matched data packets.
-
-	log_flag?: bool
-
-	// Start port number of the source port. The value is an integer ranging from 0 to 65535.
-
-	src_port_begin?: string
-
-	// ToS value on which data packet filtering is based. The value is an integer ranging from 0 to 15.
-
-	tos?: string
-
-	// Whether TTL Expired is matched, with the TTL value of 1.
-
-	ttl_expired?: bool
-
-	// Name of a destination pool. The value is a string of 1 to 32 characters.
-
-	dest_pool_name?: string
-
-	// Internet Group Management Protocol.
-
-	igmp_type?: string
-
-	// Protocol type.
-
-	protocol?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// ACL description. The value is a string of 1 to 127 characters.
-
-	acl_description?: string
-
-	// ICMP type. This parameter is available only when the packet protocol is ICMP. The value is an integer ranging from 0 to 255.
-
-	icmp_type?: string
-
-	// Range type of the source port.
-
-	src_port_op?: string
-}
-
-ce_bgp :: {
-
-	// Check the first AS in the AS_Path of the update messages from EBGP peers.
-
-	check_first_as?: string
-
-	// Local AS number. The value is a string of 1 to 11 characters.
-
-	as_number?: string
-
-	// Configure the device to be compatible with devices in a nonstandard confederation.
-
-	confed_nonstanded?: string
-
-	// If the value is true, the system stores all route update messages received from all peers (groups) after BGP connection setup. If the value is false, the system stores only BGP update messages that are received from peers and pass the configured import policy.
-
-	keep_all_routes?: string
-
-	// If the value of a timer changes, the BGP peer relationship between the routers is disconnected. The value is an integer ranging from 0 to 21845. The default value is 60.
-
-	keepalive_time?: string
-
-	// Min hold time, in seconds. The value of the hold time can be 0 or range from 20 to 65535.
-
-	min_hold_time?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// If the value is true, VPN BGP instances are enabled to automatically select router IDs. If the value is false, VPN BGP instances are disabled from automatically selecting router IDs.
-
-	vrf_rid_auto_sel?: string
-
-	// Clear interval.
-
-	clear_interval?: string
-
-	// Confederation ID. The value is a string of 1 to 11 characters.
-
-	confed_id_number?: string
-
-	// Type of a created address family, which can be IPv4 unicast or IPv6 unicast. The default type is IPv4 unicast.
-
-	default_af_type?: string
-
-	// If the value is true, After the fast EBGP interface awareness function is enabled, EBGP sessions on an interface are deleted immediately when the interface goes Down. If the value is  false, After the fast EBGP interface awareness function is enabled, EBGP sessions on an interface are not deleted immediately when the interface goes Down.
-
-	ebgp_if_sensitive?: string
-
-	// Hold time, in seconds. The value of the hold time can be 0 or range from 3 to 65535.
-
-	hold_time?: string
-
-	// ID of a router that is in IPv4 address format.
-
-	router_id?: string
-
-	// Period of waiting for the End-Of-RIB flag. The value is an integer ranging from 3 to 3000. The default value is 600.
-
-	time_wait_for_rib?: string
-
-	// Interrupt BGP all neighbor.
-
-	is_shutdown?: string
-
-	// Maximum number of AS numbers in the AS_Path attribute. The default value is 255.
-
-	as_path_limit?: string
-
-	// The function to automatically select router IDs for all VPN BGP instances is enabled.
-
-	bgp_rid_auto_sel?: string
-
-	// Confederation AS number, in two-byte or four-byte format. The value is a string of 1 to 11 characters.
-
-	confed_peer_as_num?: string
-
-	// ConnectRetry interval. The value is an integer, in seconds. The default value is 32s.
-
-	conn_retry_time?: string
-
-	// Peer disconnection through GR.
-
-	gr_peer_reset?: string
-
-	// Enable GR of the BGP speaker in the specified address family, peer address, or peer group.
-
-	graceful_restart?: string
-
-	// Hold interval.
-
-	hold_interval?: string
-
-	// Support BGP RIB memory protection.
-
-	memory_limit?: string
-
-	// Suppress interval.
-
-	suppress_interval?: string
-
-	// Name of a BGP instance. The name is a case-sensitive string of characters.
-
-	vrf_name?: string
-}
-
-ce_vrf_af :: {
-
-	// Manage the state of the vpn target.
-
-	vpn_target_state?: string
-
-	// VPN instance vpn target type.
-
-	vpn_target_type?: string
-
-	// VPN instance target value. Such as X.X.X.X:number<0-65535> or number<0-65535>:number<0-4294967295> or number<0-65535>.number<0-65535>:number<0-65535> or number<65536-4294967295>:number<0-65535> but not support 0:0 and 0.0:0.
-
-	vpn_target_value?: string
-
-	// VPN instance.
-
-	vrf: string
-
-	// VPN instance address family.
-
-	vrf_aftype?: string
-
-	// Is extend vpn or normal vpn.
-
-	evpn?: bool
-
-	// VPN instance route distinguisher,the RD used to distinguish same route prefix from different vpn. The RD must be setted before setting vpn_target_value.
-
-	route_distinguisher?: string
-
-	// Manage the state of the af.
-
-	state?: string
-}
-
-ce_bfd_session :: {
-
-	// Determines whether the config should be present or not on the device.
-
-	state?: string
-
-	// Indicates the default multicast IP address that is bound to a BFD session. By default, BFD uses the multicast IP address 224.0.0.184. You can set the multicast IP address by running the default-ip-address command. The value is a bool type.
-
-	use_default_ip?: bool
-
-	// BFD session creation mode, the currently created BFD session only supports static or static auto-negotiation mode.
-
-	create_type?: string
-
-	// Specifies the name of a BFD session. The value is a string of 1 to 15 case-sensitive characters without spaces.
-
-	session_name: string
-
-	// The BFD session local identifier does not need to be configured when the mode is auto.
-
-	local_discr?: string
-
-	// Specifies the type and number of the interface bound to the BFD session.
-
-	out_if_name?: string
-
-	// The BFD session remote identifier does not need to be configured when the mode is auto.
-
-	remote_discr?: string
-
-	// Indicates the source IP address carried in BFD packets.
-
-	src_addr?: string
-
-	// Specifies the name of a Virtual Private Network (VPN) instance that is bound to a BFD session. The value is a string of 1 to 31 case-sensitive characters, spaces not supported. When double quotation marks are used around the string, spaces are allowed in the string. The value _public_ is reserved and cannot be used as the VPN instance name.
-
-	vrf_name?: string
-
-	// Specifies the peer IP address type.
-
-	addr_type?: string
-
-	// Specifies the peer IP address bound to the BFD session.
-
-	dest_addr?: string
-}
-
-ce_command :: {
-
-	// The commands to send to the remote HUAWEI CloudEngine device over the configured provider.  The resulting output from the command is returned. If the I(wait_for) argument is provided, the module is not returned until the condition is satisfied or the number of I(retries) has been exceeded.
-
-	commands: string
-
-	// Configures the interval in seconds to wait between retries of the command.  If the command does not pass the specified conditional, the interval indicates how to long to wait before trying the command again.
-
-	interval?: string
-
-	// The I(match) argument is used in conjunction with the I(wait_for) argument to specify the match policy.  Valid values are C(all) or C(any).  If the value is set to C(all) then all conditionals in the I(wait_for) must be satisfied.  If the value is set to C(any) then only one of the values must be satisfied.
-
-	match?: string
-
-	// Specifies the number of retries a command should by tried before it is considered failed.  The command is run on the target device every retry and evaluated against the I(wait_for) conditionals.
-
-	retries?: string
-
-	// Specifies what to evaluate from the output of the command and what conditionals to apply.  This argument will cause the task to wait for a particular conditional to be true before moving forward.   If the conditional is not true by the configured retries, the task fails.  See examples.
-
-	wait_for?: string
-}
-
-ce_evpn_global :: {
-
-	// Configure EVPN as the VXLAN control plane.
-
-	evpn_overlay_enable: string
-}
-
-ce_interface_ospf :: {
-
-	// Ospf area associated with this ospf process. Valid values are a string, formatted as an IP address (i.e. "0.0.0.0") or as an integer between 1 and 4294967295.
-
-	area: string
-
-	// Authentication key id when C(auth_mode) is 'hmac-sha256', 'md5' or 'hmac-md5. Valid value is an integer is in the range from 1 to 255.
-
-	auth_key_id?: string
-
-	// Specifies a password for simple authentication. The value is a string of 1 to 8 characters.
-
-	auth_text_simple?: string
-
-	// Specifies a process ID. The value is an integer ranging from 1 to 4294967295.
-
-	process_id: string
-
-	// Setting to true will prevent this interface from receiving HELLO packets. Valid values are 'true' and 'false'.
-
-	silent_interface?: bool
-
-	// Full name of interface, i.e. 40GE1/0/10.
-
-	interface: string
-
-	// Determines whether the config should be present or not on the device.
-
-	state?: string
-
-	// Specifies the authentication type.
-
-	auth_mode?: string
-
-	// Specifies a password for MD5, HMAC-MD5, or HMAC-SHA256 authentication. The value is a string of 1 to 255 case-sensitive characters, spaces not supported.
-
-	auth_text_md5?: string
-
-	// The cost associated with this interface. Valid values are an integer in the range from 1 to 65535.
-
-	cost?: string
-
-	// Time interval an ospf neighbor waits for a hello packet before tearing down adjacencies. Valid values are an integer in the range from 1 to 235926000.
-
-	dead_interval?: string
-
-	// Time between sending successive hello packets. Valid values are an integer in the range from 1 to 65535.
-
-	hello_interval?: string
-}
-
-ce_mtu :: {
-
-	// Full name of interface, i.e. 40GE1/0/22.
-
-	interface?: string
-
-	// Maximum frame size. The default value is 9216. The value is an integer and expressed in bytes. The value range is 1536 to 12224 for the CE12800 and 1536 to 12288 for ToR switches.
-
-	jumbo_max?: string
-
-	// Non-jumbo frame size threshold. The default value is 1518. The value is an integer that ranges from 1518 to jumbo_max, in bytes.
-
-	jumbo_min?: string
-
-	// MTU for a specific interface. The value is an integer ranging from 46 to 9600, in bytes.
-
-	mtu?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-}
-
-ce_netconf :: {
-
-	// The config xml string.
-
-	cfg_xml: string
-
-	// The type of rpc.
-
-	rpc: string
-}
-
-ce_sflow :: {
-
-	// Indicates the ID list of the collector.
-
-	sample_collector?: string
-
-	// Specifies the source IPv4/IPv6 address of sFlow packets.
-
-	source_ip?: string
-
-	// Specifies the IPv4/IPv6 address of an sFlow agent.
-
-	agent_ip?: string
-
-	// Configures the device to send sFlow packets through service interfaces, enhancing the sFlow packet forwarding capability. The enhanced parameter is optional. No matter whether you configure the enhanced mode, the switch determines to send sFlow packets through service cards or management port based on the routing information on the collector. When the value is meth, the device forwards sFlow packets at the control plane. When the value is enhanced, the device forwards sFlow packets at the forwarding plane to enhance the sFlow packet forwarding capacity.
-
-	collector_meth?: string
-
-	// Indicates the counter sampling interval. The value is an integer that ranges from 10 to 4294967295, in seconds. The default value is 20.
-
-	counter_interval?: string
-
-	// Enable the Embedded Network Processor (ENP) chip function. The switch uses the ENP chip to perform sFlow sampling, and the maximum sFlow sampling interval is 65535. If you set the sampling interval to be larger than 65535, the switch automatically restores it to 65535. The value is an integer or 'all'.
-
-	forward_enp_slot?: string
-
-	// Configures the sFlow packets sent by the switch not to carry routing information.
-
-	export_route?: string
-
-	// Specifies the rate of sFlow packets sent from a card to the control plane. The value is an integer that ranges from 100 to 1500, in pps.
-
-	rate_limit?: string
-
-	// Determines whether the config should be present or not on the device.
-
-	state?: string
-
-	// Specifies the maximum length of sFlow packets sent from an sFlow agent to an sFlow collector. The value is an integer, in bytes. It ranges from 1024 to 8100. The default value is 1400.
-
-	collector_datagram_size?: string
-
-	// Specifies the ID of an sFlow collector. This ID is used when you specify the collector in subsequent sFlow configuration.
-
-	collector_id?: string
-
-	// Specifies the IPv4/IPv6 address of the sFlow collector.
-
-	collector_ip?: string
-
-	// Indicates the ID list of the counter collector.
-
-	counter_collector?: string
-
-	// Specifies the description of an sFlow collector. The value is a string of 1 to 255 case-sensitive characters without spaces.
-
-	collector_description?: string
-
-	// Specifies the slot where the rate of output sFlow packets is limited. If this parameter is not specified, the rate of sFlow packets sent from all cards to the control plane is limited. The value is an integer or a string of characters.
-
-	rate_limit_slot?: string
-
-	// Specifies the maximum length of sampled packets. The value is an integer and ranges from 18 to 512, in bytes. The default value is 128.
-
-	sample_length?: string
-
-	// Full name of interface for Flow Sampling or Counter. It must be a physical interface, Eth-Trunk, or Layer 2 subinterface.
-
-	sflow_interface?: string
-
-	// Specifies the name of a VPN instance. The value is a string of 1 to 31 case-sensitive characters, spaces not supported. When double quotation marks are used around the string, spaces are allowed in the string. The value C(_public_) is reserved and cannot be used as the VPN instance name.
-
-	collector_ip_vpn?: string
-
-	// Specifies the UDP destination port number of sFlow packets. The value is an integer that ranges from 1 to 65535. The default value is 6343.
-
-	collector_udp_port?: string
-
-	// Enables flow sampling in the inbound or outbound direction.
-
-	sample_direction?: string
-
-	// Specifies the flow sampling rate in the format 1/rate. The value is an integer and ranges from 1 to 4294967295. The default value is 8192.
-
-	sample_rate?: string
-}
-
-ce_stp :: {
-
-	// Configure BPDU protection on an edge port. This function prevents network flapping caused by attack packets.
-
-	bpdu_protection?: string
-
-	// Enable loop protection on the current port.
-
-	loop_protection?: string
-
-	// Enable root protection on the current port.
-
-	root_protection?: string
-
-	// Set an operation mode for the current MSTP process. The mode can be STP, RSTP, or MSTP.
-
-	stp_mode?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// Enable or disable STP on a switch.
-
-	stp_enable?: string
-
-	// Configure the TC BPDU protection function for an MSTP process.
-
-	tc_protection?: string
-
-	// Set the maximum number of TC BPDUs that the MSTP can handle. The value is an integer ranging from 1 to 255. The default value is 1 on the switch.
-
-	tc_protection_threshold?: string
-
-	// Specify a port as a BPDU filter port.
-
-	bpdu_filter?: string
-
-	// Set the current port as an edge port.
-
-	edged_port?: string
-
-	// STP convergence mode. Fast means set STP aging mode to Fast. Normal means set STP aging mode to Normal.
-
-	stp_converge?: string
-
-	// Set the time the MSTP device takes to handle the maximum number of TC BPDUs and immediately refresh forwarding entries. The value is an integer ranging from 1 to 600, in seconds.
-
-	tc_protection_interval?: string
-
-	// Set the path cost of the current port. The default instance is 0.
-
-	cost?: string
-
-	// Interface name. If the value is C(all), will apply configuration to all interfaces. if the value is a special name, only support input the full name.
-
-	interface?: string
-}
-
-ce_vxlan_global :: {
-
-	// Configuring the Layer 3 VXLAN Gateway to Work in Non-loopback Mode.
-
-	nvo3_gw_enhanced?: string
-
-	// Loop prevention of VXLAN traffic in non-enhanced mode. When the device works in non-enhanced mode, inter-card forwarding of VXLAN traffic may result in loops.
-
-	nvo3_prevent_loops?: string
-
-	// Enabling or disabling the VXLAN service extension function.
-
-	nvo3_service_extend?: string
-
-	// Determines whether the config should be present or not on the device.
-
-	state?: string
-
-	// Specifies a bridge domain ID. The value is an integer ranging from 1 to 16777215.
-
-	bridge_domain_id?: string
-
-	// Enabling or disabling the VXLAN ACL extension function.
-
-	nvo3_acl_extend?: string
-
-	// Eth-Trunk from load balancing VXLAN packets in optimized mode.
-
-	nvo3_eth_trunk_hash?: string
-
-	// Load balancing of VXLAN packets through ECMP in optimized mode.
-
-	nvo3_ecmp_hash?: string
-
-	// Set the tunnel mode to VXLAN when configuring the VXLAN feature.
-
-	tunnel_mode_vxlan?: string
-}
-
-ce_dldp :: {
-
-	// Specifies the interval for sending Advertisement packets. The value is an integer ranging from 1 to 100, in seconds. The default interval for sending Advertisement packets is 5 seconds.
-
-	time_internal?: string
-
-	// Set global DLDP work-mode.
-
-	work_mode?: string
-
-	// Specifies authentication algorithm of DLDP.
-
-	auth_mode?: string
-
-	// Specifies authentication password. The value is a string of 1 to 16 case-sensitive plaintexts or 24/32/48/108/128 case-sensitive encrypted characters. The string excludes a question mark (?).
-
-	auth_pwd?: string
-
-	// Set global DLDP enable state.
-
-	enable?: string
-
-	// Specify whether reset DLDP state of disabled interfaces.
-
-	reset?: string
-}
-
-ce_evpn_bgp_rr :: {
-
-	// Specifies the number of the AS, in integer format. The value is an integer that ranges from 1 to 4294967295.
-
-	as_number: string
-
-	// Enable or disable the BGP-EVPN address family.
-
-	bgp_evpn_enable?: string
-
-	// Specifies the name of a BGP instance. The value of instance-name can be an integer 1 or a string of 1 to 31.
-
-	bgp_instance?: string
-
-	// Specifies the IPv4 address or the group name of a peer.
-
-	peer?: string
-
-	// Specify the peer type.
-
-	peer_type?: string
-
-	// Enable or disable the VPN-Target filtering.
-
-	policy_vpn_target?: string
-
-	// Configure the local device as the route reflector and the peer or peer group as the client of the route reflector.
-
-	reflect_client?: string
-}
-
-ce_snmp_target_host :: {
-
-	// Network Address.
-
-	address?: string
-
-	// Udp port used by SNMP agent to connect the Network management.
-
-	connect_port?: string
-
-	// Name of the interface to send the trap message.
-
-	interface_name?: string
-
-	// UDP Port number used by network management to receive alarm messages.
-
-	recv_port?: string
-
-	// Security Model.
-
-	security_model?: string
-
-	// Security Name.
-
-	security_name?: string
-
-	// Version(s) Supported by SNMP Engine.
-
-	version?: string
-
-	// Unique name to identify target host entry.
-
-	host_name?: string
-
-	// To enable or disable Public Net-manager for target Host.
-
-	is_public_net?: string
-
-	// To configure notify type as trap or inform.
-
-	notify_type?: string
-
-	// Security level indicating whether to use authentication and encryption.
-
-	security_level?: string
-
-	// Security Name V3.
-
-	security_name_v3?: string
-
-	// VPN instance Name.
-
-	vpn_name?: string
-}
-
-ce_vxlan_gateway :: {
-
-	// Specifies the name of a VPN instance bound to a DFS group. The value is a string of 1 to 31 case-sensitive characters without spaces. If the character string is quoted by double quotation marks, the character string can contain spaces. The value C(_public_) is reserved and cannot be used as the VPN instance name.
-
-	dfs_source_vpn?: string
-
-	// Specifies the name of the VPN instance that is associated with the interface. The value is a string of 1 to 31 case-sensitive characters, spaces not supported. When double quotation marks are used around the string, spaces are allowed in the string. The value C(_public_) is reserved and cannot be used as the VPN instance name.
-
-	vbdif_bind_vpn?: string
-
-	// Specifies a VNI ID. Binds a VXLAN network identifier (VNI) to a virtual private network (VPN) instance. The value is an integer ranging from 1 to 16000000.
-
-	vpn_vni?: string
-
-	// Creates all-active gateways.
-
-	dfs_all_active?: string
-
-	// Specifies a MAC address for a VBDIF interface. The value is in the format of H-H-H. Each H is a 4-digit hexadecimal number, such as C(00e0) or C(fc01). If an H contains less than four digits, 0s are added ahead. For example,  C(e0) is equal to C(00e0). A MAC address cannot be all 0s or 1s or a multicast MAC address.
-
-	vbdif_mac?: string
-
-	// Full name of VBDIF interface, i.e. Vbdif100.
-
-	vbdif_name?: string
-
-	// Configure the IP address of an all-active gateway peer. The value is in dotted decimal notation.
-
-	dfs_peer_ip?: string
-
-	// Specifies the name of the VPN instance that is associated with all-active gateway peer. The value is a string of 1 to 31 case-sensitive characters, spaces not supported. When double quotation marks are used around the string, spaces are allowed in the string. The value C(_public_) is reserved and cannot be used as the VPN instance name.
-
-	dfs_peer_vpn?: string
-
-	// Specifies the IPv4 address bound to a DFS group. The value is in dotted decimal notation.
-
-	dfs_source_ip?: string
-
-	// Specifies the UDP port number of the DFS group. The value is an integer that ranges from 1025 to 65535.
-
-	dfs_udp_port?: string
-
-	// Determines whether the config should be present or not on the device.
-
-	state?: string
-
-	// Enable VLINK direct route on VBDIF interface.
-
-	arp_direct_route?: string
-
-	// Enable the distributed gateway function on VBDIF interface.
-
-	arp_distribute_gateway?: string
-
-	// Specifies the ID of a DFS group. The value must be 1.
-
-	dfs_id?: string
-
-	// Specifies the name of a VPN instance. The value is a string of 1 to 31 case-sensitive characters, spaces not supported. When double quotation marks are used around the string, spaces are allowed in the string. The value C(_public_) is reserved and cannot be used as the VPN instance name.
-
-	vpn_instance?: string
-}
-
-ce_info_center_debug :: {
-
-	// Debug level permitted to output.
-
-	debug_level?: string
-
-	// Timestamp type of debugging information.
-
-	debug_time_stamp?: string
-
-	// Module name of the rule. The value is a string of 1 to 31 case-insensitive characters. The default value is default. Please use lower-case letter, such as [aaa, acl, arp, bfd].
-
-	module_name?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// Number of a channel. The value is an integer ranging from 0 to 9. The default value is 0.
-
-	channel_id?: string
-
-	// Whether a device is enabled to output debugging information.
-
-	debug_enable?: string
-}
-
-ce_netstream_template :: {
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// Configure the type of netstream record.
-
-	type: string
-
-	// Configure the number of packets and bytes that are included in the flexible flow statistics sent to NSC.
-
-	collect_counter?: string
-
-	// Configure the input or output interface that are included in the flexible flow statistics sent to NSC.
-
-	collect_interface?: string
-
-	// Configure the description of netstream record. The value is a string of 1 to 80 case-insensitive characters.
-
-	description?: string
-
-	// Configure flexible flow statistics template keywords.
-
-	match?: string
-
-	// Configure the name of netstream record. The value is a string of 1 to 32 case-insensitive characters.
-
-	record_name?: string
-}
-
-ce_static_route :: {
-
-	// VPN instance of next hop ip address.
-
-	destvrf?: string
-
-	// Preference or administrative difference of route (range 1-255).
-
-	pref?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// VPN instance of destination ip address.
-
-	vrf?: string
-
-	// Destination ip address family type of static route.
-
-	aftype: string
-
-	// Name of the route. Used with the name parameter on the CLI.
-
-	description?: string
-
-	// Destination ip mask of static route.
-
-	mask: string
-
-	// Next hop address of static route.
-
-	next_hop?: string
-
-	// Next hop interface full name of static route.
-
-	nhp_interface?: string
-
-	// Destination ip address of static route.
-
-	prefix: string
-
-	// Route tag value (numeric).
-
-	tag?: string
-}
-
-ce_vrrp :: {
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// VRRP version. The default version is v2.
-
-	version?: string
-
-	// Type of a VRRP backup group.
-
-	vrrp_type?: string
-
-	// Disable the flowdown function for service VRRP.
-
-	admin_flowdown?: bool
-
-	// Configured interval between sending advertisements, in milliseconds. Only the master router sends VRRP advertisements. The default value is 1000 milliseconds.
-
-	advertise_interval?: string
-
-	// Authentication type used for VRRP packet exchanges between virtual routers. The values are noAuthentication, simpleTextPassword, md5Authentication. The default value is noAuthentication.
-
-	auth_mode?: string
-
-	// Interval at which gratuitous ARP packets are sent, in seconds. The value ranges from 30 to 1200.The default value is 300.
-
-	gratuitous_arp_interval?: string
-
-	// The configured holdMultiplier.The value is an integer ranging from 3 to 10. The default value is 3.
-
-	holding_multiplier?: string
-
-	// Preemption delay. The value is an integer ranging from 0 to 3600. The default value is 0.
-
-	preempt_timer_delay?: string
-
-	// VRRP backup group ID. The value is an integer ranging from 1 to 255.
-
-	vrid?: string
-
-	// mVRRP ignores an interface Down event.
-
-	admin_ignore_if_down?: bool
-
-	// mVRRP's fast resume mode.
-
-	fast_resume?: string
-
-	// Name of an interface. The value is a string of 1 to 63 characters.
-
-	interface?: string
-
-	// Select the display mode of an authentication key. By default, an authentication key is displayed in ciphertext.
-
-	is_plain?: bool
-
-	// Virtual IP address. The value is a string of 0 to 255 characters.
-
-	virtual_ip?: string
-
-	// Tracked mVRRP interface name. The value is a string of 1 to 63 characters.
-
-	admin_interface?: string
-
-	// Tracked mVRRP ID. The value is an integer ranging from 1 to 255.
-
-	admin_vrid?: string
-
-	// This object is set based on the authentication type. When noAuthentication is specified, the value is empty. When simpleTextPassword or md5Authentication is specified, the value is a string of 1 to 8 characters in plaintext and displayed as a blank text for security.
-
-	auth_key?: string
-
-	// Configured VRRP priority. The value ranges from 1 to 254. The default value is 100. A larger value indicates a higher priority.
-
-	priority?: string
-
-	// Delay in recovering after an interface goes Up. The delay is used for interface flapping suppression. The value is an integer ranging from 0 to 3600. The default value is 0 seconds.
-
-	recover_delay?: string
-}
-
-ce_vxlan_vap :: {
-
-	// Specifies an encapsulation type of packets allowed to pass through a Layer 2 sub-interface.
-
-	encapsulation?: string
-
-	// Specifies an Sub-Interface full name, i.e. "10GE1/0/41.1". The value is a string of 1 to 63 case-insensitive characters, spaces supported.
-
-	l2_sub_interface?: string
-
-	// When I(encapsulation) is 'qinq', specifies an inner VLAN ID for double-tagged packets to be received by a Layer 2 sub-interface. The value is an integer ranging from 1 to 4094.
-
-	pe_vid?: string
-
-	// Determines whether the config should be present or not on the device.
-
-	state?: string
-
-	// Specifies the VLAN binding to a BD(Bridge Domain). The value is an integer ranging ranging from 1 to 4094.
-
-	bind_vlan_id?: string
-
-	// Specifies a bridge domain ID. The value is an integer ranging from 1 to 16777215.
-
-	bridge_domain_id?: string
-
-	// When I(encapsulation) is 'dot1q', specifies a VLAN ID in the outer VLAN tag. When I(encapsulation) is 'qinq', specifies an outer VLAN ID for double-tagged packets to be received by a Layer 2 sub-interface. The value is an integer ranging from 1 to 4094.
-
-	ce_vid?: string
-}
-
-ce_bgp_neighbor :: {
-
-	// Connection address of a peer, which can be an IPv4 or IPv6 address.
-
-	peer_addr: string
-
-	// Specify the minimum interval at which BFD packets are sent. The value is an integer ranging from 50 to 1000, in milliseconds.
-
-	tx_interval?: string
-
-	// The value can be Connect-only, Listen-only, or Both.
-
-	connect_mode?: string
-
-	// Description of a peer, which can be letters or digits. The value is a string of 1 to 80 characters.
-
-	description?: string
-
-	// If the value is true, peers are enabled to inherit the BFD function from the peer group. If the value is false, peers are disabled to inherit the BFD function from the peer group.
-
-	is_bfd_block?: string
-
-	// Specify the detection multiplier. The default value is 3. The value is an integer ranging from 3 to 50.
-
-	multiplier?: string
-
-	// The character string in a password identifies the contents of the password, spaces not supported. The value is a string of 1 to 255 characters.
-
-	pswd_cipher_text?: string
-
-	// Enable BGP peers to establish a TCP connection and perform the Message Digest 5 (MD5) authentication for BGP messages.
-
-	pswd_type?: string
-
-	// Specify the minimum interval at which BFD packets are received. The value is an integer ranging from 50 to 1000, in milliseconds.
-
-	rx_interval?: string
-
-	// Maximum TCP MSS value used for TCP connection establishment for a peer. The value is an integer ranging from 176 to 4096.
-
-	tcp_MSS?: string
-
-	// If the value is true, the router has all extended capabilities. If the value is false, the router does not have all extended capabilities.
-
-	conventional?: string
-
-	// If the value is true, the EBGP peer can use either a fake AS number or the actual AS number. If the value is false, the EBGP peer can only use a fake AS number.
-
-	dual_as?: string
-
-	// If the value is true, the session with a specified peer is torn down and all related routing entries are cleared. If the value is false, the session with a specified peer is retained.
-
-	is_ignore?: string
-
-	// Specify the Keepalive time of a peer or peer group. The value is an integer ranging from 0 to 21845. The default value is 60.
-
-	keep_alive_time?: string
-
-	// Name of a source interface that sends BGP packets. The value is a string of 1 to 63 characters.
-
-	local_if_name?: string
-
-	// Add the Fake AS number to received Update packets.
-
-	prepend_fake_as?: string
-
-	// ConnectRetry interval. The value is an integer ranging from 1 to 65535.
-
-	conn_retry_time?: string
-
-	// If the value is true, the system is enabled to preferentially use the single-hop mode for BFD session setup between IBGP peers. If the value is false, the system is disabled from preferentially using the single-hop mode for BFD session setup between IBGP peers.
-
-	is_single_hop?: string
-
-	// AS number of a peer. The value is a string of 1 to 11 characters.
-
-	remote_as: string
-
-	// Specify the Hold time of a peer or peer group. The value is 0 or an integer ranging from 3 to 65535.
-
-	hold_time?: string
-
-	// If the value is true, peer create MPLS Local IFNET disable. If the value is false, peer create MPLS Local IFNET enable.
-
-	mpls_local_ifnet_disable?: string
-
-	// Specify the Min hold time of a peer or peer group.
-
-	min_hold_time?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// Fake AS number that is specified for a local peer. The value is a string of 1 to 11 characters.
-
-	fake_as?: string
-
-	// If the value is true, BFD is enabled. If the value is false, BFD is disabled.
-
-	is_bfd_enable?: string
-
-	// If the value is true, BGP is enabled to record peer session status and event information. If the value is false, BGP is disabled from recording peer session status and event information.
-
-	is_log_change?: string
-
-	// Specify the Keychain authentication name used when BGP peers establish a TCP connection. The value is a string of 1 to 47 case-insensitive characters.
-
-	key_chain_name?: string
-
-	// Maximum number of hops in an indirect EBGP connection. The value is an ranging from 1 to 255.
-
-	ebgp_max_hop?: string
-
-	// Enable GTSM on a peer or peer group. The valid-TTL-Value parameter is used to specify the number of TTL hops to be detected. The value is an integer ranging from 1 to 255.
-
-	valid_ttl_hops?: string
-
-	// Name of a BGP instance. The name is a case-sensitive string of characters. The BGP instance can be used only after the corresponding VPN instance is created.
-
-	vrf_name: string
-
-	// Add the global AS number to the Update packets to be advertised.
-
-	prepend_global_as?: string
-
-	// If the value is true, BGP is enabled to advertise REFRESH packets. If the value is false, the route refresh function is enabled.
-
-	route_refresh?: string
-}
-
-ce_bfd_global :: {
-
-	// Indicates the priority of BFD control packets for static BFD sessions. The value is an integer ranging from 0 to 7. The default priority is 7, which is the highest priority of BFD control packets.
-
-	tos_exp_static?: string
-
-	// Specifies an initial flapping suppression time for a BFD session. The value is an integer ranging from 1 to 3600000, in milliseconds. The default value is 2000.
-
-	damp_init_wait_time?: string
-
-	// Specifies a maximum flapping suppression time for a BFD session. The value is an integer ranging from 1 to 3600000, in milliseconds. The default value is 15000.
-
-	damp_max_wait_time?: string
-
-	// Specifies a secondary flapping suppression time for a BFD session. The value is an integer ranging from 1 to 3600000, in milliseconds. The default value is 5000.
-
-	damp_second_wait_time?: string
-
-	// Specifies the default multicast IP address. The value ranges from 224.0.0.107 to 224.0.0.250.
-
-	default_ip?: string
-
-	// Specifies the delay before a BFD session becomes Up. The value is an integer ranging from 1 to 600, in seconds. The default value is 0, indicating that a BFD session immediately becomes Up.
-
-	delay_up_time?: string
-
-	// Determines whether the config should be present or not on the device.
-
-	state?: string
-
-	// Indicates the priority of BFD control packets for dynamic BFD sessions. The value is an integer ranging from 0 to 7. The default priority is 7, which is the highest priority of BFD control packets.
-
-	tos_exp_dynamic?: string
-
-	// Enables the global Bidirectional Forwarding Detection (BFD) function.
-
-	bfd_enable?: string
-}
-
-ce_info_center_global :: {
-
-	// Channel name.The value is a string of 1 to 30 case-sensitive characters. The default value is console.
-
-	channel_cfg_name?: string
-
-	// Name of the filtered log. The value is a string of 1 to 63 case-sensitive characters.
-
-	filter_log_name?: string
-
-	// Whether the info-center function is enabled. The value is of the Boolean type.
-
-	info_center_enable?: string
-
-	// Maximum size (in MB) of a log file. The default value is 32.
-	// The value range for log files is [4, 8, 16, 32], for security files is [1, 4],
-	// and for operation files is [1, 4].
-
-	logfile_max_size?: string
-
-	// Set the priority of the syslog packet.The value is an integer ranging from 0 to 7. The default value is 0.
-
-	packet_priority?: string
-
-	// Whether a device is enabled to suppress duplicate statistics. The value is of the Boolean type.
-
-	suppress_enable?: string
-
-	// VPN name on a log server. The value is a string of 1 to 31 case-sensitive characters. The default value is _public_.
-
-	vrf_name?: string
-
-	// Direction of information output.
-
-	channel_out_direct?: string
-
-	// Feature name of the filtered log. The value is a string of 1 to 31 case-insensitive characters.
-
-	filter_feature_name?: string
-
-	// Level of logs saved on a log server.
-
-	level?: string
-
-	// Server name. The value is a string of 1 to 255 case-sensitive characters.
-
-	server_domain?: string
-
-	// Log server address, IPv4 or IPv6 type. The value is a string of 0 to 255 characters. The value can be an valid IPv4 or IPv6 address.
-
-	server_ip?: string
-
-	// Log server timestamp. The value is of the enumerated type and case-sensitive.
-
-	timestamp?: string
-
-	// Channel name. The value is a string of 1 to 30 case-sensitive characters.
-
-	channel_name?: string
-
-	// Log record tool.
-
-	facility?: string
-
-	// Use the default VPN or not.
-
-	is_default_vpn?: bool
-
-	// Number of a port sending logs.The value is an integer ranging from 1 to 65535. For UDP, the default value is 514. For TCP, the default value is 601. For TSL, the default value is 6514.
-
-	server_port?: string
-
-	// SSL policy name. The value is a string of 1 to 23 case-sensitive characters.
-
-	ssl_policy_name?: string
-
-	// Number for channel. The value is an integer ranging from 0 to 9. The default value is 0.
-
-	channel_id?: string
-
-	// Log server address type, IPv4 or IPv6.
-
-	ip_type?: string
-
-	// Maximum number of log files of the same type. The default value is 200.
-	// The value range for log files is[3, 500], for security files is [1, 3],and for operation files is [1, 7].
-
-	logfile_max_num?: string
-
-	// Log source ip address, IPv4 or IPv6 type. The value is a string of 0 to 255. The value can be an valid IPv4 or IPv6 address.
-
-	source_ip?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// Transport mode. The value is of the enumerated type and case-sensitive.
-
-	transport_mode?: string
-}
-
-ce_info_center_trap :: {
-
-	// Size of a trap buffer. The value is an integer ranging from 0 to 1024. The default value is 256.
-
-	trap_buff_size?: string
-
-	// Whether a device is enabled to output alarms.
-
-	trap_enable?: string
-
-	// Trap level permitted to output.
-
-	trap_level?: string
-
-	// Timestamp format of alarm information.
-
-	trap_time_stamp?: string
-
-	// Number of a channel. The value is an integer ranging from 0 to 9. The default value is 0.
-
-	channel_id?: string
-
-	// Module name of the rule. The value is a string of 1 to 31 case-insensitive characters. The default value is default. Please use lower-case letter, such as [aaa, acl, arp, bfd].
-
-	module_name?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// Whether a trap buffer is enabled to output information.
-
-	trap_buff_enable?: string
-}
-
-ce_mlag_config :: {
-
-	// ID of a DFS group. The value is 1.
-
-	dfs_group_id?: string
-
-	// Name of the peer-link interface. The value is in the range from 0 to 511.
-
-	eth_trunk_id?: string
-
-	// Number of the peer-link interface. The value is 1.
-
-	peer_link_id?: string
-
-	// The priority of a pseudo nickname. The value is an integer that ranges from 128 to 255. The default value is 192. A larger value indicates a higher priority.
-
-	pseudo_priority?: string
-
-	// IP address bound to the DFS group. The value is in dotted decimal notation.
-
-	ip_address?: string
-
-	// The nickname bound to a DFS group. The value is an integer that ranges from 1 to 65471.
-
-	nickname?: string
-
-	// Priority of a DFS group. The value is an integer that ranges from 1 to 254. The default value is 100.
-
-	priority_id?: string
-
-	// A pseudo nickname of a DFS group. The value is an integer that ranges from 1 to 65471.
-
-	pseudo_nickname?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// Name of the VPN instance bound to the DFS group. The value is a string of 1 to 31 case-sensitive characters without spaces. If the character string is quoted by double quotation marks, the character string can contain spaces. The value _public_ is reserved and cannot be used as the VPN instance name.
-
-	vpn_instance_name?: string
-}
-
-ce_ntp :: {
-
-	// Network address of NTP peer.
-
-	peer?: string
-
-	// Network address of NTP server.
-
-	server?: string
-
-	// Local source interface from which NTP messages are sent. Must be fully qualified interface name, i.e. C(40GE1/0/22), C(vlanif10). Interface types, such as C(10GE), C(40GE), C(100GE), C(Eth-Trunk), C(LoopBack), C(MEth), C(NULL), C(Tunnel), C(Vlanif).
-
-	source_int?: string
-
-	// Manage the state of the resource.
-
-	state?: string
-
-	// Makes the device communicate with the given NTP server or peer over a specific vpn.
-
-	vpn_name?: string
-
-	// Makes given NTP server or peer the preferred NTP server or peer for the device.
-
-	is_preferred?: string
-
-	// Authentication key identifier to use with given NTP server or peer.
-
-	key_id?: string
-}
-
-ce_vlan :: {
-
-	// Specify VLAN description, minimum of 1 character, maximum of 80 characters.
-
-	description?: string
-
-	// Name of VLAN, minimum of 1 character, maximum of 31 characters.
-
-	name?: string
-
-	// Manage the state of the resource.
-
-	state?: string
-
-	// Single VLAN ID, in the range from 1 to 4094.
-
-	vlan_id?: string
-
-	// Range of VLANs such as C(2-10) or C(2,5,10-15), etc.
-
-	vlan_range?: string
-}
-
-ce_dldp_interface :: {
-
-	// Set interface DLDP enable state.
-
-	enable?: string
-
-	// Must be fully qualified interface name, i.e. GE1/0/1, 10GE1/0/1, 40GE1/0/22, 100GE1/0/1.
-
-	interface: string
-
-	// Set the source MAC address for DLDP packets sent in the DLDP-compatible mode. The value of MAC address is in H-H-H format. H contains 1 to 4 hexadecimal digits.
-
-	local_mac?: string
-
-	// Set DLDP compatible-mode enable state.
-
-	mode_enable?: string
-
-	// Specify whether reseting interface DLDP state.
-
-	reset?: string
-
-	// Manage the state of the resource.
-
-	state?: string
-}
-
-ce_ip_interface :: {
-
-	// Specifies an address type. The value is an enumerated type. main, primary IP address. sub, secondary IP address.
-
-	ipv4_type?: string
-
-	// Subnet mask for IPv4 or IPv6 Address in decimal format.
-
-	mask?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// IP address version.
-
-	version?: string
-
-	// IPv4 or IPv6 Address.
-
-	addr?: string
-
-	// Full name of interface, i.e. 40GE1/0/22, vlanif10.
-
-	interface: string
-}
-
-ce_lldp :: {
-
-	// The number of LLDP messages sent to the neighbor nodes by the specified device.
-
-	fast_count?: int
-
-	// Delay time for sending MDN neighbor information change alarm.
-
-	mdn_notification_interval?: int
-
-	// Set global MDN enable state.
-
-	mdnstatus?: string
-
-	// Delay time for sending LLDP messages.
-
-	transmit_delay?: int
-
-	// The management IP address of LLDP.
-
-	management_address?: string
-
-	// Suppression time for sending LLDP alarm.
-
-	notification_interval?: int
-
-	// Specifies the delay time of the interface LLDP module from disabled state to re enable.
-
-	restart_delay?: int
-
-	// Manage the state of the resource.
-
-	state?: string
-
-	// Binding interface name.
-
-	bind_name?: string
-
-	// Time multiplier for device information in neighbor devices.
-
-	hold_multiplier?: int
-
-	// Frequency at which LLDP advertisements are sent (in seconds).
-
-	interval?: int
-
-	// Set global LLDP enable state.
-
-	lldpenable?: string
-}
-
-ce_vxlan_arp :: {
-
-	// Enables EVN BGP or BGP EVPN to advertise host information.
-
-	host_collect_protocol?: string
-
-	// Determines whether the config should be present or not on the device.
-
-	state?: string
-
-	// Full name of VBDIF interface, i.e. Vbdif100.
-
-	vbdif_name?: string
-
-	// Enables EVN BGP or BGP EVPN to collect host information.
-
-	arp_collect_host?: string
-
-	// Specifies a BD(bridge domain) ID. The value is an integer ranging from 1 to 16777215.
-
-	bridge_domain_id?: string
-
-	// Specifies the IP address of an EVN BGP peer. The value is in dotted decimal notation.
-
-	evn_peer_ip?: string
-
-	// Configures the local device as the route reflector (RR) and its peer as the client.
-
-	evn_reflect_client?: string
-
-	// Enables ARP broadcast suppression in a BD.
-
-	arp_suppress?: string
-
-	// Enables EVN BGP.
-
-	evn_bgp?: string
-
-	// Configures the local device as the router reflector (RR) on the EVN network.
-
-	evn_server?: string
-
-	// Specifies the source address of an EVN BGP peer. The value is in dotted decimal notation.
-
-	evn_source_ip?: string
-}
-
-ce_bgp_af :: {
-
-	// If the value is true, the next hop of an advertised route is changed to the advertiser itself in BGP load-balancing scenarios. If the value is false, the next hop of an advertised route is not changed to the advertiser itself in BGP load-balancing scenarios.
-
-	ecmp_nexthop_changed?: string
-
-	// Specify the maximum number of equal-cost EBGP routes. The value is an integer ranging from 1 to 65535.
-
-	max_load_ebgp_num?: string
-
-	// Set the protocol priority of IBGP routes. The value is an integer ranging from 1 to 255.
-
-	preference_internal?: string
-
-	// If the value is true, relay delay enable. If the value is false, relay delay disable.
-
-	relay_delay_enable?: string
-
-	// Specify the Multi-Exit-Discriminator (MED) of BGP routes. The value is an integer ranging from 0 to 4294967295.
-
-	default_med?: string
-
-	// Specify the IP address advertised by BGP. The value is a string of 0 to 255 characters.
-
-	network_address?: string
-
-	// If the value is true, the router ID attribute is ignored when BGP selects the optimal route. If the value is false, the router ID attribute is not ignored when BGP selects the optimal route.
-
-	router_id_neglect?: string
-
-	// If the value is true, automatic aggregation is enabled for locally imported routes. If the value is false, automatic aggregation is disabled for locally imported routes.
-
-	summary_automatic?: string
-
-	// If the value is true, the AS path attribute is ignored when BGP selects an optimal route. If the value is false, the AS path attribute is not ignored when BGP selects an optimal route. An AS path with a smaller length has a higher priority.
-
-	as_path_neglect?: string
-
-	// Originator prior.
-
-	originator_prior?: string
-
-	// If the value is true, route reflection is enabled between clients. If the value is false, route reflection is disabled between clients.
-
-	reflect_between_client?: string
-
-	// If the value is true, the route reflector is enabled to modify route path attributes based on an export policy. If the value is false, the route reflector is disabled from modifying route path attributes based on an export policy.
-
-	reflect_chg_path?: string
-
-	// Route selection delay. The value is an integer ranging from 0 to 3600.
-
-	route_sel_delay?: string
-
-	// Set the protocol priority of a local BGP route. The value is an integer ranging from 1 to 255.
-
-	preference_local?: string
-
-	// If the value is true, BGP is enabled to advertise only optimal routes in the RM to peers. If the value is false, BGP is not enabled to advertise only optimal routes in the RM to peers.
-
-	active_route_advertise?: string
-
-	// Address family type of a BGP instance.
-
-	af_type: string
-
-	// Set the Local-Preference attribute. The value is an integer. The value is an integer ranging from 0 to 4294967295.
-
-	default_local_pref?: string
-
-	// If the value is true, BGP deterministic-MED is enabled. If the value is false, BGP deterministic-MED is disabled.
-
-	determin_med?: string
-
-	// Process ID of an imported routing protocol. The value is an integer ranging from 0 to 4294967295.
-
-	import_process_id?: string
-
-	// Specify the maximum number of equal-cost IBGP routes. The value is an integer ranging from 1 to 65535.
-
-	max_load_ibgp_num?: string
-
-	// Specify the name of a route-policy for route iteration. The value is a string of 1 to 40 characters.
-
-	nhp_relay_route_policy_name?: string
-
-	// Set a cluster ID. Configuring multiple RRs in a cluster can enhance the stability of the network. The value is an integer ranging from 1 to 4294967295.
-
-	reflector_cluster_id?: string
-
-	// If the value is true, enable reduce priority to advertise route. If the value is false, disable reduce priority to advertise route.
-
-	lowest_priority?: string
-
-	// Next hop select depend type.
-
-	next_hop_sel_depend_type?: string
-
-	// If the value is true, VPN BGP instances are enabled to automatically select router IDs. If the value is false, VPN BGP instances are disabled from automatically selecting router IDs.
-
-	vrf_rid_auto_sel?: string
-
-	// Set the number of the extended community filter supported by an RR group. The value is a string of 1 to 51 characters.
-
-	rr_filter_number?: string
-
-	// If the value is true, importing default routes to the BGP routing table is allowed. If the value is false, importing default routes to the BGP routing table is not allowed.
-
-	default_rt_import_enable?: string
-
-	// If the value is true, the next hop of an advertised route is changed to the advertiser itself in IBGP load-balancing scenarios. If the value is false, the next hop of an advertised route is not changed to the advertiser itself in IBGP load-balancing scenarios.
-
-	ibgp_ecmp_nexthop_changed?: string
-
-	// Specify the maximum number of equal-cost routes in the BGP routing table. The value is an integer ranging from 1 to 65535.
-
-	maximum_load_balance?: string
-
-	// Set the protocol priority of EBGP routes. The value is an integer ranging from 1 to 255.
-
-	preference_external?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// If the value is true, the MEDs of routes learned from peers in different autonomous systems are compared when BGP selects an optimal route. If the value is false, the MEDs of routes learned from peers in different autonomous systems are not compared when BGP selects an optimal route.
-
-	always_compare_med?: string
-
-	// Routing protocol from which routes can be imported.
-
-	import_protocol?: string
-
-	// If the value is true, modifying extended community attributes is allowed. If the value is false, modifying extended community attributes is not allowed.
-
-	policy_ext_comm_enable?: string
-
-	// Set a cluster ipv4 address. The value is expressed in the format of an IPv4 address.
-
-	reflector_cluster_ipv4?: string
-
-	// Allow routes with BGP origin AS validation result Invalid to be selected. If the value is true, invalid routes can participate in route selection. If the value is false, invalid routes cannot participate in route selection.
-
-	allow_invalid_as?: string
-
-	// If the value is true, the third-party next hop function is enabled. If the value is false, the third-party next hop function is disabled.
-
-	nexthop_third_party?: string
-
-	// If the value is true, the next hop of an advertised route is changed to the advertiser itself in EBGP load-balancing scenarios. If the value is false, the next hop of an advertised route is not changed to the advertiser itself in EBGP load-balancing scenarios.
-
-	ebgp_ecmp_nexthop_changed?: string
-
-	// If the value is true, VPN-Target filtering function is performed for received VPN routes. If the value is false, VPN-Target filtering function is not performed for received VPN routes.
-
-	policy_vpn_target?: string
-
-	// Ingress lsp policy name.
-
-	ingress_lsp_policy_name?: string
-
-	// Specify the name of a routing policy. The value is a string of 1 to 40 characters.
-
-	rib_only_policy_name?: string
-
-	// If the value is true, the function to advertise supernetwork unicast routes is enabled. If the value is false, the function to advertise supernetwork unicast routes is disabled.
-
-	supernet_uni_adv?: string
-
-	// Name of a BGP instance. The name is a case-sensitive string of characters. The BGP instance can be used only after the corresponding VPN instance is created. The value is a string of 1 to 31 case-sensitive characters.
-
-	vrf_name: string
-
-	// Number of Add-Path routes. The value is an integer ranging from 2 to 64.
-
-	add_path_sel_num?: string
-
-	// Load balancing as path ignore.
-
-	load_balancing_as_path_ignore?: string
-
-	// Set a routing policy to filter routes so that a configured priority is applied to the routes that match the specified policy. The value is a string of 1 to 40 characters.
-
-	prefrence_policy_name?: string
-
-	// ID of a router that is in IPv4 address format. The value is a string of 0 to 255 characters. The value is in dotted decimal notation.
-
-	router_id?: string
-
-	// If the value is true, after the fast EBGP interface awareness function is enabled, EBGP sessions on an interface are deleted immediately when the interface goes Down. If the value is false, after the fast EBGP interface awareness function is enabled, EBGP sessions on an interface are not deleted immediately when the interface goes Down.
-
-	ebgp_if_sensitive?: string
-
-	// If the value is true, the metrics of next-hop IGP routes are not compared when BGP selects an optimal route. If the value is false, the metrics of next-hop IGP routes are not compared when BGP selects an optimal route. A route with a smaller metric has a higher priority.
-
-	igp_metric_ignore?: string
-
-	// If the value is true, the function to advertise supernetwork label is enabled. If the value is false, the function to advertise supernetwork label is disabled.
-
-	supernet_label_adv?: string
-
-	// If the value is true, BGP auto FRR is enabled. If the value is false, BGP auto FRR is disabled.
-
-	auto_frr_enable?: string
-
-	// Specify the mask length of an IP address. The value is an integer ranging from 0 to 128.
-
-	mask_len?: string
-
-	// If the value is true, when BGP selects an optimal route, the system uses 4294967295 as the MED value of a route if the route's attribute does not carry a MED value. If the value is false, the system uses 0 as the MED value of a route if the route's attribute does not carry a MED value.
-
-	med_none_as_maximum?: string
-
-	// If the value is true, BGP routes cannot be advertised to the IP routing table. If the value is false, Routes preferred by BGP are advertised to the IP routing table.
-
-	rib_only_enable?: string
-}
-
-ce_bgp_neighbor_af :: {
-
-	// If the value is true, repetitive local AS numbers are allowed. If the value is false, repetitive local AS numbers are not allowed.
-
-	allow_as_loop_enable?: string
-
-	// Specify the name of a used policy. The value is a string. The value is a string of 1 to 40 characters.
-
-	default_rt_adv_policy?: string
-
-	// Specify the IPv4 filtering policy applied to the routes to be advertised to a specified peer. The value is a string of 1 to 169 characters.
-
-	export_pref_filt_name?: string
-
-	// If the value is true, the function to replace a specified peer's AS number in the AS-Path attribute with the local AS number is enabled. If the value is false, the function to replace a specified peer's AS number in the AS-Path attribute with the local AS number is disabled.
-
-	substitute_as_enable?: string
-
-	// ORF mode. null, Default value. receive, ORF for incoming packets. send, ORF for outgoing packets. both, ORF for incoming and outgoing packets.
-
-	orf_mode?: string
-
-	// Limited use public as number.
-
-	public_as_only_limited?: string
-
-	// Public as only skip peer as.
-
-	public_as_only_skip_peer_as?: string
-
-	// IPv4 or IPv6 peer connection address.
-
-	remote_address: string
-
-	// If the value is true, advertised IRB routes are distinguished. If the value is false, advertised IRB routes are not distinguished.
-
-	advertise_irb?: string
-
-	// Address family type of a BGP instance.
-
-	af_type: string
-
-	// If the value is true, the address prefix-based Outbound Route Filter (ORF) capability is enabled for peers. If the value is false, the address prefix-based Outbound Route Filter (ORF) capability is disabled for peers.
-
-	ipprefix_orf_enable?: string
-
-	// If the value is true, Non-standard capability codes are used during capability negotiation. If the value is false, RFC-defined standard ORF capability codes are used during capability negotiation.
-
-	is_nonstd_ipprefix_mod?: string
-
-	// Specify the value of the idle-timeout timer to automatically reestablish the connections after they are cut off when the number of routes exceeds the set threshold. The value is an integer ranging from 1 to 1200.
-
-	route_limit_idle_timeout?: string
-
-	// A routing strategy based on the AS path list for routing received by a designated peer.
-
-	import_as_path_name_or_num?: string
-
-	// If the value is true, the function to advertise default routes to peers is enabled. If the value is false, the function to advertise default routes to peers is disabled.
-
-	default_rt_adv_enable?: string
-
-	// Apply an IPv4 ACL-based filtering policy to the routes to be advertised to a specified peer. The value is a string of 1 to 32 characters.
-
-	export_acl_name_or_num?: string
-
-	// Application of a AS path list based filtering policy to the routing of a specified peer.
-
-	export_as_path_name_or_num?: string
-
-	// Apply an IPv4 ACL-based filtering policy to the routes received from a specified peer. The value is a string of 1 to 32 characters.
-
-	import_acl_name_or_num?: string
-
-	// Redirect ip.
-
-	redirect_ip?: string
-
-	// If the value is true, the community attribute is advertised to peers. If the value is false, the community attribute is not advertised to peers.
-
-	advertise_community?: string
-
-	// If the value is true, sent BGP update messages carry only the public AS number but do not carry private AS numbers. If the value is false, sent BGP update messages can carry private AS numbers.
-
-	public_as_only?: string
-
-	// If the value is true, sent BGP update messages carry only the public AS number but do not carry private AS numbers. If the value is false, sent BGP update messages can carry private AS numbers.
-
-	public_as_only_force?: string
-
-	// Private as replaced by public as number.
-
-	public_as_only_replace?: string
-
-	// Specify the percentage of routes when a router starts to generate an alarm. The value is an integer ranging from 1 to 100.
-
-	route_limit_percent?: string
-
-	// If the value is true, vpls enable. If the value is false, vpls disable.
-
-	vpls_enable?: string
-
-	// null, Null. matchall, Advertise the default route if all matching conditions are met. matchany, Advertise the default route if any matching condition is met.
-
-	default_rt_match_mode?: string
-
-	// null, The next hop is not changed. local, The next hop is changed to the local IP address. invariable, Prevent the device from changing the next hop of each imported IGP route when advertising it to its BGP peers.
-
-	nexthop_configure?: string
-
-	// Assign a preferred value for the routes learned from a specified peer. The value is an integer ranging from 0 to 65535.
-
-	preferred_value?: string
-
-	// Redirect ip validation.
-
-	redirect_ip_validation?: string
-
-	// Configure the Site-of-Origin (SoO) extended community attribute. The value is a string of 3 to 21 characters.
-
-	soostring?: string
-
-	// Apply an AS_Path-based filtering policy to the routes to be advertised to a specified peer. The value is an integer ranging from 1 to 256.
-
-	export_as_path_filter?: string
-
-	// Specify the filtering policy applied to the routes to be advertised to a peer. The value is a string of 1 to 40 characters.
-
-	export_rt_policy_name?: string
-
-	// Specify the filtering policy applied to the routes learned from a peer. The value is a string of 1 to 40 characters.
-
-	import_rt_policy_name?: string
-
-	// ORF Type. The value is an integer ranging from 0 to 65535.
-
-	orftype?: string
-
-	// If the value is true, Application results of route announcement. If the value is false, Routing application results are not notified.
-
-	origin_as_valid?: string
-
-	// Configure the maximum number of routes that can be accepted from a peer. The value is an integer ranging from 1 to 4294967295.
-
-	route_limit?: string
-
-	// Specify the minimum interval at which Update packets are sent. The value is an integer, in seconds. The value is an integer ranging from 0 to 600.
-
-	rt_updt_interval?: string
-
-	// If the value is true, When the vpnv4 multicast neighbor receives and updates the message, the message has no label. If the value is false, When the vpnv4 multicast neighbor receives and updates the message, the message has label.
-
-	update_pkt_standard_compatible?: string
-
-	// The number of addPath advertise route. The value is an integer ranging from 2 to 64.
-
-	adv_add_path_num?: string
-
-	// If the value is true, advertised ARP routes are distinguished. If the value is false, advertised ARP routes are not distinguished.
-
-	advertise_arp?: string
-
-	// If the value is true, the extended community attribute is advertised to peers. If the value is false, the extended community attribute is not advertised to peers.
-
-	advertise_ext_community?: string
-
-	// If the value is true, the remote next-hop attribute is advertised to peers. If the value is false, the remote next-hop attribute is not advertised to any peers.
-
-	advertise_remote_nexthop?: string
-
-	// Specify the IPv4 filtering policy applied to the routes received from a specified peer. The value is a string of 1 to 169 characters.
-
-	import_pref_filt_name?: string
-
-	// If the value is true, the system stores all route update messages received from all peers (groups) after BGP connection setup. If the value is false, the system stores only BGP update messages that are received from peers and pass the configured import policy.
-
-	keep_all_routes?: string
-
-	// If the value is true, the local device functions as the route reflector and a peer functions as a client of the route reflector. If the value is false, the route reflector and client functions are not configured.
-
-	reflect_client?: string
-
-	// Noparameter, After the number of received routes exceeds the threshold and the timeout timer expires,no action. AlertOnly, An alarm is generated and no additional routes will be accepted if the maximum number of routes allowed have been received. IdleForever, The connection that is interrupted is not automatically re-established if the maximum number of routes allowed have been received. IdleTimeout, After the number of received routes exceeds the threshold and the timeout timer expires, the connection that is interrupted is automatically re-established.
-
-	route_limit_type?: string
-
-	// null, Null. receive, Support receiving Add-Path routes. send, Support sending Add-Path routes. both, Support receiving and sending Add-Path routes.
-
-	add_path_mode?: string
-
-	// Set the maximum number of repetitive local AS number. The value is an integer ranging from 1 to 10.
-
-	allow_as_loop_limit?: string
-
-	// If the value is true, the extended community attribute in the peer route information is discarded. If the value is false, the extended community attribute in the peer route information is not discarded.
-
-	discard_ext_community?: string
-
-	// Apply an AS_Path-based filtering policy to the routes received from a specified peer. The value is an integer ranging from 1 to 256.
-
-	import_as_path_filter?: string
-
-	// If the value is true, enable vpls-ad. If the value is false, disable vpls-ad.
-
-	vpls_ad_disable?: string
-
-	// Name of a BGP instance. The name is a case-sensitive string of characters. The BGP instance can be used only after the corresponding VPN instance is created.
-
-	vrf_name: string
-}
-
-ce_netstream_aging :: {
-
-	// Specifies the slot number of netstream manual timeout.
-
-	manual_slot?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// Netstream timeout interval. If is active type the interval is 1-60. If is inactive ,the interval is 5-600.
-
-	timeout_interval?: string
-
-	// Netstream timeout type.
-
-	timeout_type?: string
-
-	// Specifies the packet type of netstream timeout active interval.
-
-	type?: string
-}
-
-ce_link_status :: {
-
-	// For the interface parameter, you can enter C(all) to display information about all interfaces, an interface type such as C(40GE) to display information about interfaces of the specified type, or full name of an interface such as C(40GE1/0/22) or C(vlanif10) to display information about the specific interface.
-
-	interface: string
-}
-
-ce_ospf_vrf :: {
-
-	// Specifies the description information of ospf process.
-
-	description?: string
-
-	// Specifies the mode of timer to calculate interval of arrive LSA. If set the parameter but not specifies value, the default will be used. If true use general timer. If false use intelligent timer.
-
-	lsaalflag?: bool
-
-	// Specifies the start interval of arrive LSA when use the intelligent timer. Valid value is an integer, in millisecond, from 0 to 10000, the default value is 500.
-
-	lsaastartinterval?: string
-
-	// Specifies whether cancel the interval of LSA originate or not. If set the parameter but noe specifies value, the default will be used. true:cancel the interval of LSA originate, the interval is 0. false:do not cancel the interval of LSA originate.
-
-	lsaointervalflag?: bool
-
-	// Specifies the max interval of originate LSA . Valid value is an integer, in millisecond, from 1 to 10000, the default value is 5000.
-
-	lsaomaxinterval?: string
-
-	// Specifies the start interval of originate LSA . Valid value is an integer, in millisecond, from 0 to 1000, the default value is 500.
-
-	lsaostartinterval?: string
-
-	// Specifies the hold interval to calculate SPF when use intelligent timer. Valid value is an integer, in millisecond, from 1 to 5000, the default value is 200.
-
-	spfholdinterval?: string
-
-	// Specifies the reference bandwidth used to assign ospf cost. Valid values are an integer, in Mbps, 1 - 2147483648, the default value is 100.
-
-	bandwidth?: string
-
-	// Specifies the max interval to calculate SPF when use intelligent timer. Valid value is an integer, in millisecond, from 1 to 20000, the default value is 5000.
-
-	spfmaxinterval?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// Specifies the vpn instance which use ospf,length is 1 - 31. Valid values are a string.
-
-	vrf?: string
-
-	// Specifies the interval to calculate SPF when use millisecond level  timer. Valid value is an integer, in millisecond, from 1 to 10000.
-
-	spfintervalmi?: string
-
-	// The ID of the ospf process. Valid values are an integer, 1 - 4294967295, the default value is 1.
-
-	ospf: string
-
-	// Specifies the interval to calculate SPF when use second level  timer. Valid value is an integer, in second, from 1 to 10.
-
-	spfinterval?: string
-
-	// Specifies the start interval to calculate SPF when use intelligent timer. Valid value is an integer, in millisecond, from 1 to 1000, the default value is 50.
-
-	spfstartinterval?: string
-
-	// Specifies the hold interval of originate LSA . Valid value is an integer, in millisecond, from 0 to 5000, the default value is 1000.
-
-	lsaoholdinterval?: string
-
-	// Specifies the interval of originate LSA . Valid value is an integer, in second, from 0 to 10, the default value is 5.
-
-	lsaointerval?: string
-
-	// Specifies the hold interval of arrive LSA when use the intelligent timer. Valid value is an integer, in millisecond, from 0 to 10000, the default value is 500.
-
-	lsaaholdinterval?: string
-
-	// Specifies the max interval of arrive LSA when use the intelligent timer. Valid value is an integer, in millisecond, from 0 to 10000, the default value is 1000.
-
-	lsaamaxinterval?: string
-
-	// Specifies the ospf private route id,. Valid values are a string, formatted as an IP address (i.e. "10.1.1.1") the length is 0 - 20.
-
-	route_id?: string
-
-	// Specifies the mode of timer which used to calculate SPF. If set the parameter but noe specifies value, the default will be used. If is intelligent-timer, then use intelligent timer. If is timer, then use second level timer. If is millisecond, then use millisecond level timer.
-
-	spfintervaltype?: string
-
-	// Specifies the interval of arrive LSA when use the general timer. Valid value is an integer, in millisecond, from 0 to 10000.
-
-	lsaainterval?: string
-}
-
-ce_acl :: {
-
-	// ACL description. The value is a string of 1 to 127 characters.
-
-	acl_description?: string
-
-	// Type of packet fragmentation.
-
-	frag_type?: string
-
-	// Source IP address. The value is a string of 0 to 255 characters.The default value is 0.0.0.0. The value is in dotted decimal notation.
-
-	source_ip?: string
-
-	// Mask of a source IP address. The value is an integer ranging from 1 to 32.
-
-	src_mask?: string
-
-	// Flag of logging matched data packets.
-
-	log_flag?: bool
-
-	// Matching mode of basic ACL rules.
-
-	rule_action?: string
-
-	// Description about an ACL rule. The value is a string of 1 to 127 characters.
-
-	rule_description?: string
-
-	// ID of a basic ACL rule in configuration mode. The value is an integer ranging from 0 to 4294967294.
-
-	rule_id?: string
-
-	// Name of a time range in which an ACL rule takes effect. The value is a string of 1 to 32 characters. The value is case-insensitive, and cannot contain spaces. The name must start with an uppercase or lowercase letter. In addition, the word "all" cannot be specified as a time range name.
-
-	time_range?: string
-
-	// VPN instance name. The value is a string of 1 to 31 characters.The default value is _public_.
-
-	vrf_name?: string
-
-	// ACL number or name. For a numbered rule group, the value ranging from 2000 to 2999 indicates a basic ACL. For a named rule group, the value is a string of 1 to 32 case-sensitive characters starting with a letter, spaces not supported.
-
-	acl_name: string
-
-	// Name of a basic ACL rule. The value is a string of 1 to 32 characters. The value is case-insensitive, and cannot contain spaces or begin with an underscore (_).
-
-	rule_name?: string
-
-	// ACL number. The value is an integer ranging from 2000 to 2999.
-
-	acl_num?: string
-
-	// ACL step. The value is an integer ranging from 1 to 20. The default value is 5.
-
-	acl_step?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-}
-
-ce_config :: {
-
-	// The ordered set of parents that uniquely identify the section or hierarchy the commands should be checked against.  If the parents argument is omitted, the commands are checked against the set of top level or global commands.
-
-	parents?: string
-
-	// Instructs the module on the way to perform the configuration on the device.  If the replace argument is set to I(line) then the modified lines are pushed to the device in configuration mode.  If the replace argument is set to I(block) then the entire command block is pushed to the device in configuration mode if any line is not correct.
-
-	replace?: string
-
-	// The I(src) argument provides a path to the configuration file to load into the remote system.  The path can either be a full system path to the configuration file if the value starts with / or relative to the root of the implemented role or playbook. This argument is mutually exclusive with the I(lines) and I(parents) arguments.
-
-	src?: string
-
-	// The ordered set of commands to append to the end of the command stack if a change needs to be made.  Just like with I(before) this allows the playbook designer to append a set of commands to be executed after the command set.
-
-	after?: string
-
-	// This is a dict object containing configurable options related to backup file path. The value of this option is read only when C(backup) is set to I(yes), if C(backup) is set to I(no) this option will be silently ignored.
-
-	backup_options?: {...}
-
-	// The ordered set of commands to push on to the command stack if a change needs to be made.  This allows the playbook designer the opportunity to perform configuration commands prior to pushing any changes without affecting how the set of commands are matched against the system.
-
-	before?: string
-
-	// The ordered set of commands that should be configured in the section.  The commands must be the exact same commands as found in the device current-configuration.  Be sure to note the configuration command syntax as some commands are automatically modified by the device config parser.
-
-	lines?: string
-
-	// Instructs the module on the way to perform the matching of the set of commands against the current device config.  If match is set to I(line), commands are matched line by line.  If match is set to I(strict), command lines are matched with respect to position.  If match is set to I(exact), command lines must be an equal match.  Finally, if match is set to I(none), the module will not attempt to compare the source configuration with the current-configuration on the remote device.
-
-	match?: string
-
-	// This argument will cause the module to create a full backup of the current C(current-configuration) from the remote device before any changes are made. If the C(backup_options) value is not given, the backup file is written to the C(backup) folder in the playbook root directory. If the directory does not exist, it is created.
-
-	backup?: bool
-
-	// The module, by default, will connect to the remote device and retrieve the current current-configuration to use as a base for comparing against the contents of source.  There are times when it is not desirable to have the task get the current-configuration for every task in a playbook.  The I(config) argument allows the implementer to pass in the configuration to use as the base config for comparison.
-
-	config?: string
-
-	// The I(defaults) argument will influence how the current-configuration is collected from the device.  When the value is set to true, the command used to collect the current-configuration is append with the all keyword.  When the value is set to false, the command is issued without the all keyword.
-
-	defaults?: bool
-
-	// The C(save) argument instructs the module to save the current-configuration to saved-configuration.  This operation is performed after any changes are made to the current running config.  If no changes are made, the configuration is still saved to the startup config.  This option will always cause the module to return changed.
-
-	save?: bool
-}
-
-ce_eth_trunk :: {
-
-	// List of interfaces that will be managed in a given Eth-Trunk. The interface name must be full name.
-
-	members?: string
-
-	// Specifies the minimum number of Eth-Trunk member links in the Up state. The value is an integer ranging from 1 to the maximum number of interfaces that can be added to a Eth-Trunk interface.
-
-	min_links?: string
-
-	// Specifies the working mode of an Eth-Trunk interface.
-
-	mode?: string
-
-	// Manage the state of the resource.
-
-	state?: string
-
-	// Eth-Trunk interface number. The value is an integer. The value range depends on the assign forward eth-trunk mode command. When 256 is specified, the value ranges from 0 to 255. When 512 is specified, the value ranges from 0 to 511. When 1024 is specified, the value ranges from 0 to 1023.
-
-	trunk_id: string
-
-	// When true it forces Eth-Trunk members to match what is declared in the members param. This can be used to remove members.
-
-	force?: bool
-
-	// Hash algorithm used for load balancing among Eth-Trunk member interfaces.
-
-	hash_type?: string
-}
-
-ce_file_copy :: {
-
-	// Remote file path of the copy. Remote directories must exist. If omitted, the name of the local file will be used. The maximum length of I(remote_file) is C(4096).
-
-	remote_file?: string
-
-	// The remote file system of the device. If omitted, devices that support a I(file_system) parameter will use their default values. File system indicates the storage medium and can be set to as follows, 1) C(flash) is root directory of the flash memory on the master MPU. 2) C(slave#flash) is root directory of the flash memory on the slave MPU. If no slave MPU exists, this drive is unavailable. 3) C(chassis ID/slot number#flash) is root directory of the flash memory on a device in a stack. For example, C(1/5#flash) indicates the flash memory whose chassis ID is 1 and slot number is 5.
-
-	file_system?: string
-
-	// Path to local file. Local directory must exist. The maximum length of I(local_file) is C(4096).
-
-	local_file: string
-}
-
-ce_interface :: {
-
-	// Specifies the interface management status. The value is an enumerated type. up, An interface is in the administrative Up state. down, An interface is in the administrative Down state.
-
-	admin_state?: string
-
-	// Specifies an interface description. The value is a string of 1 to 242 case-sensitive characters, spaces supported but question marks (?) not supported.
-
-	description?: string
-
-	// Full name of interface, i.e. 40GE1/0/10, Tunnel1.
-
-	interface?: string
-
-	// Interface type to be configured from the device.
-
-	interface_type?: string
-
-	// Specifies whether the interface is a Layer 2 sub-interface.
-
-	l2sub?: bool
-
-	// Manage Layer 2 or Layer 3 state of the interface.
-
-	mode?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-}
-
-ce_lacp :: {
-
-	// Specifies the working mode of an Eth-Trunk interface.
-
-	mode?: string
-
-	// Specifies lacp preempt enable of Eth-Trunk lacp. The value is an boolean 'true' or 'false'.
-
-	preempt_enable?: bool
-
-	// Select priority or speed to preempt.
-
-	select?: string
-
-	// Lacp dampening state-flapping.
-
-	state_flapping?: bool
-
-	// Value of delay time in units of 10 microseconds.
-
-	collector_delay?: int
-
-	// Lacp timeout type,that may be 'Fast' or 'Slow'.
-
-	timeout_type?: string
-
-	// When lacp timeout type is 'Fast', user-defined time can be a number(3~90).
-
-	fast_timeout?: int
-
-	// The priority of eth-trunk member interface.
-
-	priority?: int
-
-	// Manage the state of the resource.
-
-	state?: string
-
-	// Link Aggregation Control Protocol System ID,interface Eth-Trunk View.
-	// Formate 'X-X-X',X is hex(a,aa,aaa, or aaaa)
-
-	system_id?: string
-
-	// Eth-Trunk interface number. The value is an integer. The value range depends on the assign forward eth-trunk mode command. When 256 is specified, the value ranges from 0 to 255. When 512 is specified, the value ranges from 0 to 511. When 1024 is specified, the value ranges from 0 to 1023.
-
-	trunk_id?: int
-
-	// Enable the function of extending the LACP negotiation port number.
-
-	port_id_extension_enable?: bool
-
-	// Max active linknumber in link aggregation group.
-
-	max_active_linknumber?: int
-
-	// Value of max active linknumber.
-
-	mixed_rate_link_enable?: bool
-
-	// Value of preemption delay time.
-
-	preempt_delay?: int
-
-	// Lacp dampening unexpected-mac disable.
-
-	unexpected_mac_disable?: bool
-
-	// Configure lacp priority on system-view.
-
-	global_priority?: int
-}
-
-ce_snmp_traps :: {
-
-	// Alarm feature name.
-
-	feature_name?: string
-
-	// Interface number.
-
-	interface_number?: string
-
-	// Interface type.
-
-	interface_type?: string
-
-	// Source port number.
-
-	port_number?: string
-
-	// Alarm trap name.
-
-	trap_name?: string
-}
-
-ce_snmp_user :: {
-
-	// Access control list number.
-
-	acl_number?: string
-
-	// The encryption password. Password length 8-255 characters.
-
-	priv_key?: string
-
-	// Encryption protocol.
-
-	priv_protocol?: string
-
-	// Remote engine id of the USM user.
-
-	remote_engine_id?: string
-
-	// Unique name to identify the local user.
-
-	aaa_local_user?: string
-
-	// The authentication password. Password length, 8-255 characters.
-
-	auth_key?: string
-
-	// Authentication protocol.
-
-	auth_protocol?: string
-
-	// Name of the group where user belongs to.
-
-	user_group?: string
-
-	// Unique name to identify the USM user.
-
-	usm_user_name?: string
-}
-
-ce_lldp_interface :: {
-
-	// Used to distinguish between command line functions.
-
-	type_tlv_disable?: string
-
-	// Enable the ability to send EEE TLV.
-
-	eee?: bool
-
-	// Enable the ability to send link aggregation TLV.
-
-	linkaggretxenable?: bool
-
-	// Enable the ability to send maximum frame length TLV.
-
-	maxframetxenable?: bool
-
-	// Enable the ability to send protocol identity TLV.
-
-	protoidtxenable?: bool
-
-	// Interface name.
-
-	ifname?: string
-
-	// Enable the ability to send system capabilities TLV.
-
-	syscaptxenable?: bool
-
-	// Enable the ability to send system name TLV.
-
-	sysnametxenable?: bool
-
-	// Used to distinguish between command line functions.
-
-	type_tlv_enable?: string
-
-	// LLDP send message interval.
-
-	txinterval?: int
-
-	// Set tx protocol vlan id.
-
-	txprotocolvlanid?: int
-
-	// Set tx vlan name id.
-
-	txvlannameid?: int
-
-	// Set vlan name tx enable or not.
-
-	vlannametxenable?: bool
-
-	// Enable the ability to send DCBX TLV.
-
-	dcbx?: bool
-
-	// Set global LLDP enable state.
-
-	lldpenable?: string
-
-	// Enable MAC/PHY configuration and state TLV to be sent.
-
-	macphytxenable?: bool
-
-	// Enable protocol vlan tx.
-
-	protovlantxenable?: bool
-
-	// Enable port vlan tx.
-
-	portvlantxenable?: bool
-
-	// Manage the state of the resource.
-
-	state?: string
-
-	// Enable the ability to send system description TLV.
-
-	sysdesctxenable?: bool
-
-	// Used to distinguish between command line functions.
-
-	function_lldp_interface_flag?: string
-
-	// Set interface lldp enable state.
-
-	lldpadminstatus?: string
-
-	// Make it able to send management address TLV.
-
-	manaddrtxenable?: bool
-
-	// Enabling the ability to send a description of TLV.
-
-	portdesctxenable?: bool
-}
-
-ce_netstream_export :: {
-
-	// Specifies the AS number recorded in the statistics as the original or the peer AS number.
-
-	as_option?: string
-
-	// Specifies destination address which can be IPv6 or IPv4 of the exported NetStream packet.
-
-	host_ip?: string
-
-	// Specifies the destination UDP port number of the exported packets. The value is an integer that ranges from 1 to 65535.
-
-	host_port?: string
-
-	// Specifies the VPN instance of the exported packets carrying flow statistics. Ensure the VPN instance has been created on the device.
-
-	host_vpn?: string
-
-	// Specifies source address which can be IPv6 or IPv4 of the exported NetStream packet.
-
-	source_ip?: string
-
-	// Configures the statistics to carry BGP next hop information. Currently, only V9 supports the exported packets carrying BGP next hop information.
-
-	bgp_nexthop?: string
-
-	// Manage the state of the resource.
-
-	state?: string
-
-	// Specifies NetStream feature.
-
-	type: string
-
-	// Sets the version of exported packets.
-
-	version?: string
-}
-
-ce_netstream_global :: {
-
-	// Specifies the netstream sampler direction.
-
-	sampler_direction?: string
-
-	// Specifies the netstream sampler interval, length is 1 - 65535.
-
-	sampler_interval?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// Specifies the netstream statistic direction.
-
-	statistics_direction?: string
-
-	// Specifies the flexible netstream statistic record, length is 1 - 32.
-
-	statistics_record?: string
-
-	// Specifies the type of netstream global.
-
-	type?: string
-
-	// Specifies the netstream index-switch.
-
-	index_switch?: string
-
-	// Netstream global interface.
-
-	interface: string
-}
-
-ce_ospf :: {
-
-	// Specifies a password for MD5, HMAC-MD5, or HMAC-SHA256 authentication. The value is a string of 1 to 255 case-sensitive characters, spaces not supported.
-
-	auth_text_md5?: string
-
-	// Specifies a password for simple authentication. The value is a string of 1 to 8 characters.
-
-	auth_text_simple?: string
-
-	// IPv4 address for configure next-hop address's weight. Valid values are a string, formatted as an IP address.
-
-	nexthop_addr?: string
-
-	// Authentication key id when C(auth_mode) is 'hmac-sha256', 'md5' or 'hmac-md5. Valid value is an integer is in the range from 1 to 255.
-
-	auth_key_id?: string
-
-	// Specifies the authentication type.
-
-	auth_mode?: string
-
-	// IP network wildcard bits in decimal format between 0 and 32.
-
-	mask?: string
-
-	// The maximum number of paths for forward packets over multiple paths. Valid value is an integer in the range from 1 to 64.
-
-	max_load_balance?: string
-
-	// Indicates the weight of the next hop. The smaller the value is, the higher the preference of the route is. It is an integer that ranges from 1 to 254.
-
-	nexthop_weight?: string
-
-	// Specifies a process ID. The value is an integer ranging from 1 to 4294967295.
-
-	process_id: string
-
-	// Determines whether the config should be present or not on the device.
-
-	state?: string
-
-	// Specifies the address of the network segment where the interface resides. The value is in dotted decimal notation.
-
-	addr?: string
-
-	// Specifies the area ID. The area with the area-id being 0 is a backbone area. Valid values are a string, formatted as an IP address (i.e. "0.0.0.0") or as an integer between 1 and 4294967295.
-
-	area?: string
-}
-
-ce_static_route_bfd :: {
-
-	// Destination ip address family type of static route.
-
-	aftype: string
-
-	// Configure the BFD multiplier (range 3-50).
-
-	detect_multiplier?: int
-
-	// Preference or administrative difference of route (range 1-255).
-
-	pref?: int
-
-	// Destination ip address of static route.
-
-	prefix: string
-
-	// VPN instance of destination ip address.
-
-	vrf?: string
-
-	// Next hop address of static route.
-
-	next_hop?: string
-
-	// Route tag value (numeric).
-
-	tag?: int
-
-	// bfd name (range 1-15).
-
-	bfd_session_name?: string
-
-	// Incoming command line is used to send sys,undo ip route-static default-bfd,commit.
-
-	commands?: [..._]
-
-	// VPN instance of next hop ip address.
-
-	destvrf?: string
-
-	// Used to distinguish between command line functions.
-
-	function_flag: string
-
-	// Set the minimum BFD receive interval (range 50-1000).
-
-	min_rx_interval?: int
-
-	// Set the minimum BFD session sending interval (range 50-1000).
-
-	min_tx_interval?: int
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// Name of the route. Used with the name parameter on the CLI.
-
-	description?: string
-
-	// Destination ip mask of static route.
-
-	mask?: string
-
-	// Next hop interface full name of static route.
-
-	nhp_interface?: string
-}
-
-ce_switchport :: {
-
-	// The link type of an interface.
-
-	mode?: string
-
-	// If C(mode=trunk, or mode=hybrid), used as the trunk native VLAN ID, in the range from 1 to 4094.
-
-	pvid_vlan?: string
-
-	// Manage the state of the resource.
-
-	state?: string
-
-	// If C(mode=hybrid), used as the VLAN range to ADD or REMOVE from the trunk, such as 2-10 or 2,5,10-15, etc.
-
-	tagged_vlans?: string
-
-	// If C(mode=trunk), used as the VLAN range to ADD or REMOVE from the trunk, such as 2-10 or 2,5,10-15, etc.
-
-	trunk_vlans?: string
-
-	// If C(mode=hybrid), used as the VLAN range to ADD or REMOVE from the trunk, such as 2-10 or 2,5,10-15, etc.
-
-	untagged_vlans?: string
-
-	// If C(mode=access, or mode=dot1qtunnel), used as the access VLAN ID, in the range from 1 to 4094.
-
-	default_vlan?: string
-
-	// Full name of the interface, i.e. 40GE1/0/22.
-
-	interface: string
-}
-
-ce_aaa_server_host :: {
-
-	// Hwtacacs server host name.
-
-	hwtacacs_server_host_name?: string
-
-	// Name of a local user. The value is a string of 1 to 253 characters.
-
-	local_user_name?: string
-
-	// IPv4 address of configured server. The value is a string of 0 to 255 characters, in dotted decimal notation.
-
-	radius_server_ip?: string
-
-	// Name of the user group where the user belongs. The user inherits all the rights of the user group. The value is a string of 1 to 32 characters.
-
-	local_user_group?: string
-
-	// Specify desired state of the resource.
-
-	state?: string
-
-	// Whether the server is secondary.
-
-	hwtacacs_is_secondary_server?: bool
-
-	// Server IPv6 address. Must be a valid unicast IP address. The total length is 128 bits.
-
-	hwtacacs_server_ipv6?: string
-
-	// Name of a HWTACACS template. The value is a string of 1 to 32 case-insensitive characters.
-
-	hwtacacs_template?: string
-
-	// FTP user directory. The value is a string of 1 to 255 characters.
-
-	local_ftp_dir?: string
-
-	// Login password of a user. The password can contain letters, numbers, and special characters. The value is a string of 1 to 255 characters.
-
-	local_password?: string
-
-	// The type of local user login through, such as ftp ssh snmp telnet.
-
-	local_service_type?: string
-
-	// Hostname of configured server. The value is a string of 0 to 255 case-sensitive characters.
-
-	radius_server_name?: string
-
-	// Hwtacacs server type.
-
-	hwtacacs_server_type?: string
-
-	// VPN instance name.
-
-	hwtacacs_vpn_name?: string
-
-	// Login level of a local user. The value is an integer ranging from 0 to 15.
-
-	local_user_level?: string
-
-	// RADIUS server group's name. The value is a string of 1 to 32 case-insensitive characters.
-
-	radius_group_name?: string
-
-	// IPv6 address of configured server. The total length is 128 bits.
-
-	radius_server_ipv6?: string
-
-	// Configured primary or secondary server for a particular server.
-
-	radius_server_mode?: string
-
-	// Set the public-net.
-
-	hwtacacs_is_public_net?: bool
-
-	// Server IPv4 address. Must be a valid unicast IP address. The value is a string of 0 to 255 characters, in dotted decimal notation.
-
-	hwtacacs_server_ip?: string
-
-	// Configured server port for a particular server. The value is an integer ranging from 1 to 65535.
-
-	radius_server_port?: string
-
-	// Type of Radius Server.
-
-	radius_server_type?: string
-
-	// Set VPN instance. The value is a string of 1 to 31 case-sensitive characters.
-
-	radius_vpn_name?: string
-}
-
-ce_bfd_view :: {
-
-	// Specifies the local detection multiplier of a BFD session. The value is an integer that ranges from 3 to 50.
-
-	detect_multi?: string
-
-	// Specifies the local discriminator of a BFD session. The value is an integer that ranges from 1 to 16384.
-
-	local_discr?: string
-
-	// Specifies the minimum interval for sending BFD packets. The value is an integer that ranges from 50 to 1000, in milliseconds.
-
-	min_rx_interval?: string
-
-	// Specifies the remote discriminator of a BFD session. The value is an integer that ranges from 1 to 4294967295.
-
-	remote_discr?: string
-
-	// Specifies the name of a BFD session. The value is a string of 1 to 15 case-sensitive characters without spaces.
-
-	session_name: string
-
-	// Specifies the WTR time of a BFD session. The value is an integer that ranges from 1 to 60, in minutes. The default value is 0.
-
-	wtr_interval?: string
-
-	// Enables the BFD session to enter the AdminDown state. By default, a BFD session is enabled. The default value is bool type.
-
-	admin_down?: bool
-
-	// Specifies the description of a BFD session. The value is a string of 1 to 51 case-sensitive characters with spaces.
-
-	description?: string
-
-	// Specifies a priority for BFD control packets. The value is an integer ranging from 0 to 7. The default value is 7, which is the highest priority.
-
-	tos_exp?: string
-
-	// Specifies the minimum interval for receiving BFD packets. The value is an integer that ranges from 50 to 1000, in milliseconds.
-
-	min_tx_interval?: string
-
-	// Determines whether the config should be present or not on the device.
-
-	state?: string
-}
-
-ce_evpn_bd_vni :: {
-
-	// Configures a route distinguisher (RD) for a BD EVPN instance. The format of an RD can be as follows
-	// 1) 2-byte AS number:4-byte user-defined number, for example, 1:3. An AS number is an integer ranging from 0 to 65535, and a user-defined number is an integer ranging from 0 to 4294967295. The AS and user-defined numbers cannot be both 0s. This means that an RD cannot be 0:0.
-	// 2) Integral 4-byte AS number:2-byte user-defined number, for example, 65537:3. An AS number is an integer ranging from 65536 to 4294967295, and a user-defined number is an integer ranging from 0 to 65535.
-	// 3) 4-byte AS number in dotted notation:2-byte user-defined number, for example, 0.0:3 or 0.1:0. A 4-byte AS number in dotted notation is in the format of x.y, where x and y are integers ranging from 0 to 65535.
-	// 4) A user-defined number is an integer ranging from 0 to 65535. The AS and user-defined numbers cannot be both 0s. This means that an RD cannot be 0.0:0.
-	// 5) 32-bit IP address:2-byte user-defined number. For example, 192.168.122.15:1. An IP address ranges from 0.0.0.0 to 255.255.255.255, and a user-defined number is an integer ranging from 0 to 65535.
-	// 6) 'auto' specifies the RD that is automatically generated.
-
-	route_distinguisher?: string
-
-	// Manage the state of the resource.
-
-	state?: string
-
-	// Add VPN targets to both the import and export VPN target lists of a BD EVPN instance. The format is the same as route_distinguisher.
-
-	vpn_target_both?: string
-
-	// Add VPN targets to the export VPN target list of a BD EVPN instance. The format is the same as route_distinguisher.
-
-	vpn_target_export?: string
-
-	// Add VPN targets to the import VPN target list of a BD EVPN instance. The format is the same as route_distinguisher.
-
-	vpn_target_import: string
-
-	// Specify an existed bridge domain (BD).The value is an integer ranging from 1 to 16777215.
-
-	bridge_domain_id: string
-
-	// Create or delete an EVPN instance for a VXLAN in BD view.
-
-	evpn?: string
+		last?: string
+	}
 }
 
 ce_snmp_community :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_snmp_community: {
 
-	// Access right read or write.
+		// Manage the state of the resource.
 
-	access_right?: string
+		state?: string
 
-	// Mib view name for notification.
+		// Access control list number.
 
-	notify_view?: string
+		acl_number?: string
 
-	// Manage the state of the resource.
+		// Mib view name.
 
-	state?: string
+		community_mib_view?: string
 
-	// Mib view name for write.
+		// Unique name to identify the community.
 
-	write_view?: string
+		community_name?: string
 
-	// Access control list number.
+		// Unique name to identify the SNMPv3 group.
 
-	acl_number?: string
+		group_name?: string
 
-	// Mib view name.
+		// Mib view name for notification.
 
-	community_mib_view?: string
+		notify_view?: string
 
-	// Unique name to identify the community.
+		// Mib view name for read.
 
-	community_name?: string
+		read_view?: string
 
-	// Unique name to identify the SNMPv3 group.
+		// Access right read or write.
 
-	group_name?: string
+		access_right?: string
 
-	// Mib view name for read.
+		// Security level indicating whether to use authentication and encryption.
 
-	read_view?: string
+		security_level?: string
 
-	// Security level indicating whether to use authentication and encryption.
+		// Mib view name for write.
 
-	security_level?: string
+		write_view?: string
+	}
 }
 
-ce_snmp_location :: {
+ce_snmp_traps :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_snmp_traps: {
 
-	// Location information.
+		// Alarm feature name.
 
-	location: string
+		feature_name?: string
 
-	// Manage the state of the resource.
+		// Interface number.
 
-	state?: string
+		interface_number?: string
+
+		// Interface type.
+
+		interface_type?: string
+
+		// Source port number.
+
+		port_number?: string
+
+		// Alarm trap name.
+
+		trap_name?: string
+	}
+}
+
+ce_vxlan_gateway :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_vxlan_gateway: {
+
+		// Specifies the UDP port number of the DFS group. The value is an integer that ranges from 1025 to 65535.
+
+		dfs_udp_port?: string
+
+		// Full name of VBDIF interface, i.e. Vbdif100.
+
+		vbdif_name?: string
+
+		// Specifies a VNI ID. Binds a VXLAN network identifier (VNI) to a virtual private network (VPN) instance. The value is an integer ranging from 1 to 16000000.
+
+		vpn_vni?: string
+
+		// Specifies the ID of a DFS group. The value must be 1.
+
+		dfs_id?: string
+
+		// Determines whether the config should be present or not on the device.
+
+		state?: string
+
+		// Specifies the name of the VPN instance that is associated with the interface. The value is a string of 1 to 31 case-sensitive characters, spaces not supported. When double quotation marks are used around the string, spaces are allowed in the string. The value C(_public_) is reserved and cannot be used as the VPN instance name.
+
+		vbdif_bind_vpn?: string
+
+		// Creates all-active gateways.
+
+		dfs_all_active?: string
+
+		// Specifies the name of a VPN instance bound to a DFS group. The value is a string of 1 to 31 case-sensitive characters without spaces. If the character string is quoted by double quotation marks, the character string can contain spaces. The value C(_public_) is reserved and cannot be used as the VPN instance name.
+
+		dfs_source_vpn?: string
+
+		// Specifies a MAC address for a VBDIF interface. The value is in the format of H-H-H. Each H is a 4-digit hexadecimal number, such as C(00e0) or C(fc01). If an H contains less than four digits, 0s are added ahead. For example,  C(e0) is equal to C(00e0). A MAC address cannot be all 0s or 1s or a multicast MAC address.
+
+		vbdif_mac?: string
+
+		// Specifies the name of a VPN instance. The value is a string of 1 to 31 case-sensitive characters, spaces not supported. When double quotation marks are used around the string, spaces are allowed in the string. The value C(_public_) is reserved and cannot be used as the VPN instance name.
+
+		vpn_instance?: string
+
+		// Enable VLINK direct route on VBDIF interface.
+
+		arp_direct_route?: string
+
+		// Enable the distributed gateway function on VBDIF interface.
+
+		arp_distribute_gateway?: string
+
+		// Configure the IP address of an all-active gateway peer. The value is in dotted decimal notation.
+
+		dfs_peer_ip?: string
+
+		// Specifies the name of the VPN instance that is associated with all-active gateway peer. The value is a string of 1 to 31 case-sensitive characters, spaces not supported. When double quotation marks are used around the string, spaces are allowed in the string. The value C(_public_) is reserved and cannot be used as the VPN instance name.
+
+		dfs_peer_vpn?: string
+
+		// Specifies the IPv4 address bound to a DFS group. The value is in dotted decimal notation.
+
+		dfs_source_ip?: string
+	}
 }
 
 ce_aaa_server :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_aaa_server: {
 
-	// Accounting scheme name. The value is a string of 1 to 32 characters.
+		// Accounting Mode.
 
-	acct_scheme_name?: string
+		accounting_mode?: string
 
-	// Name of an authentication scheme. The value is a string of 1 to 32 characters.
+		// Accounting scheme name. The value is a string of 1 to 32 characters.
 
-	authen_scheme_name?: string
+		acct_scheme_name?: string
 
-	// Name of an authorization scheme. The value is a string of 1 to 32 characters.
+		// Name of an authentication scheme. The value is a string of 1 to 32 characters.
 
-	author_scheme_name?: string
+		authen_scheme_name?: string
 
-	// Name of a domain. The value is a string of 1 to 64 characters.
+		// Preferred authentication mode.
 
-	domain_name?: string
+		first_authen_mode?: string
 
-	// Preferred authentication mode.
+		// Preferred authorization mode.
 
-	first_authen_mode?: string
+		first_author_mode?: string
 
-	// Preferred authorization mode.
+		// Name of an authorization scheme. The value is a string of 1 to 32 characters.
 
-	first_author_mode?: string
+		author_scheme_name?: string
 
-	// Accounting Mode.
+		// Name of a domain. The value is a string of 1 to 64 characters.
 
-	accounting_mode?: string
+		domain_name?: string
 
-	// Name of a HWTACACS template. The value is a string of 1 to 32 case-insensitive characters.
+		// Name of a HWTACACS template. The value is a string of 1 to 32 case-insensitive characters.
 
-	hwtacas_template?: string
+		hwtacas_template?: string
 
-	// Name of the user group where the user belongs. The user inherits all the rights of the user group. The value is a string of 1 to 32 characters.
+		// Name of the user group where the user belongs. The user inherits all the rights of the user group. The value is a string of 1 to 32 characters.
 
-	local_user_group?: string
+		local_user_group?: string
 
-	// RADIUS server group's name. The value is a string of 1 to 32 case-insensitive characters.
+		// RADIUS server group's name. The value is a string of 1 to 32 case-insensitive characters.
 
-	radius_server_group?: string
+		radius_server_group?: string
 
-	// Specify desired state of the resource.
+		// Specify desired state of the resource.
 
-	state?: string
+		state?: string
+	}
+}
+
+ce_acl_interface :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_acl_interface: {
+
+		// ACL number or name. For a numbered rule group, the value ranging from 2000 to 4999. For a named rule group, the value is a string of 1 to 32 case-sensitive characters starting with a letter, spaces not supported.
+
+		acl_name: string
+
+		// Direction ACL to be applied in on the interface.
+
+		direction: string
+
+		// Interface name. Only support interface full name, such as "40GE2/0/1".
+
+		interface: string
+
+		// Determines whether the config should be present or not on the device.
+
+		state?: string
+	}
 }
 
 ce_evpn_bgp :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_evpn_bgp: {
 
-	// Associates a specified VPN instance with the IPv4 address family. The value is a string of 1 to 31 case-sensitive characters, spaces not supported.
+		// Enable or disable a device to advertise IP routes imported to a VPN instance to its EVPN instance.
 
-	vpn_name?: string
+		advertise_l2vpn_evpn?: string
 
-	// Enable or disable a device to advertise IP routes imported to a VPN instance to its EVPN instance.
+		// Configures a device to advertise routes to its BGP EVPN peers.
 
-	advertise_l2vpn_evpn?: string
+		advertise_router_type?: string
 
-	// Specifies integral AS number. The value is an integer ranging from 1 to 4294967295.
+		// Specifies integral AS number. The value is an integer ranging from 1 to 4294967295.
 
-	as_number?: string
+		as_number?: string
 
-	// Enable or disable a BGP device to exchange routes with a specified peer or peer group in the address family view.
+		// Name of a BGP instance. The value is a string of 1 to 31 case-sensitive characters, spaces not supported.
 
-	peer_enable?: string
+		bgp_instance: string
 
-	// Specify the name of a peer group that BGP peers need to join. The value is a string of 1 to 47 case-sensitive characters, spaces not supported.
+		// Enable or disable a BGP device to exchange routes with a specified peer or peer group in the address family view.
 
-	peer_group_name?: string
+		peer_enable?: string
 
-	// Manage the state of the resource.
+		// Specify the name of a peer group that BGP peers need to join. The value is a string of 1 to 47 case-sensitive characters, spaces not supported.
 
-	state?: string
+		peer_group_name?: string
 
-	// Configures a device to advertise routes to its BGP EVPN peers.
+		// Manage the state of the resource.
 
-	advertise_router_type?: string
+		state?: string
 
-	// Name of a BGP instance. The value is a string of 1 to 31 case-sensitive characters, spaces not supported.
+		// Specifies the IPv4 address of a BGP EVPN peer. The value is in dotted decimal notation.
 
-	bgp_instance: string
+		peer_address?: string
 
-	// Specifies the IPv4 address of a BGP EVPN peer. The value is in dotted decimal notation.
+		// Associates a specified VPN instance with the IPv4 address family. The value is a string of 1 to 31 case-sensitive characters, spaces not supported.
 
-	peer_address?: string
+		vpn_name?: string
+	}
 }
 
-ce_facts :: {
+ce_lacp :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_lacp: {
 
-	// When supplied, this argument will restrict the facts collected to a given subset.  Possible values for this argument include all, hardware, config, and interfaces.  Can specify a list of values to include a larger subset.  Values can also be used with an initial C(M(!)) to specify that a specific subset should not be collected.
+		// When lacp timeout type is 'Fast', user-defined time can be a number(3~90).
 
-	gather_subset?: string
+		fast_timeout?: int
+
+		// Max active linknumber in link aggregation group.
+
+		max_active_linknumber?: int
+
+		// Value of preemption delay time.
+
+		preempt_delay?: int
+
+		// Lacp dampening state-flapping.
+
+		state_flapping?: bool
+
+		// Eth-Trunk interface number. The value is an integer. The value range depends on the assign forward eth-trunk mode command. When 256 is specified, the value ranges from 0 to 255. When 512 is specified, the value ranges from 0 to 511. When 1024 is specified, the value ranges from 0 to 1023.
+
+		trunk_id?: int
+
+		// Lacp dampening unexpected-mac disable.
+
+		unexpected_mac_disable?: bool
+
+		// Configure lacp priority on system-view.
+
+		global_priority?: int
+
+		// Specifies lacp preempt enable of Eth-Trunk lacp. The value is an boolean 'true' or 'false'.
+
+		preempt_enable?: bool
+
+		// Value of delay time in units of 10 microseconds.
+
+		collector_delay?: int
+
+		// Value of max active linknumber.
+
+		mixed_rate_link_enable?: bool
+
+		// Specifies the working mode of an Eth-Trunk interface.
+
+		mode?: string
+
+		// Enable the function of extending the LACP negotiation port number.
+
+		port_id_extension_enable?: bool
+
+		// Link Aggregation Control Protocol System ID,interface Eth-Trunk View.
+		// Formate 'X-X-X',X is hex(a,aa,aaa, or aaaa)
+
+		system_id?: string
+
+		// The priority of eth-trunk member interface.
+
+		priority?: int
+
+		// Select priority or speed to preempt.
+
+		select?: string
+
+		// Manage the state of the resource.
+
+		state?: string
+
+		// Lacp timeout type,that may be 'Fast' or 'Slow'.
+
+		timeout_type?: string
+	}
+}
+
+ce_snmp_target_host :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_snmp_target_host: {
+
+		// Udp port used by SNMP agent to connect the Network management.
+
+		connect_port?: string
+
+		// Unique name to identify target host entry.
+
+		host_name?: string
+
+		// To enable or disable Public Net-manager for target Host.
+
+		is_public_net?: string
+
+		// UDP Port number used by network management to receive alarm messages.
+
+		recv_port?: string
+
+		// Security level indicating whether to use authentication and encryption.
+
+		security_level?: string
+
+		// Security Name.
+
+		security_name?: string
+
+		// Version(s) Supported by SNMP Engine.
+
+		version?: string
+
+		// Network Address.
+
+		address?: string
+
+		// Name of the interface to send the trap message.
+
+		interface_name?: string
+
+		// To configure notify type as trap or inform.
+
+		notify_type?: string
+
+		// Security Model.
+
+		security_model?: string
+
+		// Security Name V3.
+
+		security_name_v3?: string
+
+		// VPN instance Name.
+
+		vpn_name?: string
+	}
+}
+
+ce_vlan :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_vlan: {
+
+		// Name of VLAN, minimum of 1 character, maximum of 31 characters.
+
+		name?: string
+
+		// Manage the state of the resource.
+
+		state?: string
+
+		// Single VLAN ID, in the range from 1 to 4094.
+
+		vlan_id?: string
+
+		// Range of VLANs such as C(2-10) or C(2,5,10-15), etc.
+
+		vlan_range?: string
+
+		// Specify VLAN description, minimum of 1 character, maximum of 80 characters.
+
+		description?: string
+	}
+}
+
+ce_aaa_server_host :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_aaa_server_host: {
+
+		// Set the public-net.
+
+		hwtacacs_is_public_net?: bool
+
+		// Hwtacacs server type.
+
+		hwtacacs_server_type?: string
+
+		// Name of a HWTACACS template. The value is a string of 1 to 32 case-insensitive characters.
+
+		hwtacacs_template?: string
+
+		// RADIUS server group's name. The value is a string of 1 to 32 case-insensitive characters.
+
+		radius_group_name?: string
+
+		// FTP user directory. The value is a string of 1 to 255 characters.
+
+		local_ftp_dir?: string
+
+		// Name of the user group where the user belongs. The user inherits all the rights of the user group. The value is a string of 1 to 32 characters.
+
+		local_user_group?: string
+
+		// IPv6 address of configured server. The total length is 128 bits.
+
+		radius_server_ipv6?: string
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// Login password of a user. The password can contain letters, numbers, and special characters. The value is a string of 1 to 255 characters.
+
+		local_password?: string
+
+		// Name of a local user. The value is a string of 1 to 253 characters.
+
+		local_user_name?: string
+
+		// Configured primary or secondary server for a particular server.
+
+		radius_server_mode?: string
+
+		// Hostname of configured server. The value is a string of 0 to 255 case-sensitive characters.
+
+		radius_server_name?: string
+
+		// Configured server port for a particular server. The value is an integer ranging from 1 to 65535.
+
+		radius_server_port?: string
+
+		// Type of Radius Server.
+
+		radius_server_type?: string
+
+		// Set VPN instance. The value is a string of 1 to 31 case-sensitive characters.
+
+		radius_vpn_name?: string
+
+		// Whether the server is secondary.
+
+		hwtacacs_is_secondary_server?: bool
+
+		// Hwtacacs server host name.
+
+		hwtacacs_server_host_name?: string
+
+		// Server IPv4 address. Must be a valid unicast IP address. The value is a string of 0 to 255 characters, in dotted decimal notation.
+
+		hwtacacs_server_ip?: string
+
+		// Server IPv6 address. Must be a valid unicast IP address. The total length is 128 bits.
+
+		hwtacacs_server_ipv6?: string
+
+		// VPN instance name.
+
+		hwtacacs_vpn_name?: string
+
+		// The type of local user login through, such as ftp ssh snmp telnet.
+
+		local_service_type?: string
+
+		// Login level of a local user. The value is an integer ranging from 0 to 15.
+
+		local_user_level?: string
+
+		// IPv4 address of configured server. The value is a string of 0 to 255 characters, in dotted decimal notation.
+
+		radius_server_ip?: string
+	}
+}
+
+ce_dldp_interface :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_dldp_interface: {
+
+		// Set DLDP compatible-mode enable state.
+
+		mode_enable?: string
+
+		// Specify whether reseting interface DLDP state.
+
+		reset?: string
+
+		// Manage the state of the resource.
+
+		state?: string
+
+		// Set interface DLDP enable state.
+
+		enable?: string
+
+		// Must be fully qualified interface name, i.e. GE1/0/1, 10GE1/0/1, 40GE1/0/22, 100GE1/0/1.
+
+		interface: string
+
+		// Set the source MAC address for DLDP packets sent in the DLDP-compatible mode. The value of MAC address is in H-H-H format. H contains 1 to 4 hexadecimal digits.
+
+		local_mac?: string
+	}
+}
+
+ce_mtu :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_mtu: {
+
+		// MTU for a specific interface. The value is an integer ranging from 46 to 9600, in bytes.
+
+		mtu?: string
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// Full name of interface, i.e. 40GE1/0/22.
+
+		interface?: string
+
+		// Maximum frame size. The default value is 9216. The value is an integer and expressed in bytes. The value range is 1536 to 12224 for the CE12800 and 1536 to 12288 for ToR switches.
+
+		jumbo_max?: string
+
+		// Non-jumbo frame size threshold. The default value is 1518. The value is an integer that ranges from 1518 to jumbo_max, in bytes.
+
+		jumbo_min?: string
+	}
+}
+
+ce_reboot :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_reboot: {
+
+		// Safeguard boolean. Set to true if you're sure you want to reboot.
+
+		confirm: bool
+
+		// Flag indicating whether to save the configuration.
+
+		save_config?: bool
+	}
+}
+
+ce_info_center_trap :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_info_center_trap: {
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// Whether a trap buffer is enabled to output information.
+
+		trap_buff_enable?: string
+
+		// Size of a trap buffer. The value is an integer ranging from 0 to 1024. The default value is 256.
+
+		trap_buff_size?: string
+
+		// Whether a device is enabled to output alarms.
+
+		trap_enable?: string
+
+		// Trap level permitted to output.
+
+		trap_level?: string
+
+		// Timestamp format of alarm information.
+
+		trap_time_stamp?: string
+
+		// Number of a channel. The value is an integer ranging from 0 to 9. The default value is 0.
+
+		channel_id?: string
+
+		// Module name of the rule. The value is a string of 1 to 31 case-insensitive characters. The default value is default. Please use lower-case letter, such as [aaa, acl, arp, bfd].
+
+		module_name?: string
+	}
+}
+
+ce_netstream_template :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_netstream_template: {
+
+		// Configure the input or output interface that are included in the flexible flow statistics sent to NSC.
+
+		collect_interface?: string
+
+		// Configure the description of netstream record. The value is a string of 1 to 80 case-insensitive characters.
+
+		description?: string
+
+		// Configure flexible flow statistics template keywords.
+
+		match?: string
+
+		// Configure the name of netstream record. The value is a string of 1 to 32 case-insensitive characters.
+
+		record_name?: string
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// Configure the type of netstream record.
+
+		type: string
+
+		// Configure the number of packets and bytes that are included in the flexible flow statistics sent to NSC.
+
+		collect_counter?: string
+	}
+}
+
+ce_switchport :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_switchport: {
+
+		// If C(mode=trunk, or mode=hybrid), used as the trunk native VLAN ID, in the range from 1 to 4094.
+
+		pvid_vlan?: string
+
+		// Manage the state of the resource.
+
+		state?: string
+
+		// If C(mode=hybrid), used as the VLAN range to ADD or REMOVE from the trunk, such as 2-10 or 2,5,10-15, etc.
+
+		tagged_vlans?: string
+
+		// If C(mode=trunk), used as the VLAN range to ADD or REMOVE from the trunk, such as 2-10 or 2,5,10-15, etc.
+
+		trunk_vlans?: string
+
+		// If C(mode=hybrid), used as the VLAN range to ADD or REMOVE from the trunk, such as 2-10 or 2,5,10-15, etc.
+
+		untagged_vlans?: string
+
+		// If C(mode=access, or mode=dot1qtunnel), used as the access VLAN ID, in the range from 1 to 4094.
+
+		default_vlan?: string
+
+		// Full name of the interface, i.e. 40GE1/0/22.
+
+		interface: string
+
+		// The link type of an interface.
+
+		mode?: string
+	}
+}
+
+ce_vrf_interface :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_vrf_interface: {
+
+		// An interface that can binding VPN instance, i.e. 40GE1/0/22, Vlanif10. Must be fully qualified interface name. Interface types, such as 10GE, 40GE, 100GE, LoopBack, MEth, Tunnel, Vlanif....
+
+		vpn_interface: string
+
+		// VPN instance, the length of vrf name is 1 ~ 31, i.e. "test", but can not be C(_public_).
+
+		vrf: string
+
+		// Manage the state of the resource.
+
+		state?: string
+	}
+}
+
+ce_vxlan_arp :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_vxlan_arp: {
+
+		// Specifies a BD(bridge domain) ID. The value is an integer ranging from 1 to 16777215.
+
+		bridge_domain_id?: string
+
+		// Specifies the IP address of an EVN BGP peer. The value is in dotted decimal notation.
+
+		evn_peer_ip?: string
+
+		// Configures the local device as the route reflector (RR) and its peer as the client.
+
+		evn_reflect_client?: string
+
+		// Configures the local device as the router reflector (RR) on the EVN network.
+
+		evn_server?: string
+
+		// Specifies the source address of an EVN BGP peer. The value is in dotted decimal notation.
+
+		evn_source_ip?: string
+
+		// Determines whether the config should be present or not on the device.
+
+		state?: string
+
+		// Enables EVN BGP or BGP EVPN to collect host information.
+
+		arp_collect_host?: string
+
+		// Enables ARP broadcast suppression in a BD.
+
+		arp_suppress?: string
+
+		// Enables EVN BGP.
+
+		evn_bgp?: string
+
+		// Enables EVN BGP or BGP EVPN to advertise host information.
+
+		host_collect_protocol?: string
+
+		// Full name of VBDIF interface, i.e. Vbdif100.
+
+		vbdif_name?: string
+	}
+}
+
+ce_bgp_af :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_bgp_af: {
+
+		// If the value is true, when BGP selects an optimal route, the system uses 4294967295 as the MED value of a route if the route's attribute does not carry a MED value. If the value is false, the system uses 0 as the MED value of a route if the route's attribute does not carry a MED value.
+
+		med_none_as_maximum?: string
+
+		// If the value is true, the AS path attribute is ignored when BGP selects an optimal route. If the value is false, the AS path attribute is not ignored when BGP selects an optimal route. An AS path with a smaller length has a higher priority.
+
+		as_path_neglect?: string
+
+		// Specify the maximum number of equal-cost IBGP routes. The value is an integer ranging from 1 to 65535.
+
+		max_load_ibgp_num?: string
+
+		// Set a cluster ipv4 address. The value is expressed in the format of an IPv4 address.
+
+		reflector_cluster_ipv4?: string
+
+		// If the value is true, the function to advertise supernetwork label is enabled. If the value is false, the function to advertise supernetwork label is disabled.
+
+		supernet_label_adv?: string
+
+		// If the value is true, the MEDs of routes learned from peers in different autonomous systems are compared when BGP selects an optimal route. If the value is false, the MEDs of routes learned from peers in different autonomous systems are not compared when BGP selects an optimal route.
+
+		always_compare_med?: string
+
+		// Process ID of an imported routing protocol. The value is an integer ranging from 0 to 4294967295.
+
+		import_process_id?: string
+
+		// Route selection delay. The value is an integer ranging from 0 to 3600.
+
+		route_sel_delay?: string
+
+		// ID of a router that is in IPv4 address format. The value is a string of 0 to 255 characters. The value is in dotted decimal notation.
+
+		router_id?: string
+
+		// Routing protocol from which routes can be imported.
+
+		import_protocol?: string
+
+		// If the value is true, the third-party next hop function is enabled. If the value is false, the third-party next hop function is disabled.
+
+		nexthop_third_party?: string
+
+		// Set the Local-Preference attribute. The value is an integer. The value is an integer ranging from 0 to 4294967295.
+
+		default_local_pref?: string
+
+		// If the value is true, enable reduce priority to advertise route. If the value is false, disable reduce priority to advertise route.
+
+		lowest_priority?: string
+
+		// If the value is true, relay delay enable. If the value is false, relay delay disable.
+
+		relay_delay_enable?: string
+
+		// If the value is true, BGP deterministic-MED is enabled. If the value is false, BGP deterministic-MED is disabled.
+
+		determin_med?: string
+
+		// Load balancing as path ignore.
+
+		load_balancing_as_path_ignore?: string
+
+		// If the value is true, the router ID attribute is ignored when BGP selects the optimal route. If the value is false, the router ID attribute is not ignored when BGP selects the optimal route.
+
+		router_id_neglect?: string
+
+		// Specify the maximum number of equal-cost EBGP routes. The value is an integer ranging from 1 to 65535.
+
+		max_load_ebgp_num?: string
+
+		// Specify the name of a routing policy. The value is a string of 1 to 40 characters.
+
+		rib_only_policy_name?: string
+
+		// If the value is true, the function to advertise supernetwork unicast routes is enabled. If the value is false, the function to advertise supernetwork unicast routes is disabled.
+
+		supernet_uni_adv?: string
+
+		// Name of a BGP instance. The name is a case-sensitive string of characters. The BGP instance can be used only after the corresponding VPN instance is created. The value is a string of 1 to 31 case-sensitive characters.
+
+		vrf_name: string
+
+		// If the value is true, the next hop of an advertised route is changed to the advertiser itself in EBGP load-balancing scenarios. If the value is false, the next hop of an advertised route is not changed to the advertiser itself in EBGP load-balancing scenarios.
+
+		ebgp_ecmp_nexthop_changed?: string
+
+		// If the value is true, the next hop of an advertised route is changed to the advertiser itself in BGP load-balancing scenarios. If the value is false, the next hop of an advertised route is not changed to the advertiser itself in BGP load-balancing scenarios.
+
+		ecmp_nexthop_changed?: string
+
+		// If the value is true, the next hop of an advertised route is changed to the advertiser itself in IBGP load-balancing scenarios. If the value is false, the next hop of an advertised route is not changed to the advertiser itself in IBGP load-balancing scenarios.
+
+		ibgp_ecmp_nexthop_changed?: string
+
+		// If the value is true, the metrics of next-hop IGP routes are not compared when BGP selects an optimal route. If the value is false, the metrics of next-hop IGP routes are not compared when BGP selects an optimal route. A route with a smaller metric has a higher priority.
+
+		igp_metric_ignore?: string
+
+		// Next hop select depend type.
+
+		next_hop_sel_depend_type?: string
+
+		// If the value is true, BGP is enabled to advertise only optimal routes in the RM to peers. If the value is false, BGP is not enabled to advertise only optimal routes in the RM to peers.
+
+		active_route_advertise?: string
+
+		// Address family type of a BGP instance.
+
+		af_type: string
+
+		// Set a routing policy to filter routes so that a configured priority is applied to the routes that match the specified policy. The value is a string of 1 to 40 characters.
+
+		prefrence_policy_name?: string
+
+		// Specify the name of a route-policy for route iteration. The value is a string of 1 to 40 characters.
+
+		nhp_relay_route_policy_name?: string
+
+		// Set the protocol priority of IBGP routes. The value is an integer ranging from 1 to 255.
+
+		preference_internal?: string
+
+		// If the value is true, route reflection is enabled between clients. If the value is false, route reflection is disabled between clients.
+
+		reflect_between_client?: string
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// If the value is true, VPN-Target filtering function is performed for received VPN routes. If the value is false, VPN-Target filtering function is not performed for received VPN routes.
+
+		policy_vpn_target?: string
+
+		// Set a cluster ID. Configuring multiple RRs in a cluster can enhance the stability of the network. The value is an integer ranging from 1 to 4294967295.
+
+		reflector_cluster_id?: string
+
+		// Specify the Multi-Exit-Discriminator (MED) of BGP routes. The value is an integer ranging from 0 to 4294967295.
+
+		default_med?: string
+
+		// If the value is true, importing default routes to the BGP routing table is allowed. If the value is false, importing default routes to the BGP routing table is not allowed.
+
+		default_rt_import_enable?: string
+
+		// If the value is true, the route reflector is enabled to modify route path attributes based on an export policy. If the value is false, the route reflector is disabled from modifying route path attributes based on an export policy.
+
+		reflect_chg_path?: string
+
+		// If the value is true, after the fast EBGP interface awareness function is enabled, EBGP sessions on an interface are deleted immediately when the interface goes Down. If the value is false, after the fast EBGP interface awareness function is enabled, EBGP sessions on an interface are not deleted immediately when the interface goes Down.
+
+		ebgp_if_sensitive?: string
+
+		// If the value is true, BGP routes cannot be advertised to the IP routing table. If the value is false, Routes preferred by BGP are advertised to the IP routing table.
+
+		rib_only_enable?: string
+
+		// Number of Add-Path routes. The value is an integer ranging from 2 to 64.
+
+		add_path_sel_num?: string
+
+		// Specify the maximum number of equal-cost routes in the BGP routing table. The value is an integer ranging from 1 to 65535.
+
+		maximum_load_balance?: string
+
+		// Originator prior.
+
+		originator_prior?: string
+
+		// If the value is true, VPN BGP instances are enabled to automatically select router IDs. If the value is false, VPN BGP instances are disabled from automatically selecting router IDs.
+
+		vrf_rid_auto_sel?: string
+
+		// Allow routes with BGP origin AS validation result Invalid to be selected. If the value is true, invalid routes can participate in route selection. If the value is false, invalid routes cannot participate in route selection.
+
+		allow_invalid_as?: string
+
+		// Specify the mask length of an IP address. The value is an integer ranging from 0 to 128.
+
+		mask_len?: string
+
+		// Set the number of the extended community filter supported by an RR group. The value is a string of 1 to 51 characters.
+
+		rr_filter_number?: string
+
+		// If the value is true, automatic aggregation is enabled for locally imported routes. If the value is false, automatic aggregation is disabled for locally imported routes.
+
+		summary_automatic?: string
+
+		// If the value is true, modifying extended community attributes is allowed. If the value is false, modifying extended community attributes is not allowed.
+
+		policy_ext_comm_enable?: string
+
+		// Set the protocol priority of EBGP routes. The value is an integer ranging from 1 to 255.
+
+		preference_external?: string
+
+		// If the value is true, BGP auto FRR is enabled. If the value is false, BGP auto FRR is disabled.
+
+		auto_frr_enable?: string
+
+		// Ingress lsp policy name.
+
+		ingress_lsp_policy_name?: string
+
+		// Specify the IP address advertised by BGP. The value is a string of 0 to 255 characters.
+
+		network_address?: string
+
+		// Set the protocol priority of a local BGP route. The value is an integer ranging from 1 to 255.
+
+		preference_local?: string
+	}
+}
+
+ce_config :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_config: {
+
+		// The C(save) argument instructs the module to save the current-configuration to saved-configuration.  This operation is performed after any changes are made to the current running config.  If no changes are made, the configuration is still saved to the startup config.  This option will always cause the module to return changed.
+
+		save?: bool
+
+		// The I(src) argument provides a path to the configuration file to load into the remote system.  The path can either be a full system path to the configuration file if the value starts with / or relative to the root of the implemented role or playbook. This argument is mutually exclusive with the I(lines) and I(parents) arguments.
+
+		src?: string
+
+		// The ordered set of commands to append to the end of the command stack if a change needs to be made.  Just like with I(before) this allows the playbook designer to append a set of commands to be executed after the command set.
+
+		after?: string
+
+		// The I(defaults) argument will influence how the current-configuration is collected from the device.  When the value is set to true, the command used to collect the current-configuration is append with the all keyword.  When the value is set to false, the command is issued without the all keyword.
+
+		defaults?: bool
+
+		// Instructs the module on the way to perform the matching of the set of commands against the current device config.  If match is set to I(line), commands are matched line by line.  If match is set to I(strict), command lines are matched with respect to position.  If match is set to I(exact), command lines must be an equal match.  Finally, if match is set to I(none), the module will not attempt to compare the source configuration with the current-configuration on the remote device.
+
+		match?: string
+
+		// Instructs the module on the way to perform the configuration on the device.  If the replace argument is set to I(line) then the modified lines are pushed to the device in configuration mode.  If the replace argument is set to I(block) then the entire command block is pushed to the device in configuration mode if any line is not correct.
+
+		replace?: string
+
+		// The ordered set of commands that should be configured in the section.  The commands must be the exact same commands as found in the device current-configuration.  Be sure to note the configuration command syntax as some commands are automatically modified by the device config parser.
+
+		lines?: string
+
+		// The ordered set of parents that uniquely identify the section or hierarchy the commands should be checked against.  If the parents argument is omitted, the commands are checked against the set of top level or global commands.
+
+		parents?: string
+
+		// This argument will cause the module to create a full backup of the current C(current-configuration) from the remote device before any changes are made. If the C(backup_options) value is not given, the backup file is written to the C(backup) folder in the playbook root directory. If the directory does not exist, it is created.
+
+		backup?: bool
+
+		// This is a dict object containing configurable options related to backup file path. The value of this option is read only when C(backup) is set to I(yes), if C(backup) is set to I(no) this option will be silently ignored.
+
+		backup_options?: {...}
+
+		// The ordered set of commands to push on to the command stack if a change needs to be made.  This allows the playbook designer the opportunity to perform configuration commands prior to pushing any changes without affecting how the set of commands are matched against the system.
+
+		before?: string
+
+		// The module, by default, will connect to the remote device and retrieve the current current-configuration to use as a base for comparing against the contents of source.  There are times when it is not desirable to have the task get the current-configuration for every task in a playbook.  The I(config) argument allows the implementer to pass in the configuration to use as the base config for comparison.
+
+		config?: string
+	}
+}
+
+ce_evpn_bgp_rr :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_evpn_bgp_rr: {
+
+		// Specifies the number of the AS, in integer format. The value is an integer that ranges from 1 to 4294967295.
+
+		as_number: string
+
+		// Enable or disable the BGP-EVPN address family.
+
+		bgp_evpn_enable?: string
+
+		// Specifies the name of a BGP instance. The value of instance-name can be an integer 1 or a string of 1 to 31.
+
+		bgp_instance?: string
+
+		// Specifies the IPv4 address or the group name of a peer.
+
+		peer?: string
+
+		// Specify the peer type.
+
+		peer_type?: string
+
+		// Enable or disable the VPN-Target filtering.
+
+		policy_vpn_target?: string
+
+		// Configure the local device as the route reflector and the peer or peer group as the client of the route reflector.
+
+		reflect_client?: string
+	}
+}
+
+ce_snmp_user :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_snmp_user: {
+
+		// The authentication password. Password length, 8-255 characters.
+
+		auth_key?: string
+
+		// Name of the group where user belongs to.
+
+		user_group?: string
+
+		// Encryption protocol.
+
+		priv_protocol?: string
+
+		// Remote engine id of the USM user.
+
+		remote_engine_id?: string
+
+		// Unique name to identify the USM user.
+
+		usm_user_name?: string
+
+		// Unique name to identify the local user.
+
+		aaa_local_user?: string
+
+		// Access control list number.
+
+		acl_number?: string
+
+		// Authentication protocol.
+
+		auth_protocol?: string
+
+		// The encryption password. Password length 8-255 characters.
+
+		priv_key?: string
+	}
+}
+
+ce_info_center_debug :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_info_center_debug: {
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// Number of a channel. The value is an integer ranging from 0 to 9. The default value is 0.
+
+		channel_id?: string
+
+		// Whether a device is enabled to output debugging information.
+
+		debug_enable?: string
+
+		// Debug level permitted to output.
+
+		debug_level?: string
+
+		// Timestamp type of debugging information.
+
+		debug_time_stamp?: string
+
+		// Module name of the rule. The value is a string of 1 to 31 case-insensitive characters. The default value is default. Please use lower-case letter, such as [aaa, acl, arp, bfd].
+
+		module_name?: string
+	}
+}
+
+ce_mlag_config :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_mlag_config: {
+
+		// Priority of a DFS group. The value is an integer that ranges from 1 to 254. The default value is 100.
+
+		priority_id?: string
+
+		// A pseudo nickname of a DFS group. The value is an integer that ranges from 1 to 65471.
+
+		pseudo_nickname?: string
+
+		// The priority of a pseudo nickname. The value is an integer that ranges from 128 to 255. The default value is 192. A larger value indicates a higher priority.
+
+		pseudo_priority?: string
+
+		// ID of a DFS group. The value is 1.
+
+		dfs_group_id?: string
+
+		// IP address bound to the DFS group. The value is in dotted decimal notation.
+
+		ip_address?: string
+
+		// Number of the peer-link interface. The value is 1.
+
+		peer_link_id?: string
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// Name of the VPN instance bound to the DFS group. The value is a string of 1 to 31 case-sensitive characters without spaces. If the character string is quoted by double quotation marks, the character string can contain spaces. The value _public_ is reserved and cannot be used as the VPN instance name.
+
+		vpn_instance_name?: string
+
+		// Name of the peer-link interface. The value is in the range from 0 to 511.
+
+		eth_trunk_id?: string
+
+		// The nickname bound to a DFS group. The value is an integer that ranges from 1 to 65471.
+
+		nickname?: string
+	}
 }
 
 ce_mlag_interface :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_mlag_interface: {
 
-	// ID of a DFS group.The value is 1.
+		// Specify desired state of the resource.
 
-	dfs_group_id?: string
+		state?: string
 
-	// Name of the local M-LAG interface. The value is ranging from 0 to 511.
+		// ID of a DFS group.The value is 1.
 
-	eth_trunk_id?: string
+		dfs_group_id?: string
 
-	// Name of the interface that enters the Error-Down state when the peer-link fails. The value is a string of 1 to 63 characters.
+		// Name of the local M-LAG interface. The value is ranging from 0 to 511.
 
-	interface?: string
+		eth_trunk_id?: string
 
-	// Configure the interface on the slave device to enter the Error-Down state.
+		// Name of the interface that enters the Error-Down state when the peer-link fails. The value is a string of 1 to 63 characters.
 
-	mlag_error_down?: string
+		interface?: string
 
-	// ID of the M-LAG. The value is an integer that ranges from 1 to 2048.
+		// Configure the interface on the slave device to enter the Error-Down state.
 
-	mlag_id?: string
+		mlag_error_down?: string
 
-	// M-LAG global LACP system priority. The value is an integer ranging from 0 to 65535. The default value is 32768.
+		// ID of the M-LAG. The value is an integer that ranges from 1 to 2048.
 
-	mlag_priority_id?: string
+		mlag_id?: string
 
-	// M-LAG global LACP system MAC address. The value is a string of 0 to 255 characters. The default value is the MAC address of the Ethernet port of MPU.
+		// M-LAG global LACP system priority. The value is an integer ranging from 0 to 65535. The default value is 32768.
 
-	mlag_system_id?: string
+		mlag_priority_id?: string
 
-	// Specify desired state of the resource.
+		// M-LAG global LACP system MAC address. The value is a string of 0 to 255 characters. The default value is the MAC address of the Ethernet port of MPU.
 
-	state?: string
+		mlag_system_id?: string
+	}
+}
+
+ce_ospf :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_ospf: {
+
+		// Specifies the address of the network segment where the interface resides. The value is in dotted decimal notation.
+
+		addr?: string
+
+		// Specifies the authentication type.
+
+		auth_mode?: string
+
+		// IPv4 address for configure next-hop address's weight. Valid values are a string, formatted as an IP address.
+
+		nexthop_addr?: string
+
+		// Indicates the weight of the next hop. The smaller the value is, the higher the preference of the route is. It is an integer that ranges from 1 to 254.
+
+		nexthop_weight?: string
+
+		// Specifies a process ID. The value is an integer ranging from 1 to 4294967295.
+
+		process_id: string
+
+		// Specifies the area ID. The area with the area-id being 0 is a backbone area. Valid values are a string, formatted as an IP address (i.e. "0.0.0.0") or as an integer between 1 and 4294967295.
+
+		area?: string
+
+		// Authentication key id when C(auth_mode) is 'hmac-sha256', 'md5' or 'hmac-md5. Valid value is an integer is in the range from 1 to 255.
+
+		auth_key_id?: string
+
+		// Specifies a password for MD5, HMAC-MD5, or HMAC-SHA256 authentication. The value is a string of 1 to 255 case-sensitive characters, spaces not supported.
+
+		auth_text_md5?: string
+
+		// Specifies a password for simple authentication. The value is a string of 1 to 8 characters.
+
+		auth_text_simple?: string
+
+		// IP network wildcard bits in decimal format between 0 and 32.
+
+		mask?: string
+
+		// The maximum number of paths for forward packets over multiple paths. Valid value is an integer in the range from 1 to 64.
+
+		max_load_balance?: string
+
+		// Determines whether the config should be present or not on the device.
+
+		state?: string
+	}
+}
+
+ce_bfd_global :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_bfd_global: {
+
+		// Enables the global Bidirectional Forwarding Detection (BFD) function.
+
+		bfd_enable?: string
+
+		// Specifies an initial flapping suppression time for a BFD session. The value is an integer ranging from 1 to 3600000, in milliseconds. The default value is 2000.
+
+		damp_init_wait_time?: string
+
+		// Specifies the default multicast IP address. The value ranges from 224.0.0.107 to 224.0.0.250.
+
+		default_ip?: string
+
+		// Indicates the priority of BFD control packets for dynamic BFD sessions. The value is an integer ranging from 0 to 7. The default priority is 7, which is the highest priority of BFD control packets.
+
+		tos_exp_dynamic?: string
+
+		// Indicates the priority of BFD control packets for static BFD sessions. The value is an integer ranging from 0 to 7. The default priority is 7, which is the highest priority of BFD control packets.
+
+		tos_exp_static?: string
+
+		// Specifies a maximum flapping suppression time for a BFD session. The value is an integer ranging from 1 to 3600000, in milliseconds. The default value is 15000.
+
+		damp_max_wait_time?: string
+
+		// Specifies a secondary flapping suppression time for a BFD session. The value is an integer ranging from 1 to 3600000, in milliseconds. The default value is 5000.
+
+		damp_second_wait_time?: string
+
+		// Specifies the delay before a BFD session becomes Up. The value is an integer ranging from 1 to 600, in seconds. The default value is 0, indicating that a BFD session immediately becomes Up.
+
+		delay_up_time?: string
+
+		// Determines whether the config should be present or not on the device.
+
+		state?: string
+	}
+}
+
+ce_bfd_view :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_bfd_view: {
+
+		// Specifies the minimum interval for sending BFD packets. The value is an integer that ranges from 50 to 1000, in milliseconds.
+
+		min_rx_interval?: string
+
+		// Specifies the minimum interval for receiving BFD packets. The value is an integer that ranges from 50 to 1000, in milliseconds.
+
+		min_tx_interval?: string
+
+		// Specifies the remote discriminator of a BFD session. The value is an integer that ranges from 1 to 4294967295.
+
+		remote_discr?: string
+
+		// Specifies a priority for BFD control packets. The value is an integer ranging from 0 to 7. The default value is 7, which is the highest priority.
+
+		tos_exp?: string
+
+		// Enables the BFD session to enter the AdminDown state. By default, a BFD session is enabled. The default value is bool type.
+
+		admin_down?: bool
+
+		// Specifies the local detection multiplier of a BFD session. The value is an integer that ranges from 3 to 50.
+
+		detect_multi?: string
+
+		// Specifies the local discriminator of a BFD session. The value is an integer that ranges from 1 to 16384.
+
+		local_discr?: string
+
+		// Specifies the WTR time of a BFD session. The value is an integer that ranges from 1 to 60, in minutes. The default value is 0.
+
+		wtr_interval?: string
+
+		// Specifies the description of a BFD session. The value is a string of 1 to 51 case-sensitive characters with spaces.
+
+		description?: string
+
+		// Specifies the name of a BFD session. The value is a string of 1 to 15 case-sensitive characters without spaces.
+
+		session_name: string
+
+		// Determines whether the config should be present or not on the device.
+
+		state?: string
+	}
+}
+
+ce_command :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_command: {
+
+		// Specifies what to evaluate from the output of the command and what conditionals to apply.  This argument will cause the task to wait for a particular conditional to be true before moving forward.   If the conditional is not true by the configured retries, the task fails.  See examples.
+
+		wait_for?: string
+
+		// The commands to send to the remote HUAWEI CloudEngine device over the configured provider.  The resulting output from the command is returned. If the I(wait_for) argument is provided, the module is not returned until the condition is satisfied or the number of I(retries) has been exceeded.
+
+		commands: string
+
+		// Configures the interval in seconds to wait between retries of the command.  If the command does not pass the specified conditional, the interval indicates how to long to wait before trying the command again.
+
+		interval?: string
+
+		// The I(match) argument is used in conjunction with the I(wait_for) argument to specify the match policy.  Valid values are C(all) or C(any).  If the value is set to C(all) then all conditionals in the I(wait_for) must be satisfied.  If the value is set to C(any) then only one of the values must be satisfied.
+
+		match?: string
+
+		// Specifies the number of retries a command should by tried before it is considered failed.  The command is run on the target device every retry and evaluated against the I(wait_for) conditionals.
+
+		retries?: string
+	}
+}
+
+ce_eth_trunk :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_eth_trunk: {
+
+		// Hash algorithm used for load balancing among Eth-Trunk member interfaces.
+
+		hash_type?: string
+
+		// List of interfaces that will be managed in a given Eth-Trunk. The interface name must be full name.
+
+		members?: string
+
+		// Specifies the minimum number of Eth-Trunk member links in the Up state. The value is an integer ranging from 1 to the maximum number of interfaces that can be added to a Eth-Trunk interface.
+
+		min_links?: string
+
+		// Specifies the working mode of an Eth-Trunk interface.
+
+		mode?: string
+
+		// Manage the state of the resource.
+
+		state?: string
+
+		// Eth-Trunk interface number. The value is an integer. The value range depends on the assign forward eth-trunk mode command. When 256 is specified, the value ranges from 0 to 255. When 512 is specified, the value ranges from 0 to 511. When 1024 is specified, the value ranges from 0 to 1023.
+
+		trunk_id: string
+
+		// When true it forces Eth-Trunk members to match what is declared in the members param. This can be used to remove members.
+
+		force?: bool
+	}
+}
+
+ce_static_route :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_static_route: {
+
+		// VPN instance of next hop ip address.
+
+		destvrf?: string
+
+		// Next hop interface full name of static route.
+
+		nhp_interface?: string
+
+		// Destination ip address of static route.
+
+		prefix: string
+
+		// VPN instance of destination ip address.
+
+		vrf?: string
+
+		// Route tag value (numeric).
+
+		tag?: string
+
+		// Destination ip address family type of static route.
+
+		aftype: string
+
+		// Name of the route. Used with the name parameter on the CLI.
+
+		description?: string
+
+		// Destination ip mask of static route.
+
+		mask: string
+
+		// Next hop address of static route.
+
+		next_hop?: string
+
+		// Preference or administrative difference of route (range 1-255).
+
+		pref?: string
+
+		// Specify desired state of the resource.
+
+		state?: string
+	}
+}
+
+ce_stp :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_stp: {
+
+		// Set the current port as an edge port.
+
+		edged_port?: string
+
+		// Interface name. If the value is C(all), will apply configuration to all interfaces. if the value is a special name, only support input the full name.
+
+		interface?: string
+
+		// Set the path cost of the current port. The default instance is 0.
+
+		cost?: string
+
+		// Enable root protection on the current port.
+
+		root_protection?: string
+
+		// Configure the TC BPDU protection function for an MSTP process.
+
+		tc_protection?: string
+
+		// Set the time the MSTP device takes to handle the maximum number of TC BPDUs and immediately refresh forwarding entries. The value is an integer ranging from 1 to 600, in seconds.
+
+		tc_protection_interval?: string
+
+		// Set the maximum number of TC BPDUs that the MSTP can handle. The value is an integer ranging from 1 to 255. The default value is 1 on the switch.
+
+		tc_protection_threshold?: string
+
+		// Configure BPDU protection on an edge port. This function prevents network flapping caused by attack packets.
+
+		bpdu_protection?: string
+
+		// Enable loop protection on the current port.
+
+		loop_protection?: string
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// STP convergence mode. Fast means set STP aging mode to Fast. Normal means set STP aging mode to Normal.
+
+		stp_converge?: string
+
+		// Enable or disable STP on a switch.
+
+		stp_enable?: string
+
+		// Specify a port as a BPDU filter port.
+
+		bpdu_filter?: string
+
+		// Set an operation mode for the current MSTP process. The mode can be STP, RSTP, or MSTP.
+
+		stp_mode?: string
+	}
+}
+
+ce_snmp_contact :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_snmp_contact: {
+
+		// Contact information.
+
+		contact: string
+
+		// Manage the state of the resource.
+
+		state?: string
+	}
+}
+
+ce_dldp :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_dldp: {
+
+		// Specifies the interval for sending Advertisement packets. The value is an integer ranging from 1 to 100, in seconds. The default interval for sending Advertisement packets is 5 seconds.
+
+		time_internal?: string
+
+		// Set global DLDP work-mode.
+
+		work_mode?: string
+
+		// Specifies authentication algorithm of DLDP.
+
+		auth_mode?: string
+
+		// Specifies authentication password. The value is a string of 1 to 16 case-sensitive plaintexts or 24/32/48/108/128 case-sensitive encrypted characters. The string excludes a question mark (?).
+
+		auth_pwd?: string
+
+		// Set global DLDP enable state.
+
+		enable?: string
+
+		// Specify whether reset DLDP state of disabled interfaces.
+
+		reset?: string
+	}
+}
+
+ce_netconf :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_netconf: {
+
+		// The config xml string.
+
+		cfg_xml: string
+
+		// The type of rpc.
+
+		rpc: string
+	}
+}
+
+ce_netstream_global :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_netstream_global: {
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// Specifies the netstream statistic direction.
+
+		statistics_direction?: string
+
+		// Specifies the flexible netstream statistic record, length is 1 - 32.
+
+		statistics_record?: string
+
+		// Specifies the type of netstream global.
+
+		type?: string
+
+		// Specifies the netstream index-switch.
+
+		index_switch?: string
+
+		// Netstream global interface.
+
+		interface: string
+
+		// Specifies the netstream sampler direction.
+
+		sampler_direction?: string
+
+		// Specifies the netstream sampler interval, length is 1 - 65535.
+
+		sampler_interval?: string
+	}
+}
+
+ce_sflow :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_sflow: {
+
+		// Specifies the maximum length of sFlow packets sent from an sFlow agent to an sFlow collector. The value is an integer, in bytes. It ranges from 1024 to 8100. The default value is 1400.
+
+		collector_datagram_size?: string
+
+		// Specifies the description of an sFlow collector. The value is a string of 1 to 255 case-sensitive characters without spaces.
+
+		collector_description?: string
+
+		// Specifies the UDP destination port number of sFlow packets. The value is an integer that ranges from 1 to 65535. The default value is 6343.
+
+		collector_udp_port?: string
+
+		// Configures the sFlow packets sent by the switch not to carry routing information.
+
+		export_route?: string
+
+		// Specifies the rate of sFlow packets sent from a card to the control plane. The value is an integer that ranges from 100 to 1500, in pps.
+
+		rate_limit?: string
+
+		// Full name of interface for Flow Sampling or Counter. It must be a physical interface, Eth-Trunk, or Layer 2 subinterface.
+
+		sflow_interface?: string
+
+		// Determines whether the config should be present or not on the device.
+
+		state?: string
+
+		// Specifies the IPv4/IPv6 address of an sFlow agent.
+
+		agent_ip?: string
+
+		// Specifies the slot where the rate of output sFlow packets is limited. If this parameter is not specified, the rate of sFlow packets sent from all cards to the control plane is limited. The value is an integer or a string of characters.
+
+		rate_limit_slot?: string
+
+		// Indicates the ID list of the collector.
+
+		sample_collector?: string
+
+		// Enables flow sampling in the inbound or outbound direction.
+
+		sample_direction?: string
+
+		// Specifies the source IPv4/IPv6 address of sFlow packets.
+
+		source_ip?: string
+
+		// Specifies the IPv4/IPv6 address of the sFlow collector.
+
+		collector_ip?: string
+
+		// Configures the device to send sFlow packets through service interfaces, enhancing the sFlow packet forwarding capability. The enhanced parameter is optional. No matter whether you configure the enhanced mode, the switch determines to send sFlow packets through service cards or management port based on the routing information on the collector. When the value is meth, the device forwards sFlow packets at the control plane. When the value is enhanced, the device forwards sFlow packets at the forwarding plane to enhance the sFlow packet forwarding capacity.
+
+		collector_meth?: string
+
+		// Indicates the ID list of the counter collector.
+
+		counter_collector?: string
+
+		// Enable the Embedded Network Processor (ENP) chip function. The switch uses the ENP chip to perform sFlow sampling, and the maximum sFlow sampling interval is 65535. If you set the sampling interval to be larger than 65535, the switch automatically restores it to 65535. The value is an integer or 'all'.
+
+		forward_enp_slot?: string
+
+		// Specifies the maximum length of sampled packets. The value is an integer and ranges from 18 to 512, in bytes. The default value is 128.
+
+		sample_length?: string
+
+		// Specifies the ID of an sFlow collector. This ID is used when you specify the collector in subsequent sFlow configuration.
+
+		collector_id?: string
+
+		// Specifies the name of a VPN instance. The value is a string of 1 to 31 case-sensitive characters, spaces not supported. When double quotation marks are used around the string, spaces are allowed in the string. The value C(_public_) is reserved and cannot be used as the VPN instance name.
+
+		collector_ip_vpn?: string
+
+		// Indicates the counter sampling interval. The value is an integer that ranges from 10 to 4294967295, in seconds. The default value is 20.
+
+		counter_interval?: string
+
+		// Specifies the flow sampling rate in the format 1/rate. The value is an integer and ranges from 1 to 4294967295. The default value is 8192.
+
+		sample_rate?: string
+	}
+}
+
+ce_netstream_export :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_netstream_export: {
+
+		// Specifies the AS number recorded in the statistics as the original or the peer AS number.
+
+		as_option?: string
+
+		// Configures the statistics to carry BGP next hop information. Currently, only V9 supports the exported packets carrying BGP next hop information.
+
+		bgp_nexthop?: string
+
+		// Specifies the destination UDP port number of the exported packets. The value is an integer that ranges from 1 to 65535.
+
+		host_port?: string
+
+		// Manage the state of the resource.
+
+		state?: string
+
+		// Specifies NetStream feature.
+
+		type: string
+
+		// Sets the version of exported packets.
+
+		version?: string
+
+		// Specifies destination address which can be IPv6 or IPv4 of the exported NetStream packet.
+
+		host_ip?: string
+
+		// Specifies the VPN instance of the exported packets carrying flow statistics. Ensure the VPN instance has been created on the device.
+
+		host_vpn?: string
+
+		// Specifies source address which can be IPv6 or IPv4 of the exported NetStream packet.
+
+		source_ip?: string
+	}
+}
+
+ce_vrf_af :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_vrf_af: {
+
+		// VPN instance route distinguisher,the RD used to distinguish same route prefix from different vpn. The RD must be setted before setting vpn_target_value.
+
+		route_distinguisher?: string
+
+		// Manage the state of the af.
+
+		state?: string
+
+		// Manage the state of the vpn target.
+
+		vpn_target_state?: string
+
+		// VPN instance vpn target type.
+
+		vpn_target_type?: string
+
+		// VPN instance target value. Such as X.X.X.X:number<0-65535> or number<0-65535>:number<0-4294967295> or number<0-65535>.number<0-65535>:number<0-65535> or number<65536-4294967295>:number<0-65535> but not support 0:0 and 0.0:0.
+
+		vpn_target_value?: string
+
+		// VPN instance.
+
+		vrf: string
+
+		// VPN instance address family.
+
+		vrf_aftype?: string
+
+		// Is extend vpn or normal vpn.
+
+		evpn?: bool
+	}
+}
+
+ce_vrrp :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_vrrp: {
+
+		// Name of an interface. The value is a string of 1 to 63 characters.
+
+		interface?: string
+
+		// Delay in recovering after an interface goes Up. The delay is used for interface flapping suppression. The value is an integer ranging from 0 to 3600. The default value is 0 seconds.
+
+		recover_delay?: string
+
+		// VRRP version. The default version is v2.
+
+		version?: string
+
+		// Configured interval between sending advertisements, in milliseconds. Only the master router sends VRRP advertisements. The default value is 1000 milliseconds.
+
+		advertise_interval?: string
+
+		// This object is set based on the authentication type. When noAuthentication is specified, the value is empty. When simpleTextPassword or md5Authentication is specified, the value is a string of 1 to 8 characters in plaintext and displayed as a blank text for security.
+
+		auth_key?: string
+
+		// mVRRP's fast resume mode.
+
+		fast_resume?: string
+
+		// Virtual IP address. The value is a string of 0 to 255 characters.
+
+		virtual_ip?: string
+
+		// Type of a VRRP backup group.
+
+		vrrp_type?: string
+
+		// Tracked mVRRP ID. The value is an integer ranging from 1 to 255.
+
+		admin_vrid?: string
+
+		// Authentication type used for VRRP packet exchanges between virtual routers. The values are noAuthentication, simpleTextPassword, md5Authentication. The default value is noAuthentication.
+
+		auth_mode?: string
+
+		// Interval at which gratuitous ARP packets are sent, in seconds. The value ranges from 30 to 1200.The default value is 300.
+
+		gratuitous_arp_interval?: string
+
+		// Select the display mode of an authentication key. By default, an authentication key is displayed in ciphertext.
+
+		is_plain?: bool
+
+		// Preemption delay. The value is an integer ranging from 0 to 3600. The default value is 0.
+
+		preempt_timer_delay?: string
+
+		// Configured VRRP priority. The value ranges from 1 to 254. The default value is 100. A larger value indicates a higher priority.
+
+		priority?: string
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// VRRP backup group ID. The value is an integer ranging from 1 to 255.
+
+		vrid?: string
+
+		// Disable the flowdown function for service VRRP.
+
+		admin_flowdown?: bool
+
+		// Tracked mVRRP interface name. The value is a string of 1 to 63 characters.
+
+		admin_interface?: string
+
+		// mVRRP ignores an interface Down event.
+
+		admin_ignore_if_down?: bool
+
+		// The configured holdMultiplier.The value is an integer ranging from 3 to 10. The default value is 3.
+
+		holding_multiplier?: string
+	}
+}
+
+ce_bfd_session :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_bfd_session: {
+
+		// BFD session creation mode, the currently created BFD session only supports static or static auto-negotiation mode.
+
+		create_type?: string
+
+		// The BFD session local identifier does not need to be configured when the mode is auto.
+
+		local_discr?: string
+
+		// Specifies the type and number of the interface bound to the BFD session.
+
+		out_if_name?: string
+
+		// Specifies the name of a BFD session. The value is a string of 1 to 15 case-sensitive characters without spaces.
+
+		session_name: string
+
+		// Determines whether the config should be present or not on the device.
+
+		state?: string
+
+		// Indicates the default multicast IP address that is bound to a BFD session. By default, BFD uses the multicast IP address 224.0.0.184. You can set the multicast IP address by running the default-ip-address command. The value is a bool type.
+
+		use_default_ip?: bool
+
+		// Specifies the peer IP address type.
+
+		addr_type?: string
+
+		// The BFD session remote identifier does not need to be configured when the mode is auto.
+
+		remote_discr?: string
+
+		// Indicates the source IP address carried in BFD packets.
+
+		src_addr?: string
+
+		// Specifies the name of a Virtual Private Network (VPN) instance that is bound to a BFD session. The value is a string of 1 to 31 case-sensitive characters, spaces not supported. When double quotation marks are used around the string, spaces are allowed in the string. The value _public_ is reserved and cannot be used as the VPN instance name.
+
+		vrf_name?: string
+
+		// Specifies the peer IP address bound to the BFD session.
+
+		dest_addr?: string
+	}
+}
+
+ce_bgp :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_bgp: {
+
+		// If the value is true, the system stores all route update messages received from all peers (groups) after BGP connection setup. If the value is false, the system stores only BGP update messages that are received from peers and pass the configured import policy.
+
+		keep_all_routes?: string
+
+		// Min hold time, in seconds. The value of the hold time can be 0 or range from 20 to 65535.
+
+		min_hold_time?: string
+
+		// Suppress interval.
+
+		suppress_interval?: string
+
+		// Local AS number. The value is a string of 1 to 11 characters.
+
+		as_number?: string
+
+		// Check the first AS in the AS_Path of the update messages from EBGP peers.
+
+		check_first_as?: string
+
+		// Clear interval.
+
+		clear_interval?: string
+
+		// Confederation AS number, in two-byte or four-byte format. The value is a string of 1 to 11 characters.
+
+		confed_peer_as_num?: string
+
+		// Enable GR of the BGP speaker in the specified address family, peer address, or peer group.
+
+		graceful_restart?: string
+
+		// Period of waiting for the End-Of-RIB flag. The value is an integer ranging from 3 to 3000. The default value is 600.
+
+		time_wait_for_rib?: string
+
+		// Name of a BGP instance. The name is a case-sensitive string of characters.
+
+		vrf_name?: string
+
+		// Maximum number of AS numbers in the AS_Path attribute. The default value is 255.
+
+		as_path_limit?: string
+
+		// Confederation ID. The value is a string of 1 to 11 characters.
+
+		confed_id_number?: string
+
+		// Configure the device to be compatible with devices in a nonstandard confederation.
+
+		confed_nonstanded?: string
+
+		// Peer disconnection through GR.
+
+		gr_peer_reset?: string
+
+		// If the value is true, VPN BGP instances are enabled to automatically select router IDs. If the value is false, VPN BGP instances are disabled from automatically selecting router IDs.
+
+		vrf_rid_auto_sel?: string
+
+		// ID of a router that is in IPv4 address format.
+
+		router_id?: string
+
+		// Type of a created address family, which can be IPv4 unicast or IPv6 unicast. The default type is IPv4 unicast.
+
+		default_af_type?: string
+
+		// If the value is true, After the fast EBGP interface awareness function is enabled, EBGP sessions on an interface are deleted immediately when the interface goes Down. If the value is  false, After the fast EBGP interface awareness function is enabled, EBGP sessions on an interface are not deleted immediately when the interface goes Down.
+
+		ebgp_if_sensitive?: string
+
+		// Hold interval.
+
+		hold_interval?: string
+
+		// Hold time, in seconds. The value of the hold time can be 0 or range from 3 to 65535.
+
+		hold_time?: string
+
+		// Interrupt BGP all neighbor.
+
+		is_shutdown?: string
+
+		// The function to automatically select router IDs for all VPN BGP instances is enabled.
+
+		bgp_rid_auto_sel?: string
+
+		// ConnectRetry interval. The value is an integer, in seconds. The default value is 32s.
+
+		conn_retry_time?: string
+
+		// If the value of a timer changes, the BGP peer relationship between the routers is disconnected. The value is an integer ranging from 0 to 21845. The default value is 60.
+
+		keepalive_time?: string
+
+		// Support BGP RIB memory protection.
+
+		memory_limit?: string
+
+		// Specify desired state of the resource.
+
+		state?: string
+	}
+}
+
+ce_info_center_global :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_info_center_global: {
+
+		// Set the priority of the syslog packet.The value is an integer ranging from 0 to 7. The default value is 0.
+
+		packet_priority?: string
+
+		// Log source ip address, IPv4 or IPv6 type. The value is a string of 0 to 255. The value can be an valid IPv4 or IPv6 address.
+
+		source_ip?: string
+
+		// VPN name on a log server. The value is a string of 1 to 31 case-sensitive characters. The default value is _public_.
+
+		vrf_name?: string
+
+		// Direction of information output.
+
+		channel_out_direct?: string
+
+		// Feature name of the filtered log. The value is a string of 1 to 31 case-insensitive characters.
+
+		filter_feature_name?: string
+
+		// Name of the filtered log. The value is a string of 1 to 63 case-sensitive characters.
+
+		filter_log_name?: string
+
+		// Server name. The value is a string of 1 to 255 case-sensitive characters.
+
+		server_domain?: string
+
+		// Log server address, IPv4 or IPv6 type. The value is a string of 0 to 255 characters. The value can be an valid IPv4 or IPv6 address.
+
+		server_ip?: string
+
+		// Transport mode. The value is of the enumerated type and case-sensitive.
+
+		transport_mode?: string
+
+		// Channel name. The value is a string of 1 to 30 case-sensitive characters.
+
+		channel_name?: string
+
+		// Log record tool.
+
+		facility?: string
+
+		// Use the default VPN or not.
+
+		is_default_vpn?: bool
+
+		// SSL policy name. The value is a string of 1 to 23 case-sensitive characters.
+
+		ssl_policy_name?: string
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// Channel name.The value is a string of 1 to 30 case-sensitive characters. The default value is console.
+
+		channel_cfg_name?: string
+
+		// Log server address type, IPv4 or IPv6.
+
+		ip_type?: string
+
+		// Maximum number of log files of the same type. The default value is 200.
+		// The value range for log files is[3, 500], for security files is [1, 3],and for operation files is [1, 7].
+
+		logfile_max_num?: string
+
+		// Maximum size (in MB) of a log file. The default value is 32.
+		// The value range for log files is [4, 8, 16, 32], for security files is [1, 4],
+		// and for operation files is [1, 4].
+
+		logfile_max_size?: string
+
+		// Number of a port sending logs.The value is an integer ranging from 1 to 65535. For UDP, the default value is 514. For TCP, the default value is 601. For TSL, the default value is 6514.
+
+		server_port?: string
+
+		// Whether a device is enabled to suppress duplicate statistics. The value is of the Boolean type.
+
+		suppress_enable?: string
+
+		// Log server timestamp. The value is of the enumerated type and case-sensitive.
+
+		timestamp?: string
+
+		// Number for channel. The value is an integer ranging from 0 to 9. The default value is 0.
+
+		channel_id?: string
+
+		// Whether the info-center function is enabled. The value is of the Boolean type.
+
+		info_center_enable?: string
+
+		// Level of logs saved on a log server.
+
+		level?: string
+	}
+}
+
+ce_interface_ospf :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_interface_ospf: {
+
+		// Ospf area associated with this ospf process. Valid values are a string, formatted as an IP address (i.e. "0.0.0.0") or as an integer between 1 and 4294967295.
+
+		area: string
+
+		// Authentication key id when C(auth_mode) is 'hmac-sha256', 'md5' or 'hmac-md5. Valid value is an integer is in the range from 1 to 255.
+
+		auth_key_id?: string
+
+		// Specifies the authentication type.
+
+		auth_mode?: string
+
+		// Specifies a password for MD5, HMAC-MD5, or HMAC-SHA256 authentication. The value is a string of 1 to 255 case-sensitive characters, spaces not supported.
+
+		auth_text_md5?: string
+
+		// The cost associated with this interface. Valid values are an integer in the range from 1 to 65535.
+
+		cost?: string
+
+		// Time interval an ospf neighbor waits for a hello packet before tearing down adjacencies. Valid values are an integer in the range from 1 to 235926000.
+
+		dead_interval?: string
+
+		// Time between sending successive hello packets. Valid values are an integer in the range from 1 to 65535.
+
+		hello_interval?: string
+
+		// Full name of interface, i.e. 40GE1/0/10.
+
+		interface: string
+
+		// Determines whether the config should be present or not on the device.
+
+		state?: string
+
+		// Specifies a password for simple authentication. The value is a string of 1 to 8 characters.
+
+		auth_text_simple?: string
+
+		// Specifies a process ID. The value is an integer ranging from 1 to 4294967295.
+
+		process_id: string
+
+		// Setting to true will prevent this interface from receiving HELLO packets. Valid values are 'true' and 'false'.
+
+		silent_interface?: bool
+	}
+}
+
+ce_link_status :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_link_status: {
+
+		interface: string
+
+		// For the interface parameter, you can enter C(all) to display information about all interfaces, an interface type such as C(40GE) to display information about interfaces of the specified type, or full name of an interface such as C(40GE1/0/22) or C(vlanif10) to display information about the specific interface.
+	}
+}
+
+ce_static_route_bfd :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_static_route_bfd: {
+
+		// Route tag value (numeric).
+
+		tag?: int
+
+		// Incoming command line is used to send sys,undo ip route-static default-bfd,commit.
+
+		commands?: [...]
+
+		// Name of the route. Used with the name parameter on the CLI.
+
+		description?: string
+
+		// Used to distinguish between command line functions.
+
+		function_flag: string
+
+		// Destination ip mask of static route.
+
+		mask?: string
+
+		// Set the minimum BFD receive interval (range 50-1000).
+
+		min_rx_interval?: int
+
+		// Set the minimum BFD session sending interval (range 50-1000).
+
+		min_tx_interval?: int
+
+		// Destination ip address family type of static route.
+
+		aftype: string
+
+		// Next hop address of static route.
+
+		next_hop?: string
+
+		// Next hop interface full name of static route.
+
+		nhp_interface?: string
+
+		// bfd name (range 1-15).
+
+		bfd_session_name?: string
+
+		// Configure the BFD multiplier (range 3-50).
+
+		detect_multiplier?: int
+
+		// Preference or administrative difference of route (range 1-255).
+
+		pref?: int
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// VPN instance of destination ip address.
+
+		vrf?: string
+
+		// VPN instance of next hop ip address.
+
+		destvrf?: string
+
+		// Destination ip address of static route.
+
+		prefix: string
+	}
+}
+
+ce_evpn_global :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_evpn_global: {
+
+		evpn_overlay_enable: string
+
+		// Configure EVPN as the VXLAN control plane.
+	}
+}
+
+ce_netstream_aging :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_netstream_aging: {
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// Netstream timeout interval. If is active type the interval is 1-60. If is inactive ,the interval is 5-600.
+
+		timeout_interval?: string
+
+		// Netstream timeout type.
+
+		timeout_type?: string
+
+		// Specifies the packet type of netstream timeout active interval.
+
+		type?: string
+
+		// Specifies the slot number of netstream manual timeout.
+
+		manual_slot?: string
+	}
+}
+
+ce_facts :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_facts: {
+
+		gather_subset?: string
+
+		// When supplied, this argument will restrict the facts collected to a given subset.  Possible values for this argument include all, hardware, config, and interfaces.  Can specify a list of values to include a larger subset.  Values can also be used with an initial C(M(!)) to specify that a specific subset should not be collected.
+	}
+}
+
+ce_snmp_location :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_snmp_location: {
+
+		// Location information.
+
+		location: string
+
+		// Manage the state of the resource.
+
+		state?: string
+	}
+}
+
+ce_acl :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_acl: {
+
+		// ACL number. The value is an integer ranging from 2000 to 2999.
+
+		acl_num?: string
+
+		// Type of packet fragmentation.
+
+		frag_type?: string
+
+		// Matching mode of basic ACL rules.
+
+		rule_action?: string
+
+		// Name of a basic ACL rule. The value is a string of 1 to 32 characters. The value is case-insensitive, and cannot contain spaces or begin with an underscore (_).
+
+		rule_name?: string
+
+		// ACL number or name. For a numbered rule group, the value ranging from 2000 to 2999 indicates a basic ACL. For a named rule group, the value is a string of 1 to 32 case-sensitive characters starting with a letter, spaces not supported.
+
+		acl_name: string
+
+		// ID of a basic ACL rule in configuration mode. The value is an integer ranging from 0 to 4294967294.
+
+		rule_id?: string
+
+		// Name of a time range in which an ACL rule takes effect. The value is a string of 1 to 32 characters. The value is case-insensitive, and cannot contain spaces. The name must start with an uppercase or lowercase letter. In addition, the word "all" cannot be specified as a time range name.
+
+		time_range?: string
+
+		// Description about an ACL rule. The value is a string of 1 to 127 characters.
+
+		rule_description?: string
+
+		// Flag of logging matched data packets.
+
+		log_flag?: bool
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// ACL description. The value is a string of 1 to 127 characters.
+
+		acl_description?: string
+
+		// Source IP address. The value is a string of 0 to 255 characters.The default value is 0.0.0.0. The value is in dotted decimal notation.
+
+		source_ip?: string
+
+		// Mask of a source IP address. The value is an integer ranging from 1 to 32.
+
+		src_mask?: string
+
+		// VPN instance name. The value is a string of 1 to 31 characters.The default value is _public_.
+
+		vrf_name?: string
+
+		// ACL step. The value is an integer ranging from 1 to 20. The default value is 5.
+
+		acl_step?: string
+	}
+}
+
+ce_bgp_neighbor :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_bgp_neighbor: {
+
+		// Specify the Keepalive time of a peer or peer group. The value is an integer ranging from 0 to 21845. The default value is 60.
+
+		keep_alive_time?: string
+
+		// Specify the Keychain authentication name used when BGP peers establish a TCP connection. The value is a string of 1 to 47 case-insensitive characters.
+
+		key_chain_name?: string
+
+		// If the value is true, peer create MPLS Local IFNET disable. If the value is false, peer create MPLS Local IFNET enable.
+
+		mpls_local_ifnet_disable?: string
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// Specify the minimum interval at which BFD packets are sent. The value is an integer ranging from 50 to 1000, in milliseconds.
+
+		tx_interval?: string
+
+		// Fake AS number that is specified for a local peer. The value is a string of 1 to 11 characters.
+
+		fake_as?: string
+
+		// Maximum TCP MSS value used for TCP connection establishment for a peer. The value is an integer ranging from 176 to 4096.
+
+		tcp_MSS?: string
+
+		// Enable GTSM on a peer or peer group. The valid-TTL-Value parameter is used to specify the number of TTL hops to be detected. The value is an integer ranging from 1 to 255.
+
+		valid_ttl_hops?: string
+
+		// ConnectRetry interval. The value is an integer ranging from 1 to 65535.
+
+		conn_retry_time?: string
+
+		// If the value is true, BFD is enabled. If the value is false, BFD is disabled.
+
+		is_bfd_enable?: string
+
+		// Name of a source interface that sends BGP packets. The value is a string of 1 to 63 characters.
+
+		local_if_name?: string
+
+		// Connection address of a peer, which can be an IPv4 or IPv6 address.
+
+		peer_addr: string
+
+		// Add the Fake AS number to received Update packets.
+
+		prepend_fake_as?: string
+
+		// Maximum number of hops in an indirect EBGP connection. The value is an ranging from 1 to 255.
+
+		ebgp_max_hop?: string
+
+		// Specify the Hold time of a peer or peer group. The value is 0 or an integer ranging from 3 to 65535.
+
+		hold_time?: string
+
+		// If the value is true, the system is enabled to preferentially use the single-hop mode for BFD session setup between IBGP peers. If the value is false, the system is disabled from preferentially using the single-hop mode for BFD session setup between IBGP peers.
+
+		is_single_hop?: string
+
+		// Add the global AS number to the Update packets to be advertised.
+
+		prepend_global_as?: string
+
+		// Enable BGP peers to establish a TCP connection and perform the Message Digest 5 (MD5) authentication for BGP messages.
+
+		pswd_type?: string
+
+		// Description of a peer, which can be letters or digits. The value is a string of 1 to 80 characters.
+
+		description?: string
+
+		// If the value is true, the session with a specified peer is torn down and all related routing entries are cleared. If the value is false, the session with a specified peer is retained.
+
+		is_ignore?: string
+
+		// Specify the detection multiplier. The default value is 3. The value is an integer ranging from 3 to 50.
+
+		multiplier?: string
+
+		// The character string in a password identifies the contents of the password, spaces not supported. The value is a string of 1 to 255 characters.
+
+		pswd_cipher_text?: string
+
+		// AS number of a peer. The value is a string of 1 to 11 characters.
+
+		remote_as: string
+
+		// Name of a BGP instance. The name is a case-sensitive string of characters. The BGP instance can be used only after the corresponding VPN instance is created.
+
+		vrf_name: string
+
+		// Specify the Min hold time of a peer or peer group.
+
+		min_hold_time?: string
+
+		// If the value is true, BGP is enabled to advertise REFRESH packets. If the value is false, the route refresh function is enabled.
+
+		route_refresh?: string
+
+		// The value can be Connect-only, Listen-only, or Both.
+
+		connect_mode?: string
+
+		// If the value is true, the router has all extended capabilities. If the value is false, the router does not have all extended capabilities.
+
+		conventional?: string
+
+		// If the value is true, the EBGP peer can use either a fake AS number or the actual AS number. If the value is false, the EBGP peer can only use a fake AS number.
+
+		dual_as?: string
+
+		// If the value is true, peers are enabled to inherit the BFD function from the peer group. If the value is false, peers are disabled to inherit the BFD function from the peer group.
+
+		is_bfd_block?: string
+
+		// If the value is true, BGP is enabled to record peer session status and event information. If the value is false, BGP is disabled from recording peer session status and event information.
+
+		is_log_change?: string
+
+		// Specify the minimum interval at which BFD packets are received. The value is an integer ranging from 50 to 1000, in milliseconds.
+
+		rx_interval?: string
+	}
+}
+
+ce_lldp_interface :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_lldp_interface: {
+
+		// Enable the ability to send protocol identity TLV.
+
+		protoidtxenable?: bool
+
+		// Enable protocol vlan tx.
+
+		protovlantxenable?: bool
+
+		// Used to distinguish between command line functions.
+
+		type_tlv_enable?: string
+
+		// Set vlan name tx enable or not.
+
+		vlannametxenable?: bool
+
+		// Set interface lldp enable state.
+
+		lldpadminstatus?: string
+
+		// Enable MAC/PHY configuration and state TLV to be sent.
+
+		macphytxenable?: bool
+
+		// Enabling the ability to send a description of TLV.
+
+		portdesctxenable?: bool
+
+		// Manage the state of the resource.
+
+		state?: string
+
+		// Enable the ability to send system name TLV.
+
+		sysnametxenable?: bool
+
+		// Set tx protocol vlan id.
+
+		txprotocolvlanid?: int
+
+		// Used to distinguish between command line functions.
+
+		function_lldp_interface_flag?: string
+
+		// Set global LLDP enable state.
+
+		lldpenable?: string
+
+		// Make it able to send management address TLV.
+
+		manaddrtxenable?: bool
+
+		// Enable port vlan tx.
+
+		portvlantxenable?: bool
+
+		// Enable the ability to send system description TLV.
+
+		sysdesctxenable?: bool
+
+		// Used to distinguish between command line functions.
+
+		type_tlv_disable?: string
+
+		// Enable the ability to send DCBX TLV.
+
+		dcbx?: bool
+
+		// Interface name.
+
+		ifname?: string
+
+		// Enable the ability to send link aggregation TLV.
+
+		linkaggretxenable?: bool
+
+		// Enable the ability to send maximum frame length TLV.
+
+		maxframetxenable?: bool
+
+		// Enable the ability to send system capabilities TLV.
+
+		syscaptxenable?: bool
+
+		// LLDP send message interval.
+
+		txinterval?: int
+
+		// Set tx vlan name id.
+
+		txvlannameid?: int
+
+		// Enable the ability to send EEE TLV.
+
+		eee?: bool
+	}
+}
+
+ce_vrf :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_vrf: {
+
+		// Description of the vrf, the string length is 1 - 242 .
+
+		description?: string
+
+		// Manage the state of the resource.
+
+		state?: string
+
+		// VPN instance, the length of vrf name is 1 - 31, i.e. "test", but can not be C(_public_).
+
+		vrf: string
+	}
+}
+
+ce_ospf_vrf :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_ospf_vrf: {
+
+		// Specifies the max interval to calculate SPF when use intelligent timer. Valid value is an integer, in millisecond, from 1 to 20000, the default value is 5000.
+
+		spfmaxinterval?: string
+
+		// Specifies the reference bandwidth used to assign ospf cost. Valid values are an integer, in Mbps, 1 - 2147483648, the default value is 100.
+
+		bandwidth?: string
+
+		// Specifies the description information of ospf process.
+
+		description?: string
+
+		// Specifies the hold interval of arrive LSA when use the intelligent timer. Valid value is an integer, in millisecond, from 0 to 10000, the default value is 500.
+
+		lsaaholdinterval?: string
+
+		// Specifies the mode of timer to calculate interval of arrive LSA. If set the parameter but not specifies value, the default will be used. If true use general timer. If false use intelligent timer.
+
+		lsaalflag?: bool
+
+		// Specifies the max interval of originate LSA . Valid value is an integer, in millisecond, from 1 to 10000, the default value is 5000.
+
+		lsaomaxinterval?: string
+
+		// Specifies the ospf private route id,. Valid values are a string, formatted as an IP address (i.e. "10.1.1.1") the length is 0 - 20.
+
+		route_id?: string
+
+		// Specifies the hold interval of originate LSA . Valid value is an integer, in millisecond, from 0 to 5000, the default value is 1000.
+
+		lsaoholdinterval?: string
+
+		// The ID of the ospf process. Valid values are an integer, 1 - 4294967295, the default value is 1.
+
+		ospf: string
+
+		// Specifies the interval of arrive LSA when use the general timer. Valid value is an integer, in millisecond, from 0 to 10000.
+
+		lsaainterval?: string
+
+		// Specifies the hold interval to calculate SPF when use intelligent timer. Valid value is an integer, in millisecond, from 1 to 5000, the default value is 200.
+
+		spfholdinterval?: string
+
+		// Specifies the interval to calculate SPF when use second level  timer. Valid value is an integer, in second, from 1 to 10.
+
+		spfinterval?: string
+
+		// Specifies the start interval to calculate SPF when use intelligent timer. Valid value is an integer, in millisecond, from 1 to 1000, the default value is 50.
+
+		spfstartinterval?: string
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// Specifies the mode of timer which used to calculate SPF. If set the parameter but noe specifies value, the default will be used. If is intelligent-timer, then use intelligent timer. If is timer, then use second level timer. If is millisecond, then use millisecond level timer.
+
+		spfintervaltype?: string
+
+		// Specifies the vpn instance which use ospf,length is 1 - 31. Valid values are a string.
+
+		vrf?: string
+
+		// Specifies the max interval of arrive LSA when use the intelligent timer. Valid value is an integer, in millisecond, from 0 to 10000, the default value is 1000.
+
+		lsaamaxinterval?: string
+
+		// Specifies the start interval of arrive LSA when use the intelligent timer. Valid value is an integer, in millisecond, from 0 to 10000, the default value is 500.
+
+		lsaastartinterval?: string
+
+		// Specifies the interval of originate LSA . Valid value is an integer, in second, from 0 to 10, the default value is 5.
+
+		lsaointerval?: string
+
+		// Specifies whether cancel the interval of LSA originate or not. If set the parameter but noe specifies value, the default will be used. true:cancel the interval of LSA originate, the interval is 0. false:do not cancel the interval of LSA originate.
+
+		lsaointervalflag?: bool
+
+		// Specifies the start interval of originate LSA . Valid value is an integer, in millisecond, from 0 to 1000, the default value is 500.
+
+		lsaostartinterval?: string
+
+		// Specifies the interval to calculate SPF when use millisecond level  timer. Valid value is an integer, in millisecond, from 1 to 10000.
+
+		spfintervalmi?: string
+	}
+}
+
+ce_startup :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_startup: {
+
+		// Display the startup information.
+
+		action?: string
+
+		// Name of the configuration file that is applied for the next startup. The value is a string of 5 to 255 characters.
+
+		cfg_file?: string
+
+		// Name of the patch file that is applied for the next startup.
+
+		patch_file?: string
+
+		// Position of the device.The value is a string of 1 to 32 characters. The possible value of slot is all, slave-board, or the specific slotID.
+
+		slot?: string
+
+		// File name of the system software that is applied for the next startup. The value is a string of 5 to 255 characters.
+
+		software_file?: string
+	}
+}
+
+ce_vxlan_vap :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_vxlan_vap: {
+
+		// Specifies an encapsulation type of packets allowed to pass through a Layer 2 sub-interface.
+
+		encapsulation?: string
+
+		// Specifies an Sub-Interface full name, i.e. "10GE1/0/41.1". The value is a string of 1 to 63 case-insensitive characters, spaces supported.
+
+		l2_sub_interface?: string
+
+		// When I(encapsulation) is 'qinq', specifies an inner VLAN ID for double-tagged packets to be received by a Layer 2 sub-interface. The value is an integer ranging from 1 to 4094.
+
+		pe_vid?: string
+
+		// Determines whether the config should be present or not on the device.
+
+		state?: string
+
+		// Specifies the VLAN binding to a BD(Bridge Domain). The value is an integer ranging ranging from 1 to 4094.
+
+		bind_vlan_id?: string
+
+		// Specifies a bridge domain ID. The value is an integer ranging from 1 to 16777215.
+
+		bridge_domain_id?: string
+
+		// When I(encapsulation) is 'dot1q', specifies a VLAN ID in the outer VLAN tag. When I(encapsulation) is 'qinq', specifies an outer VLAN ID for double-tagged packets to be received by a Layer 2 sub-interface. The value is an integer ranging from 1 to 4094.
+
+		ce_vid?: string
+	}
+}
+
+ce_acl_advance :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_acl_advance: {
+
+		// Name of a basic ACL rule. The value is a string of 1 to 32 characters.
+
+		rule_name?: string
+
+		// Internet Group Management Protocol.
+
+		igmp_type?: string
+
+		// Flag of logging matched data packets.
+
+		log_flag?: bool
+
+		// Destination IP address. The value is a string of 0 to 255 characters.The default value is 0.0.0.0. The value is in dotted decimal notation.
+
+		dest_ip?: string
+
+		// Range type of the destination port.
+
+		dest_port_op?: string
+
+		// Match established connections.
+
+		established?: bool
+
+		// Data packets can be filtered based on the priority field. The value is an integer ranging from 0 to 7.
+
+		precedence?: string
+
+		// Protocol type.
+
+		protocol?: string
+
+		// End port number of the source port. The value is an integer ranging from 0 to 65535.
+
+		src_port_end?: string
+
+		// ACL number or name. For a numbered rule group, the value ranging from 3000 to 3999 indicates a advance ACL. For a named rule group, the value is a string of 1 to 32 case-sensitive characters starting with a letter, spaces not supported.
+
+		acl_name: string
+
+		// ACL step. The value is an integer ranging from 1 to 20. The default value is 5.
+
+		acl_step?: string
+
+		// Range type of the source port.
+
+		src_port_op?: string
+
+		// Type of packet fragmentation.
+
+		frag_type?: string
+
+		// ICMP message code. Data packets can be filtered based on the ICMP message code. The value is an integer ranging from 0 to 255.
+
+		icmp_code?: string
+
+		// ICMP type. This parameter is available only when the packet protocol is ICMP. The value is an integer ranging from 0 to 255.
+
+		icmp_type?: string
+
+		// Description about an ACL rule.
+
+		rule_description?: string
+
+		// Source IP address. The value is a string of 0 to 255 characters.The default value is 0.0.0.0. The value is in dotted decimal notation.
+
+		source_ip?: string
+
+		// Whether TTL Expired is matched, with the TTL value of 1.
+
+		ttl_expired?: bool
+
+		// Name of a destination pool. The value is a string of 1 to 32 characters.
+
+		dest_pool_name?: string
+
+		// Name of a destination port pool. The value is a string of 1 to 32 characters.
+
+		dest_port_pool_name?: string
+
+		// Start port number of the source port. The value is an integer ranging from 0 to 65535.
+
+		src_port_begin?: string
+
+		// Name of a source port pool. The value is a string of 1 to 32 characters.
+
+		src_port_pool_name?: string
+
+		// VPN instance name. The value is a string of 1 to 31 characters.The default value is _public_.
+
+		vrf_name?: string
+
+		// ICMP name.
+
+		icmp_name?: string
+
+		// Name of a source pool. The value is a string of 1 to 32 characters.
+
+		src_pool_name?: string
+
+		// Source IP address mask. The value is an integer ranging from 1 to 32.
+
+		src_mask?: string
+
+		// TCP flag value. The value is an integer ranging from 0 to 63.
+
+		syn_flag?: string
+
+		// ID of a basic ACL rule in configuration mode. The value is an integer ranging from 0 to 4294967294.
+
+		rule_id?: string
+
+		// ACL number. The value is an integer ranging from 3000 to 3999.
+
+		acl_num?: string
+
+		// Differentiated Services Code Point. The value is an integer ranging from 0 to 63.
+
+		dscp?: string
+
+		// Matching mode of basic ACL rules.
+
+		rule_action?: string
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// TCP flag mask value. The value is an integer ranging from 0 to 63.
+
+		tcp_flag_mask?: string
+
+		// Name of a time range in which an ACL rule takes effect.
+
+		time_range?: string
+
+		// Destination IP address mask. The value is an integer ranging from 1 to 32.
+
+		dest_mask?: string
+
+		// End port number of the destination port. The value is an integer ranging from 0 to 65535.
+
+		dest_port_end?: string
+
+		// ToS value on which data packet filtering is based. The value is an integer ranging from 0 to 15.
+
+		tos?: string
+
+		// ACL description. The value is a string of 1 to 127 characters.
+
+		acl_description?: string
+
+		// Start port number of the destination port. The value is an integer ranging from 0 to 65535.
+
+		dest_port_begin?: string
+	}
+}
+
+ce_evpn_bd_vni :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_evpn_bd_vni: {
+
+		// Add VPN targets to the import VPN target list of a BD EVPN instance. The format is the same as route_distinguisher.
+
+		vpn_target_import: string
+
+		// Specify an existed bridge domain (BD).The value is an integer ranging from 1 to 16777215.
+
+		bridge_domain_id: string
+
+		// Create or delete an EVPN instance for a VXLAN in BD view.
+
+		evpn?: string
+
+		// Configures a route distinguisher (RD) for a BD EVPN instance. The format of an RD can be as follows
+		// 1) 2-byte AS number:4-byte user-defined number, for example, 1:3. An AS number is an integer ranging from 0 to 65535, and a user-defined number is an integer ranging from 0 to 4294967295. The AS and user-defined numbers cannot be both 0s. This means that an RD cannot be 0:0.
+		// 2) Integral 4-byte AS number:2-byte user-defined number, for example, 65537:3. An AS number is an integer ranging from 65536 to 4294967295, and a user-defined number is an integer ranging from 0 to 65535.
+		// 3) 4-byte AS number in dotted notation:2-byte user-defined number, for example, 0.0:3 or 0.1:0. A 4-byte AS number in dotted notation is in the format of x.y, where x and y are integers ranging from 0 to 65535.
+		// 4) A user-defined number is an integer ranging from 0 to 65535. The AS and user-defined numbers cannot be both 0s. This means that an RD cannot be 0.0:0.
+		// 5) 32-bit IP address:2-byte user-defined number. For example, 192.168.122.15:1. An IP address ranges from 0.0.0.0 to 255.255.255.255, and a user-defined number is an integer ranging from 0 to 65535.
+		// 6) 'auto' specifies the RD that is automatically generated.
+
+		route_distinguisher?: string
+
+		// Manage the state of the resource.
+
+		state?: string
+
+		// Add VPN targets to both the import and export VPN target lists of a BD EVPN instance. The format is the same as route_distinguisher.
+
+		vpn_target_both?: string
+
+		// Add VPN targets to the export VPN target list of a BD EVPN instance. The format is the same as route_distinguisher.
+
+		vpn_target_export?: string
+	}
+}
+
+ce_file_copy :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_file_copy: {
+
+		// The remote file system of the device. If omitted, devices that support a I(file_system) parameter will use their default values. File system indicates the storage medium and can be set to as follows, 1) C(flash) is root directory of the flash memory on the master MPU. 2) C(slave#flash) is root directory of the flash memory on the slave MPU. If no slave MPU exists, this drive is unavailable. 3) C(chassis ID/slot number#flash) is root directory of the flash memory on a device in a stack. For example, C(1/5#flash) indicates the flash memory whose chassis ID is 1 and slot number is 5.
+
+		file_system?: string
+
+		// Path to local file. Local directory must exist. The maximum length of I(local_file) is C(4096).
+
+		local_file: string
+
+		// Remote file path of the copy. Remote directories must exist. If omitted, the name of the local file will be used. The maximum length of I(remote_file) is C(4096).
+
+		remote_file?: string
+	}
+}
+
+ce_ntp_auth :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_ntp_auth: {
+
+		// Specify authentication algorithm.
+
+		auth_mode?: string
+
+		// Plain text with length of 1 to 255, encrypted text with length of 20 to 392.
+
+		auth_pwd?: string
+
+		// Whether the given password is in cleartext or has been encrypted. If in cleartext, the device will encrypt it before storing it.
+
+		auth_type?: string
+
+		// Configure ntp authentication enable or unconfigure ntp authentication enable.
+
+		authentication?: string
+
+		// Authentication key identifier (numeric).
+
+		key_id: string
+
+		// Manage the state of the resource.
+
+		state?: string
+
+		// Whether the given key is required to be supplied by a time source for the device to synchronize to the time source.
+
+		trusted_key?: string
+	}
+}
+
+ce_bgp_neighbor_af :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_bgp_neighbor_af: {
+
+		// ORF mode. null, Default value. receive, ORF for incoming packets. send, ORF for outgoing packets. both, ORF for incoming and outgoing packets.
+
+		orf_mode?: string
+
+		// Noparameter, After the number of received routes exceeds the threshold and the timeout timer expires,no action. AlertOnly, An alarm is generated and no additional routes will be accepted if the maximum number of routes allowed have been received. IdleForever, The connection that is interrupted is not automatically re-established if the maximum number of routes allowed have been received. IdleTimeout, After the number of received routes exceeds the threshold and the timeout timer expires, the connection that is interrupted is automatically re-established.
+
+		route_limit_type?: string
+
+		// If the value is true, the function to replace a specified peer's AS number in the AS-Path attribute with the local AS number is enabled. If the value is false, the function to replace a specified peer's AS number in the AS-Path attribute with the local AS number is disabled.
+
+		substitute_as_enable?: string
+
+		// If the value is true, enable vpls-ad. If the value is false, disable vpls-ad.
+
+		vpls_ad_disable?: string
+
+		// Specify the IPv4 filtering policy applied to the routes to be advertised to a specified peer. The value is a string of 1 to 169 characters.
+
+		export_pref_filt_name?: string
+
+		// null, The next hop is not changed. local, The next hop is changed to the local IP address. invariable, Prevent the device from changing the next hop of each imported IGP route when advertising it to its BGP peers.
+
+		nexthop_configure?: string
+
+		// ORF Type. The value is an integer ranging from 0 to 65535.
+
+		orftype?: string
+
+		// Private as replaced by public as number.
+
+		public_as_only_replace?: string
+
+		// Configure the maximum number of routes that can be accepted from a peer. The value is an integer ranging from 1 to 4294967295.
+
+		route_limit?: string
+
+		// Name of a BGP instance. The name is a case-sensitive string of characters. The BGP instance can be used only after the corresponding VPN instance is created.
+
+		vrf_name: string
+
+		// Assign a preferred value for the routes learned from a specified peer. The value is an integer ranging from 0 to 65535.
+
+		preferred_value?: string
+
+		// If the value is true, the extended community attribute is advertised to peers. If the value is false, the extended community attribute is not advertised to peers.
+
+		advertise_ext_community?: string
+
+		// Address family type of a BGP instance.
+
+		af_type: string
+
+		// Set the maximum number of repetitive local AS number. The value is an integer ranging from 1 to 10.
+
+		allow_as_loop_limit?: string
+
+		// Specify the filtering policy applied to the routes learned from a peer. The value is a string of 1 to 40 characters.
+
+		import_rt_policy_name?: string
+
+		// If the value is true, Non-standard capability codes are used during capability negotiation. If the value is false, RFC-defined standard ORF capability codes are used during capability negotiation.
+
+		is_nonstd_ipprefix_mod?: string
+
+		// If the value is true, the address prefix-based Outbound Route Filter (ORF) capability is enabled for peers. If the value is false, the address prefix-based Outbound Route Filter (ORF) capability is disabled for peers.
+
+		ipprefix_orf_enable?: string
+
+		// Limited use public as number.
+
+		public_as_only_limited?: string
+
+		// Public as only skip peer as.
+
+		public_as_only_skip_peer_as?: string
+
+		// The number of addPath advertise route. The value is an integer ranging from 2 to 64.
+
+		adv_add_path_num?: string
+
+		// If the value is true, the community attribute is advertised to peers. If the value is false, the community attribute is not advertised to peers.
+
+		advertise_community?: string
+
+		// If the value is true, advertised IRB routes are distinguished. If the value is false, advertised IRB routes are not distinguished.
+
+		advertise_irb?: string
+
+		// If the value is true, the remote next-hop attribute is advertised to peers. If the value is false, the remote next-hop attribute is not advertised to any peers.
+
+		advertise_remote_nexthop?: string
+
+		// Apply an AS_Path-based filtering policy to the routes to be advertised to a specified peer. The value is an integer ranging from 1 to 256.
+
+		export_as_path_filter?: string
+
+		// If the value is true, When the vpnv4 multicast neighbor receives and updates the message, the message has no label. If the value is false, When the vpnv4 multicast neighbor receives and updates the message, the message has label.
+
+		update_pkt_standard_compatible?: string
+
+		// IPv4 or IPv6 peer connection address.
+
+		remote_address: string
+
+		// Specify the percentage of routes when a router starts to generate an alarm. The value is an integer ranging from 1 to 100.
+
+		route_limit_percent?: string
+
+		// If the value is true, the function to advertise default routes to peers is enabled. If the value is false, the function to advertise default routes to peers is disabled.
+
+		default_rt_adv_enable?: string
+
+		// Specify the filtering policy applied to the routes to be advertised to a peer. The value is a string of 1 to 40 characters.
+
+		export_rt_policy_name?: string
+
+		// A routing strategy based on the AS path list for routing received by a designated peer.
+
+		import_as_path_name_or_num?: string
+
+		// If the value is true, Application results of route announcement. If the value is false, Routing application results are not notified.
+
+		origin_as_valid?: string
+
+		// If the value is true, sent BGP update messages carry only the public AS number but do not carry private AS numbers. If the value is false, sent BGP update messages can carry private AS numbers.
+
+		public_as_only?: string
+
+		// Redirect ip validation.
+
+		redirect_ip_validation?: string
+
+		// Specify the minimum interval at which Update packets are sent. The value is an integer, in seconds. The value is an integer ranging from 0 to 600.
+
+		rt_updt_interval?: string
+
+		// If the value is true, vpls enable. If the value is false, vpls disable.
+
+		vpls_enable?: string
+
+		// null, Null. receive, Support receiving Add-Path routes. send, Support sending Add-Path routes. both, Support receiving and sending Add-Path routes.
+
+		add_path_mode?: string
+
+		// If the value is true, advertised ARP routes are distinguished. If the value is false, advertised ARP routes are not distinguished.
+
+		advertise_arp?: string
+
+		// If the value is true, repetitive local AS numbers are allowed. If the value is false, repetitive local AS numbers are not allowed.
+
+		allow_as_loop_enable?: string
+
+		// Apply an IPv4 ACL-based filtering policy to the routes to be advertised to a specified peer. The value is a string of 1 to 32 characters.
+
+		export_acl_name_or_num?: string
+
+		// If the value is true, the system stores all route update messages received from all peers (groups) after BGP connection setup. If the value is false, the system stores only BGP update messages that are received from peers and pass the configured import policy.
+
+		keep_all_routes?: string
+
+		// Configure the Site-of-Origin (SoO) extended community attribute. The value is a string of 3 to 21 characters.
+
+		soostring?: string
+
+		// Specify the name of a used policy. The value is a string. The value is a string of 1 to 40 characters.
+
+		default_rt_adv_policy?: string
+
+		// Specify the IPv4 filtering policy applied to the routes received from a specified peer. The value is a string of 1 to 169 characters.
+
+		import_pref_filt_name?: string
+
+		// Redirect ip.
+
+		redirect_ip?: string
+
+		// If the value is true, the local device functions as the route reflector and a peer functions as a client of the route reflector. If the value is false, the route reflector and client functions are not configured.
+
+		reflect_client?: string
+
+		// Specify the value of the idle-timeout timer to automatically reestablish the connections after they are cut off when the number of routes exceeds the set threshold. The value is an integer ranging from 1 to 1200.
+
+		route_limit_idle_timeout?: string
+
+		// If the value is true, sent BGP update messages carry only the public AS number but do not carry private AS numbers. If the value is false, sent BGP update messages can carry private AS numbers.
+
+		public_as_only_force?: string
+
+		// null, Null. matchall, Advertise the default route if all matching conditions are met. matchany, Advertise the default route if any matching condition is met.
+
+		default_rt_match_mode?: string
+
+		// If the value is true, the extended community attribute in the peer route information is discarded. If the value is false, the extended community attribute in the peer route information is not discarded.
+
+		discard_ext_community?: string
+
+		// Application of a AS path list based filtering policy to the routing of a specified peer.
+
+		export_as_path_name_or_num?: string
+
+		// Apply an IPv4 ACL-based filtering policy to the routes received from a specified peer. The value is a string of 1 to 32 characters.
+
+		import_acl_name_or_num?: string
+
+		// Apply an AS_Path-based filtering policy to the routes received from a specified peer. The value is an integer ranging from 1 to 256.
+
+		import_as_path_filter?: string
+	}
+}
+
+ce_ip_interface :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_ip_interface: {
+
+		// Subnet mask for IPv4 or IPv6 Address in decimal format.
+
+		mask?: string
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// IP address version.
+
+		version?: string
+
+		// IPv4 or IPv6 Address.
+
+		addr?: string
+
+		// Full name of interface, i.e. 40GE1/0/22, vlanif10.
+
+		interface: string
+
+		// Specifies an address type. The value is an enumerated type. main, primary IP address. sub, secondary IP address.
+
+		ipv4_type?: string
+	}
+}
+
+ce_ntp :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_ntp: {
+
+		// Makes given NTP server or peer the preferred NTP server or peer for the device.
+
+		is_preferred?: string
+
+		// Authentication key identifier to use with given NTP server or peer.
+
+		key_id?: string
+
+		// Network address of NTP peer.
+
+		peer?: string
+
+		// Network address of NTP server.
+
+		server?: string
+
+		// Local source interface from which NTP messages are sent. Must be fully qualified interface name, i.e. C(40GE1/0/22), C(vlanif10). Interface types, such as C(10GE), C(40GE), C(100GE), C(Eth-Trunk), C(LoopBack), C(MEth), C(NULL), C(Tunnel), C(Vlanif).
+
+		source_int?: string
+
+		// Manage the state of the resource.
+
+		state?: string
+
+		// Makes the device communicate with the given NTP server or peer over a specific vpn.
+
+		vpn_name?: string
+	}
+}
+
+ce_vxlan_tunnel :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_vxlan_tunnel: {
+
+		// Specifies the working mode of an NVE interface.
+
+		nve_mode?: string
+
+		// Specifies the number of an NVE interface. The value ranges from 1 to 2.
+
+		nve_name?: string
+
+		// Specifies the IP address of a remote VXLAN tunnel endpoints (VTEP). The value is in dotted decimal notation.
+
+		peer_list_ip?: string
+
+		// The operation type of routing protocol.
+
+		protocol_type?: string
+
+		// Specifies an IP address for a source VTEP. The value is in dotted decimal notation.
+
+		source_ip?: string
+
+		// Manage the state of the resource.
+
+		state?: string
+
+		// Specifies a VXLAN network identifier (VNI) ID. The value is an integer ranging from 1 to 16000000.
+
+		vni_id?: string
+
+		// Specifies a bridge domain ID. The value is an integer ranging from 1 to 16777215.
+
+		bridge_domain_id?: string
+	}
+}
+
+ce_info_center_log :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_info_center_log: {
+
+		// Specifies a log severity.
+
+		log_level?: string
+
+		// Sets the timestamp format of logs.
+
+		log_time_stamp?: string
+
+		// Specifies the name of a module. The value is a module name in registration logs.
+
+		module_name?: string
+
+		// Determines whether the config should be present or not on the device.
+
+		state?: string
+
+		// Specifies a channel ID. The value is an integer ranging from 0 to 9.
+
+		channel_id?: string
+
+		// Enables the Switch to send logs to the log buffer.
+
+		log_buff_enable?: string
+
+		// Specifies the maximum number of logs in the log buffer. The value is an integer that ranges from 0 to 10240. If logbuffer-size is 0, logs are not displayed.
+
+		log_buff_size?: string
+
+		// Indicates whether log filtering is enabled.
+
+		log_enable?: string
+	}
+}
+
+ce_interface :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_interface: {
+
+		// Specifies whether the interface is a Layer 2 sub-interface.
+
+		l2sub?: bool
+
+		// Manage Layer 2 or Layer 3 state of the interface.
+
+		mode?: string
+
+		// Specify desired state of the resource.
+
+		state?: string
+
+		// Specifies the interface management status. The value is an enumerated type. up, An interface is in the administrative Up state. down, An interface is in the administrative Down state.
+
+		admin_state?: string
+
+		// Specifies an interface description. The value is a string of 1 to 242 case-sensitive characters, spaces supported but question marks (?) not supported.
+
+		description?: string
+
+		// Full name of interface, i.e. 40GE1/0/10, Tunnel1.
+
+		interface?: string
+
+		// Interface type to be configured from the device.
+
+		interface_type?: string
+	}
+}
+
+ce_vxlan_global :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ce_vxlan_global: {
+
+		// Load balancing of VXLAN packets through ECMP in optimized mode.
+
+		nvo3_ecmp_hash?: string
+
+		// Eth-Trunk from load balancing VXLAN packets in optimized mode.
+
+		nvo3_eth_trunk_hash?: string
+
+		// Loop prevention of VXLAN traffic in non-enhanced mode. When the device works in non-enhanced mode, inter-card forwarding of VXLAN traffic may result in loops.
+
+		nvo3_prevent_loops?: string
+
+		// Enabling or disabling the VXLAN service extension function.
+
+		nvo3_service_extend?: string
+
+		// Specifies a bridge domain ID. The value is an integer ranging from 1 to 16777215.
+
+		bridge_domain_id?: string
+
+		// Configuring the Layer 3 VXLAN Gateway to Work in Non-loopback Mode.
+
+		nvo3_gw_enhanced?: string
+
+		// Determines whether the config should be present or not on the device.
+
+		state?: string
+
+		// Set the tunnel mode to VXLAN when configuring the VXLAN feature.
+
+		tunnel_mode_vxlan?: string
+
+		// Enabling or disabling the VXLAN ACL extension function.
+
+		nvo3_acl_extend?: string
+	}
 }

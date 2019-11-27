@@ -1,140 +1,152 @@
 package alicloud
 
 ali_instance :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ali_instance: {
 
-	// Instance host name.
+		// The description of ECS instance, which is a string of 2 to 256 characters. It cannot begin with http:// or https://.
 
-	host_name?: string
+		description?: string
 
-	// A hash/dictionaries of instance tags, to add to the new instance or for starting/stopping instance by tag. C({"key":"value"})
+		// Maximum outgoing bandwidth to the public network, measured in Mbps (Megabits per second).
 
-	instance_tags?: string
+		max_bandwidth_out?: string
 
-	// A list of security group IDs.
+		// Instance host name.
 
-	security_groups?: string
+		host_name?: string
 
-	// User-defined data to customize the startup behaviors of an ECS instance and to pass data into an ECS instance. It only will take effect when launching the new ECS instances.
+		// Maximum incoming bandwidth from the public network, measured in Mbps (Megabits per second).
 
-	user_data?: string
+		max_bandwidth_in?: string
 
-	// The subnet ID in which to launch the instances (VPC).
+		// The password to login instance. After rebooting instances, modified password will take effect.
 
-	vswitch_id?: string
+		password?: string
 
-	// Whether the current operation needs to be execute forcibly.
+		// The state of the instance after operating.
 
-	force?: bool
+		state?: string
 
-	// The name of ECS instance, which is a string of 2 to 128 Chinese or English characters. It must begin with an uppercase/lowercase letter or a Chinese character and can contain numerals, ".", "_" or "-". It cannot begin with http:// or https://.
+		// Category of the system disk.
 
-	instance_name?: string
+		system_disk_category?: string
 
-	// The charge duration of the instance, in month. Required when C(instance_charge_type=PrePaid).
-	// The valid value are [1-9, 12, 24, 36].
+		// Name of the system disk.
 
-	period?: string
+		system_disk_name?: string
 
-	// The description of ECS instance, which is a string of 2 to 256 characters. It cannot begin with http:// or https://.
+		// Size of the system disk, in GB. The valid values are 40~500.
 
-	description?: string
+		system_disk_size?: string
 
-	// Image ID used to launch instances. Required when C(state=present) and creating new ECS instances.
+		// The subnet ID in which to launch the instances (VPC).
 
-	image_id?: string
+		vswitch_id?: string
 
-	// The charge type of the instance.
+		// Whether automate renew the charge of the instance.
 
-	instance_charge_type?: string
+		auto_renew?: bool
 
-	// Instance type used to launch instances. Required when C(state=present) and creating new ECS instances.
+		// I(count) determines how many instances based on a specific tag criteria should be present. This can be expressed in multiple ways and is shown in the EXAMPLES section. The specified count_tag must already exist or be passed in as the I(instance_tags) option. If it is not specified, it will be replaced by I(instance_name).
 
-	instance_type?: string
+		count_tag?: string
 
-	// Description of the system disk.
+		// A list of security group IDs.
 
-	system_disk_description?: string
+		security_groups?: string
 
-	// Size of the system disk, in GB. The valid values are 40~500.
+		// Description of the system disk.
 
-	system_disk_size?: string
+		system_disk_description?: string
 
-	// A list of instance ids. It is required when need to operate existing instances. If it is specified, I(count) will lose efficacy.
+		// The number of the new instance. An integer value which indicates how many instances that match I(count_tag) should be running. Instances are either created or terminated based on this value.
 
-	instance_ids?: string
+		count?: string
 
-	// The name of key pair which is used to access ECS instance in SSH.
+		// Whether the current operation needs to be execute forcibly.
 
-	key_name?: string
+		force?: bool
 
-	// Category of the system disk.
+		// The charge type of the instance.
 
-	system_disk_category?: string
+		instance_charge_type?: string
 
-	// I(count) determines how many instances based on a specific tag criteria should be present. This can be expressed in multiple ways and is shown in the EXAMPLES section. The specified count_tag must already exist or be passed in as the I(instance_tags) option. If it is not specified, it will be replaced by I(instance_name).
+		// User-defined data to customize the startup behaviors of an ECS instance and to pass data into an ECS instance. It only will take effect when launching the new ECS instances.
 
-	count_tag?: string
+		user_data?: string
 
-	// The password to login instance. After rebooting instances, modified password will take effect.
+		// Image ID used to launch instances. Required when C(state=present) and creating new ECS instances.
 
-	password?: string
+		image_id?: string
 
-	// Name of the system disk.
+		// Instance type used to launch instances. Required when C(state=present) and creating new ECS instances.
 
-	system_disk_name?: string
+		instance_type?: string
 
-	// Whether allocate a public ip for the new instance.
+		// Whether allocate a public ip for the new instance.
 
-	allocate_public_ip?: bool
+		allocate_public_ip?: bool
 
-	// Aliyun availability zone ID in which to launch the instance. If it is not specified, it will be allocated by system automatically.
+		// Aliyun availability zone ID in which to launch the instance. If it is not specified, it will be allocated by system automatically.
 
-	availability_zone?: string
+		availability_zone?: string
 
-	// The number of the new instance. An integer value which indicates how many instances that match I(count_tag) should be running. Instances are either created or terminated based on this value.
+		// The name of ECS instance, which is a string of 2 to 128 Chinese or English characters. It must begin with an uppercase/lowercase letter or a Chinese character and can contain numerals, ".", "_" or "-". It cannot begin with http:// or https://.
 
-	count?: string
+		instance_name?: string
 
-	// Whether automate renew the charge of the instance.
+		// A hash/dictionaries of instance tags, to add to the new instance or for starting/stopping instance by tag. C({"key":"value"})
 
-	auto_renew?: bool
+		instance_tags?: string
 
-	// Maximum incoming bandwidth from the public network, measured in Mbps (Megabits per second).
+		// The name of key pair which is used to access ECS instance in SSH.
 
-	max_bandwidth_in?: string
+		key_name?: string
 
-	// Maximum outgoing bandwidth to the public network, measured in Mbps (Megabits per second).
+		// The duration of the automatic renew the charge of the instance. Required when C(auto_renew=True).
 
-	max_bandwidth_out?: string
+		auto_renew_period?: string
 
-	// The duration of the automatic renew the charge of the instance. Required when C(auto_renew=True).
+		// A list of instance ids. It is required when need to operate existing instances. If it is specified, I(count) will lose efficacy.
 
-	auto_renew_period?: string
+		instance_ids?: string
 
-	// Internet charge type of ECS instance.
+		// Internet charge type of ECS instance.
 
-	internet_charge_type?: string
+		internet_charge_type?: string
 
-	// The state of the instance after operating.
+		// The charge duration of the instance, in month. Required when C(instance_charge_type=PrePaid).
+		// The valid value are [1-9, 12, 24, 36].
 
-	state?: string
+		period?: string
+	}
 }
 
 ali_instance_info :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ali_instance_info: {
 
-	// Aliyun availability zone ID in which to launch the instance
+		// Aliyun availability zone ID in which to launch the instance
 
-	availability_zone?: string
+		availability_zone?: string
 
-	// A list of ECS instance ids.
+		// A list of ECS instance ids.
 
-	instance_ids?: string
+		instance_ids?: string
 
-	// A list of ECS instance names.
+		// A list of ECS instance names.
 
-	instance_names?: string
+		instance_names?: string
 
-	// A hash/dictionaries of instance tags. C({"key":"value"})
+		// A hash/dictionaries of instance tags. C({"key":"value"})
 
-	instance_tags?: string
+		instance_tags?: string
+	}
 }

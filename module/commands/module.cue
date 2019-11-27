@@ -1,316 +1,358 @@
 package commands
 
-script :: {
-
-	// Path to the local script to run followed by optional arguments.
-
-	cmd?: string
-
-	// A filename on the remote node, when it already exists, this step will B(not) be run.
-
-	creates?: string
-
-	// Name or path of a executable to invoke the script with.
-
-	executable?: string
-
-	// Path to the local script file followed by optional arguments.
-
-	free_form?: string
-
-	// A filename on the remote node, when it does not exist, this step will B(not) be run.
-
-	removes?: string
-
-	// Change into this directory on the remote node before running the script.
-
-	chdir?: string
-}
-
 shell :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	shell: {
 
-	// The command to run followed by optional arguments.
+		// The shell module takes a free form command to run, as a string.
+		// There is no actual parameter named 'free form'.
+		// See the examples on how to use this module.
 
-	cmd?: string
+		free_form?: string
 
-	// A filename, when it already exists, this step will B(not) be run.
+		// A filename, when it does not exist, this step will B(not) be run.
 
-	creates?: string
+		removes?: string
 
-	// A filename, when it does not exist, this step will B(not) be run.
+		// Set the stdin of the command directly to the specified value.
 
-	removes?: string
+		stdin?: string
 
-	// Change into this directory before running the command.
+		// Whether to append a newline to stdin data.
 
-	chdir?: string
+		stdin_add_newline?: bool
 
-	// Change the shell used to execute the command.
-	// This expects an absolute path to the executable.
+		// Whether to enable task warnings.
 
-	executable?: string
+		warn?: bool
 
-	// The shell module takes a free form command to run, as a string.
-	// There is no actual parameter named 'free form'.
-	// See the examples on how to use this module.
+		// Change into this directory before running the command.
 
-	free_form?: string
+		chdir?: string
 
-	// Set the stdin of the command directly to the specified value.
+		// A filename, when it already exists, this step will B(not) be run.
 
-	stdin?: string
+		creates?: string
 
-	// Whether to append a newline to stdin data.
+		// Change the shell used to execute the command.
+		// This expects an absolute path to the executable.
 
-	stdin_add_newline?: bool
+		executable?: string
 
-	// Whether to enable task warnings.
+		// The command to run followed by optional arguments.
 
-	warn?: bool
+		cmd?: string
+	}
 }
 
 telnet :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	telnet: {
 
-	// Login or username prompt to expect
+		// List of prompts expected before sending next command
 
-	password_prompt?: string
+		prompts?: string
 
-	// Remote port to use
+		// Sends a newline character upon successful connection to start the terminal session.
 
-	port?: string
+		send_newline?: bool
 
-	// List of prompts expected before sending next command
+		// List of commands to be executed in the telnet session.
 
-	prompts?: string
+		command: string
 
-	// timeout for remote operations
+		// The host/target on which to execute the command
 
-	timeout?: string
+		host?: string
 
-	// The user for login
+		// Login or username prompt to expect
 
-	user?: string
+		login_prompt?: string
 
-	// List of commands to be executed in the telnet session.
+		// The password for login
 
-	command: string
+		password?: string
 
-	// The password for login
+		// Login or username prompt to expect
 
-	password?: string
+		password_prompt?: string
 
-	// Seconds to pause between each command issued
+		// Remote port to use
 
-	pause?: string
+		port?: string
 
-	// Sends a newline character upon successful connection to start the terminal session.
+		// timeout for remote operations
 
-	send_newline?: bool
+		timeout?: string
 
-	// The host/target on which to execute the command
+		// The user for login
 
-	host?: string
+		user?: string
 
-	// Login or username prompt to expect
+		// Seconds to pause between each command issued
 
-	login_prompt?: string
+		pause?: string
+	}
 }
 
 command :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	command: {
 
-	// Enable or disable task warnings.
+		// If set to C(yes), append a newline to stdin data.
 
-	warn?: bool
+		stdin_add_newline?: bool
 
-	// Passes the command as a list rather than a string.
-	// Use C(argv) to avoid quoting values that would otherwise be interpreted incorrectly (for example "user name").
-	// Only the string (free form) or the list (argv) form can be provided, not both.  One or the other must be provided.
+		// Strip empty lines from the end of stdout/stderr in result.
 
-	argv?: [..._]
+		strip_empty_ends?: bool
 
-	// The command to run.
+		// Passes the command as a list rather than a string.
+		// Use C(argv) to avoid quoting values that would otherwise be interpreted incorrectly (for example "user name").
+		// Only the string (free form) or the list (argv) form can be provided, not both.  One or the other must be provided.
 
-	cmd?: string
+		argv?: [...]
 
-	// The command module takes a free form string as a command to run.
-	// There is no actual parameter named 'free form'.
+		// The command to run.
 
-	free_form?: string
+		cmd?: string
 
-	// If set to C(yes), append a newline to stdin data.
+		// The command module takes a free form string as a command to run.
+		// There is no actual parameter named 'free form'.
 
-	stdin_add_newline?: bool
+		free_form?: string
 
-	// Strip empty lines from the end of stdout/stderr in result.
+		// Set the stdin of the command directly to the specified value.
 
-	strip_empty_ends?: bool
+		stdin?: string
 
-	// Change into this directory before running the command.
+		// Enable or disable task warnings.
 
-	chdir?: string
+		warn?: bool
 
-	// A filename or (since 2.0) glob pattern. If it already exists, this step B(won't) be run.
+		// Change into this directory before running the command.
 
-	creates?: string
+		chdir?: string
 
-	// A filename or (since 2.0) glob pattern. If it already exists, this step B(will) be run.
+		// A filename or (since 2.0) glob pattern. If it already exists, this step B(won't) be run.
 
-	removes?: string
+		creates?: string
 
-	// Set the stdin of the command directly to the specified value.
+		// A filename or (since 2.0) glob pattern. If it already exists, this step B(will) be run.
 
-	stdin?: string
+		removes?: string
+	}
 }
 
 expect :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	expect: {
 
-	// Mapping of expected string/regex and string to respond with. If the response is a list, successive matches return successive responses. List functionality is new in 2.1.
+		// A filename, when it does not exist, this step will B(not) be run.
 
-	responses: {...}
+		removes?: string
 
-	// Amount of time in seconds to wait for the expected strings. Use C(null) to disable timeout.
+		// Mapping of expected string/regex and string to respond with. If the response is a list, successive matches return successive responses. List functionality is new in 2.1.
 
-	timeout?: int
+		responses: {...}
 
-	// Change into this directory before running the command.
+		// Amount of time in seconds to wait for the expected strings. Use C(null) to disable timeout.
 
-	chdir?: string
+		timeout?: int
 
-	// The command module takes command to run.
+		// Change into this directory before running the command.
 
-	command: string
+		chdir?: string
 
-	// A filename, when it already exists, this step will B(not) be run.
+		// The command module takes command to run.
 
-	creates?: string
+		command: string
 
-	// Whether or not to echo out your response strings.
+		// A filename, when it already exists, this step will B(not) be run.
 
-	echo?: bool
+		creates?: string
 
-	// A filename, when it does not exist, this step will B(not) be run.
+		// Whether or not to echo out your response strings.
 
-	removes?: string
+		echo?: bool
+	}
 }
 
 psexec :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	psexec: {
 
-	// The port that the remote SMB service is listening on.
+		// Will run the command as a detached process and the module returns immediately after starting the process while the process continues to run in the background.
+		// The I(stdout) and I(stderr) return values will be null when this is set to C(yes).
+		// The I(stdin) option does not work with this type of process.
+		// The I(rc) return value is not set when this is C(yes)
 
-	port?: int
+		asynchronous?: bool
 
-	// The password for I(process_username).
-	// Required if I(process_username) is defined and not C(System).
+		// The username to use when connecting to the remote Windows host.
+		// This user must be a member of the C(Administrators) group of the Windows host.
+		// Required if the Kerberos requirements are not installed or the username is a local account to the Windows host.
+		// Can be omitted to use the default Kerberos principal ticket in the local credential cache if the Kerberos library is installed.
+		// If I(process_username) is not specified, then the remote process will run under a Network Logon under this account.
 
-	process_password?: string
+		connection_username?: string
 
-	// Changes the working directory set when starting the process.
+		// Set the command's priority on the Windows host.
+		// See U(https://msdn.microsoft.com/en-us/library/windows/desktop/ms683211.aspx) for more details.
 
-	working_directory?: string
+		priority?: string
 
-	// Will run the command as a detached process and the module returns immediately after starting the process while the process continues to run in the background.
-	// The I(stdout) and I(stderr) return values will be null when this is set to C(yes).
-	// The I(stdin) option does not work with this type of process.
-	// The I(rc) return value is not set when this is C(yes)
+		// Shows the process UI on the Winlogon secure desktop when I(process_username) is C(System).
 
-	asynchronous?: bool
+		show_ui_on_logon_screen?: bool
 
-	// The remote Windows host to connect to, can be either an IP address or a hostname.
+		// Data to send on the stdin pipe once the process has started.
+		// This option has no effect when I(interactive) or I(asynchronous) is C(yes).
 
-	hostname: string
+		stdin?: string
 
-	// Runs the remote command with the user's profile loaded.
+		// Any arguments as a single string to use when running the executable.
 
-	load_profile?: bool
+		arguments?: string
 
-	// The Windows session ID to use when displaying the interactive process on the remote Windows host.
-	// This is only valid when I(interactive) is C(yes).
-	// The default is C(0) which is the console session of the Windows host.
+		// The password for I(process_username).
+		// Required if I(process_username) is defined and not C(System).
 
-	interactive_session?: int
+		process_password?: string
 
-	// Any arguments as a single string to use when running the executable.
+		// The user to run the process as.
+		// This can be set to run the process under an Interactive logon of the specified account which bypasses limitations of a Network logon used when this isn't specified.
+		// If omitted then the process is run under the same account as I(connection_username) with a Network logon.
+		// Set to C(System) to run as the builtin SYSTEM account, no password is required with this account.
+		// If I(encrypt) is C(no), the username and password are sent as a simple XOR scrambled byte string that is not encrypted. No special tools are required to get the username and password just knowledge of the protocol.
 
-	arguments?: string
+		process_username?: string
 
-	// Will use SMB encryption to encrypt the SMB messages sent to and from the host.
-	// This requires the SMB 3 protocol which is only supported from Windows Server 2012 or Windows 8, older versions like Windows 7 or Windows Server 2008 (R2) must set this to C(no) and use no encryption.
-	// When setting to C(no), the packets are in plaintext and can be seen by anyone sniffing the network, any process options are included in this.
+		// The port that the remote SMB service is listening on.
 
-	encrypt?: bool
+		port?: int
 
-	// The integrity level of the process when I(process_username) is defined and is not equal to C(System).
-	// When C(default), the default integrity level based on the system setup.
-	// When C(elevated), the command will be run with Administrative rights.
-	// When C(limited), the command will be forced to run with non-Administrative rights.
+		// The timeout in seconds that is placed upon the running process.
+		// A value of C(0) means no timeout.
 
-	integrity_level?: string
+		process_timeout?: int
 
-	// Data to send on the stdin pipe once the process has started.
-	// This option has no effect when I(interactive) or I(asynchronous) is C(yes).
+		// The password for I(connection_user).
+		// Required if the Kerberos requirements are not installed or the username is a local account to the Windows host.
+		// Can be omitted to use a Kerberos principal ticket for the principal set by I(connection_user) if the Kerberos library is installed and the ticket has already been retrieved with the C(kinit) command before.
 
-	stdin?: string
+		connection_password?: string
 
-	// The username to use when connecting to the remote Windows host.
-	// This user must be a member of the C(Administrators) group of the Windows host.
-	// Required if the Kerberos requirements are not installed or the username is a local account to the Windows host.
-	// Can be omitted to use the default Kerberos principal ticket in the local credential cache if the Kerberos library is installed.
-	// If I(process_username) is not specified, then the remote process will run under a Network Logon under this account.
+		// The timeout in seconds to wait when receiving the initial SMB negotiate response from the server.
 
-	connection_username?: string
+		connection_timeout?: int
 
-	// The executable to run on the Windows host.
+		// Will use SMB encryption to encrypt the SMB messages sent to and from the host.
+		// This requires the SMB 3 protocol which is only supported from Windows Server 2012 or Windows 8, older versions like Windows 7 or Windows Server 2008 (R2) must set this to C(no) and use no encryption.
+		// When setting to C(no), the packets are in plaintext and can be seen by anyone sniffing the network, any process options are included in this.
 
-	executable: string
+		encrypt?: bool
 
-	// The timeout in seconds that is placed upon the running process.
-	// A value of C(0) means no timeout.
+		// The executable to run on the Windows host.
 
-	process_timeout?: int
+		executable: string
 
-	// Set the command's priority on the Windows host.
-	// See U(https://msdn.microsoft.com/en-us/library/windows/desktop/ms683211.aspx) for more details.
+		// The integrity level of the process when I(process_username) is defined and is not equal to C(System).
+		// When C(default), the default integrity level based on the system setup.
+		// When C(elevated), the command will be run with Administrative rights.
+		// When C(limited), the command will be forced to run with non-Administrative rights.
 
-	priority?: string
+		integrity_level?: string
 
-	// The user to run the process as.
-	// This can be set to run the process under an Interactive logon of the specified account which bypasses limitations of a Network logon used when this isn't specified.
-	// If omitted then the process is run under the same account as I(connection_username) with a Network logon.
-	// Set to C(System) to run as the builtin SYSTEM account, no password is required with this account.
-	// If I(encrypt) is C(no), the username and password are sent as a simple XOR scrambled byte string that is not encrypted. No special tools are required to get the username and password just knowledge of the protocol.
+		// The Windows session ID to use when displaying the interactive process on the remote Windows host.
+		// This is only valid when I(interactive) is C(yes).
+		// The default is C(0) which is the console session of the Windows host.
 
-	process_username?: string
+		interactive_session?: int
 
-	// Shows the process UI on the Winlogon secure desktop when I(process_username) is C(System).
+		// The remote Windows host to connect to, can be either an IP address or a hostname.
 
-	show_ui_on_logon_screen?: bool
+		hostname: string
 
-	// The password for I(connection_user).
-	// Required if the Kerberos requirements are not installed or the username is a local account to the Windows host.
-	// Can be omitted to use a Kerberos principal ticket for the principal set by I(connection_user) if the Kerberos library is installed and the ticket has already been retrieved with the C(kinit) command before.
+		// Will run the process as an interactive process that shows a process Window of the Windows session specified by I(interactive_session).
+		// The I(stdout) and I(stderr) return values will be null when this is set to C(yes).
+		// The I(stdin) option does not work with this type of process.
 
-	connection_password?: string
+		interactive?: bool
 
-	// The timeout in seconds to wait when receiving the initial SMB negotiate response from the server.
+		// Runs the remote command with the user's profile loaded.
 
-	connection_timeout?: int
+		load_profile?: bool
 
-	// Will run the process as an interactive process that shows a process Window of the Windows session specified by I(interactive_session).
-	// The I(stdout) and I(stderr) return values will be null when this is set to C(yes).
-	// The I(stdin) option does not work with this type of process.
+		// Changes the working directory set when starting the process.
 
-	interactive?: bool
+		working_directory?: string
+	}
 }
 
 raw :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	raw: {
 
-	// Change the shell used to execute the command. Should be an absolute path to the executable.
-	// When using privilege escalation (C(become)) a default shell will be assigned if one is not provided as privilege escalation requires a shell.
+		// Change the shell used to execute the command. Should be an absolute path to the executable.
+		// When using privilege escalation (C(become)) a default shell will be assigned if one is not provided as privilege escalation requires a shell.
 
-	executable?: string
+		executable?: string
 
-	// The raw module takes a free form command to run.
-	// There is no parameter actually named 'free form'; see the examples!
+		// The raw module takes a free form command to run.
+		// There is no parameter actually named 'free form'; see the examples!
 
-	free_form: string
+		free_form: string
+	}
+}
+
+script :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	script: {
+
+		// Name or path of a executable to invoke the script with.
+
+		executable?: string
+
+		// Path to the local script file followed by optional arguments.
+
+		free_form?: string
+
+		// A filename on the remote node, when it does not exist, this step will B(not) be run.
+
+		removes?: string
+
+		// Change into this directory on the remote node before running the script.
+
+		chdir?: string
+
+		// Path to the local script to run followed by optional arguments.
+
+		cmd?: string
+
+		// A filename on the remote node, when it already exists, this step will B(not) be run.
+
+		creates?: string
+	}
 }

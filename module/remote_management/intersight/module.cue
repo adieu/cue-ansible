@@ -1,49 +1,67 @@
 package intersight
 
 intersight_info :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	intersight_info: {
 
-	// Server names to retrieve information from.
-	// An empty list will return all servers.
+		server_names: [...]
 
-	server_names: [..._]
+		// Server names to retrieve information from.
+		// An empty list will return all servers.
+	}
 }
 
 intersight_rest_api :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	intersight_rest_api: {
 
-	// The payload for API requests used to modify resources.
+		// The payload for API requests used to modify resources.
 
-	api_body?: {...}
+		api_body?: {...}
 
-	// Query parameters for the Intersight API query language.
+		// Query parameters for the Intersight API query language.
 
-	query_params?: {...}
+		query_params?: {...}
 
-	// Resource URI being configured related to api_uri.
+		// Resource URI being configured related to api_uri.
 
-	resource_path: string
+		resource_path: string
 
-	// If C(present), will verify the resource is present and will create if needed.
-	// If C(absent), will verify the resource is absent and will delete if needed.
+		// If C(present), will verify the resource is present and will create if needed.
+		// If C(absent), will verify the resource is absent and will delete if needed.
 
-	state?: string
+		state?: string
 
-	// The HTTP method used for update operations.
-	// Some Intersight resources require POST operations for modifications.
+		// The HTTP method used for update operations.
+		// Some Intersight resources require POST operations for modifications.
 
-	update_method?: string
+		update_method?: string
+	}
 }
 
 wakeonlan :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	wakeonlan: {
 
-	// UDP port to use for magic Wake-on-LAN packet.
+		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
 
-	port?: string
+		broadcast?: string
 
-	// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
+		// MAC address to send Wake-on-LAN broadcast packet for.
 
-	broadcast?: string
+		mac: string
 
-	// MAC address to send Wake-on-LAN broadcast packet for.
+		// UDP port to use for magic Wake-on-LAN packet.
 
-	mac: string
+		port?: string
+	}
 }

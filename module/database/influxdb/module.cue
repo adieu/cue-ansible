@@ -1,82 +1,112 @@
 package influxdb
 
 influxdb_database :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	influxdb_database: {
 
-	// Name of the database.
+		// Determines if the database should be created or destroyed.
 
-	database_name: string
+		state?: string
 
-	// Determines if the database should be created or destroyed.
+		// Name of the database.
 
-	state?: string
+		database_name: string
+	}
 }
 
 influxdb_query :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	influxdb_query: {
 
-	// Name of the database.
+		// Name of the database.
 
-	database_name: string
+		database_name: string
 
-	// Query to be executed.
+		// Query to be executed.
 
-	query: string
+		query: string
+	}
 }
 
 influxdb_retention_policy :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	influxdb_retention_policy: {
 
-	// Sets the retention policy as default retention policy
+		// Determines how long InfluxDB should keep the data
 
-	default: string
+		duration: string
 
-	// Determines how long InfluxDB should keep the data
+		// Name of the retention policy
 
-	duration: string
+		policy_name: string
 
-	// Name of the retention policy
+		// Determines how many independent copies of each point are stored in the cluster
 
-	policy_name: string
+		replication: string
 
-	// Determines how many independent copies of each point are stored in the cluster
+		// Name of the database.
 
-	replication: string
+		database_name: string
 
-	// Name of the database.
+		// Sets the retention policy as default retention policy
 
-	database_name: string
+		default: string
+	}
 }
 
 influxdb_user :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	influxdb_user: {
 
-	// Name of the user.
+		// State of the user.
 
-	user_name: string
+		state?: string
 
-	// Password to be set for the user.
+		// Name of the user.
 
-	user_password?: string
+		user_name: string
 
-	// Whether the user should be in the admin role or not.
-	// Since version 2.8, the role will also be updated.
+		// Password to be set for the user.
 
-	admin?: bool
+		user_password?: string
 
-	// Privileges to grant to this user. Takes a list of dicts containing the "database" and "privilege" keys.
-	// If this argument is not provided, the current grants will be left alone. If an empty list is provided, all grants for the user will be removed.
+		// Whether the user should be in the admin role or not.
+		// Since version 2.8, the role will also be updated.
 
-	grants?: string
+		admin?: bool
 
-	// State of the user.
+		// Privileges to grant to this user. Takes a list of dicts containing the "database" and "privilege" keys.
+		// If this argument is not provided, the current grants will be left alone. If an empty list is provided, all grants for the user will be removed.
 
-	state?: string
+		grants?: string
+	}
 }
 
 influxdb_write :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	influxdb_write: {
 
-	// Data points as dict to write into the database.
+		// Data points as dict to write into the database.
 
-	data_points: string
+		data_points: string
 
-	// Name of the database.
+		// Name of the database.
 
-	database_name: string
+		database_name: string
+	}
 }

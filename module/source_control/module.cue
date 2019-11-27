@@ -1,231 +1,261 @@
 package source_control
 
 bzr :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	bzr: {
 
-	// Path to bzr executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
+		// If C(yes), any modified files in the working tree will be discarded.  Before 1.9 the default value was C(yes).
 
-	executable?: string
+		force?: bool
 
-	// If C(yes), any modified files in the working tree will be discarded.  Before 1.9 the default value was C(yes).
+		// SSH or HTTP protocol address of the parent branch.
 
-	force?: bool
+		name: string
 
-	// SSH or HTTP protocol address of the parent branch.
+		// What version of the branch to clone.  This can be the bzr revno or revid.
 
-	name: string
+		version?: string
 
-	// What version of the branch to clone.  This can be the bzr revno or revid.
+		// Absolute path of where the branch should be cloned to.
 
-	version?: string
+		dest: string
 
-	// Absolute path of where the branch should be cloned to.
+		// Path to bzr executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
 
-	dest: string
+		executable?: string
+	}
 }
 
 git :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	git: {
 
-	// The path of where the repository should be checked out. This parameter is required, unless C(clone) is set to C(no).
+		// The path to place the cloned repository. If specified, Git repository can be separated from working tree.
 
-	dest: string
+		separate_git_dir?: string
 
-	// git, SSH, or HTTP(S) protocol address of the git repository.
+		// if C(yes), when cloning or checking out a C(version) verify the signature of a GPG signed commit. This requires C(git) version>=2.1.0 to be installed. The commit MUST be signed and the public key MUST be present in the GPG keyring.
 
-	repo: string
+		verify_commit?: bool
 
-	// If C(yes), any modified files in the working repository will be discarded.  Prior to 0.7, this was always 'yes' and could not be disabled.  Prior to 1.9, the default was `yes`
+		// If C(yes), any modified files in the working repository will be discarded.  Prior to 0.7, this was always 'yes' and could not be disabled.  Prior to 1.9, the default was `yes`
 
-	force?: bool
+		force?: bool
 
-	// The path to place the cloned repository. If specified, Git repository can be separated from working tree.
+		// Add an additional refspec to be fetched. If version is set to a I(SHA-1) not reachable from any branch or tag, this option may be necessary to specify the ref containing the I(SHA-1). Uses the same syntax as the 'git fetch' command. An example value could be "refs/meta/config".
 
-	separate_git_dir?: string
+		refspec?: string
 
-	// if C(yes), submodules will track the latest commit on their master branch (or other branch specified in .gitmodules).  If C(no), submodules will be kept at the revision specified by the main project. This is equivalent to specifying the --remote flag to git submodule update.
+		// What version of the repository to check out.  This can be the literal string C(HEAD), a branch name, a tag name. It can also be a I(SHA-1) hash, in which case C(refspec) needs to be specified if the given revision is not already available.
 
-	track_submodules?: bool
+		version?: string
 
-	// Specify archive file path with extension. If specified, creates an archive file of the specified format containing the tree structure for the source tree. Allowed archive formats ["zip", "tar.gz", "tar", "tgz"]
-	// This will clone and perform git archive from local directory as not all git servers support git archive.
+		// The path of where the repository should be checked out. This parameter is required, unless C(clone) is set to C(no).
 
-	archive?: string
+		dest: string
 
-	// Create a shallow clone with a history truncated to the specified number or revisions. The minimum possible value is C(1), otherwise ignored. Needs I(git>=1.9.1) to work correctly.
+		// if C(yes), submodules will track the latest commit on their master branch (or other branch specified in .gitmodules).  If C(no), submodules will be kept at the revision specified by the main project. This is equivalent to specifying the --remote flag to git submodule update.
 
-	depth?: string
+		track_submodules?: bool
 
-	// Path to git executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
+		// Create a shallow clone with a history truncated to the specified number or revisions. The minimum possible value is C(1), otherwise ignored. Needs I(git>=1.9.1) to work correctly.
 
-	executable?: string
+		depth?: string
 
-	// Reference repository (see "git clone --reference ...")
+		// A list of trusted GPG fingerprints to compare to the fingerprint of the GPG-signed commit.
+		// Only used when I(verify_commit=yes).
 
-	reference?: string
+		gpg_whitelist?: [...]
 
-	// Name of the remote.
+		// git, SSH, or HTTP(S) protocol address of the git repository.
 
-	remote?: string
+		repo: string
 
-	// Creates a wrapper script and exports the path as GIT_SSH which git then automatically uses to override ssh arguments. An example value could be "-o StrictHostKeyChecking=no" (although this particular option is better set via C(accept_hostkey)).
+		// Creates a wrapper script and exports the path as GIT_SSH which git then automatically uses to override ssh arguments. An example value could be "-o StrictHostKeyChecking=no" (although this particular option is better set via C(accept_hostkey)).
 
-	ssh_opts?: string
+		ssh_opts?: string
 
-	// The umask to set before doing any checkouts, or any other repository maintenance.
+		// If C(no), do not retrieve new revisions from the origin repository
+		// Operations like archive will work on the existing (old) repository and might not respond to changes to the options version or remote.
 
-	umask?: string
+		update?: bool
 
-	// What version of the repository to check out.  This can be the literal string C(HEAD), a branch name, a tag name. It can also be a I(SHA-1) hash, in which case C(refspec) needs to be specified if the given revision is not already available.
+		// if C(yes), ensure that "-o StrictHostKeyChecking=no" is present as an ssh option.
 
-	version?: string
+		accept_hostkey?: bool
 
-	// If C(no), do not clone the repository even if it does not exist locally
+		// Specify archive file path with extension. If specified, creates an archive file of the specified format containing the tree structure for the source tree. Allowed archive formats ["zip", "tar.gz", "tar", "tgz"]
+		// This will clone and perform git archive from local directory as not all git servers support git archive.
 
-	clone?: bool
+		archive?: string
 
-	// A list of trusted GPG fingerprints to compare to the fingerprint of the GPG-signed commit.
-	// Only used when I(verify_commit=yes).
+		// Path to git executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
 
-	gpg_whitelist?: [..._]
+		executable?: string
 
-	// if C(no), repository will be cloned without the --recursive option, skipping sub-modules.
+		// Specify an optional private key file path, on the target host, to use for the checkout.
 
-	recursive?: bool
+		key_file?: string
 
-	// Add an additional refspec to be fetched. If version is set to a I(SHA-1) not reachable from any branch or tag, this option may be necessary to specify the ref containing the I(SHA-1). Uses the same syntax as the 'git fetch' command. An example value could be "refs/meta/config".
+		// if C(no), repository will be cloned without the --recursive option, skipping sub-modules.
 
-	refspec?: string
+		recursive?: bool
 
-	// If C(no), do not retrieve new revisions from the origin repository
-	// Operations like archive will work on the existing (old) repository and might not respond to changes to the options version or remote.
+		// Reference repository (see "git clone --reference ...")
 
-	update?: bool
+		reference?: string
 
-	// if C(yes), when cloning or checking out a C(version) verify the signature of a GPG signed commit. This requires C(git) version>=2.1.0 to be installed. The commit MUST be signed and the public key MUST be present in the GPG keyring.
+		// Name of the remote.
 
-	verify_commit?: bool
+		remote?: string
 
-	// if C(yes), ensure that "-o StrictHostKeyChecking=no" is present as an ssh option.
+		// The umask to set before doing any checkouts, or any other repository maintenance.
 
-	accept_hostkey?: bool
+		umask?: string
 
-	// if C(yes), repository will be created as a bare repo, otherwise it will be a standard repo with a workspace.
+		// if C(yes), repository will be created as a bare repo, otherwise it will be a standard repo with a workspace.
 
-	bare?: bool
+		bare?: bool
 
-	// Specify an optional private key file path, on the target host, to use for the checkout.
+		// If C(no), do not clone the repository even if it does not exist locally
 
-	key_file?: string
+		clone?: bool
+	}
 }
 
 git_config :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	git_config: {
 
-	// Path to a git repository for reading and writing values from a specific repo.
+		// List all settings (optionally limited to a given I(scope))
 
-	repo?: string
+		list_all?: bool
 
-	// Specify which scope to read/set values from. This is required when setting config values. If this is set to local, you must also specify the repo parameter. It defaults to system only when not using I(list_all)=yes.
+		// The name of the setting. If no value is supplied, the value will be read from the config if it has been set.
 
-	scope?: string
+		name?: string
 
-	// Indicates the setting should be set/unset. This parameter has higher precedence than I(value) parameter: when I(state)=absent and I(value) is defined, I(value) is discarded.
+		// Path to a git repository for reading and writing values from a specific repo.
 
-	state?: string
+		repo?: string
 
-	// When specifying the name of a single setting, supply a value to set that setting to the given value.
+		// Specify which scope to read/set values from. This is required when setting config values. If this is set to local, you must also specify the repo parameter. It defaults to system only when not using I(list_all)=yes.
 
-	value?: string
+		scope?: string
 
-	// List all settings (optionally limited to a given I(scope))
+		// Indicates the setting should be set/unset. This parameter has higher precedence than I(value) parameter: when I(state)=absent and I(value) is defined, I(value) is discarded.
 
-	list_all?: bool
+		state?: string
 
-	// The name of the setting. If no value is supplied, the value will be read from the config if it has been set.
+		// When specifying the name of a single setting, supply a value to set that setting to the given value.
 
-	name?: string
+		value?: string
+	}
 }
 
 hg :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	hg: {
 
-	// Path to hg executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
+		// Path to hg executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
 
-	executable?: string
+		executable?: string
 
-	// Discards uncommitted changes. Runs C(hg update -C).  Prior to 1.9, the default was `yes`.
+		// Discards uncommitted changes. Runs C(hg update -C).  Prior to 1.9, the default was `yes`.
 
-	force?: bool
+		force?: bool
 
-	// Deletes untracked files. Runs C(hg purge).
+		// Deletes untracked files. Runs C(hg purge).
 
-	purge?: bool
+		purge?: bool
 
-	// The repository address.
+		// The repository address.
 
-	repo: string
+		repo: string
 
-	// Equivalent C(-r) option in hg command which could be the changeset, revision number, branch name or even tag.
+		// Equivalent C(-r) option in hg command which could be the changeset, revision number, branch name or even tag.
 
-	revision?: string
+		revision?: string
 
-	// If C(no), do not retrieve new revisions from the origin repository
+		// If C(no), do not retrieve new revisions from the origin repository
 
-	update?: bool
+		update?: bool
 
-	// If C(no), do not clone the repository if it does not exist locally.
+		// If C(no), do not clone the repository if it does not exist locally.
 
-	clone?: bool
+		clone?: bool
 
-	// Absolute path of where the repository should be cloned to. This parameter is required, unless clone and update are set to no
+		// Absolute path of where the repository should be cloned to. This parameter is required, unless clone and update are set to no
 
-	dest: string
+		dest: string
+	}
 }
 
 subversion :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	subversion: {
 
-	// If C(no), do not retrieve new revisions from the origin repository.
+		// The subversion URL to the repository.
 
-	update?: bool
+		repo: string
 
-	// Absolute path where the repository should be deployed.
+		// Specific revision to checkout.
 
-	dest: string
+		revision?: string
 
-	// Path to svn executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
+		// If C(no), do not call svn switch before update.
 
-	executable?: string
+		switch?: bool
 
-	// If C(yes), do export instead of checkout/update.
+		// Absolute path where the repository should be deployed.
 
-	export?: bool
+		dest: string
 
-	// C(--password) parameter passed to svn.
+		// Path to svn executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
 
-	password?: string
+		executable?: string
 
-	// The subversion URL to the repository.
+		// If C(yes), do export instead of checkout/update.
 
-	repo: string
+		export?: bool
 
-	// C(--username) parameter passed to svn.
+		// If C(yes), modified files will be discarded. If C(no), module will fail if it encounters modified files. Prior to 1.9 the default was C(yes).
 
-	username?: string
+		force?: bool
 
-	// If C(no), do not check out the repository if it does not exist locally.
+		// If the directory exists, then the working copy will be checked-out over-the-top using svn checkout --force; if force is specified then existing files with different content are reverted
 
-	checkout?: bool
+		in_place?: bool
 
-	// If C(yes), modified files will be discarded. If C(no), module will fail if it encounters modified files. Prior to 1.9 the default was C(yes).
+		// If C(no), do not retrieve new revisions from the origin repository.
 
-	force?: bool
+		update?: bool
 
-	// If the directory exists, then the working copy will be checked-out over-the-top using svn checkout --force; if force is specified then existing files with different content are reverted
+		// If C(no), do not check out the repository if it does not exist locally.
 
-	in_place?: bool
+		checkout?: bool
 
-	// Specific revision to checkout.
+		// C(--password) parameter passed to svn.
 
-	revision?: string
+		password?: string
 
-	// If C(no), do not call svn switch before update.
+		// C(--username) parameter passed to svn.
 
-	switch?: bool
+		username?: string
+	}
 }

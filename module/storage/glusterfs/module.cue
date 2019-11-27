@@ -1,100 +1,118 @@
 package glusterfs
 
-gluster_heal_info :: {
-
-	// The volume name.
-
-	name: string
-
-	// Determines which facts are to be returned.
-	// If the C(status_filter) is C(self-heal), status of self-heal, along with the number of files still in process are returned.
-	// If the C(status_filter) is C(rebalance), rebalance status is returned.
-
-	status_filter?: string
-}
-
 gluster_peer :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	gluster_peer: {
 
-	// Applicable only while removing the nodes from the pool. gluster will refuse to detach a node from the pool if any one of the node is down, in such cases force can be used.
+		// Applicable only while removing the nodes from the pool. gluster will refuse to detach a node from the pool if any one of the node is down, in such cases force can be used.
 
-	force?: bool
+		force?: bool
 
-	// List of nodes that have to be probed into the pool.
+		// List of nodes that have to be probed into the pool.
 
-	nodes: string
+		nodes: string
 
-	// Determines whether the nodes should be attached to the pool or removed from the pool. If the state is present, nodes will be attached to the pool. If state is absent, nodes will be detached from the pool.
+		// Determines whether the nodes should be attached to the pool or removed from the pool. If the state is present, nodes will be attached to the pool. If state is absent, nodes will be detached from the pool.
 
-	state: string
+		state: string
+	}
 }
 
 gluster_volume :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	gluster_volume: {
 
-	// The volume name.
+		// List of hosts to use for probing and brick setup.
 
-	name: string
+		cluster?: string
 
-	// Redundancy count for volume.
+		// A dictionary/hash with options/settings for the volume.
 
-	redundancies?: string
+		options?: string
 
-	// Controls whether the volume is started after creation or not.
+		// Redundancy count for volume.
 
-	start_on_create?: bool
+		redundancies?: string
 
-	// Use present/absent ensure if a volume exists or not. Use started/stopped to control its availability.
+		// Stripe count for volume.
 
-	state: string
+		stripes?: string
 
-	// Stripe count for volume.
+		// If brick is being created in the root partition, module will fail. Set force to true to override this behaviour.
 
-	stripes?: string
+		force?: bool
 
-	// Transport type for volume.
+		// Override local hostname (for peer probing purposes).
 
-	transport?: string
+		host?: string
 
-	// Arbiter count for volume.
+		// Quota value for limit-usage (be sure to use 10.0MB instead of 10MB, see quota list).
 
-	arbiters?: string
+		quota?: string
 
-	// List of hosts to use for probing and brick setup.
+		// Controls whether the volume is started after creation or not.
 
-	cluster?: string
+		start_on_create?: bool
 
-	// If brick is being created in the root partition, module will fail. Set force to true to override this behaviour.
+		// Use present/absent ensure if a volume exists or not. Use started/stopped to control its availability.
 
-	force?: bool
+		state: string
 
-	// Override local hostname (for peer probing purposes).
+		// Transport type for volume.
 
-	host?: string
+		transport?: string
 
-	// A dictionary/hash with options/settings for the volume.
+		// Brick paths on servers. Multiple brick paths can be separated by commas.
 
-	options?: string
+		bricks?: string
 
-	// Brick paths on servers. Multiple brick paths can be separated by commas.
+		// Disperse count for volume.
 
-	bricks?: string
+		disperses?: string
 
-	// Directory for limit-usage.
+		// Arbiter count for volume.
 
-	directory?: string
+		arbiters?: string
 
-	// Disperse count for volume.
+		// Directory for limit-usage.
 
-	disperses?: string
+		directory?: string
 
-	// Quota value for limit-usage (be sure to use 10.0MB instead of 10MB, see quota list).
+		// The volume name.
 
-	quota?: string
+		name: string
 
-	// Controls whether the cluster is rebalanced after changes.
+		// Controls whether the cluster is rebalanced after changes.
 
-	rebalance?: bool
+		rebalance?: bool
 
-	// Replica count for volume.
+		// Replica count for volume.
 
-	replicas?: string
+		replicas?: string
+	}
+}
+
+gluster_heal_info :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	gluster_heal_info: {
+
+		// The volume name.
+
+		name: string
+
+		// Determines which facts are to be returned.
+		// If the C(status_filter) is C(self-heal), status of self-heal, along with the number of files still in process are returned.
+		// If the C(status_filter) is C(rebalance), rebalance status is returned.
+
+		status_filter?: string
+	}
 }

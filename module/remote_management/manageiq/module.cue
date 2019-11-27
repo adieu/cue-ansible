@@ -1,302 +1,356 @@
 package manageiq
 
-manageiq_group :: {
-
-	// The tenant for the group identified by the tenant name.
-	// The C(tenant_id) has precedence over the C(tenant) when supplied.
-	// Tenant names are case sensitive.
-
-	tenant?: string
-
-	// The tenant for the group identified by the tenant id.
-
-	tenant_id?: string
-
-	// The group description.
-
-	description: string
-
-	// The the group role id
-
-	role_id?: string
-
-	// The tag values per category
-
-	managed_filters?: {...}
-
-	// In merge mode existing categories are kept or updated, new categories are added.
-	// In replace mode all categories will be replaced with the supplied C(managed_filters).
-
-	managed_filters_merge_mode?: string
-
-	// The the group role name
-	// The C(role_id) has precedence over the C(role) when supplied.
-
-	role?: string
-
-	// absent - group should not exist, present - group should be.
-
-	state?: string
-
-	// A list of strings with a reference to the allowed host, cluster or folder
-
-	belongsto_filters?: [..._]
-
-	// In merge mode existing settings are merged with the supplied C(belongsto_filters).
-	// In replace mode current values are replaced with the supplied C(belongsto_filters).
-
-	belongsto_filters_merge_mode?: string
-}
-
-manageiq_provider :: {
-
-	// The provider's name.
-
-	name: string
-
-	// Microsoft Azure subscription ID. defaults to None.
-
-	subscription?: string
-
-	// The ManageIQ zone name that will manage the provider.
-
-	zone?: string
-
-	// Metrics endpoint connection information.
-
-	metrics?: string
-
-	// The provider region name to connect to (e.g. AWS region for Amazon).
-
-	provider_region?: string
-
-	// The OpenStack Keystone API version. defaults to None.
-
-	api_version?: string
-
-	// Tenant ID. defaults to None.
-
-	azure_tenant_id?: string
-
-	// The first port in the host VNC range. defaults to None.
-
-	host_default_vnc_port_start?: string
-
-	// Google Compute Engine Project ID. defaults to None.
-
-	project?: string
-
-	// SSH key pair used for SSH connections to all hosts in this provider.
-
-	ssh_keypair?: string
-
-	// Alerts endpoint connection information.
-
-	alerts?: string
-
-	// Default endpoint connection information, required if state is true.
-
-	provider?: string
-
-	// absent - provider should not exist, present - provider should be present, refresh - provider will be refreshed
-
-	state?: string
-
-	// Whether to enable mapping of existing tenants. defaults to False.
-
-	tenant_mapping_enabled?: bool
-
-	// The provider's type.
-
-	type: string
-
-	// The last port in the host VNC range. defaults to None.
-
-	host_default_vnc_port_end?: string
-}
-
-manageiq_tags :: {
-
-	// the relevant resource name in manageiq
-
-	resource_name: string
-
-	// the relevant resource type in manageiq
-
-	resource_type: string
-
-	// absent - tags should not exist,
-	// present - tags should exist,
-	// list - list current tags.
-
-	state?: string
-
-	// tags - list of dictionaries, each includes 'name' and 'category' keys.
-	// required if state is present or absent.
-
-	tags?: string
-}
-
-manageiq_user :: {
-
-	// The users' E-mail address.
-
-	email?: string
-
-	// The name of the group to which the user belongs.
-
-	group?: string
-
-	// The users' full name.
-
-	name?: string
-
-	// The users' password.
-
-	password?: string
-
-	// absent - user should not exist, present - user should be.
-
-	state?: string
-
-	// C(always) will update passwords unconditionally.  C(on_create) will only set the password for a newly created user.
-
-	update_password?: string
-
-	// The unique userid in manageiq, often mentioned as username.
-
-	userid: string
-}
-
 wakeonlan :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	wakeonlan: {
 
-	// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
+		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
 
-	broadcast?: string
+		broadcast?: string
 
-	// MAC address to send Wake-on-LAN broadcast packet for.
+		// MAC address to send Wake-on-LAN broadcast packet for.
 
-	mac: string
+		mac: string
 
-	// UDP port to use for magic Wake-on-LAN packet.
+		// UDP port to use for magic Wake-on-LAN packet.
 
-	port?: string
-}
-
-manageiq_alert_profiles :: {
-
-	// List of alert descriptions to assign to this profile.
-	// Required if state is "present"
-
-	alerts?: string
-
-	// The unique alert profile name in ManageIQ.
-	// Required when state is "absent" or "present".
-
-	name?: string
-
-	// Optional notes for this profile
-
-	notes?: string
-
-	// The resource type for the alert profile in ManageIQ. Required when state is "present".
-
-	resource_type?: string
-
-	// absent - alert profile should not exist,
-	// present - alert profile should exist,
-
-	state?: string
-}
-
-manageiq_alerts :: {
-
-	// The entity type for the alert in ManageIQ. Required when state is "present".
-
-	resource_type?: string
-
-	// absent - alert should not exist,
-	// present - alert should exist,
-
-	state?: string
-
-	// The unique alert description in ManageIQ.
-	// Required when state is "absent" or "present".
-
-	description?: string
-
-	// Enable or disable the alert. Required if state is "present".
-
-	enabled?: bool
-
-	// The alert expression for ManageIQ.
-	// Can either be in the "Miq Expression" format or the "Hash Expression format".
-	// Required if state is "present".
-
-	expression?: string
-
-	// Expression type.
-
-	expression_type?: string
-
-	// Additional alert options, such as notification type and frequency
-
-	options?: string
+		port?: string
+	}
 }
 
 manageiq_policies :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	manageiq_policies: {
 
-	// the type of the resource to which the profile should be [un]assigned
+		// list of dictionaries, each includes the policy_profile 'name' key.
+		// required if state is present or absent.
 
-	resource_type: string
+		policy_profiles?: string
 
-	// absent - policy_profiles should not exist,
-	// present - policy_profiles should exist,
-	// list - list current policy_profiles and policies.
+		// the name of the resource to which the profile should be [un]assigned
 
-	state?: string
+		resource_name: string
 
-	// list of dictionaries, each includes the policy_profile 'name' key.
-	// required if state is present or absent.
+		// the type of the resource to which the profile should be [un]assigned
 
-	policy_profiles?: string
+		resource_type: string
 
-	// the name of the resource to which the profile should be [un]assigned
+		// absent - policy_profiles should not exist,
+		// present - policy_profiles should exist,
+		// list - list current policy_profiles and policies.
 
-	resource_name: string
+		state?: string
+	}
 }
 
 manageiq_tenant :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	manageiq_tenant: {
 
-	// The tenant quotas.
-	// All parameters case sensitive.
-	// Valid attributes are:
-	//  - C(cpu_allocated) (int): use null to remove the quota.
-	//  - C(mem_allocated) (GB): use null to remove the quota.
-	//  - C(storage_allocated) (GB): use null to remove the quota.
-	//  - C(vms_allocated) (int): use null to remove the quota.
-	//  - C(templates_allocated) (int): use null to remove the quota.
+		// The tenant name.
 
-	quotas?: string
+		name: string
 
-	// absent - tenant should not exist, present - tenant should be.
+		// The name of the parent tenant. If not supplied and no C(parent_id) is supplied the root tenant is used.
 
-	state?: string
+		parent?: string
 
-	// The tenant description.
+		// The id of the parent tenant. If not supplied the root tenant is used.
+		// The C(parent_id) takes president over C(parent) when supplied
 
-	description: string
+		parent_id?: string
 
-	// The tenant name.
+		// The tenant quotas.
+		// All parameters case sensitive.
+		// Valid attributes are:
+		//  - C(cpu_allocated) (int): use null to remove the quota.
+		//  - C(mem_allocated) (GB): use null to remove the quota.
+		//  - C(storage_allocated) (GB): use null to remove the quota.
+		//  - C(vms_allocated) (int): use null to remove the quota.
+		//  - C(templates_allocated) (int): use null to remove the quota.
 
-	name: string
+		quotas?: string
 
-	// The name of the parent tenant. If not supplied and no C(parent_id) is supplied the root tenant is used.
+		// absent - tenant should not exist, present - tenant should be.
 
-	parent?: string
+		state?: string
 
-	// The id of the parent tenant. If not supplied the root tenant is used.
-	// The C(parent_id) takes president over C(parent) when supplied
+		// The tenant description.
 
-	parent_id?: string
+		description: string
+	}
+}
+
+manageiq_group :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	manageiq_group: {
+
+		// The group description.
+
+		description: string
+
+		// The tag values per category
+
+		managed_filters?: {...}
+
+		// The the group role name
+		// The C(role_id) has precedence over the C(role) when supplied.
+
+		role?: string
+
+		// The the group role id
+
+		role_id?: string
+
+		// The tenant for the group identified by the tenant name.
+		// The C(tenant_id) has precedence over the C(tenant) when supplied.
+		// Tenant names are case sensitive.
+
+		tenant?: string
+
+		// A list of strings with a reference to the allowed host, cluster or folder
+
+		belongsto_filters?: [...]
+
+		// In merge mode existing settings are merged with the supplied C(belongsto_filters).
+		// In replace mode current values are replaced with the supplied C(belongsto_filters).
+
+		belongsto_filters_merge_mode?: string
+
+		// In merge mode existing categories are kept or updated, new categories are added.
+		// In replace mode all categories will be replaced with the supplied C(managed_filters).
+
+		managed_filters_merge_mode?: string
+
+		// absent - group should not exist, present - group should be.
+
+		state?: string
+
+		// The tenant for the group identified by the tenant id.
+
+		tenant_id?: string
+	}
+}
+
+manageiq_provider :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	manageiq_provider: {
+
+		// Metrics endpoint connection information.
+
+		metrics?: string
+
+		// Google Compute Engine Project ID. defaults to None.
+
+		project?: string
+
+		// The provider's type.
+
+		type: string
+
+		// The OpenStack Keystone API version. defaults to None.
+
+		api_version?: string
+
+		// Tenant ID. defaults to None.
+
+		azure_tenant_id?: string
+
+		// The last port in the host VNC range. defaults to None.
+
+		host_default_vnc_port_end?: string
+
+		// SSH key pair used for SSH connections to all hosts in this provider.
+
+		ssh_keypair?: string
+
+		// The ManageIQ zone name that will manage the provider.
+
+		zone?: string
+
+		// Alerts endpoint connection information.
+
+		alerts?: string
+
+		// The provider region name to connect to (e.g. AWS region for Amazon).
+
+		provider_region?: string
+
+		// absent - provider should not exist, present - provider should be present, refresh - provider will be refreshed
+
+		state?: string
+
+		// Microsoft Azure subscription ID. defaults to None.
+
+		subscription?: string
+
+		// The first port in the host VNC range. defaults to None.
+
+		host_default_vnc_port_start?: string
+
+		// The provider's name.
+
+		name: string
+
+		// Default endpoint connection information, required if state is true.
+
+		provider?: string
+
+		// Whether to enable mapping of existing tenants. defaults to False.
+
+		tenant_mapping_enabled?: bool
+	}
+}
+
+manageiq_tags :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	manageiq_tags: {
+
+		// the relevant resource name in manageiq
+
+		resource_name: string
+
+		// the relevant resource type in manageiq
+
+		resource_type: string
+
+		// absent - tags should not exist,
+		// present - tags should exist,
+		// list - list current tags.
+
+		state?: string
+
+		// tags - list of dictionaries, each includes 'name' and 'category' keys.
+		// required if state is present or absent.
+
+		tags?: string
+	}
+}
+
+manageiq_user :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	manageiq_user: {
+
+		// The users' full name.
+
+		name?: string
+
+		// The users' password.
+
+		password?: string
+
+		// absent - user should not exist, present - user should be.
+
+		state?: string
+
+		// C(always) will update passwords unconditionally.  C(on_create) will only set the password for a newly created user.
+
+		update_password?: string
+
+		// The unique userid in manageiq, often mentioned as username.
+
+		userid: string
+
+		// The users' E-mail address.
+
+		email?: string
+
+		// The name of the group to which the user belongs.
+
+		group?: string
+	}
+}
+
+manageiq_alert_profiles :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	manageiq_alert_profiles: {
+
+		// List of alert descriptions to assign to this profile.
+		// Required if state is "present"
+
+		alerts?: string
+
+		// The unique alert profile name in ManageIQ.
+		// Required when state is "absent" or "present".
+
+		name?: string
+
+		// Optional notes for this profile
+
+		notes?: string
+
+		// The resource type for the alert profile in ManageIQ. Required when state is "present".
+
+		resource_type?: string
+
+		// absent - alert profile should not exist,
+		// present - alert profile should exist,
+
+		state?: string
+	}
+}
+
+manageiq_alerts :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	manageiq_alerts: {
+
+		// Additional alert options, such as notification type and frequency
+
+		options?: string
+
+		// The entity type for the alert in ManageIQ. Required when state is "present".
+
+		resource_type?: string
+
+		// absent - alert should not exist,
+		// present - alert should exist,
+
+		state?: string
+
+		// The unique alert description in ManageIQ.
+		// Required when state is "absent" or "present".
+
+		description?: string
+
+		// Enable or disable the alert. Required if state is "present".
+
+		enabled?: bool
+
+		// The alert expression for ManageIQ.
+		// Can either be in the "Miq Expression" format or the "Hash Expression format".
+		// Required if state is "present".
+
+		expression?: string
+
+		// Expression type.
+
+		expression_type?: string
+	}
 }

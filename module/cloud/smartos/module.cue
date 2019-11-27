@@ -1,308 +1,332 @@
 package smartos
 
+imgadm :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	imgadm: {
+
+		// Force a given operation (where supported by imgadm(1M)).
+
+		force?: bool
+
+		// zpool to import to or delete images from.
+
+		pool?: string
+
+		// URI for the image source.
+
+		source?: string
+
+		// State the object operated on should be in. C(imported) is an alias for for C(present) and C(deleted) for C(absent). When set to C(vacuumed) and C(uuid) to C(*), it will remove all unused images.
+
+		state: string
+
+		// Type for image sources.
+
+		type?: string
+
+		// Image UUID. Can either be a full UUID or C(*) for all images.
+
+		uuid?: string
+	}
+}
+
 nictagadm :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	nictagadm: {
 
-	// Specifies that the nic tag will be attached to a created I(etherstub).
-	// Parameter I(etherstub) is mutually exclusive with both I(mtu), and I(mac).
+		// Specifies the size of the I(mtu) of the desired nic tag.
+		// Parameters I(mtu) and I(etherstub) are mutually exclusive.
 
-	etherstub?: bool
+		mtu?: int
 
-	// When I(state) is absent set this switch will use the C(-f) parameter and delete the nic tag regardless of existing VMs.
+		// Name of the nic tag.
 
-	force?: bool
+		name: string
 
-	// Specifies the I(mac) address to attach the nic tag to when not creating an I(etherstub).
-	// Parameters I(mac) and I(etherstub) are mutually exclusive.
+		// Create or delete a SmartOS nic tag.
 
-	mac?: string
+		state?: string
 
-	// Specifies the size of the I(mtu) of the desired nic tag.
-	// Parameters I(mtu) and I(etherstub) are mutually exclusive.
+		// Specifies that the nic tag will be attached to a created I(etherstub).
+		// Parameter I(etherstub) is mutually exclusive with both I(mtu), and I(mac).
 
-	mtu?: int
+		etherstub?: bool
 
-	// Name of the nic tag.
+		// When I(state) is absent set this switch will use the C(-f) parameter and delete the nic tag regardless of existing VMs.
 
-	name: string
+		force?: bool
 
-	// Create or delete a SmartOS nic tag.
+		// Specifies the I(mac) address to attach the nic tag to when not creating an I(etherstub).
+		// Parameters I(mac) and I(etherstub) are mutually exclusive.
 
-	state?: string
+		mac?: string
+	}
 }
 
 smartos_image_info :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	smartos_image_info: {
 
-	// Criteria for selecting image. Can be any value from image manifest and 'published_date', 'published', 'source', 'clones', and 'size'. More information can be found at U(https://smartos.org/man/1m/imgadm) under 'imgadm list'.
+		filters?: string
 
-	filters?: string
+		// Criteria for selecting image. Can be any value from image manifest and 'published_date', 'published', 'source', 'clones', and 'size'. More information can be found at U(https://smartos.org/man/1m/imgadm) under 'imgadm list'.
+	}
 }
 
 vmadm :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vmadm: {
 
-	// Sets a limit on the amount of CPU time that can be used by a VM. Use C(0) for no cap.
+		// Maximum amount of memory (in MiBs) on the host that the VM is allowed to use.
 
-	cpu_cap?: string
+		max_physical_memory?: string
 
-	// Sets a limit on the number of fair share scheduler (FSS) CPU shares for a VM. This limit is relative to all other VMs on the system.
+		// A list of nics to add, valid properties are documented in vmadm(1M).
 
-	cpu_shares?: string
+		nics?: string
 
-	// Consider the provisioning complete when the VM first starts, rather than when the VM has rebooted.
+		// Specifies compression algorithm used for this VMs data dataset. This option only has effect on delegated datasets.
 
-	nowait?: string
+		zfs_data_compression?: string
 
-	// Amount of memory (in MiBs) that will be available in the VM for the C(/tmp) filesystem.
+		// Suggested block size (power of 2) for files in the zoneroot dataset's filesystem.
 
-	tmpfs?: string
+		zfs_root_recsize?: string
 
-	// Specifies compression algorithm used for this VMs root dataset. This option only has effect on the zoneroot dataset.
+		// Default value for a virtual disk model for KVM guests.
 
-	zfs_root_compression?: string
+		disk_driver?: string
 
-	// Whether or not a VM is booted when the system is rebooted.
+		// Domain value for C(/etc/hosts).
 
-	autoboot?: string
+		dns_domain?: string
 
-	// Force a particular action (i.e. stop or delete a VM).
+		// Mount additional filesystems into an OS VM.
 
-	force?: string
+		filesystems?: string
 
-	// Specify VGA emulation used by KVM VMs.
+		// Enables the firewall, allowing fwadm(1M) rules to be applied.
 
-	vga?: string
+		firewall_enabled?: string
 
-	// Set the boot order for KVM VMs.
+		// Total amount of memory (in MiBs) on the host that can be locked by this VM.
 
-	boot?: string
+		max_locked_memory?: string
 
-	// Adds an C(@indestructible) snapshot to zoneroot.
+		// Amount of memory (in MiBs) that will be available in the VM for the C(/tmp) filesystem.
 
-	indestructible_zoneroot?: string
+		tmpfs?: string
 
-	// Addition options for SPICE-enabled KVM VMs.
+		// Control the type of virtual CPU exposed to KVM VMs.
 
-	spice_opts?: string
+		cpu_type?: string
 
-	// Comma separated list of filesystem types this zone is allowed to mount.
+		// Adds an C(@indestructible) snapshot to zoneroot.
 
-	fs_allowed?: string
+		indestructible_zoneroot?: string
 
-	// Zone/VM hostname.
+		// Image UUID.
 
-	hostname?: string
+		image_uuid?: string
 
-	// List of namespaces to be set as I(internal_metadata-only); these namespaces will come from I(internal_metadata) rather than I(customer_metadata).
+		// Timeout (in nanoseconds) for the TX timer of virtio NICs.
 
-	internal_metadata_namespace?: string
+		virtio_txtimer?: string
 
-	// Timeout (in nanoseconds) for the TX timer of virtio NICs.
+		// Docker images need this flag enabled along with the I(brand) set to C(lx).
 
-	virtio_txtimer?: string
+		docker?: string
 
-	// When enabled, the zone dataset will be mounted on C(/zones/archive) upon removal.
+		// Maximum amount of virtual memory (in MiBs) the VM is allowed to use.
 
-	archive_on_delete?: string
+		max_swap?: string
 
-	// Type of virtual machine.
+		// Password required to connect to VNC. By default no password is set. Please note this can be read from the Global Zone.
 
-	brand: string
+		vnc_password?: string
 
-	// Maximum amount of virtual memory (in MiBs) the VM is allowed to use.
+		// TCP port to listen of the VNC server. Or set C(0) for random, or C(-1) to disable.
 
-	max_swap?: string
+		vnc_port?: string
 
-	// A list of nics to add, valid properties are documented in vmadm(1M).
+		// Specifies compression algorithm used for this VMs root dataset. This option only has effect on the zoneroot dataset.
 
-	nics?: string
+		zfs_root_compression?: string
 
-	// Additional qemu arguments for KVM guests. This overwrites the default arguments provided by vmadm(1M) and should only be used for debugging.
+		// Whether or not a VM is booted when the system is rebooted.
 
-	qemu_opts?: string
+		autoboot?: string
 
-	// Suggested block size (power of 2) for files in the delegated dataset's filesystem.
+		// List of namespaces to be set as I(internal_metadata-only); these namespaces will come from I(internal_metadata) rather than I(customer_metadata).
 
-	zfs_data_recsize?: string
+		internal_metadata_namespace?: string
 
-	// Docker images need this flag enabled along with the I(brand) set to C(lx).
+		// Resolvers in C(/etc/resolv.conf) will be updated when updating the I(resolvers) property.
 
-	docker?: string
+		maintain_resolvers?: string
 
-	// Enables the firewall, allowing fwadm(1M) rules to be applied.
+		// Additional qemu cmdline arguments for KVM guests.
 
-	firewall_enabled?: string
+		qemu_extra_opts?: string
 
-	// Kernel version to emulate for LX VMs.
+		// Password required to connect to SPICE. By default no password is set. Please note this can be read from the Global Zone.
 
-	kernel_version?: string
+		spice_password?: string
 
-	// Maximum number of lightweight processes this VM is allowed to have running.
+		// Force a particular action (i.e. stop or delete a VM).
 
-	max_lwps?: string
+		force?: string
 
-	// Maximum amount of memory (in MiBs) on the host that the VM is allowed to use.
+		// Maximum number of lightweight processes this VM is allowed to have running.
 
-	max_physical_memory?: string
+		max_lwps?: string
 
-	// Password required to connect to SPICE. By default no password is set. Please note this can be read from the Global Zone.
+		// Consider the provisioning complete when the VM first starts, rather than when the VM has rebooted.
 
-	spice_password?: string
+		nowait?: string
 
-	// A list of disks to add, valid properties are documented in vmadm(1M).
+		// List of resolvers to be put into C(/etc/resolv.conf).
 
-	disks?: string
+		resolvers?: string
 
-	// Domain value for C(/etc/hosts).
+		// Sets a limit on the number of fair share scheduler (FSS) CPU shares for a VM. This limit is relative to all other VMs on the system.
 
-	dns_domain?: string
+		cpu_shares?: string
 
-	// Set (comma separated) list of privileges the zone is allowed to use.
+		// Zone/VM hostname.
 
-	limit_priv?: string
+		hostname?: string
 
-	// Timeout in seconds (or 0 to disable) for the C(svc:/smartdc/mdata:execute) service that runs user-scripts in the zone.
+		// Kernel version to emulate for LX VMs.
 
-	mdata_exec_timeout?: string
+		kernel_version?: string
 
-	// Additional qemu cmdline arguments for KVM guests.
+		// Timeout in seconds (or 0 to disable) for the C(svc:/smartdc/mdata:execute) service that runs user-scripts in the zone.
 
-	qemu_extra_opts?: string
+		mdata_exec_timeout?: string
 
-	// Maximum number of filesystems the VM can have.
+		// Default value for a virtual NIC model for KVM guests.
 
-	zfs_filesystem_limit?: string
+		nic_driver?: string
 
-	// Metadata to be set and associated with this VM, this contain customer modifiable keys.
+		// Quota on zone filesystems (in MiBs).
 
-	customer_metadata?: string
+		quota?: string
 
-	// Suggested block size (power of 2) for files in the zoneroot dataset's filesystem.
+		// Set the boot order for KVM VMs.
 
-	zfs_root_recsize?: string
+		boot?: string
 
-	// Control the type of virtual CPU exposed to KVM VMs.
+		// Type of virtual machine.
 
-	cpu_type?: string
+		brand: string
 
-	// Resolvers in C(/etc/resolv.conf) will be updated when updating the I(resolvers) property.
+		// Metadata to be set and associated with this VM, this contains operator generated keys.
 
-	maintain_resolvers?: string
+		internal_metadata?: string
 
-	// Number of packets that can be sent in a single flush of the tx queue of virtio NICs.
+		// Number of packets that can be sent in a single flush of the tx queue of virtio NICs.
 
-	virtio_txburst?: string
+		virtio_txburst?: string
 
-	// Image UUID.
+		// Maximum number of filesystems the VM can have.
 
-	image_uuid?: string
+		zfs_filesystem_limit?: string
 
-	// Default value for a virtual NIC model for KVM guests.
+		// Comma separated list of filesystem types this zone is allowed to mount.
 
-	nic_driver?: string
+		fs_allowed?: string
 
-	// Quota on zone filesystems (in MiBs).
+		// Set (comma separated) list of privileges the zone is allowed to use.
 
-	quota?: string
+		limit_priv?: string
 
-	// Dictionary that maps destinations to gateways, these will be set as static routes in the VM.
+		// Additional qemu arguments for KVM guests. This overwrites the default arguments provided by vmadm(1M) and should only be used for debugging.
 
-	routes?: string
+		qemu_opts?: string
 
-	// Default value for a virtual disk model for KVM guests.
+		// Dictionary that maps destinations to gateways, these will be set as static routes in the VM.
 
-	disk_driver?: string
+		routes?: string
 
-	// Name of the VM. vmadm(1M) uses this as an optional name.
+		// Addition options for SPICE-enabled KVM VMs.
 
-	name?: string
+		spice_opts?: string
 
-	// TCP port to listen of the VNC server. Or set C(0) for random, or C(-1) to disable.
+		// ZFS pool the VM's zone dataset will be created in.
 
-	vnc_port?: string
+		zpool?: string
 
-	// States for the VM to be in. Please note that C(present), C(stopped) and C(restarted) operate on a VM that is currently provisioned. C(present) means that the VM will be created if it was absent, and that it will be in a running state. C(absent) will shutdown the zone before removing it. C(stopped) means the zone will be created if it doesn't exist already, before shutting it down.
+		// States for the VM to be in. Please note that C(present), C(stopped) and C(restarted) operate on a VM that is currently provisioned. C(present) means that the VM will be created if it was absent, and that it will be in a running state. C(absent) will shutdown the zone before removing it. C(stopped) means the zone will be created if it doesn't exist already, before shutting it down.
 
-	state: string
+		state: string
 
-	// Specifies compression algorithm used for this VMs data dataset. This option only has effect on delegated datasets.
+		// Number of snapshots the VM can have.
 
-	zfs_data_compression?: string
+		zfs_snapshot_limit?: string
 
-	// ZFS pool the VM's zone dataset will be created in.
+		// Amount of virtual RAM for a KVM guest (in MiBs).
 
-	zpool?: string
+		ram?: string
 
-	// List of resolvers to be put into C(/etc/resolv.conf).
+		// UUID of the VM. Can either be a full UUID or C(*) for all VMs.
 
-	resolvers?: string
+		uuid?: string
 
-	// Number of virtual CPUs for a KVM guest.
+		// Specify VGA emulation used by KVM VMs.
 
-	vcpus?: string
+		vga?: string
 
-	// Mount additional filesystems into an OS VM.
+		// Suggested block size (power of 2) for files in the delegated dataset's filesystem.
 
-	filesystems?: string
+		zfs_data_recsize?: string
 
-	// Adds an C(@indestructible) snapshot to delegated datasets.
+		// When enabled, the zone dataset will be mounted on C(/zones/archive) upon removal.
 
-	indestructible_delegated?: string
+		archive_on_delete?: string
 
-	// Number of snapshots the VM can have.
+		// Adds an C(@indestructible) snapshot to delegated datasets.
 
-	zfs_snapshot_limit?: string
+		indestructible_delegated?: string
 
-	// Total amount of memory (in MiBs) on the host that can be locked by this VM.
+		// Whether to delegate a ZFS dataset to an OS VM.
 
-	max_locked_memory?: string
+		delegate_dataset?: string
 
-	// Amount of virtual RAM for a KVM guest (in MiBs).
+		// A list of disks to add, valid properties are documented in vmadm(1M).
 
-	ram?: string
+		disks?: string
 
-	// UUID of the VM. Can either be a full UUID or C(*) for all VMs.
+		// Name of the VM. vmadm(1M) uses this as an optional name.
 
-	uuid?: string
+		name?: string
 
-	// IO throttle priority value relative to other VMs.
+		// Number of virtual CPUs for a KVM guest.
 
-	zfs_io_priority?: string
+		vcpus?: string
 
-	// Whether to delegate a ZFS dataset to an OS VM.
+		// Sets a limit on the amount of CPU time that can be used by a VM. Use C(0) for no cap.
 
-	delegate_dataset?: string
+		cpu_cap?: string
 
-	// Metadata to be set and associated with this VM, this contains operator generated keys.
+		// Metadata to be set and associated with this VM, this contain customer modifiable keys.
 
-	internal_metadata?: string
+		customer_metadata?: string
 
-	// Password required to connect to VNC. By default no password is set. Please note this can be read from the Global Zone.
+		// IO throttle priority value relative to other VMs.
 
-	vnc_password?: string
-}
-
-imgadm :: {
-
-	// URI for the image source.
-
-	source?: string
-
-	// State the object operated on should be in. C(imported) is an alias for for C(present) and C(deleted) for C(absent). When set to C(vacuumed) and C(uuid) to C(*), it will remove all unused images.
-
-	state: string
-
-	// Type for image sources.
-
-	type?: string
-
-	// Image UUID. Can either be a full UUID or C(*) for all images.
-
-	uuid?: string
-
-	// Force a given operation (where supported by imgadm(1M)).
-
-	force?: bool
-
-	// zpool to import to or delete images from.
-
-	pool?: string
+		zfs_io_priority?: string
+	}
 }

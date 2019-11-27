@@ -1,55 +1,67 @@
 package edgeswitch
 
 edgeswitch_facts :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	edgeswitch_facts: {
 
-	// When supplied, this argument will restrict the facts collected to a given subset.  Possible values for this argument include all, config, and interfaces.  Can specify a list of values to include a larger subset.  Values can also be used with an initial C(M(!)) to specify that a specific subset should not be collected.
+		gather_subset?: string
 
-	gather_subset?: string
+		// When supplied, this argument will restrict the facts collected to a given subset.  Possible values for this argument include all, config, and interfaces.  Can specify a list of values to include a larger subset.  Values can also be used with an initial C(M(!)) to specify that a specific subset should not be collected.
+	}
 }
 
 edgeswitch_vlan :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	edgeswitch_vlan: {
 
-	// List of interfaces that should be excluded of the VLAN. Accept range of interfaces.
+		// Purge VLANs not defined in the I(aggregate) parameter.
 
-	excluded_interfaces?: string
+		purge?: bool
 
-	// Name of the VLAN.
+		// List of interfaces that should accept untagged frames and transmit them tagged for the VLAN. Accept range of interfaces.
 
-	name?: string
+		untagged_interfaces?: string
 
-	// action on the VLAN configuration.
+		// ID of the VLAN. Range 1-4093.
 
-	state?: string
+		vlan_id?: string
 
-	// List of interfaces that should accept and transmit tagged frames for the VLAN. Accept range of interfaces.
+		// List of VLANs definitions.
 
-	tagged_interfaces?: string
+		aggregate?: string
 
-	// List of interfaces that should accept untagged frames and transmit them tagged for the VLAN. Accept range of interfaces.
+		// List of interfaces that should be excluded of the VLAN. Accept range of interfaces.
 
-	untagged_interfaces?: string
+		excluded_interfaces?: string
 
-	// ID of the VLAN. Range 1-4093.
+		// Each of the switch interfaces will be set to accept untagged frames and transmit them tagged for I(vlan_id) unless defined in I(*_interfaces). This is a default setting for all switch interfaces.
 
-	vlan_id?: string
+		auto_untag?: bool
 
-	// Each of the switch interfaces will be excluded from I(vlan_id) unless defined in I(*_interfaces). This is a default setting for all switch interfaces.
+		// Name of the VLAN.
 
-	auto_exclude?: bool
+		name?: string
 
-	// Each of the switch interfaces will be set to accept and transmit untagged frames for I(vlan_id) unless defined in I(*_interfaces). This is a default setting for all switch interfaces.
+		// action on the VLAN configuration.
 
-	auto_tag?: bool
+		state?: string
 
-	// Each of the switch interfaces will be set to accept untagged frames and transmit them tagged for I(vlan_id) unless defined in I(*_interfaces). This is a default setting for all switch interfaces.
+		// List of interfaces that should accept and transmit tagged frames for the VLAN. Accept range of interfaces.
 
-	auto_untag?: bool
+		tagged_interfaces?: string
 
-	// Purge VLANs not defined in the I(aggregate) parameter.
+		// Each of the switch interfaces will be excluded from I(vlan_id) unless defined in I(*_interfaces). This is a default setting for all switch interfaces.
 
-	purge?: bool
+		auto_exclude?: bool
 
-	// List of VLANs definitions.
+		// Each of the switch interfaces will be set to accept and transmit untagged frames for I(vlan_id) unless defined in I(*_interfaces). This is a default setting for all switch interfaces.
 
-	aggregate?: string
+		auto_tag?: bool
+	}
 }

@@ -1,152 +1,182 @@
 package webfaction
 
+webfaction_db :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	webfaction_db: {
+
+		// Whether the database should exist
+
+		state?: string
+
+		// The type of database to create.
+
+		type: string
+
+		// The webfaction account to use
+
+		login_name: string
+
+		// The webfaction password to use
+
+		login_password: string
+
+		// The machine name to use (optional for accounts with only one machine)
+
+		machine?: string
+
+		// The name of the database
+
+		name: string
+
+		// The password for the new database user.
+
+		password?: string
+	}
+}
+
 webfaction_domain :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	webfaction_domain: {
 
-	// The webfaction password to use
+		// The webfaction account to use
 
-	login_password: string
+		login_name: string
 
-	// The name of the domain
+		// The webfaction password to use
 
-	name: string
+		login_password: string
 
-	// Whether the domain should exist
+		// The name of the domain
 
-	state?: string
+		name: string
 
-	// Any subdomains to create.
+		// Whether the domain should exist
 
-	subdomains?: string
+		state?: string
 
-	// The webfaction account to use
+		// Any subdomains to create.
 
-	login_name: string
+		subdomains?: string
+	}
 }
 
 webfaction_mailbox :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	webfaction_mailbox: {
 
-	// The webfaction account to use
+		// The name of the mailbox
 
-	login_name: string
+		mailbox_name: string
 
-	// The webfaction password to use
+		// The password for the mailbox
 
-	login_password: string
+		mailbox_password: string
 
-	// The name of the mailbox
+		// Whether the mailbox should exist
 
-	mailbox_name: string
+		state?: string
 
-	// The password for the mailbox
+		// The webfaction account to use
 
-	mailbox_password: string
+		login_name: string
 
-	// Whether the mailbox should exist
+		// The webfaction password to use
 
-	state?: string
+		login_password: string
+	}
 }
 
 webfaction_site :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	webfaction_site: {
 
-	// A mapping of URLs to apps
+		// A mapping of URLs to apps
 
-	site_apps?: string
+		site_apps?: string
 
-	// Whether the website should exist
+		// Whether the website should exist
 
-	state?: string
+		state?: string
 
-	// A list of subdomains associated with this site.
+		// A list of subdomains associated with this site.
 
-	subdomains?: string
+		subdomains?: string
 
-	// The webfaction host on which the site should be created.
+		// The webfaction host on which the site should be created.
 
-	host: string
+		host: string
 
-	// Whether or not to use HTTPS
+		// Whether or not to use HTTPS
 
-	https?: bool
+		https?: bool
 
-	// The webfaction account to use
+		// The webfaction account to use
 
-	login_name: string
+		login_name: string
 
-	// The webfaction password to use
+		// The webfaction password to use
 
-	login_password: string
+		login_password: string
 
-	// The name of the website
+		// The name of the website
 
-	name: string
+		name: string
+	}
 }
 
 webfaction_app :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	webfaction_app: {
 
-	// Whether the app should restart with an C(autostart.cgi) script
+		// The webfaction account to use
 
-	autostart?: bool
+		login_name: string
 
-	// Any extra parameters required by the app
+		// The webfaction password to use
 
-	extra_info?: string
+		login_password: string
 
-	// The webfaction password to use
+		// IF the port should be opened
 
-	login_password: string
+		port_open?: bool
 
-	// The machine name to use (optional for accounts with only one machine)
+		// Whether the application should exist
 
-	machine?: string
+		state?: string
 
-	// The type of application to create. See the Webfaction docs at U(https://docs.webfaction.com/xmlrpc-api/apps.html) for a list.
+		// Whether the app should restart with an C(autostart.cgi) script
 
-	type: string
+		autostart?: bool
 
-	// The webfaction account to use
+		// Any extra parameters required by the app
 
-	login_name: string
+		extra_info?: string
 
-	// The name of the application
+		// The machine name to use (optional for accounts with only one machine)
 
-	name: string
+		machine?: string
 
-	// IF the port should be opened
+		// The name of the application
 
-	port_open?: bool
+		name: string
 
-	// Whether the application should exist
+		// The type of application to create. See the Webfaction docs at U(https://docs.webfaction.com/xmlrpc-api/apps.html) for a list.
 
-	state?: string
-}
-
-webfaction_db :: {
-
-	// Whether the database should exist
-
-	state?: string
-
-	// The type of database to create.
-
-	type: string
-
-	// The webfaction account to use
-
-	login_name: string
-
-	// The webfaction password to use
-
-	login_password: string
-
-	// The machine name to use (optional for accounts with only one machine)
-
-	machine?: string
-
-	// The name of the database
-
-	name: string
-
-	// The password for the new database user.
-
-	password?: string
+		type: string
+	}
 }

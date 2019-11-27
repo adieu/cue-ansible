@@ -1,165 +1,189 @@
 package dellemc
 
 idrac_firmware :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	idrac_firmware: {
 
-	// iDRAC port.
+		// iDRAC username.
 
-	idrac_port?: int
+		idrac_user: string
 
-	// iDRAC username.
+		// Whether to wait for job completion or not.
 
-	idrac_user: string
+		job_wait?: bool
 
-	// Whether to reboots after applying the updates or not.
+		// Whether to reboots after applying the updates or not.
 
-	reboot?: bool
+		reboot?: bool
 
-	// Local mount path of the network share with read-write permission for ansible user. This option is mandatory for Network Share.
+		// Local mount path of the network share with read-write permission for ansible user. This option is mandatory for Network Share.
 
-	share_mnt: string
+		share_mnt: string
 
-	// CIFS or NFS Network share.
+		// Catalog file name relative to the I(share_name).
 
-	share_name: string
+		catalog_file_name?: string
 
-	// Network share user password. This option is mandatory for CIFS Network Share.
+		// iDRAC IP Address.
 
-	share_password?: string
+		idrac_ip: string
 
-	// Network share user in the format 'user@domain' or 'domain\\user' if user is part of a domain else 'user'. This option is mandatory for CIFS Network Share.
+		// CIFS or NFS Network share.
 
-	share_user?: string
+		share_name: string
 
-	// Catalog file name relative to the I(share_name).
+		// Network share user password. This option is mandatory for CIFS Network Share.
 
-	catalog_file_name?: string
+		share_password?: string
 
-	// iDRAC IP Address.
+		// Network share user in the format 'user@domain' or 'domain\\user' if user is part of a domain else 'user'. This option is mandatory for CIFS Network Share.
 
-	idrac_ip: string
+		share_user?: string
 
-	// iDRAC user password.
+		// iDRAC user password.
 
-	idrac_password: string
+		idrac_password: string
 
-	// Whether to wait for job completion or not.
+		// iDRAC port.
 
-	job_wait?: bool
+		idrac_port?: int
+	}
 }
 
 idrac_server_config_profile :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	idrac_server_config_profile: {
 
-	// Specify the output file format. This option is applicable for C(export) command.
+		// iDRAC user password.
 
-	export_format?: string
+		idrac_password: string
 
-	// Server Configuration Profile file name. This option is mandatory for C(import) command.
+		// If C(ALL), this module will import all components configurations from SCP file.
+		// If C(IDRAC), this module will import iDRAC configuration from SCP file.
+		// If C(BIOS), this module will import BIOS configuration from SCP file.
+		// If C(NIC), this module will import NIC configuration from SCP file.
+		// If C(RAID), this module will import RAID configuration from SCP file.
 
-	scp_file?: string
+		scp_components?: string
 
-	// Specify the type of server configuration profile (SCP) to be exported. This option is applicable for C(export) command.
+		// Network share user in the format 'user@domain' or 'domain\\user' if user is part of a domain else 'user'. This option is mandatory for CIFS Network Share.
 
-	export_use?: string
+		share_user?: string
 
-	// Whether to wait for job completion or not.
+		// If C(import), will perform SCP import operations.
+		// If C(export), will perform SCP export operations.
 
-	job_wait: bool
+		command?: string
 
-	// If C(ALL), this module will import all components configurations from SCP file.
-	// If C(IDRAC), this module will import iDRAC configuration from SCP file.
-	// If C(BIOS), this module will import BIOS configuration from SCP file.
-	// If C(NIC), this module will import NIC configuration from SCP file.
-	// If C(RAID), this module will import RAID configuration from SCP file.
+		// Specify the type of server configuration profile (SCP) to be exported. This option is applicable for C(export) command.
 
-	scp_components?: string
+		export_use?: string
 
-	// CIFS or NFS Network Share or a local path.
+		// iDRAC IP Address.
 
-	share_name: string
+		idrac_ip: string
 
-	// This option is applicable for C(import) command.
-	// If C(On), End host power state is on.
-	// If C(Off), End host power state is off.
+		// iDRAC username.
 
-	end_host_power_state?: string
+		idrac_user: string
 
-	// iDRAC user password.
+		// Specify the output file format. This option is applicable for C(export) command.
 
-	idrac_password: string
+		export_format?: string
 
-	// iDRAC port.
+		// iDRAC port.
 
-	idrac_port?: int
+		idrac_port?: int
 
-	// iDRAC username.
+		// Whether to wait for job completion or not.
 
-	idrac_user: string
+		job_wait: bool
 
-	// Network share user in the format 'user@domain' or 'domain\\user' if user is part of a domain else 'user'. This option is mandatory for CIFS Network Share.
+		// Server Configuration Profile file name. This option is mandatory for C(import) command.
 
-	share_user?: string
+		scp_file?: string
 
-	// This option is applicable for C(import) command.
-	// If C(Graceful), it gracefully shuts down the server.
-	// If C(Forced),  it forcefully shuts down the server.
-	// If C(NoReboot), it does not reboot the server.
+		// CIFS or NFS Network Share or a local path.
 
-	shutdown_type?: string
+		share_name: string
 
-	// If C(import), will perform SCP import operations.
-	// If C(export), will perform SCP export operations.
+		// Network share user password. This option is mandatory for CIFS Network Share.
 
-	command?: string
+		share_password?: string
 
-	// iDRAC IP Address.
+		// This option is applicable for C(import) command.
+		// If C(Graceful), it gracefully shuts down the server.
+		// If C(Forced),  it forcefully shuts down the server.
+		// If C(NoReboot), it does not reboot the server.
 
-	idrac_ip: string
+		shutdown_type?: string
 
-	// Network share user password. This option is mandatory for CIFS Network Share.
+		// This option is applicable for C(import) command.
+		// If C(On), End host power state is on.
+		// If C(Off), End host power state is off.
 
-	share_password?: string
+		end_host_power_state?: string
+	}
 }
 
 ome_device_info :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	ome_device_info: {
 
-	// I(system_query_options) applicable for the choices of the fact_subset. Either I(device_id) or I(device_service_tag) is mandatory for C(detailed_inventory) and C(subsystem_health) or both can be applicable.
+		// C(basic_inventory) returns the list of the devices.
+		// C(detailed_inventory) returns the inventory details of specified devices.
+		// C(subsystem_health) returns the health status of specified devices.
 
-	system_query_options?: {...}
+		fact_subset?: string
 
-	// Target username.
+		// Target IP Address or hostname.
 
-	username: string
+		hostname: string
 
-	// C(basic_inventory) returns the list of the devices.
-	// C(detailed_inventory) returns the inventory details of specified devices.
-	// C(subsystem_health) returns the health status of specified devices.
+		// Target user password.
 
-	fact_subset?: string
+		password: string
 
-	// Target IP Address or hostname.
+		// Target HTTPS port.
 
-	hostname: string
+		port?: int
 
-	// Target user password.
+		// I(system_query_options) applicable for the choices of the fact_subset. Either I(device_id) or I(device_service_tag) is mandatory for C(detailed_inventory) and C(subsystem_health) or both can be applicable.
 
-	password: string
+		system_query_options?: {...}
 
-	// Target HTTPS port.
+		// Target username.
 
-	port?: int
+		username: string
+	}
 }
 
 wakeonlan :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	wakeonlan: {
 
-	// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
+		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
 
-	broadcast?: string
+		broadcast?: string
 
-	// MAC address to send Wake-on-LAN broadcast packet for.
+		// MAC address to send Wake-on-LAN broadcast packet for.
 
-	mac: string
+		mac: string
 
-	// UDP port to use for magic Wake-on-LAN packet.
+		// UDP port to use for magic Wake-on-LAN packet.
 
-	port?: string
+		port?: string
+	}
 }

@@ -1,32 +1,38 @@
 package opx
 
 opx_cps :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	opx_cps: {
 
-	// Yang path to be configured.
+		// Attribute Yang path and their corresponding data.
 
-	module_name?: string
+		attr_data?: string
 
-	// Operation to be performed on the object.
+		// Attribute Yang type.
 
-	operation?: string
+		attr_type?: string
 
-	// A qualifier provides the type of object data to retrieve or act on.
+		// Attempts to force the auto-commit event to the specified yang object.
 
-	qualifier?: string
+		commit_event?: bool
 
-	// Attribute Yang path and their corresponding data.
+		// Queries/Writes the specified yang path from/to the db.
 
-	attr_data?: string
+		db?: bool
 
-	// Attribute Yang type.
+		// Yang path to be configured.
 
-	attr_type?: string
+		module_name?: string
 
-	// Attempts to force the auto-commit event to the specified yang object.
+		// Operation to be performed on the object.
 
-	commit_event?: bool
+		operation?: string
 
-	// Queries/Writes the specified yang path from/to the db.
+		// A qualifier provides the type of object data to retrieve or act on.
 
-	db?: bool
+		qualifier?: string
+	}
 }

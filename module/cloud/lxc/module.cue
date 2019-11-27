@@ -1,96 +1,102 @@
 package lxc
 
 lxc_container :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	lxc_container: {
 
-	// Type of compression to use when creating an archive of a running container.
+		// Place container under PATH
 
-	archive_compression?: string
+		lxc_path?: string
 
-	// Path the save the archived container. If the path does not exist the archive method will attempt to create it.
+		// Template options when building the container.
 
-	archive_path?: string
+		template_options?: string
 
-	// Run a command within a container.
+		// Backend storage type for the container.
 
-	container_command?: string
+		backing_store?: string
 
-	// list of 'key=value' options to use when configuring a container.
+		// Create a snapshot a container when cloning. This is not supported by all container storage backends. Enabling this may fail if the backing store does not support snapshots.
 
-	container_config?: string
+		clone_snapshot?: bool
 
-	// Place container under PATH
+		// Path to the LXC configuration file.
 
-	lxc_path?: string
+		config?: string
 
-	// Use LVM thin pool called TP.
+		// Place rootfs directory under DIR.
 
-	thinpool?: string
+		directory?: string
 
-	// If Backend store is lvm, specify the name of the volume group.
+		// Set the log level for a container where *container_log* was set.
 
-	vg_name?: string
+		container_log_level?: string
 
-	// Create a snapshot a container when cloning. This is not supported by all container storage backends. Enabling this may fail if the backing store does not support snapshots.
+		// Name of a container.
 
-	clone_snapshot?: bool
+		name: string
 
-	// File system Size.
+		// Define the state of a container. If you clone a container using `clone_name` the newly cloned container created in a stopped state. The running container will be stopped while the clone operation is happening and upon completion of the clone the original container state will be restored.
 
-	fs_size?: string
+		state?: string
 
-	// Create fstype TYPE.
+		// Name of the template to use within an LXC create.
 
-	fs_type?: string
+		template?: string
 
-	// Name of a container.
+		// Create an archive of a container. This will create a tarball of the running container.
 
-	name: string
+		archive?: bool
 
-	// Define the state of a container. If you clone a container using `clone_name` the newly cloned container created in a stopped state. The running container will be stopped while the clone operation is happening and upon completion of the clone the original container state will be restored.
+		// Run a command within a container.
 
-	state?: string
+		container_command?: string
 
-	// Name of the template to use within an LXC create.
+		// list of 'key=value' options to use when configuring a container.
 
-	template?: string
+		container_config?: string
 
-	// Backend storage type for the container.
+		// Enable a container log for host actions to the container.
 
-	backing_store?: string
+		container_log?: bool
 
-	// Name of the new cloned server. This is only used when state is clone.
+		// Create zfs under given zfsroot.
 
-	clone_name?: string
+		zfs_root?: string
 
-	// Enable a container log for host actions to the container.
+		// Type of compression to use when creating an archive of a running container.
 
-	container_log?: bool
+		archive_compression?: string
 
-	// Name of the logical volume, defaults to the container name.
+		// Path the save the archived container. If the path does not exist the archive method will attempt to create it.
 
-	lv_name?: string
+		archive_path?: string
 
-	// Template options when building the container.
+		// Name of the logical volume, defaults to the container name.
 
-	template_options?: string
+		lv_name?: string
 
-	// Create an archive of a container. This will create a tarball of the running container.
+		// Use LVM thin pool called TP.
 
-	archive?: bool
+		thinpool?: string
 
-	// Path to the LXC configuration file.
+		// Name of the new cloned server. This is only used when state is clone.
 
-	config?: string
+		clone_name?: string
 
-	// Set the log level for a container where *container_log* was set.
+		// File system Size.
 
-	container_log_level?: string
+		fs_size?: string
 
-	// Place rootfs directory under DIR.
+		// Create fstype TYPE.
 
-	directory?: string
+		fs_type?: string
 
-	// Create zfs under given zfsroot.
+		// If Backend store is lvm, specify the name of the volume group.
 
-	zfs_root?: string
+		vg_name?: string
+	}
 }

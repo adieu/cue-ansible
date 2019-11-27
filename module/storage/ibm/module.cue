@@ -1,175 +1,211 @@
 package ibm
 
+ibm_sa_host_ports :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ibm_sa_host_ports: {
+
+		// Fiber channel address.
+
+		fcaddress?: string
+
+		// Host name.
+
+		host: string
+
+		// iSCSI initiator name.
+
+		iscsi_name?: string
+
+		// Number of visible targets.
+
+		num_of_visible_targets?: string
+
+		// Host ports state.
+
+		state: string
+	}
+}
+
 ibm_sa_pool :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ibm_sa_pool: {
 
-	// Adds the pool to the specified domain.
+		// Adds the pool to the specified domain.
 
-	domain?: string
+		domain?: string
 
-	// Assigns a perf_class to the pool.
+		// Assigns a perf_class to the pool.
 
-	perf_class?: string
+		perf_class?: string
 
-	// Pool name.
+		// Pool name.
 
-	pool: string
+		pool: string
 
-	// Pool size in GB
+		// Pool size in GB
 
-	size?: string
+		size?: string
 
-	// Pool snapshot size in GB
+		// Pool snapshot size in GB
 
-	snapshot_size?: string
+		snapshot_size?: string
 
-	// Pool state.
+		// Pool state.
 
-	state: string
+		state: string
+	}
 }
 
 ibm_sa_vol :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ibm_sa_vol: {
 
-	// Volume pool.
+		// Volume name.
 
-	pool?: string
+		vol: string
 
-	// Volume size.
+		// Volume pool.
 
-	size?: string
+		pool?: string
 
-	// Volume state.
+		// Volume size.
 
-	state: string
+		size?: string
 
-	// Volume name.
+		// Volume state.
 
-	vol: string
+		state: string
+	}
 }
 
 ibm_sa_vol_map :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ibm_sa_vol_map: {
 
-	// Overrides the existing volume mapping.
+		// Maps the volume to a cluster.
 
-	override?: string
+		cluster?: string
 
-	// When the state is present the volume is mapped. When the state is absent, the volume is meant to be unmapped.
+		// Maps the volume to a host.
 
-	state: string
+		host?: string
 
-	// Volume name.
+		// The LUN identifier.
 
-	vol: string
+		lun?: string
 
-	// Maps the volume to a cluster.
+		// Overrides the existing volume mapping.
 
-	cluster?: string
+		override?: string
 
-	// Maps the volume to a host.
+		// When the state is present the volume is mapped. When the state is absent, the volume is meant to be unmapped.
 
-	host?: string
+		state: string
 
-	// The LUN identifier.
+		// Volume name.
 
-	lun?: string
+		vol: string
+	}
 }
 
 ibm_sa_domain :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ibm_sa_domain: {
 
-	// Name of the domain to be managed.
+		// Name of the domain to be managed.
 
-	domain: string
+		domain: string
 
-	// Hard capacity of the domain.
+		// Hard capacity of the domain.
 
-	hard_capacity?: string
+		hard_capacity?: string
 
-	// ldap id to add to the domain.
+		// Number of max dms.
 
-	ldap_id?: string
+		max_dms?: string
 
-	// Number of max cgs.
+		// Number of max_pools.
 
-	max_cgs?: string
+		max_pools?: string
 
-	// Number of max_mirrors.
+		// Number of max_volumes.
 
-	max_mirrors?: string
+		max_volumes?: string
 
-	// The desired state of the domain.
+		// The desired state of the domain.
 
-	state: string
+		state: string
 
-	// Number of max dms.
+		// ldap id to add to the domain.
 
-	max_dms?: string
+		ldap_id?: string
 
-	// Number of max_pools.
+		// Number of max cgs.
 
-	max_pools?: string
+		max_cgs?: string
 
-	// Number of max_volumes.
+		// Number of max_mirrors.
 
-	max_volumes?: string
+		max_mirrors?: string
 
-	// Add the domain to a performance class.
+		// Add the domain to a performance class.
 
-	perf_class?: string
+		perf_class?: string
 
-	// Size of the domain.
+		// Size of the domain.
 
-	size?: string
+		size?: string
 
-	// Soft capacity of the domain.
+		// Soft capacity of the domain.
 
-	soft_capacity?: string
+		soft_capacity?: string
+	}
 }
 
 ibm_sa_host :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	ibm_sa_host: {
 
-	// The name of the cluster to include the host.
+		// The domains the cluster will be attached to. To include more than one domain, separate domain names with commas. To include all existing domains, use an asterisk ("*").
 
-	cluster?: string
+		domain?: string
 
-	// The domains the cluster will be attached to. To include more than one domain, separate domain names with commas. To include all existing domains, use an asterisk ("*").
+		// Host name.
 
-	domain?: string
+		host: string
 
-	// Host name.
+		// The host's CHAP name identifier
 
-	host: string
+		iscsi_chap_name?: string
 
-	// The host's CHAP name identifier
+		// The password of the initiator used to authenticate to the system when CHAP is enable
 
-	iscsi_chap_name?: string
+		iscsi_chap_secret?: string
 
-	// The password of the initiator used to authenticate to the system when CHAP is enable
+		// Host state.
 
-	iscsi_chap_secret?: string
+		state: string
 
-	// Host state.
+		// The name of the cluster to include the host.
 
-	state: string
-}
-
-ibm_sa_host_ports :: {
-
-	// Fiber channel address.
-
-	fcaddress?: string
-
-	// Host name.
-
-	host: string
-
-	// iSCSI initiator name.
-
-	iscsi_name?: string
-
-	// Number of visible targets.
-
-	num_of_visible_targets?: string
-
-	// Host ports state.
-
-	state: string
+		cluster?: string
+	}
 }

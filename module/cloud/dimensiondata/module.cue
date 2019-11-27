@@ -1,57 +1,69 @@
 package dimensiondata
 
 dimensiondata_network :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	dimensiondata_network: {
 
-	// The service plan, either "ESSENTIALS" or "ADVANCED".
-	// MCP 2.0 Only.
+		// Additional description of the network domain.
 
-	service_plan?: string
+		description?: string
 
-	// Should the resource be present or absent.
+		// The name of the network domain to create.
 
-	state?: string
+		name: string
 
-	// Additional description of the network domain.
+		// The service plan, either "ESSENTIALS" or "ADVANCED".
+		// MCP 2.0 Only.
 
-	description?: string
+		service_plan?: string
 
-	// The name of the network domain to create.
+		// Should the resource be present or absent.
 
-	name: string
+		state?: string
+	}
 }
 
 dimensiondata_vlan :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	dimensiondata_vlan: {
 
-	// A description of the VLAN.
+		// The Id or name of the target network domain.
 
-	description?: string
+		network_domain: string
 
-	// The name of the target VLAN.
-	// Required if C(state) is C(present).
+		// The base address for the VLAN's IPv4 network (e.g. 192.168.1.0).
 
-	name?: string
+		private_ipv4_base_address?: string
 
-	// The Id or name of the target network domain.
+		// The size of the IPv4 address space, e.g 24.
+		// Required, if C(private_ipv4_base_address) is specified.
 
-	network_domain: string
+		private_ipv4_prefix_size?: string
 
-	// The base address for the VLAN's IPv4 network (e.g. 192.168.1.0).
+		// The desired state for the target VLAN.
+		// C(readonly) ensures that the state is only ever read, not modified (the module will fail if the resource does not exist).
 
-	private_ipv4_base_address?: string
+		state?: string
 
-	// The size of the IPv4 address space, e.g 24.
-	// Required, if C(private_ipv4_base_address) is specified.
+		// Permit expansion of the target VLAN's network if the module parameters specify a larger network than the VLAN currently possesses.
+		// If C(False), the module will fail under these conditions.
+		// This is intended to prevent accidental expansion of a VLAN's network (since this operation is not reversible).
 
-	private_ipv4_prefix_size?: string
+		allow_expand?: bool
 
-	// The desired state for the target VLAN.
-	// C(readonly) ensures that the state is only ever read, not modified (the module will fail if the resource does not exist).
+		// A description of the VLAN.
 
-	state?: string
+		description?: string
 
-	// Permit expansion of the target VLAN's network if the module parameters specify a larger network than the VLAN currently possesses.
-	// If C(False), the module will fail under these conditions.
-	// This is intended to prevent accidental expansion of a VLAN's network (since this operation is not reversible).
+		// The name of the target VLAN.
+		// Required if C(state) is C(present).
 
-	allow_expand?: bool
+		name?: string
+	}
 }

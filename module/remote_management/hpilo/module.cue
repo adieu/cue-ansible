@@ -1,99 +1,123 @@
 package hpilo
 
+wakeonlan :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	wakeonlan: {
+
+		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
+
+		broadcast?: string
+
+		// MAC address to send Wake-on-LAN broadcast packet for.
+
+		mac: string
+
+		// UDP port to use for magic Wake-on-LAN packet.
+
+		port?: string
+	}
+}
+
 hpilo_boot :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hpilo_boot: {
 
-	// The boot media to boot the system from
+		// The state of the boot media.
+		// no_boot: Do not boot from the device
+		// boot_once: Boot from the device once and then notthereafter
+		// boot_always: Boot from the device each time the server is rebooted
+		// connect: Connect the virtual media device and set to boot_always
+		// disconnect: Disconnects the virtual media device and set to no_boot
+		// poweroff: Power off the server
 
-	media?: string
+		state?: string
 
-	// The password to authenticate to the HP iLO interface.
+		// Whether to force a reboot (even when the system is already booted).
+		// As a safeguard, without force, hpilo_boot will refuse to reboot a server that is already running.
 
-	password?: string
+		force?: bool
 
-	// Change the ssl_version used.
+		// The HP iLO hostname/address that is linked to the physical system.
 
-	ssl_version?: string
+		host: string
 
-	// The state of the boot media.
-	// no_boot: Do not boot from the device
-	// boot_once: Boot from the device once and then notthereafter
-	// boot_always: Boot from the device each time the server is rebooted
-	// connect: Connect the virtual media device and set to boot_always
-	// disconnect: Disconnects the virtual media device and set to no_boot
-	// poweroff: Power off the server
+		// The URL of a cdrom, floppy or usb boot media image. protocol://username:password@hostname:port/filename
+		// protocol is either 'http' or 'https'
+		// username:password is optional
+		// port is optional
 
-	state?: string
+		image?: string
 
-	// Whether to force a reboot (even when the system is already booted).
-	// As a safeguard, without force, hpilo_boot will refuse to reboot a server that is already running.
+		// The login name to authenticate to the HP iLO interface.
 
-	force?: bool
+		login?: string
 
-	// The HP iLO hostname/address that is linked to the physical system.
+		// The boot media to boot the system from
 
-	host: string
+		media?: string
 
-	// The URL of a cdrom, floppy or usb boot media image. protocol://username:password@hostname:port/filename
-	// protocol is either 'http' or 'https'
-	// username:password is optional
-	// port is optional
+		// The password to authenticate to the HP iLO interface.
 
-	image?: string
+		password?: string
 
-	// The login name to authenticate to the HP iLO interface.
+		// Change the ssl_version used.
 
-	login?: string
+		ssl_version?: string
+	}
 }
 
 hpilo_info :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hpilo_info: {
 
-	// The HP iLO hostname/address that is linked to the physical system.
+		// The login name to authenticate to the HP iLO interface.
 
-	host: string
+		login?: string
 
-	// The login name to authenticate to the HP iLO interface.
+		// The password to authenticate to the HP iLO interface.
 
-	login?: string
+		password?: string
 
-	// The password to authenticate to the HP iLO interface.
+		// Change the ssl_version used.
 
-	password?: string
+		ssl_version?: string
 
-	// Change the ssl_version used.
+		// The HP iLO hostname/address that is linked to the physical system.
 
-	ssl_version?: string
+		host: string
+	}
 }
 
 hponcfg :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	hponcfg: {
 
-	// Path to the hponcfg executable (`hponcfg` which uses $PATH).
+		// The minimum firmware level needed.
 
-	executable?: string
+		minfw?: string
 
-	// The minimum firmware level needed.
+		// The XML file as accepted by hponcfg.
 
-	minfw?: string
+		path: string
 
-	// The XML file as accepted by hponcfg.
+		// Run hponcfg in verbose mode (-v).
 
-	path: string
+		verbose?: bool
 
-	// Run hponcfg in verbose mode (-v).
+		// Path to the hponcfg executable (`hponcfg` which uses $PATH).
 
-	verbose?: bool
-}
-
-wakeonlan :: {
-
-	// UDP port to use for magic Wake-on-LAN packet.
-
-	port?: string
-
-	// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
-
-	broadcast?: string
-
-	// MAC address to send Wake-on-LAN broadcast packet for.
-
-	mac: string
+		executable?: string
+	}
 }

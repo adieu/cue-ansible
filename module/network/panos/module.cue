@@ -1,832 +1,956 @@
 package panos
 
-panos_admin :: {
+panos_interface :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_interface: {
 
-	// username for admin user
+		// Name of the interface to configure.
 
-	admin_username?: string
+		if_name: string
 
-	// commit if changed
+		// Name of the zone for the interface. If the zone does not exist it is created but if the zone exists and it is not of the layer3 type the operation will fail.
 
-	commit?: bool
+		zone_name: string
 
-	// role for admin user
+		// Commit if changed
 
-	role?: string
+		commit?: bool
 
-	// password for admin user
+		// Whether or not to add default route with router learned via DHCP.
 
-	admin_password: string
-}
-
-panos_commit :: {
-
-	// Password for authentication. If the value is not specified in the task, the value of environment variable C(ANSIBLE_NET_PASSWORD) will be used instead.
-
-	password: string
-
-	// Commit changes made by specified admin
-
-	commit_changes_by?: [..._]
-
-	// Commit description/comment
-
-	description?: string
-
-	// interval for checking commit job
-
-	interval?: string
-
-	// IP address (or hostname) of PAN-OS device.
-
-	ip_address: string
-
-	// if commit should be synchronous
-
-	sync?: bool
-
-	// timeout for commit job
-
-	timeout?: string
-
-	// Username for authentication. If the value is not specified in the task, the value of environment variable C(ANSIBLE_NET_USERNAME) will be used instead if defined. C(admin) will be used if nothing above is defined.
-
-	username?: string
-
-	// Commit changes for specified VSYS
-
-	commit_vsys?: [..._]
-}
-
-panos_object :: {
-
-	// The operation to be performed.  Supported values are I(add)/I(delete)/I(find).
-
-	operation: string
-
-	// A group of service objects.
-
-	servicegroup?: string
-
-	// The name of the address object.
-
-	addressobject?: string
-
-	// API key that can be used instead of I(username)/I(password) credentials.
-
-	api_key?: string
-
-	// The filter match criteria to be used in a dynamic addressgroup definition.
-
-	dynamic_value?: string
-
-	// IP address (or hostname) of PAN-OS device or Panorama management console being configured.
-
-	ip_address: string
-
-	// The IP protocol to be used in a service object definition.  Valid values are I(tcp) or I(udp).
-
-	protocol?: string
-
-	// The source port to be used in a service object definition.
-
-	source_port?: string
-
-	// The IP address of the host or network in CIDR notation.
-
-	address?: string
-
-	// A static group of address objects or dynamic address group.
-
-	addressgroup?: string
-
-	// The name of an object or rule tag.
-
-	tag_name?: string
-
-	// - The name of the Panorama device group. The group must exist on Panorama. If device group is not defined it is assumed that we are contacting a firewall.
-
-
-	devicegroup?: string
-
-	// The name of the service object.
-
-	serviceobject?: string
-
-	// The group of service objects used in a servicegroup definition.
-
-	services?: string
-
-	// - The color of the tag object.  Valid values are I(red, green, blue, yellow, copper, orange, purple, gray, light green, cyan, light gray, blue gray, lime, black, gold, and brown).
-
-
-	color?: string
-
-	// The destination port to be used in a service object definition.
-
-	destination_port?: string
-
-	// Password credentials to use for authentication.
-
-	password: string
-
-	// A group of address objects to be used in an addressgroup definition.
-
-	static_value?: string
-
-	// Username credentials to use for authentication.
-
-	username?: string
-
-	// The type of address object definition.  Valid types are I(ip-netmask) and I(ip-range).
-
-	address_type?: string
-
-	// The description of the object.
-
-	description?: string
+		create_default_route?: bool
+	}
 }
 
 panos_lic :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_lic: {
 
-	// authcode to be applied
+		// authcode to be applied
 
-	auth_code: string
+		auth_code: string
 
-	// whether to apply authcode even if device is already licensed
+		// whether to apply authcode even if device is already licensed
 
-	force?: bool
+		force?: bool
+	}
 }
 
 panos_pg :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_pg: {
 
-	// commit if changed
+		// name of the vulnerability profile
 
-	commit?: bool
+		vulnerability?: string
 
-	// name of the data filtering profile
+		// name of the file blocking profile
 
-	data_filtering?: string
+		file_blocking?: string
 
-	// name of the file blocking profile
+		// name of the security profile group
 
-	file_blocking?: string
+		pg_name: string
 
-	// name of the url filtering profile
+		// name of the spyware profile
 
-	url_filtering?: string
+		spyware?: string
 
-	// name of the wildfire analysis profile
+		// name of the url filtering profile
 
-	wildfire?: string
+		url_filtering?: string
 
-	// name of the security profile group
+		// name of the anti-virus profile
 
-	pg_name: string
+		virus?: string
 
-	// name of the spyware profile
+		// commit if changed
 
-	spyware?: string
+		commit?: bool
 
-	// name of the anti-virus profile
+		// name of the data filtering profile
 
-	virus?: string
+		data_filtering?: string
 
-	// name of the vulnerability profile
+		// name of the wildfire analysis profile
 
-	vulnerability?: string
-}
-
-panos_query_rules :: {
-
-	// Name of the destination security zone to be queried.
-
-	destination_zone?: string
-
-	// IP address (or hostname) of PAN-OS firewall or Panorama management console being queried.
-
-	ip_address: string
-
-	// The source IP address to be queried.
-
-	source_ip?: string
-
-	// Name of the rule tag to be queried.
-
-	tag_name?: string
-
-	// The destination port to be queried.
-
-	destination_port?: string
-
-	// The Panorama device group in which to conduct the query.
-
-	devicegroup?: string
-
-	// The protocol used to be queried.  Must be either I(tcp) or I(udp).
-
-	protocol?: string
-
-	// Username credentials to use for authentication.
-
-	username?: string
-
-	// API key that can be used instead of I(username)/I(password) credentials.
-
-	api_key?: string
-
-	// Password credentials to use for authentication.
-
-	password: string
-
-	// The source port to be queried.
-
-	source_port?: string
-
-	// Name of the source security zone to be queried.
-
-	source_zone?: string
-
-	// Name of the application or application group to be queried.
-
-	application?: string
-
-	// The destination IP address to be queried.
-
-	destination_ip?: string
-}
-
-panos_security_rule :: {
-
-	// Name of the already defined antivirus profile.
-
-	antivirus?: string
-
-	// The category.
-
-	category?: [..._]
-
-	// Whether to log at session start.
-
-	log_start?: bool
-
-	// Administrative tags that can be added to the rule. Note, tags must be already defined.
-
-	tag_name?: string
-
-	// Username credentials to use for auth unless I(api_key) is set.
-
-	username?: string
-
-	// API key that can be used instead of I(username)/I(password) credentials.
-
-	api_key?: string
-
-	// List of destination addresses.
-
-	destination_ip?: string
-
-	// - Device groups are used for the Panorama interaction with Firewall(s). The group must exists on Panorama. If device group is not define we assume that we are contacting Firewall.
-
-
-	devicegroup?: string
-
-	// Whether to log at session end.
-
-	log_end?: bool
-
-	// Password credentials to use for auth unless I(api_key) is set.
-
-	password: string
-
-	// Type of security rule (version 6.1 of PanOS and above).
-
-	rule_type?: string
-
-	// Name of the already defined spyware profile.
-
-	spyware?: string
-
-	// Name of the already defined file_blocking profile.
-
-	file_blocking?: string
-
-	// The action to be taken.  Supported values are I(add)/I(update)/I(find)/I(delete).
-
-	operation?: string
-
-	// List of destination zones.
-
-	destination_zone?: string
-
-	// Name of the security rule.
-
-	rule_name: string
-
-	// Name of the already defined vulnerability profile.
-
-	vulnerability?: string
-
-	// Commit configuration if changed.
-
-	commit?: bool
-
-	// List of services.
-
-	service?: string
-
-	// Use users to enforce policy for individual users or a group of users.
-
-	source_user?: string
-
-	// List of source zones.
-
-	source_zone?: string
-
-	// Name of the already defined url_filtering profile.
-
-	url_filtering?: string
-
-	// Name of the already defined wildfire_analysis profile.
-
-	wildfire_analysis?: string
-
-	// Description for the security rule.
-
-	description?: string
-
-	// - If you are using GlobalProtect with host information profile (HIP) enabled, you can also base the policy on information collected by GlobalProtect. For example, the user access level can be determined HIP that notifies the firewall about the user's local configuration.
-
-
-	hip_profiles?: string
-
-	// IP address (or hostname) of PAN-OS device being configured.
-
-	ip_address: string
-
-	// Action to apply once rules maches.
-
-	action?: string
-
-	// List of applications.
-
-	application?: string
-
-	// Name of the already defined data_filtering profile.
-
-	data_filtering?: string
-
-	// - Security profile group that is already defined in the system. This property supersedes antivirus, vulnerability, spyware, url_filtering, file_blocking, data_filtering, and wildfire_analysis properties.
-
-
-	group_profile?: string
-
-	// List of source addresses.
-
-	source_ip?: string
-}
-
-panos_restart :: {
-}
-
-panos_sag :: {
-
-	// Tags to be associated with the address group
-
-	tags?: string
-
-	// API key that can be used instead of I(username)/I(password) credentials.
-
-	api_key?: string
-
-	// commit if changed
-
-	commit?: bool
-
-	// The purpose / objective of the static Address Group
-
-	description?: string
-
-	// - The name of the Panorama device group. The group must exist on Panorama. If device group is not defined it is assumed that we are contacting a firewall.
-
-
-	devicegroup?: string
-
-	// The operation to perform Supported values are I(add)/I(list)/I(delete).
-
-	operation: string
-
-	// Static filter user by the address group
-
-	sag_match_filter?: [..._]
-
-	// name of the dynamic address group
-
-	sag_name: string
-}
-
-panos_admpwd :: {
-
-	// IP address (or hostname) of PAN-OS device
-
-	ip_address: string
-
-	// filename of the SSH Key to use for authentication
-
-	key_filename: string
-
-	// password to configure for admin on the PAN-OS device
-
-	newpassword: string
-
-	// username for initial authentication
-
-	username?: string
+		wildfire?: string
+	}
 }
 
 panos_cert_gen_ssh :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_cert_gen_ssh: {
 
-	// IP address (or hostname) of PAN-OS device being configured.
+		// Certificate CN (common name) embedded in the certificate signature.
 
-	ip_address: string
+		cert_cn: string
 
-	// Location of the filename that is used for the auth. Either I(key_filename) or I(password) is required.
+		// Human friendly certificate name (not CN but just a friendly name).
 
-	key_filename: string
+		cert_friendly_name: string
 
-	// Password credentials to use for auth. Either I(key_filename) or I(password) is required.
+		// IP address (or hostname) of PAN-OS device being configured.
 
-	password: string
+		ip_address: string
 
-	// Number of bits used by the RSA algorithm for the certificate generation.
+		// Location of the filename that is used for the auth. Either I(key_filename) or I(password) is required.
 
-	rsa_nbits?: string
+		key_filename: string
 
-	// Undersigning authority (CA) that MUST already be presents on the device.
+		// Password credentials to use for auth. Either I(key_filename) or I(password) is required.
 
-	signed_by: string
+		password: string
 
-	// Certificate CN (common name) embedded in the certificate signature.
+		// Number of bits used by the RSA algorithm for the certificate generation.
 
-	cert_cn: string
+		rsa_nbits?: string
 
-	// Human friendly certificate name (not CN but just a friendly name).
+		// Undersigning authority (CA) that MUST already be presents on the device.
 
-	cert_friendly_name: string
+		signed_by: string
+	}
 }
 
-panos_check :: {
+panos_admpwd :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_admpwd: {
 
-	// time waited between checks
+		// IP address (or hostname) of PAN-OS device
 
-	interval?: string
+		ip_address: string
 
-	// timeout of API calls
+		// filename of the SSH Key to use for authentication
 
-	timeout?: string
-}
+		key_filename: string
 
-panos_dag :: {
+		// password to configure for admin on the PAN-OS device
 
-	// commit if changed
+		newpassword: string
 
-	commit?: bool
+		// username for initial authentication
 
-	// dynamic filter user by the dynamic address group
-
-	dag_filter: string
-
-	// name of the dynamic address group
-
-	dag_name: string
+		username?: string
+	}
 }
 
 panos_dag_tags :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_dag_tags: {
 
-	// IP that will be registered with the given tag names.
+		// API key that can be used instead of I(username)/I(password) credentials.
 
-	ip_to_register?: string
+		api_key?: string
 
-	// The action to be taken. Supported values are I(add)/I(update)/I(find)/I(delete).
+		// commit if changed
 
-	operation?: string
+		commit?: bool
 
-	// The list of the tags that will be added or removed from the IP address.
+		// The purpose / objective of the static Address Group
 
-	tag_names?: string
+		description?: string
 
-	// API key that can be used instead of I(username)/I(password) credentials.
+		// - Device groups are used for the Panorama interaction with Firewall(s). The group must exists on Panorama. If device group is not define we assume that we are contacting Firewall.
 
-	api_key?: string
+		devicegroup?: string
 
-	// commit if changed
+		// IP that will be registered with the given tag names.
 
-	commit?: bool
+		ip_to_register?: string
 
-	// The purpose / objective of the static Address Group
+		// The action to be taken. Supported values are I(add)/I(update)/I(find)/I(delete).
 
-	description?: string
+		operation?: string
 
-	// - Device groups are used for the Panorama interaction with Firewall(s). The group must exists on Panorama. If device group is not define we assume that we are contacting Firewall.
+		// The list of the tags that will be added or removed from the IP address.
 
-
-	devicegroup?: string
-}
-
-panos_interface :: {
-
-	// Commit if changed
-
-	commit?: bool
-
-	// Whether or not to add default route with router learned via DHCP.
-
-	create_default_route?: bool
-
-	// Name of the interface to configure.
-
-	if_name: string
-
-	// Name of the zone for the interface. If the zone does not exist it is created but if the zone exists and it is not of the layer3 type the operation will fail.
-
-
-	zone_name: string
-}
-
-panos_set :: {
-
-	// The 'xpath' for the commands configurable
-
-	xpath: string
-
-	// Xapi method name which supports 'xpath' or 'xpath' and 'element'
-
-	command?: string
-
-	// The 'element' for the 'xpath' if required
-
-	element?: string
-
-	// IP address or host FQDN of the target PAN-OS NVA
-
-	ip_address: string
-
-	// Password for the given 'username'
-
-	password: string
-
-	// User name for a user with admin rights on the PAN-OS NVA
-
-	username?: string
+		tag_names?: string
+	}
 }
 
 panos_import :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_import: {
 
-	// Category of file uploaded. The default is software.
-	// See API > Import section of the API reference for category options.
+		// Category of file uploaded. The default is software.
+		// See API > Import section of the API reference for category options.
 
-	category?: string
+		category?: string
 
-	// Location of the file to import into device.
+		// Location of the file to import into device.
 
-	file?: string
+		file?: string
 
-	// URL of the file that will be imported to device.
+		// URL of the file that will be imported to device.
 
-	url?: string
+		url?: string
 
-	// If C(no), SSL certificates will not be validated. Disabling certificate validation is not recommended.
+		// If C(no), SSL certificates will not be validated. Disabling certificate validation is not recommended.
 
-	validate_certs?: bool
-}
-
-panos_loadcfg :: {
-
-	// commit if changed
-
-	commit?: bool
-
-	// configuration file to load
-
-	file?: string
+		validate_certs?: bool
+	}
 }
 
 panos_match_rule :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_match_rule: {
 
-	// The application.
+		// Password credentials to use for auth unless I(api_key) is set.
 
-	application?: string
+		password: string
 
-	// The destination IP address.
+		// The inbound interface in a NAT rule.
 
-	destination_ip?: string
+		to_interface?: string
 
-	// IP address (or hostname) of PAN-OS device being configured.
+		// ID of the VSYS object.
 
-	ip_address: string
+		vsys_id: string
 
-	// Type of rule. Valid types are I(security) or I(nat).
+		// API key that can be used instead of I(username)/I(password) credentials.
 
-	rule_type: string
+		api_key?: string
 
-	// The source user or group.
+		// URL category
 
-	source_user?: string
+		category?: string
 
-	// The source zone.
+		// The IP protocol number from 1 to 255.
 
-	source_zone?: string
+		protocol?: string
 
-	// API key that can be used instead of I(username)/I(password) credentials.
+		// The source zone.
 
-	api_key?: string
+		source_zone?: string
 
-	// The source IP address.
+		// Username credentials to use for auth unless I(api_key) is set.
 
-	source_ip: string
+		username?: string
 
-	// The inbound interface in a NAT rule.
+		// The application.
 
-	to_interface?: string
+		application?: string
 
-	// ID of the VSYS object.
+		// The destination IP address.
 
-	vsys_id: string
+		destination_ip?: string
 
-	// The destination port.
+		// The source IP address.
 
-	destination_port?: string
+		source_ip: string
 
-	// The destination zone.
+		// The source port.
 
-	destination_zone?: string
+		source_port?: string
 
-	// Password credentials to use for auth unless I(api_key) is set.
+		// The source user or group.
 
-	password: string
+		source_user?: string
 
-	// The IP protocol number from 1 to 255.
+		// The destination port.
 
-	protocol?: string
+		destination_port?: string
 
-	// The source port.
+		// IP address (or hostname) of PAN-OS device being configured.
 
-	source_port?: string
+		ip_address: string
 
-	// URL category
+		// The destination zone.
 
-	category?: string
+		destination_zone?: string
 
-	// Username credentials to use for auth unless I(api_key) is set.
+		// Type of rule. Valid types are I(security) or I(nat).
 
-	username?: string
+		rule_type: string
+	}
 }
 
-panos_mgtconfig :: {
+panos_object :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_object: {
 
-	// address of secondary DNS server
+		// The filter match criteria to be used in a dynamic addressgroup definition.
 
-	dns_server_secondary?: string
+		dynamic_value?: string
 
-	// address of primary Panorama server
+		// IP address (or hostname) of PAN-OS device or Panorama management console being configured.
 
-	panorama_primary?: string
+		ip_address: string
 
-	// address of secondary Panorama server
+		// Password credentials to use for authentication.
 
-	panorama_secondary?: string
+		password: string
 
-	// commit if changed
+		// The name of the service object.
 
-	commit?: bool
+		serviceobject?: string
 
-	// address of primary DNS server
+		// The source port to be used in a service object definition.
 
-	dns_server_primary?: string
+		source_port?: string
+
+		// Username credentials to use for authentication.
+
+		username?: string
+
+		// The name of the address object.
+
+		addressobject?: string
+
+		// The destination port to be used in a service object definition.
+
+		destination_port?: string
+
+		// - The name of the Panorama device group. The group must exist on Panorama. If device group is not defined it is assumed that we are contacting a firewall.
+
+		devicegroup?: string
+
+		// The IP protocol to be used in a service object definition.  Valid values are I(tcp) or I(udp).
+
+		protocol?: string
+
+		// The group of service objects used in a servicegroup definition.
+
+		services?: string
+
+		// The name of an object or rule tag.
+
+		tag_name?: string
+
+		// A group of address objects to be used in an addressgroup definition.
+
+		static_value?: string
+
+		// The IP address of the host or network in CIDR notation.
+
+		address?: string
+
+		// The type of address object definition.  Valid types are I(ip-netmask) and I(ip-range).
+
+		address_type?: string
+
+		// A static group of address objects or dynamic address group.
+
+		addressgroup?: string
+
+		// API key that can be used instead of I(username)/I(password) credentials.
+
+		api_key?: string
+
+		// - The color of the tag object.  Valid values are I(red, green, blue, yellow, copper, orange, purple, gray, light green, cyan, light gray, blue gray, lime, black, gold, and brown).
+
+		color?: string
+
+		// The description of the object.
+
+		description?: string
+
+		// The operation to be performed.  Supported values are I(add)/I(delete)/I(find).
+
+		operation: string
+
+		// A group of service objects.
+
+		servicegroup?: string
+	}
 }
 
-panos_nat_rule :: {
+panos_restart :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_restart: {
+	}
+}
 
-	// type of source translation
+panos_admin :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_admin: {
 
-	snat_type?: string
+		// password for admin user
 
-	// list of source zones
+		admin_password: string
 
-	source_zone: string
+		// username for admin user
 
-	// destination zone
+		admin_username?: string
 
-	destination_zone: string
+		// commit if changed
 
-	// If Panorama, the device group to put this rule in.
+		commit?: bool
 
-	devicegroup?: string
+		// role for admin user
 
-	// IP address (or hostname) of PAN-OS device being configured.
-
-	ip_address: string
-
-	// service
-
-	service?: string
-
-	// type of source translation. Supported values are I(translated-address)/I(translated-address).
-
-	snat_address_type?: string
-
-	// Source NAT translated address. Used with Static-IP translation.
-
-	snat_static_address?: string
-
-	// dnat translated address
-
-	dnat_address?: string
-
-	// name of the SNAT rule
-
-	rule_name: string
-
-	// snat interface
-
-	snat_interface?: string
-
-	// list of source addresses
-
-	source_ip?: string
-
-	// Destination interface.
-
-	to_interface?: string
-
-	// snat interface address
-
-	snat_interface_address?: string
-
-	// Username credentials to use for auth unless I(api_key) is set.
-
-	username?: string
-
-	// API key that can be used instead of I(username)/I(password) credentials.
-
-	api_key?: string
-
-	// list of destination addresses
-
-	destination_ip?: string
-
-	// dnat translated port
-
-	dnat_port?: string
-
-	// The action to be taken.  Supported values are I(add)/I(update)/I(find)/I(delete).
-
-	operation: string
-
-	// Password credentials to use for auth unless I(api_key) is set.
-
-	password: string
-
-	// Source NAT translated address. Used with Dynamic-IP and Dynamic-IP-and-Port.
-
-	snat_dynamic_address?: string
-
-	// Commit configuration if changed.
-
-	commit?: bool
-
-	// The description
-
-	description?: string
-
-	// bidirectional flag
-
-	snat_bidirectional?: bool
-
-	// Tag for the NAT rule.
-
-	tag_name?: string
+		role?: string
+	}
 }
 
 panos_op :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_op: {
 
-	// IP address (or hostname) of PAN-OS device or Panorama management console being configured.
+		// IP address (or hostname) of PAN-OS device or Panorama management console being configured.
 
-	ip_address: string
+		ip_address: string
 
-	// Password credentials to use for authentication.
+		// Password credentials to use for authentication.
 
-	password: string
+		password: string
 
-	// Username credentials to use for authentication.
+		// Username credentials to use for authentication.
 
-	username?: string
+		username?: string
 
-	// API key that can be used instead of I(username)/I(password) credentials.
+		// API key that can be used instead of I(username)/I(password) credentials.
 
-	api_key?: string
+		api_key?: string
 
-	// The OP command to be performed.
+		// The OP command to be performed.
 
-	cmd: string
+		cmd: string
+	}
+}
+
+panos_query_rules :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_query_rules: {
+
+		// The destination port to be queried.
+
+		destination_port?: string
+
+		// Name of the destination security zone to be queried.
+
+		destination_zone?: string
+
+		// Password credentials to use for authentication.
+
+		password: string
+
+		// The source IP address to be queried.
+
+		source_ip?: string
+
+		// Username credentials to use for authentication.
+
+		username?: string
+
+		// The destination IP address to be queried.
+
+		destination_ip?: string
+
+		// The Panorama device group in which to conduct the query.
+
+		devicegroup?: string
+
+		// The protocol used to be queried.  Must be either I(tcp) or I(udp).
+
+		protocol?: string
+
+		// Name of the application or application group to be queried.
+
+		application?: string
+
+		// IP address (or hostname) of PAN-OS firewall or Panorama management console being queried.
+
+		ip_address: string
+
+		// Name of the rule tag to be queried.
+
+		tag_name?: string
+
+		// API key that can be used instead of I(username)/I(password) credentials.
+
+		api_key?: string
+
+		// Name of the source security zone to be queried.
+
+		source_zone?: string
+
+		// The source port to be queried.
+
+		source_port?: string
+	}
+}
+
+panos_sag :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_sag: {
+
+		// name of the dynamic address group
+
+		sag_name: string
+
+		// Tags to be associated with the address group
+
+		tags?: string
+
+		// API key that can be used instead of I(username)/I(password) credentials.
+
+		api_key?: string
+
+		// commit if changed
+
+		commit?: bool
+
+		// The purpose / objective of the static Address Group
+
+		description?: string
+
+		// - The name of the Panorama device group. The group must exist on Panorama. If device group is not defined it is assumed that we are contacting a firewall.
+
+		devicegroup?: string
+
+		// The operation to perform Supported values are I(add)/I(list)/I(delete).
+
+		operation: string
+
+		// Static filter user by the address group
+
+		sag_match_filter?: [...]
+	}
+}
+
+panos_security_rule :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_security_rule: {
+
+		// Name of the already defined file_blocking profile.
+
+		file_blocking?: string
+
+		// IP address (or hostname) of PAN-OS device being configured.
+
+		ip_address: string
+
+		// Whether to log at session end.
+
+		log_end?: bool
+
+		// The action to be taken.  Supported values are I(add)/I(update)/I(find)/I(delete).
+
+		operation?: string
+
+		// Name of the security rule.
+
+		rule_name: string
+
+		// - Security profile group that is already defined in the system. This property supersedes antivirus, vulnerability, spyware, url_filtering, file_blocking, data_filtering, and wildfire_analysis properties.
+
+		group_profile?: string
+
+		// Whether to log at session start.
+
+		log_start?: bool
+
+		// Password credentials to use for auth unless I(api_key) is set.
+
+		password: string
+
+		// API key that can be used instead of I(username)/I(password) credentials.
+
+		api_key?: string
+
+		// The category.
+
+		category?: [...]
+
+		// Name of the already defined data_filtering profile.
+
+		data_filtering?: string
+
+		// List of source zones.
+
+		source_zone?: string
+
+		// Name of the already defined wildfire_analysis profile.
+
+		wildfire_analysis?: string
+
+		// Commit configuration if changed.
+
+		commit?: bool
+
+		// - Device groups are used for the Panorama interaction with Firewall(s). The group must exists on Panorama. If device group is not define we assume that we are contacting Firewall.
+
+		devicegroup?: string
+
+		// List of services.
+
+		service?: string
+
+		// Description for the security rule.
+
+		description?: string
+
+		// Name of the already defined url_filtering profile.
+
+		url_filtering?: string
+
+		// Username credentials to use for auth unless I(api_key) is set.
+
+		username?: string
+
+		// Action to apply once rules maches.
+
+		action?: string
+
+		// Name of the already defined antivirus profile.
+
+		antivirus?: string
+
+		// List of destination addresses.
+
+		destination_ip?: string
+
+		// List of destination zones.
+
+		destination_zone?: string
+
+		// Use users to enforce policy for individual users or a group of users.
+
+		source_user?: string
+
+		// - If you are using GlobalProtect with host information profile (HIP) enabled, you can also base the policy on information collected by GlobalProtect. For example, the user access level can be determined HIP that notifies the firewall about the user's local configuration.
+
+		hip_profiles?: string
+
+		// Type of security rule (version 6.1 of PanOS and above).
+
+		rule_type?: string
+
+		// List of source addresses.
+
+		source_ip?: string
+
+		// Name of the already defined vulnerability profile.
+
+		vulnerability?: string
+
+		// List of applications.
+
+		application?: string
+
+		// Name of the already defined spyware profile.
+
+		spyware?: string
+
+		// Administrative tags that can be added to the rule. Note, tags must be already defined.
+
+		tag_name?: string
+	}
+}
+
+panos_mgtconfig :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_mgtconfig: {
+
+		// commit if changed
+
+		commit?: bool
+
+		// address of primary DNS server
+
+		dns_server_primary?: string
+
+		// address of secondary DNS server
+
+		dns_server_secondary?: string
+
+		// address of primary Panorama server
+
+		panorama_primary?: string
+
+		// address of secondary Panorama server
+
+		panorama_secondary?: string
+	}
+}
+
+panos_commit :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_commit: {
+
+		// Commit changes for specified VSYS
+
+		commit_vsys?: [...]
+
+		// IP address (or hostname) of PAN-OS device.
+
+		ip_address: string
+
+		// Password for authentication. If the value is not specified in the task, the value of environment variable C(ANSIBLE_NET_PASSWORD) will be used instead.
+
+		password: string
+
+		// Username for authentication. If the value is not specified in the task, the value of environment variable C(ANSIBLE_NET_USERNAME) will be used instead if defined. C(admin) will be used if nothing above is defined.
+
+		username?: string
+
+		// timeout for commit job
+
+		timeout?: string
+
+		// Commit changes made by specified admin
+
+		commit_changes_by?: [...]
+
+		// Commit description/comment
+
+		description?: string
+
+		// interval for checking commit job
+
+		interval?: string
+
+		// if commit should be synchronous
+
+		sync?: bool
+	}
+}
+
+panos_dag :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_dag: {
+
+		// commit if changed
+
+		commit?: bool
+
+		// dynamic filter user by the dynamic address group
+
+		dag_filter: string
+
+		// name of the dynamic address group
+
+		dag_name: string
+	}
+}
+
+panos_loadcfg :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_loadcfg: {
+
+		// commit if changed
+
+		commit?: bool
+
+		// configuration file to load
+
+		file?: string
+	}
+}
+
+panos_nat_rule :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_nat_rule: {
+
+		// Destination interface.
+
+		to_interface?: string
+
+		// type of source translation. Supported values are I(translated-address)/I(translated-address).
+
+		snat_address_type?: string
+
+		// type of source translation
+
+		snat_type?: string
+
+		// IP address (or hostname) of PAN-OS device being configured.
+
+		ip_address: string
+
+		// The action to be taken.  Supported values are I(add)/I(update)/I(find)/I(delete).
+
+		operation: string
+
+		// Password credentials to use for auth unless I(api_key) is set.
+
+		password: string
+
+		// name of the SNAT rule
+
+		rule_name: string
+
+		// list of source addresses
+
+		source_ip?: string
+
+		// Commit configuration if changed.
+
+		commit?: bool
+
+		// list of destination addresses
+
+		destination_ip?: string
+
+		// If Panorama, the device group to put this rule in.
+
+		devicegroup?: string
+
+		// dnat translated address
+
+		dnat_address?: string
+
+		// bidirectional flag
+
+		snat_bidirectional?: bool
+
+		// Source NAT translated address. Used with Static-IP translation.
+
+		snat_static_address?: string
+
+		// list of source zones
+
+		source_zone: string
+
+		// Tag for the NAT rule.
+
+		tag_name?: string
+
+		// The description
+
+		description?: string
+
+		// destination zone
+
+		destination_zone: string
+
+		// Username credentials to use for auth unless I(api_key) is set.
+
+		username?: string
+
+		// service
+
+		service?: string
+
+		// Source NAT translated address. Used with Dynamic-IP and Dynamic-IP-and-Port.
+
+		snat_dynamic_address?: string
+
+		// snat interface
+
+		snat_interface?: string
+
+		// snat interface address
+
+		snat_interface_address?: string
+
+		// API key that can be used instead of I(username)/I(password) credentials.
+
+		api_key?: string
+
+		// dnat translated port
+
+		dnat_port?: string
+	}
+}
+
+panos_set :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_set: {
+
+		// The 'xpath' for the commands configurable
+
+		xpath: string
+
+		// Xapi method name which supports 'xpath' or 'xpath' and 'element'
+
+		command?: string
+
+		// The 'element' for the 'xpath' if required
+
+		element?: string
+
+		// IP address or host FQDN of the target PAN-OS NVA
+
+		ip_address: string
+
+		// Password for the given 'username'
+
+		password: string
+
+		// User name for a user with admin rights on the PAN-OS NVA
+
+		username?: string
+	}
+}
+
+panos_check :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	panos_check: {
+
+		// time waited between checks
+
+		interval?: string
+
+		// timeout of API calls
+
+		timeout?: string
+	}
 }

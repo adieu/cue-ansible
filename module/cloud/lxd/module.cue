@@ -1,124 +1,136 @@
 package lxd
 
 lxd_container :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	lxd_container: {
 
-	// If this is true, the C(lxd_container) forces to stop the container when it stops or restarts the container.
+		// If this is true, the C(lxd_container) forces to stop the container when it stops or restarts the container.
 
-	force_stop?: bool
+		force_stop?: bool
 
-	// The unix domain socket path or the https URL for the LXD server.
+		// The source for the container (e.g. { "type": "image", "mode": "pull", "server": "https://images.linuxcontainers.org", "protocol": "lxd", "alias": "ubuntu/xenial/amd64" }).
+		// See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#post-1) for complete API documentation.
+		// Note that C(protocol) accepts two choices: C(lxd) or C(simplestreams)
 
-	url?: string
+		source?: string
 
-	// If this is true, the C(lxd_container) waits until IPv4 addresses are set to the all network interfaces in the container after starting or restarting.
+		// A timeout for changing the state of the container.
+		// This is also used as a timeout for waiting until IPv4 addresses are set to the all network interfaces in the container after starting or restarting.
 
-	wait_for_ipv4_addresses?: bool
+		timeout?: string
 
-	// The architecture for the container (e.g. "x86_64" or "i686"). See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#post-1)
+		// The client certificate file path.
 
-	architecture?: string
+		client_cert?: string
 
-	// The client certificate key file path.
+		// The unix domain socket path when LXD is installed by snap package manager.
 
-	client_key?: string
+		snap_url?: string
 
-	// The config for the container (e.g. {"limits.cpu": "2"}). See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#post-1)
-	// If the container already exists and its "config" value in metadata obtained from GET /1.0/containers/<name> U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#10containersname) are different, they this module tries to apply the configurations.
-	// The key starts with 'volatile.' are ignored for this comparison.
-	// Not all config values are supported to apply the existing container. Maybe you need to delete and recreate a container.
+		// The architecture for the container (e.g. "x86_64" or "i686"). See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#post-1)
 
-	config?: string
+		architecture?: string
 
-	// The source for the container (e.g. { "type": "image", "mode": "pull", "server": "https://images.linuxcontainers.org", "protocol": "lxd", "alias": "ubuntu/xenial/amd64" }).
-	// See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#post-1) for complete API documentation.
-	// Note that C(protocol) accepts two choices: C(lxd) or C(simplestreams)
+		// The unix domain socket path or the https URL for the LXD server.
 
-	source?: string
+		url?: string
 
-	// The client trusted password.
-	// You need to set this password on the LXD server before running this module using the following command. lxc config set core.trust_password <some random password> See U(https://www.stgraber.org/2016/04/18/lxd-api-direct-interaction/)
-	// If trust_password is set, this module send a request for authentication before sending any requests.
+		// The devices for the container (e.g. { "rootfs": { "path": "/dev/kvm", "type": "unix-char" }). See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#post-1)
 
-	trust_password?: string
+		devices?: string
 
-	// Name of a container.
+		// Whether or not the container is ephemeral (e.g. true or false). See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#post-1)
 
-	name: string
+		ephemeral?: bool
 
-	// The unix domain socket path when LXD is installed by snap package manager.
+		// Name of a container.
 
-	snap_url?: string
+		name: string
 
-	// Define the state of a container.
+		// Define the state of a container.
 
-	state?: string
+		state?: string
 
-	// A timeout for changing the state of the container.
-	// This is also used as a timeout for waiting until IPv4 addresses are set to the all network interfaces in the container after starting or restarting.
+		// The client trusted password.
+		// You need to set this password on the LXD server before running this module using the following command. lxc config set core.trust_password <some random password> See U(https://www.stgraber.org/2016/04/18/lxd-api-direct-interaction/)
+		// If trust_password is set, this module send a request for authentication before sending any requests.
 
-	timeout?: string
+		trust_password?: string
 
-	// The client certificate file path.
+		// If this is true, the C(lxd_container) waits until IPv4 addresses are set to the all network interfaces in the container after starting or restarting.
 
-	client_cert?: string
+		wait_for_ipv4_addresses?: bool
 
-	// The devices for the container (e.g. { "rootfs": { "path": "/dev/kvm", "type": "unix-char" }). See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#post-1)
+		// The client certificate key file path.
 
-	devices?: string
+		client_key?: string
 
-	// Whether or not the container is ephemeral (e.g. true or false). See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#post-1)
+		// The config for the container (e.g. {"limits.cpu": "2"}). See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#post-1)
+		// If the container already exists and its "config" value in metadata obtained from GET /1.0/containers/<name> U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#10containersname) are different, they this module tries to apply the configurations.
+		// The key starts with 'volatile.' are ignored for this comparison.
+		// Not all config values are supported to apply the existing container. Maybe you need to delete and recreate a container.
 
-	ephemeral?: bool
+		config?: string
+	}
 }
 
 lxd_profile :: {
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	vars?: {...}
+	lxd_profile: {
 
-	// The client certificate key file path.
+		// The devices for the profile (e.g. {"rootfs": {"path": "/dev/kvm", "type": "unix-char"}). See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#patch-3)
 
-	client_key?: string
+		devices?: string
 
-	// Description of the profile.
+		// Name of a profile.
 
-	description?: string
+		name: string
 
-	// The devices for the profile (e.g. {"rootfs": {"path": "/dev/kvm", "type": "unix-char"}). See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#patch-3)
+		// The unix domain socket path when LXD is installed by snap package manager.
 
-	devices?: string
+		snap_url?: string
 
-	// A new name of a profile.
-	// If this parameter is specified a profile will be renamed to this name. See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#post-11)
+		// The client trusted password.
+		// You need to set this password on the LXD server before running this module using the following command. lxc config set core.trust_password <some random password> See U(https://www.stgraber.org/2016/04/18/lxd-api-direct-interaction/)
+		// If trust_password is set, this module send a request for authentication before sending any requests.
 
-	new_name?: string
+		trust_password?: string
 
-	// The unix domain socket path when LXD is installed by snap package manager.
+		// The client certificate file path.
 
-	snap_url?: string
+		client_cert?: string
 
-	// The unix domain socket path or the https URL for the LXD server.
+		// The client certificate key file path.
 
-	url?: string
+		client_key?: string
 
-	// The client certificate file path.
+		// The config for the container (e.g. {"limits.memory": "4GB"}). See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#patch-3)
+		// If the profile already exists and its "config" value in metadata obtained from GET /1.0/profiles/<name> U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#get-19) are different, they this module tries to apply the configurations.
+		// Not all config values are supported to apply the existing profile. Maybe you need to delete and recreate a profile.
 
-	client_cert?: string
+		config?: string
 
-	// The config for the container (e.g. {"limits.memory": "4GB"}). See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#patch-3)
-	// If the profile already exists and its "config" value in metadata obtained from GET /1.0/profiles/<name> U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#get-19) are different, they this module tries to apply the configurations.
-	// Not all config values are supported to apply the existing profile. Maybe you need to delete and recreate a profile.
+		// Description of the profile.
 
-	config?: string
+		description?: string
 
-	// Name of a profile.
+		// A new name of a profile.
+		// If this parameter is specified a profile will be renamed to this name. See U(https://github.com/lxc/lxd/blob/master/doc/rest-api.md#post-11)
 
-	name: string
+		new_name?: string
 
-	// Define the state of a profile.
+		// Define the state of a profile.
 
-	state?: string
+		state?: string
 
-	// The client trusted password.
-	// You need to set this password on the LXD server before running this module using the following command. lxc config set core.trust_password <some random password> See U(https://www.stgraber.org/2016/04/18/lxd-api-direct-interaction/)
-	// If trust_password is set, this module send a request for authentication before sending any requests.
+		// The unix domain socket path or the https URL for the LXD server.
 
-	trust_password?: string
+		url?: string
+	}
 }

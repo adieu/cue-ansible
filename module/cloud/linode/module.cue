@@ -1,165 +1,177 @@
 package linode
 
 linode :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	linode: {
 
-	// datacenter to create an instance in (Linode Datacenter)
+		// payment term to use for the instance (payment term in months)
 
-	datacenter?: string
+		payment_term?: string
 
-	// root password to apply to a new server (auto generated if missing)
+		// wait for the instance to be in state C(running) before returning
 
-	password?: string
+		wait?: bool
 
-	// Integer value for what day of the week to store weekly backups.
+		// how long before wait gives up, in seconds
 
-	backupweeklyday?: string
+		wait_timeout?: string
 
-	// Name to give the instance (alphanumeric, dashes, underscore).
-	// To keep sanity on the Linode Web Console, name is prepended with C(LinodeID-).
+		// Add the instance to a Display Group in Linode Manager.
 
-	name: string
+		displaygroup?: string
 
-	// Add private IPv4 address when Linode is created.
+		// Unique ID of a linode server. This value is read-only in the sense that if you specify it on creation of a Linode it will not be used. The Linode API generates these IDs and we can those generated value here to reference a Linode more specifically. This is useful for idempotence.
 
-	private_ip?: bool
+		linode_id?: string
 
-	// SSH public key applied to root user
+		// datacenter to create an instance in (Linode Datacenter)
 
-	ssh_pub_key?: string
+		datacenter?: string
 
-	// swap size in MB
+		// Set percentage threshold for receiving CPU usage alerts. Each CPU core adds 100% to total.
 
-	swap?: string
+		alert_cpu_threshold?: string
 
-	// Set status of bandwidth quota alerts as percentage of network transfer quota.
+		// Add private IPv4 address when Linode is created.
 
-	alert_bwquota_enabled?: bool
+		private_ip?: bool
 
-	// Set percentage threshold for receiving CPU usage alerts. Each CPU core adds 100% to total.
+		// Indicate desired state of the resource
 
-	alert_cpu_threshold?: string
+		state?: string
 
-	// distribution to use for the instance (Linode Distribution)
+		// Set threshold in MB of bandwidth quota alerts.
 
-	distribution?: string
+		alert_bwquota_threshold?: string
 
-	// payment term to use for the instance (payment term in months)
+		// SSH public key applied to root user
 
-	payment_term?: string
+		ssh_pub_key?: string
 
-	// how long before wait gives up, in seconds
+		// Integer value for what day of the week to store weekly backups.
 
-	wait_timeout?: string
+		backupweeklyday?: string
 
-	// Set threshold in MB of bandwidth in alerts.
+		// Set status of bandwidth out alerts.
 
-	alert_bwin_threshold?: string
+		alert_bwout_enabled?: bool
 
-	// Set threshold for average IO ops/sec over 2 hour period.
+		// Set status of receiving CPU usage alerts.
 
-	alert_diskio_threshold?: string
+		alert_cpu_enabled?: bool
 
-	// Set threshold in MB of bandwidth out alerts.
+		// Set status of receiving disk IO alerts.
 
-	alert_bwout_threshold?: string
+		alert_diskio_enabled?: bool
 
-	// Set status of receiving CPU usage alerts.
+		// Set threshold for average IO ops/sec over 2 hour period.
 
-	alert_cpu_enabled?: bool
+		alert_diskio_threshold?: string
 
-	// Set status of receiving disk IO alerts.
+		// Set status of Lassie watchdog.
 
-	alert_diskio_enabled?: bool
+		watchdog?: bool
 
-	// Add the instance to a Display Group in Linode Manager.
+		// List of dictionaries for creating additional disks that are added to the Linode configuration settings.
+		// Dictionary takes Size, Label, Type. Size is in MB.
 
-	displaygroup?: string
+		additional_disks?: string
 
-	// Set status of Lassie watchdog.
+		// Set threshold in MB of bandwidth out alerts.
 
-	watchdog?: bool
+		alert_bwout_threshold?: string
 
-	// List of dictionaries for creating additional disks that are added to the Linode configuration settings.
-	// Dictionary takes Size, Label, Type. Size is in MB.
+		// Set status of bandwidth quota alerts as percentage of network transfer quota.
 
-	additional_disks?: string
+		alert_bwquota_enabled?: bool
 
-	// Set status of bandwidth in alerts.
+		// Linode API key
 
-	alert_bwin_enabled?: bool
+		api_key?: string
 
-	// kernel to use for the instance (Linode Kernel)
+		// kernel to use for the instance (Linode Kernel)
 
-	kernel_id?: string
+		kernel_id?: string
 
-	// Indicate desired state of the resource
+		// root password to apply to a new server (auto generated if missing)
 
-	state?: string
+		password?: string
 
-	// Linode API key
+		// Set status of bandwidth in alerts.
 
-	api_key?: string
+		alert_bwin_enabled?: bool
 
-	// plan to use for the instance (Linode plan)
+		// distribution to use for the instance (Linode Distribution)
 
-	plan?: string
+		distribution?: string
 
-	// Set status of bandwidth out alerts.
+		// Name to give the instance (alphanumeric, dashes, underscore).
+		// To keep sanity on the Linode Web Console, name is prepended with C(LinodeID-).
 
-	alert_bwout_enabled?: bool
+		name: string
 
-	// wait for the instance to be in state C(running) before returning
+		// plan to use for the instance (Linode plan)
 
-	wait?: bool
+		plan?: string
 
-	// Set threshold in MB of bandwidth quota alerts.
+		// swap size in MB
 
-	alert_bwquota_threshold?: string
+		swap?: string
 
-	// Unique ID of a linode server. This value is read-only in the sense that if you specify it on creation of a Linode it will not be used. The Linode API generates these IDs and we can those generated value here to reference a Linode more specifically. This is useful for idempotence.
+		// Set threshold in MB of bandwidth in alerts.
 
-	linode_id?: string
+		alert_bwin_threshold?: string
+	}
 }
 
 linode_v4 :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	linode_v4: {
 
-	// A list of SSH public key parts to deploy for the root user.
+		// The Linode API v4 access token. It may also be specified by exposing the C(LINODE_ACCESS_TOKEN) environment variable. See U(https://developers.linode.com/api/v4#section/Access-and-Authentication).
 
-	authorized_keys?: [..._]
+		access_token: string
 
-	// The image of the instance. This is a required parameter only when creating Linode instances. See U(https://developers.linode.com/api/v4#tag/Images).
+		// A list of SSH public key parts to deploy for the root user.
 
-	image?: string
+		authorized_keys?: [...]
 
-	// The region of the instance. This is a required parameter only when creating Linode instances. See U(https://developers.linode.com/api/v4#tag/Regions).
+		// The group that the instance should be marked under. Please note, that group labelling is deprecated but still supported. The encouraged method for marking instances is to use tags.
 
-	region?: string
+		group?: string
 
-	// The password for the root user. If not specified, one will be generated. This generated password will be available in the task success JSON.
+		// The desired instance state.
 
-	root_pass?: string
+		state: string
 
-	// The type of the instance. This is a required parameter only when creating Linode instances. See U(https://developers.linode.com/api/v4#tag/Linode-Types).
+		// The image of the instance. This is a required parameter only when creating Linode instances. See U(https://developers.linode.com/api/v4#tag/Images).
 
-	type?: string
+		image?: string
 
-	// The Linode API v4 access token. It may also be specified by exposing the C(LINODE_ACCESS_TOKEN) environment variable. See U(https://developers.linode.com/api/v4#section/Access-and-Authentication).
+		// The instance label. This label is used as the main determiner for idempotence for the module and is therefore mandatory.
 
-	access_token: string
+		label: string
 
-	// The group that the instance should be marked under. Please note, that group labelling is deprecated but still supported. The encouraged method for marking instances is to use tags.
+		// The region of the instance. This is a required parameter only when creating Linode instances. See U(https://developers.linode.com/api/v4#tag/Regions).
 
-	group?: string
+		region?: string
 
-	// The instance label. This label is used as the main determiner for idempotence for the module and is therefore mandatory.
+		// The password for the root user. If not specified, one will be generated. This generated password will be available in the task success JSON.
 
-	label: string
+		root_pass?: string
 
-	// The desired instance state.
+		// The tags that the instance should be marked under. See U(https://developers.linode.com/api/v4#tag/Tags).
 
-	state: string
+		tags?: [...]
 
-	// The tags that the instance should be marked under. See U(https://developers.linode.com/api/v4#tag/Tags).
+		// The type of the instance. This is a required parameter only when creating Linode instances. See U(https://developers.linode.com/api/v4#tag/Linode-Types).
 
-	tags?: [..._]
+		type?: string
+	}
 }

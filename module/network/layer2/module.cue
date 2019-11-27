@@ -1,63 +1,75 @@
 package layer2
 
 net_l2_interface :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	net_l2_interface: {
 
-	// List of allowed VLAN's in a given trunk port.
+		// List of allowed VLAN's in a given trunk port.
 
-	trunk_allowed_vlans?: string
+		trunk_allowed_vlans?: string
 
-	// List of VLANs to be configured in trunk port.
+		// List of VLANs to be configured in trunk port.
 
-	trunk_vlans?: string
+		trunk_vlans?: string
 
-	// Configure given VLAN in access port.
+		// Configure given VLAN in access port.
 
-	access_vlan?: string
+		access_vlan?: string
 
-	// List of Layer-2 interface definitions.
+		// List of Layer-2 interface definitions.
 
-	aggregate?: string
+		aggregate?: string
 
-	// Mode in which interface needs to be configured.
+		// Mode in which interface needs to be configured.
 
-	mode?: string
+		mode?: string
 
-	// Name of the interface excluding any logical unit number.
+		// Name of the interface excluding any logical unit number.
 
-	name?: string
+		name?: string
 
-	// Native VLAN to be configured in trunk port.
+		// Native VLAN to be configured in trunk port.
 
-	native_vlan?: string
+		native_vlan?: string
 
-	// State of the Layer-2 Interface configuration.
+		// State of the Layer-2 Interface configuration.
 
-	state?: string
+		state?: string
+	}
 }
 
 net_vlan :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	net_vlan: {
 
-	// Purge VLANs not defined in the I(aggregate) parameter.
+		// State of the VLAN configuration.
 
-	purge?: string
+		state?: string
 
-	// State of the VLAN configuration.
+		// ID of the VLAN.
 
-	state?: string
+		vlan_id?: string
 
-	// ID of the VLAN.
+		// List of VLANs definitions.
 
-	vlan_id?: string
+		aggregate?: string
 
-	// List of VLANs definitions.
+		// List of interfaces the VLAN should be configured on.
 
-	aggregate?: string
+		interfaces?: string
 
-	// List of interfaces the VLAN should be configured on.
+		// Name of the VLAN.
 
-	interfaces?: string
+		name?: string
 
-	// Name of the VLAN.
+		// Purge VLANs not defined in the I(aggregate) parameter.
 
-	name?: string
+		purge?: string
+	}
 }

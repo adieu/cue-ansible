@@ -1,263 +1,305 @@
 package redfish
 
-idrac_redfish_command :: {
-
-	// Timeout in seconds for URL requests to OOB controller
-
-	timeout?: int
-
-	// User for authentication with OOB controller
-
-	username: string
-
-	// Base URI of OOB controller
-
-	baseuri: string
-
-	// Category to execute on OOB controller
-
-	category: string
-
-	// List of commands to execute on OOB controller
-
-	command: [..._]
-
-	// Password for authentication with OOB controller
-
-	password: string
-
-	// The ID of the System, Manager or Chassis to modify
-
-	resource_id?: string
-}
-
-idrac_redfish_config :: {
-
-	// Category to execute on iDRAC
-
-	category: string
-
-	// (deprecated) name of iDRAC attribute to update
-
-	manager_attribute_name?: string
-
-	// dictionary of iDRAC attribute name and value pairs to update
-
-	manager_attributes?: {...}
-
-	// Password for authentication with iDRAC
-
-	password: string
-
-	// User for authentication with iDRAC
-
-	username: string
-
-	// Base URI of iDRAC
-
-	baseuri: string
-
-	// List of commands to execute on iDRAC
-	// I(SetManagerAttributes), I(SetLifecycleControllerAttributes) and I(SetSystemAttributes) are mutually exclusive commands when C(category) is I(Manager)
-
-	command: [..._]
-
-	// (deprecated) value of iDRAC attribute to update
-
-	manager_attribute_value?: string
-
-	// The ID of the System, Manager or Chassis to modify
-
-	resource_id?: string
-
-	// Timeout in seconds for URL requests to iDRAC controller
-
-	timeout?: int
-}
-
 idrac_redfish_info :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	idrac_redfish_info: {
 
-	// User for authentication with iDRAC controller
+		// Base URI of iDRAC controller
 
-	username: string
+		baseuri: string
 
-	// Base URI of iDRAC controller
+		// Category to execute on iDRAC controller
 
-	baseuri: string
+		category: string
 
-	// Category to execute on iDRAC controller
+		// List of commands to execute on iDRAC controller
 
-	category: string
+		command: [...]
 
-	// List of commands to execute on iDRAC controller
+		// Password for authentication with iDRAC controller
 
-	command: [..._]
+		password: string
 
-	// Password for authentication with iDRAC controller
+		// Timeout in seconds for URL requests to OOB controller
 
-	password: string
+		timeout?: int
 
-	// Timeout in seconds for URL requests to OOB controller
+		// User for authentication with iDRAC controller
 
-	timeout?: int
+		username: string
+	}
 }
 
 redfish_command :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	redfish_command: {
 
-	// BootNext target when bootdevice is "UefiBootNext"
+		// BootNext target when bootdevice is "UefiBootNext"
 
-	boot_next?: string
+		boot_next?: string
 
-	// bootdevice when setting boot configuration
+		// List of commands to execute on OOB controller
 
-	bootdevice?: string
+		command: [...]
 
-	// Category to execute on OOB controller
+		// Password for authentication with OOB controller
 
-	category: string
+		password: string
 
-	// New password of account to add/modify
+		// Timeout in seconds for URL requests to OOB controller
 
-	new_password?: string
+		timeout?: int
 
-	// List of commands to execute on OOB controller
+		// properties of account service to update
 
-	command: [..._]
+		account_properties?: {...}
 
-	// Username of account to add/delete/modify
+		// Category to execute on OOB controller
 
-	new_username?: string
+		category: string
 
-	// Password for authentication with OOB controller
+		// New password of account to add/modify
 
-	password: string
+		new_password?: string
 
-	// The ID of the System, Manager or Chassis to modify
+		// Username of account to add/delete/modify
 
-	resource_id?: string
+		new_username?: string
 
-	// UEFI target when bootdevice is "UefiTarget"
+		// The ID of the System, Manager or Chassis to modify
 
-	uefi_target?: string
+		resource_id?: string
 
-	// Username for authentication with OOB controller
+		// new update user name for account_username
 
-	username: string
+		update_username?: string
 
-	// properties of account service to update
+		// Username for authentication with OOB controller
 
-	account_properties?: {...}
+		username: string
 
-	// Base URI of OOB controller
+		// bootdevice when setting boot configuration
 
-	baseuri: string
+		bootdevice?: string
 
-	// Timeout in seconds for URL requests to OOB controller
+		// ID of account to delete/modify
 
-	timeout?: int
+		id?: string
 
-	// new update user name for account_username
+		// UEFI target when bootdevice is "UefiTarget"
 
-	update_username?: string
+		uefi_target?: string
 
-	// ID of account to delete/modify
+		// Base URI of OOB controller
 
-	id?: string
+		baseuri: string
 
-	// Role of account to add/modify
+		// Role of account to add/modify
 
-	roleid?: string
+		roleid?: string
+	}
 }
 
 redfish_config :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	redfish_config: {
 
-	// setting dict of manager services to update
+		// Base URI of OOB controller
 
-	network_protocols?: {...}
+		baseuri: string
 
-	// Password for authentication with OOB controller
+		// name of BIOS attr to update (deprecated - use bios_attributes instead)
 
-	password: string
+		bios_attribute_name?: string
 
-	// The ID of the System, Manager or Chassis to modify
+		// Category to execute on OOB controller
 
-	resource_id?: string
+		category: string
 
-	// Timeout in seconds for URL requests to OOB controller
+		// List of commands to execute on OOB controller
 
-	timeout?: int
+		command: [...]
 
-	// Base URI of OOB controller
+		// Timeout in seconds for URL requests to OOB controller
 
-	baseuri: string
+		timeout?: int
 
-	// value of BIOS attr to update (deprecated - use bios_attributes instead)
+		// User for authentication with OOB controller
 
-	bios_attribute_value?: string
+		username: string
 
-	// list of BootOptionReference strings specifying the BootOrder
+		// value of BIOS attr to update (deprecated - use bios_attributes instead)
 
-	boot_order?: [..._]
+		bios_attribute_value?: string
 
-	// Category to execute on OOB controller
+		// dictionary of BIOS attributes to update
 
-	category: string
+		bios_attributes?: {...}
 
-	// name of BIOS attr to update (deprecated - use bios_attributes instead)
+		// list of BootOptionReference strings specifying the BootOrder
 
-	bios_attribute_name?: string
+		boot_order?: [...]
 
-	// dictionary of BIOS attributes to update
+		// setting dict of manager services to update
 
-	bios_attributes?: {...}
+		network_protocols?: {...}
 
-	// List of commands to execute on OOB controller
+		// Password for authentication with OOB controller
 
-	command: [..._]
+		password: string
 
-	// User for authentication with OOB controller
+		// The ID of the System, Manager or Chassis to modify
 
-	username: string
+		resource_id?: string
+	}
 }
 
 redfish_info :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	redfish_info: {
 
-	// Base URI of OOB controller
+		// List of commands to execute on OOB controller
 
-	baseuri: string
+		command?: [...]
 
-	// List of categories to execute on OOB controller
+		// Password for authentication with OOB controller
 
-	category?: [..._]
+		password: string
 
-	// List of commands to execute on OOB controller
+		// Timeout in seconds for URL requests to OOB controller
 
-	command?: [..._]
+		timeout?: int
 
-	// Password for authentication with OOB controller
+		// User for authentication with OOB controller
 
-	password: string
+		username: string
 
-	// Timeout in seconds for URL requests to OOB controller
+		// Base URI of OOB controller
 
-	timeout?: int
+		baseuri: string
 
-	// User for authentication with OOB controller
+		// List of categories to execute on OOB controller
 
-	username: string
+		category?: [...]
+	}
 }
 
 wakeonlan :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	wakeonlan: {
 
-	// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
+		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
 
-	broadcast?: string
+		broadcast?: string
 
-	// MAC address to send Wake-on-LAN broadcast packet for.
+		// MAC address to send Wake-on-LAN broadcast packet for.
 
-	mac: string
+		mac: string
 
-	// UDP port to use for magic Wake-on-LAN packet.
+		// UDP port to use for magic Wake-on-LAN packet.
 
-	port?: string
+		port?: string
+	}
+}
+
+idrac_redfish_command :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	idrac_redfish_command: {
+
+		// Base URI of OOB controller
+
+		baseuri: string
+
+		// Category to execute on OOB controller
+
+		category: string
+
+		// List of commands to execute on OOB controller
+
+		command: [...]
+
+		// Password for authentication with OOB controller
+
+		password: string
+
+		// The ID of the System, Manager or Chassis to modify
+
+		resource_id?: string
+
+		// Timeout in seconds for URL requests to OOB controller
+
+		timeout?: int
+
+		// User for authentication with OOB controller
+
+		username: string
+	}
+}
+
+idrac_redfish_config :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	idrac_redfish_config: {
+
+		// List of commands to execute on iDRAC
+		// I(SetManagerAttributes), I(SetLifecycleControllerAttributes) and I(SetSystemAttributes) are mutually exclusive commands when C(category) is I(Manager)
+
+		command: [...]
+
+		// Password for authentication with iDRAC
+
+		password: string
+
+		// The ID of the System, Manager or Chassis to modify
+
+		resource_id?: string
+
+		// Timeout in seconds for URL requests to iDRAC controller
+
+		timeout?: int
+
+		// User for authentication with iDRAC
+
+		username: string
+
+		// Base URI of iDRAC
+
+		baseuri: string
+
+		// Category to execute on iDRAC
+
+		category: string
+
+		// dictionary of iDRAC attribute name and value pairs to update
+
+		manager_attributes?: {...}
+
+		// (deprecated) name of iDRAC attribute to update
+
+		manager_attribute_name?: string
+
+		// (deprecated) value of iDRAC attribute to update
+
+		manager_attribute_value?: string
+	}
 }

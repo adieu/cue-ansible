@@ -1,71 +1,83 @@
 package ingate
 
 ig_config :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	ig_config: {
 
-	// Delete all rows in a table or a specific row.
+		// Reset the preliminary configuration to its factory defaults.
 
-	delete?: bool
+		factory?: bool
 
-	// Download the configuration database from the unit.
+		// Where in the filesystem to store the downloaded configuration. Refer to the C(download) option.
 
-	download?: bool
+		path?: string
 
-	// Modify a row in a table.
+		// Get rowid(s) from a table where the columns match.
 
-	modify?: bool
+		return_rowid?: bool
 
-	// Reset the preliminary configuration.
+		// The name of the table.
 
-	revert?: bool
+		table?: string
 
-	// Add a row to a table.
+		// Download the configuration database from the unit.
 
-	add?: bool
+		download?: bool
 
-	// A row id.
+		// Delete all rows in a table or a specific row.
 
-	rowid?: int
+		delete?: bool
 
-	// If the downloaded configuration should be stored on disk. Refer to the C(download) option.
+		// Reset the preliminary configuration.
 
-	store_download?: bool
+		revert?: bool
 
-	// Get rowid(s) from a table where the columns match.
+		// A row id.
 
-	return_rowid?: bool
+		rowid?: int
 
-	// Expect no response when storing the preliminary configuration. Refer to the C(store) option.
+		// Add a row to a table.
 
-	no_response?: bool
+		add?: bool
 
-	// Reset the preliminary configuration to its factory defaults.
+		// Modify a row in a table.
 
-	factory?: bool
+		modify?: bool
 
-	// The name of the file to store the downloaded configuration in. Refer to the C(download) option.
+		// Expect no response when storing the preliminary configuration. Refer to the C(store) option.
 
-	filename?: string
+		no_response?: bool
 
-	// Return all rows in a table or a specific row.
+		// Store the preliminary configuration.
 
-	get?: bool
+		store?: bool
 
-	// Where in the filesystem to store the downloaded configuration. Refer to the C(download) option.
+		// If the downloaded configuration should be stored on disk. Refer to the C(download) option.
 
-	path?: string
+		store_download?: bool
 
-	// Store the preliminary configuration.
+		// The name of the file to store the downloaded configuration in. Refer to the C(download) option.
 
-	store?: bool
+		filename?: string
 
-	// The name of the table.
+		// Return all rows in a table or a specific row.
 
-	table?: string
+		get?: bool
 
-	// A dict containing column names/values.
+		// A dict containing column names/values.
 
-	columns?: string
+		columns?: string
+	}
 }
 
 ig_unit_information :: {
+	notify?: string | [...string]
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	ig_unit_information: {
+	}
 }

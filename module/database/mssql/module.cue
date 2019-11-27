@@ -1,36 +1,42 @@
 package mssql
 
 mssql_db :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	mssql_db: {
 
-	// The password used to authenticate with
+		// The database state
 
-	login_password?: string
+		state?: string
 
-	// Port of the MSSQL server. Requires login_host be defined as other than localhost if login_port is used
+		// Location, on the remote host, of the dump file to read from or write to. Uncompressed SQL files (C(.sql)) files are supported.
 
-	login_port?: string
+		target?: string
 
-	// The username used to authenticate with
+		// Automatically commit the change only if the import succeed. Sometimes it is necessary to use autocommit=true, since some content can't be changed within a transaction.
 
-	login_user?: string
+		autocommit?: bool
 
-	// name of the database to add or remove
+		// Host running the database
 
-	name: string
+		login_host?: string
 
-	// The database state
+		// The password used to authenticate with
 
-	state?: string
+		login_password?: string
 
-	// Location, on the remote host, of the dump file to read from or write to. Uncompressed SQL files (C(.sql)) files are supported.
+		// Port of the MSSQL server. Requires login_host be defined as other than localhost if login_port is used
 
-	target?: string
+		login_port?: string
 
-	// Automatically commit the change only if the import succeed. Sometimes it is necessary to use autocommit=true, since some content can't be changed within a transaction.
+		// The username used to authenticate with
 
-	autocommit?: bool
+		login_user?: string
 
-	// Host running the database
+		// name of the database to add or remove
 
-	login_host?: string
+		name: string
+	}
 }
