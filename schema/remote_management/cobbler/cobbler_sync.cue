@@ -49,8 +49,8 @@ module: cobbler_sync: {
 	author: [
 		"Dag Wieers (@dagwieers)",
 	]
-	todo:
-		null, notes: [
+	todo: null
+	notes: [
 		"Concurrently syncing Cobbler is bound to fail with weird errors.",
 		"On python 2.7.8 and older (i.e. on RHEL7) you may need to tweak the python behaviour to disable certificate validation. More information at L(Certificate verification in Python standard library HTTP clients,https://access.redhat.com/articles/2039753).",
 	]

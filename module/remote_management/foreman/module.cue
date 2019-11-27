@@ -1,6 +1,41 @@
 package foreman
 
+foreman :: {
+
+	// The Foreman resource that the action will be performed on (e.g. organization, host).
+
+	entity: string
+
+	// Parameters associated to the entity resource to set or edit in dictionary format (e.g. name, description).
+
+	params: string
+
+	// Password for user accessing Foreman server.
+
+	password: string
+
+	// URL of Foreman server.
+
+	server_url: string
+
+	// Username on Foreman server.
+
+	username: string
+
+	// Whether to verify an SSL connection to Foreman server.
+
+	verify_ssl?: bool
+}
+
 katello :: {
+
+	// action associated to the entity resource to set or edit in dictionary format.
+	// Possible Action in relation to Entitys.
+	// sync (available when entity=product or entity=repository)
+	// publish (available when entity=content_view)
+	// promote (available when entity=content_view)
+
+	action?: string
 
 	// The Foreman resource that the action will be performed on (e.g. organization, host).
 
@@ -50,14 +85,6 @@ katello :: {
 	// verify the ssl/https connection (e.g for a valid certificate)
 
 	verify_ssl?: bool
-
-	// action associated to the entity resource to set or edit in dictionary format.
-	// Possible Action in relation to Entitys.
-	// sync (available when entity=product or entity=repository)
-	// publish (available when entity=content_view)
-	// promote (available when entity=content_view)
-
-	action?: string
 }
 
 wakeonlan :: {
@@ -73,31 +100,4 @@ wakeonlan :: {
 	// UDP port to use for magic Wake-on-LAN packet.
 
 	port?: string
-}
-
-foreman :: {
-
-	// Password for user accessing Foreman server.
-
-	password: string
-
-	// URL of Foreman server.
-
-	server_url: string
-
-	// Username on Foreman server.
-
-	username: string
-
-	// Whether to verify an SSL connection to Foreman server.
-
-	verify_ssl?: bool
-
-	// The Foreman resource that the action will be performed on (e.g. organization, host).
-
-	entity: string
-
-	// Parameters associated to the entity resource to set or edit in dictionary format (e.g. name, description).
-
-	params: string
 }

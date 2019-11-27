@@ -103,8 +103,7 @@ module: fortios_vpn_ipsec_manualkey: {
 						"Authentication algorithm. Must be the same for both ends of the tunnel.",
 					]
 					type: "str"
-					choices: [
-						null,
+					choices: [ null,
 						"md5",
 						"sha1",
 						"sha256",
@@ -129,8 +128,7 @@ module: fortios_vpn_ipsec_manualkey: {
 						"Encryption algorithm. Must be the same for both ends of the tunnel.",
 					]
 					type: "str"
-					choices: [
-						null,
+					choices: [ null,
 						"des",
 					]
 				}

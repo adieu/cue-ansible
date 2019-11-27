@@ -1,5 +1,24 @@
 package infinidat
 
+infini_vol :: {
+
+	// Volume Name
+
+	name: string
+
+	// Pool that volume will reside on
+
+	pool: string
+
+	// Volume size in MB, GB or TB units. See examples.
+
+	size?: string
+
+	// Creates/Modifies volume when present or removes when absent
+
+	state?: string
+}
+
 infini_export :: {
 
 	// List of dictionaries with client entries. See examples. Check infini_export_client module to modify individual NFS client entries for export.
@@ -67,10 +86,6 @@ infini_fs :: {
 
 infini_host :: {
 
-	// Host Name
-
-	name: string
-
 	// Creates/Modifies Host when present or removes when absent
 
 	state?: string
@@ -82,6 +97,10 @@ infini_host :: {
 	// List of wwns of the host
 
 	wwns?: string
+
+	// Host Name
+
+	name: string
 }
 
 infini_pool :: {
@@ -105,23 +124,4 @@ infini_pool :: {
 	// Pool Name
 
 	name: string
-}
-
-infini_vol :: {
-
-	// Volume Name
-
-	name: string
-
-	// Pool that volume will reside on
-
-	pool: string
-
-	// Volume size in MB, GB or TB units. See examples.
-
-	size?: string
-
-	// Creates/Modifies volume when present or removes when absent
-
-	state?: string
 }

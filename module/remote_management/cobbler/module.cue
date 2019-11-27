@@ -31,34 +31,9 @@ cobbler_sync :: {
 
 cobbler_system :: {
 
-	// The name or IP address of the Cobbler system.
-
-	host?: string
-
-	// A list of dictionaries containing interface options.
-
-	interfaces?: string
-
-	// The system name to manage.
-
-	name?: string
-
-	// The password to log in to Cobbler.
-
-	password: string
-
 	// Whether the system should be present, absent or a query is made.
 
 	state?: string
-
-	// Sync on changes.
-	// Concurrently syncing Cobbler is bound to fail.
-
-	sync?: bool
-
-	// If C(no), an HTTP connection will be used instead of the default HTTPS connection.
-
-	use_ssl?: bool
 
 	// The username to log in to Cobbler.
 
@@ -69,6 +44,14 @@ cobbler_system :: {
 
 	validate_certs?: bool
 
+	// The name or IP address of the Cobbler system.
+
+	host?: string
+
+	// The system name to manage.
+
+	name?: string
+
 	// Port number to be used for REST connection.
 	// The default value depends on parameter C(use_ssl).
 
@@ -77,6 +60,23 @@ cobbler_system :: {
 	// A dictionary with system properties.
 
 	properties?: string
+
+	// A list of dictionaries containing interface options.
+
+	interfaces?: string
+
+	// The password to log in to Cobbler.
+
+	password: string
+
+	// Sync on changes.
+	// Concurrently syncing Cobbler is bound to fail.
+
+	sync?: bool
+
+	// If C(no), an HTTP connection will be used instead of the default HTTPS connection.
+
+	use_ssl?: bool
 }
 
 wakeonlan :: {

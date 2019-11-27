@@ -22,6 +22,10 @@ onepassword_info :: {
 
 opendj_backendprop :: {
 
+	// The name of the backend on which the property needs to be updated.
+
+	backend: string
+
 	// The Admin port on which the OpenDJ instance is available.
 
 	port: string
@@ -30,10 +34,6 @@ opendj_backendprop :: {
 
 	state?: string
 
-	// The name of the backend on which the property needs to be updated.
-
-	backend: string
-
 	// The hostname of the OpenDJ server.
 
 	hostname: string
@@ -41,14 +41,6 @@ opendj_backendprop :: {
 	// The configuration setting to update.
 
 	name: string
-
-	// The username to connect to.
-
-	username?: string
-
-	// The value for the configuration item.
-
-	value: string
 
 	// The path to the bin directory of OpenDJ.
 
@@ -63,4 +55,12 @@ opendj_backendprop :: {
 	// Either password or passwordfile is needed.
 
 	passwordfile?: string
+
+	// The username to connect to.
+
+	username?: string
+
+	// The value for the configuration item.
+
+	value: string
 }

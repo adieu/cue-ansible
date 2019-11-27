@@ -1,25 +1,5 @@
 package vmware_httpapi
 
-vmware_appliance_access_info :: {
-
-	// Method of access to get to appliance
-	// If not specified, all modes will be returned.
-
-	access_mode?: string
-}
-
-vmware_appliance_health_info :: {
-
-	// A subsystem of the VCSA.
-
-	subsystem?: string
-
-	// A VCSA asset that has associated health metrics.
-	// Valid choices have yet to be determined at this time.
-
-	asset?: string
-}
-
 vmware_cis_category_info :: {
 
 	// The object id of the category.
@@ -67,4 +47,24 @@ vmware_core_info :: {
 	// Valid choices are datacenter, cluster, datastore, folder, host, network, resource_pool, virtual_machine, content_library, local_library, subscribed_library, content_type, tag, category.
 
 	object_type?: string
+}
+
+vmware_appliance_access_info :: {
+
+	// Method of access to get to appliance
+	// If not specified, all modes will be returned.
+
+	access_mode?: string
+}
+
+vmware_appliance_health_info :: {
+
+	// A VCSA asset that has associated health metrics.
+	// Valid choices have yet to be determined at this time.
+
+	asset?: string
+
+	// A subsystem of the VCSA.
+
+	subsystem?: string
 }

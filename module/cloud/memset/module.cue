@@ -1,5 +1,16 @@
 package memset
 
+memset_memstore_info :: {
+
+	// The API key obtained from the Memset control panel.
+
+	api_key: string
+
+	// The Memstore product name (i.e. C(mstestyaa1)).
+
+	name: string
+}
+
 memset_server_info :: {
 
 	// The API key obtained from the Memset control panel.
@@ -55,9 +66,21 @@ memset_zone_domain :: {
 
 memset_zone_record :: {
 
-	// The name of the zone to which to add the record to.
+	// C(SRV) and C(TXT) record priority, in the range 0 > 999 (inclusive).
 
-	zone: string
+	priority?: string
+
+	// If set then the current domain is added onto the address field for C(CNAME), C(MX), C(NS) and C(SRV)record types.
+
+	relative?: bool
+
+	// The record's TTL in seconds (will inherit zone's TTL if not explicitly set). This must be a valid int from U(https://www.memset.com/apidocs/methods_dns.html#dns.zone_record_create).
+
+	ttl?: string
+
+	// The address for this record (can be IP or text string depending on record type).
+
+	address: string
 
 	// The API key obtained from the Memset control panel.
 
@@ -67,10 +90,6 @@ memset_zone_record :: {
 
 	record?: string
 
-	// If set then the current domain is added onto the address field for C(CNAME), C(MX), C(NS) and C(SRV)record types.
-
-	relative?: bool
-
 	// Indicates desired state of resource.
 
 	state?: string
@@ -79,37 +98,18 @@ memset_zone_record :: {
 
 	type: string
 
-	// The address for this record (can be IP or text string depending on record type).
+	// The name of the zone to which to add the record to.
 
-	address: string
-
-	// C(SRV) and C(TXT) record priority, in the range 0 > 999 (inclusive).
-
-	priority?: string
-
-	// The record's TTL in seconds (will inherit zone's TTL if not explicitly set). This must be a valid int from U(https://www.memset.com/apidocs/methods_dns.html#dns.zone_record_create).
-
-	ttl?: string
+	zone: string
 }
 
 memset_dns_reload :: {
 
-	// The API key obtained from the Memset control panel.
-
-	api_key: string
-
 	// Boolean value, if set will poll the reload job's status and return when the job has completed (unless the 30 second timeout is reached first). If the timeout is reached then the task will not be marked as failed, but stderr will indicate that the polling failed.
 
 	poll?: bool
-}
-
-memset_memstore_info :: {
 
 	// The API key obtained from the Memset control panel.
 
 	api_key: string
-
-	// The Memstore product name (i.e. C(mstestyaa1)).
-
-	name: string
 }

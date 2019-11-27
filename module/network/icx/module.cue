@@ -1,292 +1,67 @@
 package icx
 
-icx_banner :: {
+icx_interface :: {
 
-	// Specifies whether or not the motd configuration should accept the require-enter-key
-
-	enterkey?: bool
-
-	// Specifies whether or not the configuration is present in the current devices active running configuration.
-
-	state?: string
-
-	// The banner text that should be present in the remote device running configuration. This argument accepts a multiline string, with no empty lines.
-
-	text?: string
-
-	// Specifies which banner should be configured on the remote device.
-
-	banner: string
-
-	// Check running configuration. This can be set as environment variable. Module will use environment variable value(default:True), unless it is overridden, by specifying it as module parameter.
-
-	check_running_config?: bool
-}
-
-icx_command :: {
-
-	// Configures the interval in seconds to wait between retries of the command. If the command does not pass the specified conditions, the interval indicates how long to wait before trying the command again.
-
-	interval?: int
-
-	// The I(match) argument is used in conjunction with the I(wait_for) argument to specify the match policy.  Valid values are C(all) or C(any).  If the value is set to C(all) then all conditionals in the wait_for must be satisfied.  If the value is set to C(any) then only one of the values must be satisfied.
-
-	match?: string
-
-	// Specifies the number of times a command should by tried before it is considered failed. The command is run on the target device every retry and evaluated against the I(wait_for) conditions.
-
-	retries?: int
-
-	// List of conditions to evaluate against the output of the command. The task will wait for each condition to be true before moving forward. If the conditional is not true within the configured number of retries, the task fails. See examples.
-
-	wait_for?: [..._]
-
-	// List of commands to send to the remote ICX device over the configured provider. The resulting output from the command is returned. If the I(wait_for) argument is provided, the module is not returned until the condition is satisfied or the number of retries has expired. If a command sent to the device requires answering a prompt, checkall and newline if multiple prompts, it is possible to pass a dict containing I(command), I(answer), I(prompt), I(check_all) and I(newline).Common answers are 'y' or "\r" (carriage return, must be double quotes). See examples.
-
-	commands: [..._]
-}
-
-icx_config :: {
-
-	// This argument will cause the module to create a full backup of the current C(running-config) from the remote device before any changes are made.  The backup file is written to the C(backup) folder in the playbook root directory or role root directory, if playbook is part of an ansible role. If the directory does not exist, it is created.
-
-	backup?: bool
-
-	// When using the C(ansible-playbook --diff) command line argument the module can generate diffs against different sources.
-	// When this option is configure as I(startup), the module will return the diff of the running-config against the configuration.
-	// When this option is configured as I(intended), the module will return the diff of the running-config against the configuration provided in the C(intended_config) argument.
-	// When this option is configured as I(running), the module will return the before and after diff of the running-config with respect to any changes made to the device configuration.
-
-	diff_against?: string
-
-	// The module, by default, will connect to the remote device and retrieve the current running-config to use as a base for comparing against the contents of source.  There are times when it is not desirable to have the task get the current running-config for every task in a playbook.  The I(running_config) argument allows the implementer to pass in the configuration to use as the base config for comparison.
-
-	running_config?: string
-
-	// The ordered set of commands to append to the end of the command stack if a change needs to be made.  Just like with I(before) this allows the playbook designer to append a set of commands to be executed after the command set.
-
-	after?: [..._]
-
-	// The ordered set of commands to push on to the command stack if a change needs to be made.  This allows the playbook designer the opportunity to perform configuration commands prior to pushing any changes without affecting how the set of commands are matched against the system.
-
-	before?: [..._]
-
-	// The C(intended_config) provides the master configuration that the node should conform to and is used to check the final running-config against.   This argument will not modify any settings on the remote device and is strictly used to check the compliance of the current device's configuration against.  When specifying this argument, the task should also modify the C(diff_against) value and set it to I(intended).
-
-	intended_config?: string
-
-	// When changes are made to the device running-configuration, the changes are not copied to non-volatile storage by default.  Using this argument will change that before.  If the argument is set to I(always), then the running-config will always be copied to the start-up configuration and the I(modified) flag will always be set to True.  If the argument is set to I(modified), then the running-config will only be copied to the start-up configuration if it has changed since the last save to configuration.  If the argument is set to I(never), the running-config will never be copied to the configuration.  If the argument is set to I(changed), then the running-config will only be copied to the configuration if the task has made a change.
-
-	save_when?: string
-
-	// This argument specifies whether or not to collect all defaults when getting the remote device running config.  When enabled, the module will get the current config by issuing the command C(show running-config all).
-
-	defaults?: bool
-
-	// Use this argument to specify one or more lines that should be ignored during the diff.  This is used for lines in the configuration that are automatically updated by the system.  This argument takes a list of regular expressions or exact line matches.
-
-	diff_ignore_lines?: [..._]
-
-	// Instructs the module on the way to perform the matching of the set of commands against the current device config.  If match is set to I(line), commands are matched line by line.  If match is set to I(strict), command lines are matched with respect to position.  If match is set to I(exact), command lines must be an equal match.  Finally, if match is set to I(none), the module will not attempt to compare the source configuration with the running configuration on the remote device.
-
-	match?: string
-
-	// This argument is used when pushing a multiline configuration element to the ICX device.  It specifies the character to use as the delimiting character.  This only applies to the configuration action.
-
-	multiline_delimiter?: string
-
-	// The ordered set of parents that uniquely identify the section or hierarchy the commands should be checked against.  If the parents argument is omitted, the commands are checked against the set of top level or global commands.
-
-	parents?: [..._]
-
-	// Specifies the source path to the file that contains the configuration or configuration template to load.  The path to the source file can either be the full path on the Ansible control host or a relative path from the playbook or role root directory.  This argument is mutually exclusive with I(lines), I(parents).
-
-	src?: string
-
-	// The ordered set of commands that should be configured in the section.  The commands must be the exact same commands as found in the device running-config.  Be sure to note the configuration command syntax as some commands are automatically modified by the device config parser.
-
-	lines?: [..._]
-
-	// Instructs the module on the way to perform the configuration on the device.  If the replace argument is set to I(line) then the modified lines are pushed to the device in configuration mode.  If the replace argument is set to I(block) then the entire command block is pushed to the device in configuration mode if any line is not correct.
-
-	replace?: string
-}
-
-icx_facts :: {
-
-	// When supplied, this argument will restrict the facts collected to a given subset.  Possible values for this argument include all, hardware, config, and interfaces.  Can specify a list of values to include a larger subset.  Values can also be used with an initial C(M(!)) to specify that a specific subset should not be collected.
-
-	gather_subset?: [..._]
-}
-
-icx_l3_interface :: {
-
-	// Check running configuration. This can be set as environment variable. Module will use environment variable value(default:True), unless it is overridden, by specifying it as module parameter.
-
-	check_running_config?: bool
-
-	// Name of the Layer-3 interface to be configured eg. GigabitEthernet0/2, ve 10, ethernet 1/1/1
+	// Name of the Interface.
 
 	name?: string
 
-	// Replaces the configured primary IP address on the interface.
+	// Check the operational state of given interface C(name) for CDP/LLDP neighbor.
+	// The following suboptions are available.
 
-	replace?: string
+	neighbors?: [..._]
 
-	// State of the Layer-3 interface configuration. It indicates if the configuration should be present or absent on remote device.
+	// Inline power on Power over Ethernet (PoE) ports.
 
-	state?: string
+	power?: {...}
 
-	// List of Layer-3 interfaces definitions. Each of the entry in aggregate list should define name of interface C(name) and a optional C(ipv4) or C(ipv6) address.
-
-	aggregate?: [..._]
-
-	// IPv4 address to be set for the Layer-3 interface mentioned in I(name) option. The address format is <ipv4 address>/<mask>, the mask is number in range 0-32 eg. 192.168.0.1/24
-
-	ipv4?: string
-
-	// IPv6 address to be set for the Layer-3 interface mentioned in I(name) option. The address format is <ipv6 address>/<mask>, the mask is number in range 0-128 eg. fd5d:12c9:2201:1::1/64.
-
-	ipv6?: string
-
-	// Specifies if ipv4 address should be dynamic/advertise to ospf/not advertise to ospf. This should be specified only if ipv4 address is configured and if it is not secondary IP address.
-
-	mode?: string
-
-	// Specifies that the configured address is a secondary IP address. If this keyword is omitted, the configured address is the primary IP address.
-
-	secondary?: string
-}
-
-icx_linkagg :: {
-
-	// Channel-group number for the port-channel Link aggregation group. Range 1-255 or set to 'auto' to auto-generates a LAG ID
-
-	group?: int
-
-	// List of port members or ranges of the link aggregation group.
-
-	members?: [..._]
-
-	// Mode of the link aggregation group.
-
-	mode?: string
-
-	// Name of the LAG
-
-	name?: string
-
-	// Purge links not defined in the I(aggregate) parameter.
-
-	purge?: bool
-
-	// State of the link aggregation group.
+	// State of the Interface configuration, C(up) means present and operationally up and C(down) means present and operationally C(down)
 
 	state?: string
 
-	// List of link aggregation definitions.
-
-	aggregate?: [..._]
-
-	// Check running configuration. This can be set as environment variable. Module will use environment variable value(default:True), unless it is overridden, by specifying it as module parameter.
-
-	check_running_config?: bool
-}
-
-icx_static_route :: {
-
-	// Next hop IP of the static route.
-
-	next_hop?: string
-
-	// Network prefix of the static route.
-
-	prefix?: string
-
-	// Purge routes not defined in the I(aggregate) parameter.
-
-	purge?: bool
-
-	// State of the static route configuration.
-
-	state?: string
-
-	// Admin distance of the static route. Range is 1 to 255.
-
-	admin_distance?: int
-
-	// List of static route definitions.
-
-	aggregate?: [..._]
-
-	// Check running configuration. This can be set as environment variable. Module will use environment variable value(default:True), unless it is overridden, by specifying it as module parameter.
+	// Check running configuration. This can be set as environment variable.
+	// Module will use environment variable value(default:True), unless it is overridden, by specifying it as module parameter.
 
 	check_running_config?: bool
 
-	// Network prefix mask of the static route.
+	// Time in seconds to wait before checking for the operational state on remote device. This wait is applicable for operational state argument which are I(state) with values C(up)/C(down), I(tx_rate) and I(rx_rate).
 
-	mask?: string
-}
+	delay?: int
 
-icx_copy :: {
+	// Interface link status
 
-	// The port number of the remote host. Default values will be selected based on protocol type. Default scp:22, http:443
+	enabled?: bool
 
-	remote_port?: string
+	// Receiver rate in bits per second (bps).
+	// This is state check parameter only.
+	// Supports conditionals, see L(Conditionals in Networking Modules,../network/user_guide/network_working_with_command_output.html)
 
-	// IP address of the remote server
+	rx_rate?: string
 
-	remote_server: string
+	// Interface link speed/duplex
 
-	// remote username to be used for scp login.
+	speed?: string
 
-	remote_user?: string
+	// enable/disable stp for the interface
 
-	// remote password to be used for scp login.
+	stp?: bool
 
-	remote_pass?: string
+	// Transmit rate in bits per second (bps).
+	// This is state check parameter only.
+	// Supports conditionals, see L(Conditionals in Networking Modules,../network/user_guide/network_working_with_command_output.html)
 
-	// Data transfer protocol to be used
+	tx_rate?: string
 
-	protocol: string
+	// List of Interfaces definitions.
 
-	// public key type to be used to login to scp server
+	aggregate?: [..._]
 
-	public_key?: string
+	// Name of the description.
 
-	// The name or path of the remote file/resource to be uploaded or downloaded.
-
-	remote_filename: string
-
-	// Name of the resource to be uploaded. Mutually exclusive with download.
-
-	upload?: string
-
-	// Name of the resource to be downloaded. Mutually exclusive with upload.
-
-	download?: string
-}
-
-icx_lldp :: {
-
-	// Check running configuration. This can be set as environment variable. Module will use environment variable value(default:True), unless it is overridden, by specifying it as module parameter.
-
-	check_running_config?: bool
-
-	// specify interfaces
-
-	interfaces?: [..._]
-
-	// Enables the receipt and transmission of Link Layer Discovery Protocol (LLDP) globally.
-
-	state?: string
+	description?: string
 }
 
 icx_logging :: {
-
-	// Check running configuration. This can be set as environment variable. Module will use environment variable value(default:True), unless it is overridden, by specifying it as module parameter.
-
-	check_running_config?: bool
 
 	// Destination of the logs.
 
@@ -315,108 +90,8 @@ icx_logging :: {
 	// List of logging definitions.
 
 	aggregate?: [..._]
-}
-
-icx_user :: {
-
-	// The set of username objects to be configured on the remote ICX device. The list entries can either be the username or a hash of username and properties. This argument is mutually exclusive with the C(name) argument.
-
-	aggregate?: [..._]
 
 	// Check running configuration. This can be set as environment variable. Module will use environment variable value(default:True), unless it is overridden, by specifying it as module parameter.
-
-	check_running_config?: bool
-
-	// This  argument will instruct the module when to change the password. When set to C(always), the password will always be updated in the device and when set to C(on_create) the password will be updated only if the username is created.
-
-	update_password?: string
-
-	// If set to true module will remove any previously configured usernames on the device except the current defined set of users.
-
-	purge?: bool
-
-	// Configures the state of the username definition as it relates to the device operational configuration. When set to I(present), the username(s) should be configured in the device active configuration and when set to I(absent) the username(s) should not be in the device active configuration
-
-	state?: string
-
-	// This parameter indicates the time the file's access time should be set to. Should be preserve when no modification is required, YYYYMMDDHHMM.SS when using default time format, or now. Default is None meaning that preserve is the default for state=[file,directory,link,hard] and now is default for state=touch
-
-	access_time?: string
-
-	// The password to be configured on the ICX device.
-
-	configured_password?: string
-
-	// The username to be configured on the ICX device.
-
-	name: string
-
-	// Defines the username without assigning a password. This will allow the user to login to the system without being authenticated by a password.
-
-	nopassword?: bool
-
-	// The privilege level to be granted to the user
-
-	privilege?: string
-}
-
-icx_interface :: {
-
-	// Interface link status
-
-	enabled?: bool
-
-	// Receiver rate in bits per second (bps).
-	// This is state check parameter only.
-	// Supports conditionals, see L(Conditionals in Networking Modules,../network/user_guide/network_working_with_command_output.html)
-
-	rx_rate?: string
-
-	// Interface link speed/duplex
-
-	speed?: string
-
-	// State of the Interface configuration, C(up) means present and operationally up and C(down) means present and operationally C(down)
-
-	state?: string
-
-	// Transmit rate in bits per second (bps).
-	// This is state check parameter only.
-	// Supports conditionals, see L(Conditionals in Networking Modules,../network/user_guide/network_working_with_command_output.html)
-
-	tx_rate?: string
-
-	// Time in seconds to wait before checking for the operational state on remote device. This wait is applicable for operational state argument which are I(state) with values C(up)/C(down), I(tx_rate) and I(rx_rate).
-
-	delay?: int
-
-	// Name of the description.
-
-	description?: string
-
-	// Name of the Interface.
-
-	name?: string
-
-	// Check the operational state of given interface C(name) for CDP/LLDP neighbor.
-	// The following suboptions are available.
-
-	neighbors?: [..._]
-
-	// Inline power on Power over Ethernet (PoE) ports.
-
-	power?: {...}
-
-	// enable/disable stp for the interface
-
-	stp?: bool
-
-	// List of Interfaces definitions.
-
-	aggregate?: [..._]
-
-	// Check running configuration. This can be set as environment variable.
-	// Module will use environment variable value(default:True), unless it is overridden, by specifying it as module parameter.
 
 	check_running_config?: bool
 }
@@ -452,7 +127,78 @@ icx_system :: {
 	aaa_servers?: [..._]
 }
 
+icx_user :: {
+
+	// Configures the state of the username definition as it relates to the device operational configuration. When set to I(present), the username(s) should be configured in the device active configuration and when set to I(absent) the username(s) should not be in the device active configuration
+
+	state?: string
+
+	// This  argument will instruct the module when to change the password. When set to C(always), the password will always be updated in the device and when set to C(on_create) the password will be updated only if the username is created.
+
+	update_password?: string
+
+	// This parameter indicates the time the file's access time should be set to. Should be preserve when no modification is required, YYYYMMDDHHMM.SS when using default time format, or now. Default is None meaning that preserve is the default for state=[file,directory,link,hard] and now is default for state=touch
+
+	access_time?: string
+
+	// The set of username objects to be configured on the remote ICX device. The list entries can either be the username or a hash of username and properties. This argument is mutually exclusive with the C(name) argument.
+
+	aggregate?: [..._]
+
+	// The password to be configured on the ICX device.
+
+	configured_password?: string
+
+	// The username to be configured on the ICX device.
+
+	name: string
+
+	// Check running configuration. This can be set as environment variable. Module will use environment variable value(default:True), unless it is overridden, by specifying it as module parameter.
+
+	check_running_config?: bool
+
+	// Defines the username without assigning a password. This will allow the user to login to the system without being authenticated by a password.
+
+	nopassword?: bool
+
+	// The privilege level to be granted to the user
+
+	privilege?: string
+
+	// If set to true module will remove any previously configured usernames on the device except the current defined set of users.
+
+	purge?: bool
+}
+
 icx_vlan :: {
+
+	// Name of the VLAN.
+
+	name?: string
+
+	// Enable spanning-tree 802-1w/rstp for this vlan.
+
+	stp?: {...}
+
+	// Check running configuration. This can be set as environment variable. Module will use environment variable value(default:True), unless it is overridden, by specifying it as module parameter.
+
+	check_running_config?: bool
+
+	// Delay the play should wait to check for declarative intent params values.
+
+	delay?: int
+
+	// Enables dynamic ARP inspection on a VLAN.
+
+	ip_arp_inspection?: bool
+
+	// Enables DHCP snooping on a VLAN.
+
+	ip_dhcp_snooping?: bool
+
+	// List of ethernet ports or LAGS to be added as trunk(tagged) ports to the vlan. To add a range of ports use 'to' keyword. See the example.
+
+	tagged?: {...}
 
 	// List of VLANs definitions.
 
@@ -466,49 +212,268 @@ icx_vlan :: {
 
 	interfaces?: {...}
 
-	// Name of the VLAN.
+	// ID of the VLAN. Range 1-4094.
 
-	name?: string
-
-	// Purge VLANs not defined in the I(aggregate) parameter.
-
-	purge?: bool
-
-	// Enables dynamic ARP inspection on a VLAN.
-
-	ip_arp_inspection?: bool
-
-	// Enables DHCP snooping on a VLAN.
-
-	ip_dhcp_snooping?: bool
-
-	// State of the VLAN configuration.
-
-	state?: string
-
-	// Enable spanning-tree 802-1w/rstp for this vlan.
-
-	stp?: {...}
-
-	// List of ethernet ports or LAGS to be added as trunk(tagged) ports to the vlan. To add a range of ports use 'to' keyword. See the example.
-
-	tagged?: {...}
+	vlan_id: int
 
 	// This is a intent option and checks the operational state of  given vlan C(name) for associated tagged ports and lags. If the value in the C(associated_tagged) does not match with the operational state of vlan interfaces on device it will result in failure.
 
 	associated_tagged?: [..._]
 
+	// Purge VLANs not defined in the I(aggregate) parameter.
+
+	purge?: bool
+
+	// State of the VLAN configuration.
+
+	state?: string
+}
+
+icx_banner :: {
+
+	// Specifies which banner should be configured on the remote device.
+
+	banner: string
+
 	// Check running configuration. This can be set as environment variable. Module will use environment variable value(default:True), unless it is overridden, by specifying it as module parameter.
 
 	check_running_config?: bool
 
-	// Delay the play should wait to check for declarative intent params values.
+	// Specifies whether or not the motd configuration should accept the require-enter-key
 
-	delay?: int
+	enterkey?: bool
 
-	// ID of the VLAN. Range 1-4094.
+	// Specifies whether or not the configuration is present in the current devices active running configuration.
 
-	vlan_id: int
+	state?: string
+
+	// The banner text that should be present in the remote device running configuration. This argument accepts a multiline string, with no empty lines.
+
+	text?: string
+}
+
+icx_config :: {
+
+	// This argument specifies whether or not to collect all defaults when getting the remote device running config.  When enabled, the module will get the current config by issuing the command C(show running-config all).
+
+	defaults?: bool
+
+	// The C(intended_config) provides the master configuration that the node should conform to and is used to check the final running-config against.   This argument will not modify any settings on the remote device and is strictly used to check the compliance of the current device's configuration against.  When specifying this argument, the task should also modify the C(diff_against) value and set it to I(intended).
+
+	intended_config?: string
+
+	// Instructs the module on the way to perform the matching of the set of commands against the current device config.  If match is set to I(line), commands are matched line by line.  If match is set to I(strict), command lines are matched with respect to position.  If match is set to I(exact), command lines must be an equal match.  Finally, if match is set to I(none), the module will not attempt to compare the source configuration with the running configuration on the remote device.
+
+	match?: string
+
+	// Instructs the module on the way to perform the configuration on the device.  If the replace argument is set to I(line) then the modified lines are pushed to the device in configuration mode.  If the replace argument is set to I(block) then the entire command block is pushed to the device in configuration mode if any line is not correct.
+
+	replace?: string
+
+	// This argument will cause the module to create a full backup of the current C(running-config) from the remote device before any changes are made.  The backup file is written to the C(backup) folder in the playbook root directory or role root directory, if playbook is part of an ansible role. If the directory does not exist, it is created.
+
+	backup?: bool
+
+	// The ordered set of commands to push on to the command stack if a change needs to be made.  This allows the playbook designer the opportunity to perform configuration commands prior to pushing any changes without affecting how the set of commands are matched against the system.
+
+	before?: [..._]
+
+	// The module, by default, will connect to the remote device and retrieve the current running-config to use as a base for comparing against the contents of source.  There are times when it is not desirable to have the task get the current running-config for every task in a playbook.  The I(running_config) argument allows the implementer to pass in the configuration to use as the base config for comparison.
+
+	running_config?: string
+
+	// When changes are made to the device running-configuration, the changes are not copied to non-volatile storage by default.  Using this argument will change that before.  If the argument is set to I(always), then the running-config will always be copied to the start-up configuration and the I(modified) flag will always be set to True.  If the argument is set to I(modified), then the running-config will only be copied to the start-up configuration if it has changed since the last save to configuration.  If the argument is set to I(never), the running-config will never be copied to the configuration.  If the argument is set to I(changed), then the running-config will only be copied to the configuration if the task has made a change.
+
+	save_when?: string
+
+	// This argument is used when pushing a multiline configuration element to the ICX device.  It specifies the character to use as the delimiting character.  This only applies to the configuration action.
+
+	multiline_delimiter?: string
+
+	// The ordered set of parents that uniquely identify the section or hierarchy the commands should be checked against.  If the parents argument is omitted, the commands are checked against the set of top level or global commands.
+
+	parents?: [..._]
+
+	// Use this argument to specify one or more lines that should be ignored during the diff.  This is used for lines in the configuration that are automatically updated by the system.  This argument takes a list of regular expressions or exact line matches.
+
+	diff_ignore_lines?: [..._]
+
+	// The ordered set of commands that should be configured in the section.  The commands must be the exact same commands as found in the device running-config.  Be sure to note the configuration command syntax as some commands are automatically modified by the device config parser.
+
+	lines?: [..._]
+
+	// Specifies the source path to the file that contains the configuration or configuration template to load.  The path to the source file can either be the full path on the Ansible control host or a relative path from the playbook or role root directory.  This argument is mutually exclusive with I(lines), I(parents).
+
+	src?: string
+
+	// The ordered set of commands to append to the end of the command stack if a change needs to be made.  Just like with I(before) this allows the playbook designer to append a set of commands to be executed after the command set.
+
+	after?: [..._]
+
+	// When using the C(ansible-playbook --diff) command line argument the module can generate diffs against different sources.
+	// When this option is configure as I(startup), the module will return the diff of the running-config against the configuration.
+	// When this option is configured as I(intended), the module will return the diff of the running-config against the configuration provided in the C(intended_config) argument.
+	// When this option is configured as I(running), the module will return the before and after diff of the running-config with respect to any changes made to the device configuration.
+
+	diff_against?: string
+}
+
+icx_copy :: {
+
+	// The port number of the remote host. Default values will be selected based on protocol type. Default scp:22, http:443
+
+	remote_port?: string
+
+	// IP address of the remote server
+
+	remote_server: string
+
+	// remote username to be used for scp login.
+
+	remote_user?: string
+
+	// Data transfer protocol to be used
+
+	protocol: string
+
+	// The name or path of the remote file/resource to be uploaded or downloaded.
+
+	remote_filename: string
+
+	// remote password to be used for scp login.
+
+	remote_pass?: string
+
+	// Name of the resource to be downloaded. Mutually exclusive with upload.
+
+	download?: string
+
+	// public key type to be used to login to scp server
+
+	public_key?: string
+
+	// Name of the resource to be uploaded. Mutually exclusive with download.
+
+	upload?: string
+}
+
+icx_linkagg :: {
+
+	// List of link aggregation definitions.
+
+	aggregate?: [..._]
+
+	// Check running configuration. This can be set as environment variable. Module will use environment variable value(default:True), unless it is overridden, by specifying it as module parameter.
+
+	check_running_config?: bool
+
+	// Channel-group number for the port-channel Link aggregation group. Range 1-255 or set to 'auto' to auto-generates a LAG ID
+
+	group?: int
+
+	// List of port members or ranges of the link aggregation group.
+
+	members?: [..._]
+
+	// Mode of the link aggregation group.
+
+	mode?: string
+
+	// Name of the LAG
+
+	name?: string
+
+	// Purge links not defined in the I(aggregate) parameter.
+
+	purge?: bool
+
+	// State of the link aggregation group.
+
+	state?: string
+}
+
+icx_facts :: {
+
+	// When supplied, this argument will restrict the facts collected to a given subset.  Possible values for this argument include all, hardware, config, and interfaces.  Can specify a list of values to include a larger subset.  Values can also be used with an initial C(M(!)) to specify that a specific subset should not be collected.
+
+	gather_subset?: [..._]
+}
+
+icx_lldp :: {
+
+	// Check running configuration. This can be set as environment variable. Module will use environment variable value(default:True), unless it is overridden, by specifying it as module parameter.
+
+	check_running_config?: bool
+
+	// specify interfaces
+
+	interfaces?: [..._]
+
+	// Enables the receipt and transmission of Link Layer Discovery Protocol (LLDP) globally.
+
+	state?: string
+}
+
+icx_command :: {
+
+	// Configures the interval in seconds to wait between retries of the command. If the command does not pass the specified conditions, the interval indicates how long to wait before trying the command again.
+
+	interval?: int
+
+	// The I(match) argument is used in conjunction with the I(wait_for) argument to specify the match policy.  Valid values are C(all) or C(any).  If the value is set to C(all) then all conditionals in the wait_for must be satisfied.  If the value is set to C(any) then only one of the values must be satisfied.
+
+	match?: string
+
+	// Specifies the number of times a command should by tried before it is considered failed. The command is run on the target device every retry and evaluated against the I(wait_for) conditions.
+
+	retries?: int
+
+	// List of conditions to evaluate against the output of the command. The task will wait for each condition to be true before moving forward. If the conditional is not true within the configured number of retries, the task fails. See examples.
+
+	wait_for?: [..._]
+
+	// List of commands to send to the remote ICX device over the configured provider. The resulting output from the command is returned. If the I(wait_for) argument is provided, the module is not returned until the condition is satisfied or the number of retries has expired. If a command sent to the device requires answering a prompt, checkall and newline if multiple prompts, it is possible to pass a dict containing I(command), I(answer), I(prompt), I(check_all) and I(newline).Common answers are 'y' or "\r" (carriage return, must be double quotes). See examples.
+
+	commands: [..._]
+}
+
+icx_l3_interface :: {
+
+	// Replaces the configured primary IP address on the interface.
+
+	replace?: string
+
+	// Name of the Layer-3 interface to be configured eg. GigabitEthernet0/2, ve 10, ethernet 1/1/1
+
+	name?: string
+
+	// Check running configuration. This can be set as environment variable. Module will use environment variable value(default:True), unless it is overridden, by specifying it as module parameter.
+
+	check_running_config?: bool
+
+	// IPv4 address to be set for the Layer-3 interface mentioned in I(name) option. The address format is <ipv4 address>/<mask>, the mask is number in range 0-32 eg. 192.168.0.1/24
+
+	ipv4?: string
+
+	// IPv6 address to be set for the Layer-3 interface mentioned in I(name) option. The address format is <ipv6 address>/<mask>, the mask is number in range 0-128 eg. fd5d:12c9:2201:1::1/64.
+
+	ipv6?: string
+
+	// Specifies if ipv4 address should be dynamic/advertise to ospf/not advertise to ospf. This should be specified only if ipv4 address is configured and if it is not secondary IP address.
+
+	mode?: string
+
+	// Specifies that the configured address is a secondary IP address. If this keyword is omitted, the configured address is the primary IP address.
+
+	secondary?: string
+
+	// State of the Layer-3 interface configuration. It indicates if the configuration should be present or absent on remote device.
+
+	state?: string
+
+	// List of Layer-3 interfaces definitions. Each of the entry in aggregate list should define name of interface C(name) and a optional C(ipv4) or C(ipv6) address.
+
+	aggregate?: [..._]
 }
 
 icx_ping :: {
@@ -544,4 +509,39 @@ icx_ping :: {
 	// Number of packets to send. Default is 1.
 
 	count?: int
+}
+
+icx_static_route :: {
+
+	// List of static route definitions.
+
+	aggregate?: [..._]
+
+	// Check running configuration. This can be set as environment variable. Module will use environment variable value(default:True), unless it is overridden, by specifying it as module parameter.
+
+	check_running_config?: bool
+
+	// Network prefix mask of the static route.
+
+	mask?: string
+
+	// Next hop IP of the static route.
+
+	next_hop?: string
+
+	// Network prefix of the static route.
+
+	prefix?: string
+
+	// Purge routes not defined in the I(aggregate) parameter.
+
+	purge?: bool
+
+	// State of the static route configuration.
+
+	state?: string
+
+	// Admin distance of the static route. Range is 1 to 255.
+
+	admin_distance?: int
 }

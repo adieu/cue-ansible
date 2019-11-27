@@ -45,8 +45,8 @@ module: pacman: {
 			description: [
 				"Additional option to pass to pacman when enforcing C(state).",
 			]
-			default:
-				null, version_added: "2.8"
+			default:       null
+			version_added: "2.8"
 		}
 
 		update_cache: {
@@ -63,8 +63,8 @@ module: pacman: {
 			description: [
 				"Additional option to pass to pacman when enforcing C(update_cache).",
 			]
-			default:
-				null, version_added: "2.8"
+			default:       null
+			version_added: "2.8"
 		}
 
 		upgrade: {
@@ -81,8 +81,8 @@ module: pacman: {
 			description: [
 				"Additional option to pass to pacman when enforcing C(upgrade).",
 			]
-			default:
-				null, version_added: "2.8"
+			default:       null
+			version_added: "2.8"
 		}
 	}
 

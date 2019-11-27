@@ -2,9 +2,13 @@ package cyberark
 
 cyberark_authentication :: {
 
-	// Whether or not Shared Logon Authentication will be used.
+	// If C(false), SSL certificates will not be validated.  This should only set to C(false) used on personally controlled sites using self-signed certificates.
 
-	use_shared_logon_authentication?: bool
+	validate_certs?: bool
+
+	// A string containing the base URL of the server hosting CyberArk's Privileged Account Security Web Services SDK.
+
+	api_base_url?: string
 
 	// Dictionary set by a CyberArk authentication containing the different values to perform actions on a logged-on CyberArk session.
 
@@ -14,6 +18,10 @@ cyberark_authentication :: {
 
 	new_password?: string
 
+	// The password of the user.
+
+	password?: string
+
 	// Specifies if an authentication logon/logoff and a cyberark_session should be added/removed.
 
 	state?: string
@@ -22,65 +30,20 @@ cyberark_authentication :: {
 
 	use_radius_authentication?: bool
 
-	// A string containing the base URL of the server hosting CyberArk's Privileged Account Security Web Services SDK.
+	// Whether or not Shared Logon Authentication will be used.
 
-	api_base_url?: string
-
-	// The password of the user.
-
-	password?: string
+	use_shared_logon_authentication?: bool
 
 	// The name of the user who will logon to the Vault.
 
 	username?: string
-
-	// If C(false), SSL certificates will not be validated.  This should only set to C(false) used on personally controlled sites using self-signed certificates.
-
-	validate_certs?: bool
 }
 
 cyberark_user :: {
 
-	// Whether or not the user will be disabled.
-
-	disabled?: bool
-
-	// The user email address.
-
-	email?: string
-
-	// The user first name.
-
-	first_name?: string
-
 	// Whether or not the user must change their password in their next logon.
 
 	change_password_on_the_next_logon?: bool
-
-	// Specifies the state needed for the user present for create user, absent for delete user.
-
-	state?: string
-
-	// The user last name.
-
-	last_name?: string
-
-	// The name of the user who will be queried (for details), added, updated or deleted.
-
-	username: string
-
-	// The type of user.
-	// The parameter defaults to C(EPVUser).
-
-	user_type_name?: string
-
-	// The date and time when the user account will expire and become disabled.
-
-	expiry_date?: string
-
-	// The name of the group the user will be added to.
-
-	group_name?: string
 
 	// The password that the new user will use to log on the first time.
 	// This password must meet the password policy requirements.
@@ -88,17 +51,54 @@ cyberark_user :: {
 
 	initial_password?: string
 
-	// The Vault Location for the user.
+	// The user last name.
 
-	location?: string
+	last_name?: string
+
+	// Specifies the state needed for the user present for create user, absent for delete user.
+
+	state?: string
+
+	// The type of user.
+	// The parameter defaults to C(EPVUser).
+
+	user_type_name?: string
+
+	// Whether or not the user will be disabled.
+
+	disabled?: bool
+
+	// The date and time when the user account will expire and become disabled.
+
+	expiry_date?: string
 
 	// The user updated password. Make sure that this password meets the password policy requirements.
 
 	new_password?: string
 
+	// The name of the user who will be queried (for details), added, updated or deleted.
+
+	username: string
+
+	// The user email address.
+
+	email?: string
+
+	// The name of the group the user will be added to.
+
+	group_name?: string
+
+	// The Vault Location for the user.
+
+	location?: string
+
 	// Dictionary set by a CyberArk authentication containing the different values to perform actions on a logged-on CyberArk session, please see M(cyberark_authentication) module for an example of cyberark_session.
 
 	cyberark_session: {...}
+
+	// The user first name.
+
+	first_name?: string
 }
 
 onepassword_info :: {

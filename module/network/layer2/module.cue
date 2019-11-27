@@ -2,6 +2,10 @@ package layer2
 
 net_l2_interface :: {
 
+	// List of allowed VLAN's in a given trunk port.
+
+	trunk_allowed_vlans?: string
+
 	// List of VLANs to be configured in trunk port.
 
 	trunk_vlans?: string
@@ -29,25 +33,9 @@ net_l2_interface :: {
 	// State of the Layer-2 Interface configuration.
 
 	state?: string
-
-	// List of allowed VLAN's in a given trunk port.
-
-	trunk_allowed_vlans?: string
 }
 
 net_vlan :: {
-
-	// List of VLANs definitions.
-
-	aggregate?: string
-
-	// List of interfaces the VLAN should be configured on.
-
-	interfaces?: string
-
-	// Name of the VLAN.
-
-	name?: string
 
 	// Purge VLANs not defined in the I(aggregate) parameter.
 
@@ -60,4 +48,16 @@ net_vlan :: {
 	// ID of the VLAN.
 
 	vlan_id?: string
+
+	// List of VLANs definitions.
+
+	aggregate?: string
+
+	// List of interfaces the VLAN should be configured on.
+
+	interfaces?: string
+
+	// Name of the VLAN.
+
+	name?: string
 }

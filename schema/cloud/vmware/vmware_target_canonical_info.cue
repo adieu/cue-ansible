@@ -11,8 +11,8 @@ module: vmware_target_canonical_info: {
 		"Joseph Callen (@jcpowermac)",
 		"Abhijeet Kasurde (@Akasurde)",
 	]
-	notes:
-		null, requirements: [
+	notes: null
+	requirements: [
 		"Tested on vSphere 5.5 and 6.5",
 		"PyVmomi installed",
 	]

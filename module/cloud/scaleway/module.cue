@@ -1,10 +1,10 @@
 package scaleway
 
-scaleway_image_facts :: {
+scaleway_organization_info :: {
 
-	// Scaleway compute zone
+	// Scaleway API URL
 
-	region: string
+	api_url?: string
 }
 
 scaleway_security_group_facts :: {
@@ -14,11 +14,123 @@ scaleway_security_group_facts :: {
 	region: string
 }
 
-scaleway_snapshot_facts :: {
+scaleway_security_group_info :: {
+
+	// Scaleway region to use (for example C(par1)).
+
+	region: string
+}
+
+scaleway_volume_facts :: {
 
 	// Scaleway region to use (for example par1).
 
 	region: string
+}
+
+scaleway_compute :: {
+
+	// Commercial name of the compute node
+
+	commercial_type: string
+
+	// Enable public IPv6 connectivity on the instance
+
+	enable_ipv6?: bool
+
+	// Image identifier used to start the instance with
+
+	image: string
+
+	// List of tags to apply to the instance (5 max)
+
+	tags?: string
+
+	// Wait for the instance to reach its desired state before returning.
+
+	wait?: bool
+
+	// Time to wait for the server to reach the expected state
+
+	wait_timeout?: string
+
+	// Time to wait before every attempt to check the state of the server
+
+	wait_sleep_time?: string
+
+	// Name of the instance
+
+	name?: string
+
+	// Organization identifier
+
+	organization: string
+
+	// Manage public IP on a Scaleway server
+	// Could be Scaleway IP address UUID
+	// C(dynamic) Means that IP is destroyed at the same time the host is destroyed
+	// C(absent) Means no public IP at all
+
+	public_ip?: string
+
+	// Scaleway compute zone
+
+	region: string
+
+	// Security group unique identifier
+	// If no value provided, the default security group or current security group will be used
+
+	security_group?: string
+
+	// Indicate desired state of the instance.
+
+	state?: string
+}
+
+scaleway_image_info :: {
+
+	// Scaleway compute zone
+
+	region: string
+}
+
+scaleway_lb :: {
+
+	// Description of the load-balancer
+
+	description: string
+
+	// Name of the load-balancer
+
+	name: string
+
+	// Scaleway zone
+
+	region: string
+
+	// Time to wait for the load-balancer to reach the expected state
+
+	wait_timeout?: string
+
+	// Organization identifier
+
+	organization_id: string
+
+	// Indicate desired state of the instance.
+
+	state?: string
+
+	// List of tags to apply to the load-balancer
+
+	tags?: string
+
+	// Wait for the load-balancer to reach its desired state before returning.
+
+	wait?: bool
+
+	// Time to wait before every attempt to check the state of the load-balancer
+
+	wait_sleep_time?: string
 }
 
 scaleway_user_data :: {
@@ -37,153 +149,72 @@ scaleway_user_data :: {
 	user_data?: string
 }
 
-scaleway_compute :: {
-
-	// Time to wait before every attempt to check the state of the server
-
-	wait_sleep_time?: string
-
-	// Time to wait for the server to reach the expected state
-
-	wait_timeout?: string
-
-	// Enable public IPv6 connectivity on the instance
-
-	enable_ipv6?: bool
-
-	// Name of the instance
-
-	name?: string
-
-	// Scaleway compute zone
-
-	region: string
-
-	// Security group unique identifier
-	// If no value provided, the default security group or current security group will be used
-
-	security_group?: string
-
-	// Wait for the instance to reach its desired state before returning.
-
-	wait?: bool
-
-	// List of tags to apply to the instance (5 max)
-
-	tags?: string
-
-	// Commercial name of the compute node
-
-	commercial_type: string
-
-	// Image identifier used to start the instance with
-
-	image: string
-
-	// Organization identifier
-
-	organization: string
-
-	// Manage public IP on a Scaleway server
-	// Could be Scaleway IP address UUID
-	// C(dynamic) Means that IP is destroyed at the same time the host is destroyed
-	// C(absent) Means no public IP at all
-
-	public_ip?: string
-
-	// Indicate desired state of the instance.
-
-	state?: string
-}
-
-scaleway_lb :: {
-
-	// Name of the load-balancer
-
-	name: string
-
-	// Wait for the load-balancer to reach its desired state before returning.
-
-	wait?: bool
-
-	// List of tags to apply to the load-balancer
-
-	tags?: string
-
-	// Time to wait before every attempt to check the state of the load-balancer
-
-	wait_sleep_time?: string
-
-	// Time to wait for the load-balancer to reach the expected state
-
-	wait_timeout?: string
-
-	// Description of the load-balancer
-
-	description: string
-
-	// Organization identifier
-
-	organization_id: string
-
-	// Scaleway zone
-
-	region: string
-
-	// Indicate desired state of the instance.
-
-	state?: string
-}
-
-scaleway_security_group :: {
-
-	// Description of the Security Group.
-
-	description?: string
-
-	// Default policy for outcoming traffic.
-
-	outbound_default_policy?: string
-
-	// Indicate desired state of the Security Group.
-
-	state?: string
-
-	// Create a stateful security group which allows established connections in and out.
-
-	stateful: bool
-
-	// Default policy for incoming traffic.
-
-	inbound_default_policy?: string
-
-	// Name of the Security Group.
-
-	name: string
-
-	// Organization identifier.
-
-	organization: string
-
-	// Create security group to be the default one.
-
-	organization_default?: bool
+scaleway_volume_info :: {
 
 	// Scaleway region to use (for example C(par1)).
 
 	region: string
 }
 
-scaleway_security_group_info :: {
+scaleway_image_facts :: {
 
-	// Scaleway region to use (for example C(par1)).
+	// Scaleway compute zone
 
 	region: string
 }
 
-scaleway_image_info :: {
+scaleway_security_group_rule :: {
 
-	// Scaleway compute zone
+	// Indicate desired state of the Security Group Rule.
+
+	state?: string
+
+	// Rule action
+
+	action: string
+
+	// Rule direction
+
+	direction: string
+
+	// IPV4 CIDR notation to apply to the rule
+
+	ip_range?: string
+
+	// Port related to the rule, null value for all the ports
+
+	port: int
+
+	// Network protocol to use
+
+	protocol: string
+
+	// Scaleway region to use (for example C(par1)).
+
+	region: string
+
+	// Security Group unique identifier
+
+	security_group: string
+}
+
+scaleway_server_facts :: {
+
+	// Scaleway region to use (for example par1).
+
+	region: string
+}
+
+scaleway_organization_facts :: {
+
+	// Scaleway API URL
+
+	api_url?: string
+}
+
+scaleway_snapshot_info :: {
+
+	// Scaleway region to use (for example C(par1)).
 
 	region: string
 }
@@ -230,25 +261,7 @@ scaleway_ip_info :: {
 	region: string
 }
 
-scaleway_server_info :: {
-
-	// Scaleway region to use (for example C(par1)).
-
-	region: string
-}
-
-scaleway_snapshot_info :: {
-
-	// Scaleway region to use (for example C(par1)).
-
-	region: string
-}
-
 scaleway_sshkey :: {
-
-	// Scaleway API URL
-
-	api_url?: string
 
 	// The public SSH key as a string to add.
 
@@ -257,17 +270,13 @@ scaleway_sshkey :: {
 	// Indicate desired state of the SSH key.
 
 	state?: string
+
+	// Scaleway API URL
+
+	api_url?: string
 }
 
 scaleway_volume :: {
-
-	// ScaleWay organization ID to which volume belongs.
-
-	organization?: string
-
-	// Scaleway region to use (for example par1).
-
-	region: string
 
 	// Size of the volume in bytes.
 
@@ -284,74 +293,65 @@ scaleway_volume :: {
 	// Name used to identify the volume.
 
 	name: string
+
+	// ScaleWay organization ID to which volume belongs.
+
+	organization?: string
+
+	// Scaleway region to use (for example par1).
+
+	region: string
 }
 
-scaleway_organization_facts :: {
+scaleway_security_group :: {
 
-	// Scaleway API URL
+	// Description of the Security Group.
 
-	api_url?: string
-}
+	description?: string
 
-scaleway_organization_info :: {
+	// Default policy for incoming traffic.
 
-	// Scaleway API URL
+	inbound_default_policy?: string
 
-	api_url?: string
-}
+	// Name of the Security Group.
 
-scaleway_security_group_rule :: {
+	name: string
 
-	// Security Group unique identifier
+	// Default policy for outcoming traffic.
 
-	security_group: string
+	outbound_default_policy?: string
 
-	// Indicate desired state of the Security Group Rule.
+	// Scaleway region to use (for example C(par1)).
+
+	region: string
+
+	// Indicate desired state of the Security Group.
 
 	state?: string
 
-	// Rule action
+	// Organization identifier.
 
-	action: string
+	organization: string
 
-	// Rule direction
+	// Create security group to be the default one.
 
-	direction: string
+	organization_default?: bool
 
-	// IPV4 CIDR notation to apply to the rule
+	// Create a stateful security group which allows established connections in and out.
 
-	ip_range?: string
+	stateful: bool
+}
 
-	// Port related to the rule, null value for all the ports
-
-	port: int
-
-	// Network protocol to use
-
-	protocol: string
+scaleway_server_info :: {
 
 	// Scaleway region to use (for example C(par1)).
 
 	region: string
 }
 
-scaleway_server_facts :: {
+scaleway_snapshot_facts :: {
 
 	// Scaleway region to use (for example par1).
-
-	region: string
-}
-
-scaleway_volume_facts :: {
-
-	// Scaleway region to use (for example par1).
-
-	region: string
-}
-
-scaleway_volume_info :: {
-
-	// Scaleway region to use (for example C(par1)).
 
 	region: string
 }

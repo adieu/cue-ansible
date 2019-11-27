@@ -1,100 +1,80 @@
 package bitbucket
 
-git :: {
+bitbucket_pipeline_key_pair :: {
 
-	// The path of where the repository should be checked out. This parameter is required, unless C(clone) is set to C(no).
+	// OAuth consumer secret.
+	// If not set the environment variable C(BITBUCKET_CLIENT_SECRET) will be used.
 
-	dest: string
+	client_secret?: string
 
-	// The path to place the cloned repository. If specified, Git repository can be separated from working tree.
+	// The private key.
 
-	separate_git_dir?: string
+	private_key?: string
 
-	// Creates a wrapper script and exports the path as GIT_SSH which git then automatically uses to override ssh arguments. An example value could be "-o StrictHostKeyChecking=no" (although this particular option is better set via C(accept_hostkey)).
+	// The public key.
 
-	ssh_opts?: string
+	public_key?: string
 
-	// If C(no), do not retrieve new revisions from the origin repository
-	// Operations like archive will work on the existing (old) repository and might not respond to changes to the options version or remote.
+	// The repository name.
 
-	update?: bool
+	repository: string
 
-	// if C(yes), when cloning or checking out a C(version) verify the signature of a GPG signed commit. This requires C(git) version>=2.1.0 to be installed. The commit MUST be signed and the public key MUST be present in the GPG keyring.
+	// Indicates desired state of the key pair.
 
-	verify_commit?: bool
+	state: string
 
-	// What version of the repository to check out.  This can be the literal string C(HEAD), a branch name, a tag name. It can also be a I(SHA-1) hash, in which case C(refspec) needs to be specified if the given revision is not already available.
+	// The repository owner.
 
-	version?: string
+	username: string
 
-	// if C(yes), submodules will track the latest commit on their master branch (or other branch specified in .gitmodules).  If C(no), submodules will be kept at the revision specified by the main project. This is equivalent to specifying the --remote flag to git submodule update.
+	// OAuth consumer key.
+	// If not set the environment variable C(BITBUCKET_CLIENT_ID) will be used.
 
-	track_submodules?: bool
+	client_id?: string
+}
 
-	// if C(yes), ensure that "-o StrictHostKeyChecking=no" is present as an ssh option.
+bitbucket_pipeline_known_host :: {
 
-	accept_hostkey?: bool
+	// The repository name.
 
-	// if C(yes), repository will be created as a bare repo, otherwise it will be a standard repo with a workspace.
+	repository: string
 
-	bare?: bool
+	// Indicates desired state of the record.
 
-	// If C(no), do not clone the repository even if it does not exist locally
+	state: string
 
-	clone?: bool
+	// The repository owner.
 
-	// If C(yes), any modified files in the working repository will be discarded.  Prior to 0.7, this was always 'yes' and could not be disabled.  Prior to 1.9, the default was `yes`
+	username: string
 
-	force?: bool
+	// The OAuth consumer key.
+	// If not set the environment variable C(BITBUCKET_CLIENT_ID) will be used.
 
-	// A list of trusted GPG fingerprints to compare to the fingerprint of the GPG-signed commit.
-	// Only used when I(verify_commit=yes).
+	client_id?: string
 
-	gpg_whitelist?: [..._]
+	// The OAuth consumer secret.
+	// If not set the environment variable C(BITBUCKET_CLIENT_SECRET) will be used.
 
-	// if C(no), repository will be cloned without the --recursive option, skipping sub-modules.
+	client_secret?: string
 
-	recursive?: bool
+	// The public key.
 
-	// Reference repository (see "git clone --reference ...")
+	key?: string
 
-	reference?: string
+	// The FQDN of the known host.
 
-	// Specify archive file path with extension. If specified, creates an archive file of the specified format containing the tree structure for the source tree. Allowed archive formats ["zip", "tar.gz", "tar", "tgz"]
-	// This will clone and perform git archive from local directory as not all git servers support git archive.
-
-	archive?: string
-
-	// Create a shallow clone with a history truncated to the specified number or revisions. The minimum possible value is C(1), otherwise ignored. Needs I(git>=1.9.1) to work correctly.
-
-	depth?: string
-
-	// Path to git executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
-
-	executable?: string
-
-	// Add an additional refspec to be fetched. If version is set to a I(SHA-1) not reachable from any branch or tag, this option may be necessary to specify the ref containing the I(SHA-1). Uses the same syntax as the 'git fetch' command. An example value could be "refs/meta/config".
-
-	refspec?: string
-
-	// Name of the remote.
-
-	remote?: string
-
-	// git, SSH, or HTTP(S) protocol address of the git repository.
-
-	repo: string
-
-	// The umask to set before doing any checkouts, or any other repository maintenance.
-
-	umask?: string
-
-	// Specify an optional private key file path, on the target host, to use for the checkout.
-
-	key_file?: string
+	name: string
 }
 
 git_config :: {
+
+	// List all settings (optionally limited to a given I(scope))
+
+	list_all?: bool
+
+	// The name of the setting. If no value is supplied, the value will be read from the config if it has been set.
+
+	name?: string
 
 	// Path to a git repository for reading and writing values from a specific repo.
 
@@ -111,64 +91,21 @@ git_config :: {
 	// When specifying the name of a single setting, supply a value to set that setting to the given value.
 
 	value?: string
-
-	// List all settings (optionally limited to a given I(scope))
-
-	list_all?: bool
-
-	// The name of the setting. If no value is supplied, the value will be read from the config if it has been set.
-
-	name?: string
-}
-
-hg :: {
-
-	// Absolute path of where the repository should be cloned to. This parameter is required, unless clone and update are set to no
-
-	dest: string
-
-	// Path to hg executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
-
-	executable?: string
-
-	// Discards uncommitted changes. Runs C(hg update -C).  Prior to 1.9, the default was `yes`.
-
-	force?: bool
-
-	// Deletes untracked files. Runs C(hg purge).
-
-	purge?: bool
-
-	// The repository address.
-
-	repo: string
-
-	// Equivalent C(-r) option in hg command which could be the changeset, revision number, branch name or even tag.
-
-	revision?: string
-
-	// If C(no), do not retrieve new revisions from the origin repository
-
-	update?: bool
-
-	// If C(no), do not clone the repository if it does not exist locally.
-
-	clone?: bool
 }
 
 subversion :: {
 
-	// If C(yes), modified files will be discarded. If C(no), module will fail if it encounters modified files. Prior to 1.9 the default was C(yes).
+	// If C(no), do not check out the repository if it does not exist locally.
 
-	force?: bool
+	checkout?: bool
+
+	// Path to svn executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
+
+	executable?: string
 
 	// If the directory exists, then the working copy will be checked-out over-the-top using svn checkout --force; if force is specified then existing files with different content are reverted
 
 	in_place?: bool
-
-	// C(--password) parameter passed to svn.
-
-	password?: string
 
 	// If C(no), do not call svn switch before update.
 
@@ -182,21 +119,21 @@ subversion :: {
 
 	username?: string
 
-	// If C(no), do not check out the repository if it does not exist locally.
-
-	checkout?: bool
-
 	// Absolute path where the repository should be deployed.
 
 	dest: string
 
-	// Path to svn executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
-
-	executable?: string
-
 	// If C(yes), do export instead of checkout/update.
 
 	export?: bool
+
+	// If C(yes), modified files will be discarded. If C(no), module will fail if it encounters modified files. Prior to 1.9 the default was C(yes).
+
+	force?: bool
+
+	// C(--password) parameter passed to svn.
+
+	password?: string
 
 	// The subversion URL to the repository.
 
@@ -208,10 +145,6 @@ subversion :: {
 }
 
 bitbucket_access_key :: {
-
-	// The key label.
-
-	label: string
 
 	// The repository name.
 
@@ -238,6 +171,10 @@ bitbucket_access_key :: {
 	// The SSH public key.
 
 	key?: string
+
+	// The key label.
+
+	label: string
 }
 
 bitbucket_pipeline_variable :: {
@@ -279,14 +216,6 @@ bitbucket_pipeline_variable :: {
 
 bzr :: {
 
-	// Absolute path of where the branch should be cloned to.
-
-	dest: string
-
-	// Path to bzr executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
-
-	executable?: string
-
 	// If C(yes), any modified files in the working tree will be discarded.  Before 1.9 the default value was C(yes).
 
 	force?: bool
@@ -298,70 +227,141 @@ bzr :: {
 	// What version of the branch to clone.  This can be the bzr revno or revid.
 
 	version?: string
+
+	// Absolute path of where the branch should be cloned to.
+
+	dest: string
+
+	// Path to bzr executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
+
+	executable?: string
 }
 
-bitbucket_pipeline_key_pair :: {
+git :: {
 
-	// OAuth consumer key.
-	// If not set the environment variable C(BITBUCKET_CLIENT_ID) will be used.
+	// If C(no), do not retrieve new revisions from the origin repository
+	// Operations like archive will work on the existing (old) repository and might not respond to changes to the options version or remote.
 
-	client_id?: string
+	update?: bool
 
-	// OAuth consumer secret.
-	// If not set the environment variable C(BITBUCKET_CLIENT_SECRET) will be used.
+	// What version of the repository to check out.  This can be the literal string C(HEAD), a branch name, a tag name. It can also be a I(SHA-1) hash, in which case C(refspec) needs to be specified if the given revision is not already available.
 
-	client_secret?: string
+	version?: string
 
-	// The private key.
+	// If C(no), do not clone the repository even if it does not exist locally
 
-	private_key?: string
+	clone?: bool
 
-	// The public key.
+	// Path to git executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
 
-	public_key?: string
+	executable?: string
 
-	// The repository name.
+	// If C(yes), any modified files in the working repository will be discarded.  Prior to 0.7, this was always 'yes' and could not be disabled.  Prior to 1.9, the default was `yes`
 
-	repository: string
+	force?: bool
 
-	// Indicates desired state of the key pair.
+	// Name of the remote.
 
-	state: string
+	remote?: string
 
-	// The repository owner.
+	// The path to place the cloned repository. If specified, Git repository can be separated from working tree.
 
-	username: string
+	separate_git_dir?: string
+
+	// if C(yes), ensure that "-o StrictHostKeyChecking=no" is present as an ssh option.
+
+	accept_hostkey?: bool
+
+	// A list of trusted GPG fingerprints to compare to the fingerprint of the GPG-signed commit.
+	// Only used when I(verify_commit=yes).
+
+	gpg_whitelist?: [..._]
+
+	// if C(no), repository will be cloned without the --recursive option, skipping sub-modules.
+
+	recursive?: bool
+
+	// Add an additional refspec to be fetched. If version is set to a I(SHA-1) not reachable from any branch or tag, this option may be necessary to specify the ref containing the I(SHA-1). Uses the same syntax as the 'git fetch' command. An example value could be "refs/meta/config".
+
+	refspec?: string
+
+	// Creates a wrapper script and exports the path as GIT_SSH which git then automatically uses to override ssh arguments. An example value could be "-o StrictHostKeyChecking=no" (although this particular option is better set via C(accept_hostkey)).
+
+	ssh_opts?: string
+
+	// if C(yes), submodules will track the latest commit on their master branch (or other branch specified in .gitmodules).  If C(no), submodules will be kept at the revision specified by the main project. This is equivalent to specifying the --remote flag to git submodule update.
+
+	track_submodules?: bool
+
+	// Specify archive file path with extension. If specified, creates an archive file of the specified format containing the tree structure for the source tree. Allowed archive formats ["zip", "tar.gz", "tar", "tgz"]
+	// This will clone and perform git archive from local directory as not all git servers support git archive.
+
+	archive?: string
+
+	// if C(yes), repository will be created as a bare repo, otherwise it will be a standard repo with a workspace.
+
+	bare?: bool
+
+	// Create a shallow clone with a history truncated to the specified number or revisions. The minimum possible value is C(1), otherwise ignored. Needs I(git>=1.9.1) to work correctly.
+
+	depth?: string
+
+	// The path of where the repository should be checked out. This parameter is required, unless C(clone) is set to C(no).
+
+	dest: string
+
+	// Specify an optional private key file path, on the target host, to use for the checkout.
+
+	key_file?: string
+
+	// Reference repository (see "git clone --reference ...")
+
+	reference?: string
+
+	// git, SSH, or HTTP(S) protocol address of the git repository.
+
+	repo: string
+
+	// The umask to set before doing any checkouts, or any other repository maintenance.
+
+	umask?: string
+
+	// if C(yes), when cloning or checking out a C(version) verify the signature of a GPG signed commit. This requires C(git) version>=2.1.0 to be installed. The commit MUST be signed and the public key MUST be present in the GPG keyring.
+
+	verify_commit?: bool
 }
 
-bitbucket_pipeline_known_host :: {
+hg :: {
 
-	// The OAuth consumer key.
-	// If not set the environment variable C(BITBUCKET_CLIENT_ID) will be used.
+	// Path to hg executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
 
-	client_id?: string
+	executable?: string
 
-	// The OAuth consumer secret.
-	// If not set the environment variable C(BITBUCKET_CLIENT_SECRET) will be used.
+	// Discards uncommitted changes. Runs C(hg update -C).  Prior to 1.9, the default was `yes`.
 
-	client_secret?: string
+	force?: bool
 
-	// The public key.
+	// Deletes untracked files. Runs C(hg purge).
 
-	key?: string
+	purge?: bool
 
-	// The FQDN of the known host.
+	// The repository address.
 
-	name: string
+	repo: string
 
-	// The repository name.
+	// Equivalent C(-r) option in hg command which could be the changeset, revision number, branch name or even tag.
 
-	repository: string
+	revision?: string
 
-	// Indicates desired state of the record.
+	// If C(no), do not retrieve new revisions from the origin repository
 
-	state: string
+	update?: bool
 
-	// The repository owner.
+	// If C(no), do not clone the repository if it does not exist locally.
 
-	username: string
+	clone?: bool
+
+	// Absolute path of where the repository should be cloned to. This parameter is required, unless clone and update are set to no
+
+	dest: string
 }

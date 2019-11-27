@@ -2,14 +2,6 @@ package vertica
 
 vertica_configuration :: {
 
-	// Name of the Vertica cluster.
-
-	cluster?: string
-
-	// Name of the Vertica database.
-
-	db?: string
-
 	// The password used to authenticate with.
 
 	login_password?: string
@@ -29,6 +21,14 @@ vertica_configuration :: {
 	// Value of the parameter to be set.
 
 	value: string
+
+	// Name of the Vertica cluster.
+
+	cluster?: string
+
+	// Name of the Vertica database.
+
+	db?: string
 }
 
 vertica_info :: {
@@ -56,22 +56,6 @@ vertica_info :: {
 
 vertica_role :: {
 
-	// Name of the Vertica database.
-
-	db?: string
-
-	// The password used to authenticate with.
-
-	login_password?: string
-
-	// The username used to authenticate with.
-
-	login_user?: string
-
-	// Name of the role to add or remove.
-
-	name: string
-
 	// Vertica cluster port to connect to.
 
 	port?: string
@@ -87,13 +71,25 @@ vertica_role :: {
 	// Name of the Vertica cluster.
 
 	cluster?: string
+
+	// Name of the Vertica database.
+
+	db?: string
+
+	// The password used to authenticate with.
+
+	login_password?: string
+
+	// The username used to authenticate with.
+
+	login_user?: string
+
+	// Name of the role to add or remove.
+
+	name: string
 }
 
 vertica_schema :: {
-
-	// Name of the Vertica cluster.
-
-	cluster?: string
 
 	// Comma separated list of roles to create and grant usage and create access to the schema.
 
@@ -107,25 +103,29 @@ vertica_schema :: {
 
 	login_user?: string
 
-	// Name of the schema to add or remove.
+	// Name of the user to set as owner of the schema.
 
-	name: string
+	owner?: string
+
+	// Whether to create C(present), or drop C(absent) a schema.
+
+	state?: string
+
+	// Name of the Vertica cluster.
+
+	cluster?: string
 
 	// The password used to authenticate with.
 
 	login_password?: string
 
-	// Name of the user to set as owner of the schema.
+	// Name of the schema to add or remove.
 
-	owner?: string
+	name: string
 
 	// Vertica cluster port to connect to.
 
 	port?: string
-
-	// Whether to create C(present), or drop C(absent) a schema.
-
-	state?: string
 
 	// Comma separated list of roles to create and grant usage access to the schema.
 
@@ -133,6 +133,22 @@ vertica_schema :: {
 }
 
 vertica_user :: {
+
+	// The username used to authenticate with.
+
+	login_user?: string
+
+	// Vertica cluster port to connect to.
+
+	port?: string
+
+	// Sets the user's resource pool.
+
+	resource_pool?: string
+
+	// Comma separated list of roles to assign to the user.
+
+	roles?: string
 
 	// Whether to create C(present), drop C(absent) or lock C(locked) a user.
 
@@ -142,49 +158,33 @@ vertica_user :: {
 
 	cluster?: string
 
-	// Name of the Vertica database.
+	// Sets the user's password expiration.
 
-	db?: string
+	expired?: bool
 
 	// Set to true if users are authenticated via LDAP.
 	// The user will be created with password expired and set to I($ldap$).
 
 	ldap?: bool
 
-	// The password used to authenticate with.
-
-	login_password?: string
-
-	// Vertica cluster port to connect to.
-
-	port?: string
-
-	// Sets the user's profile.
-
-	profile?: string
-
-	// Comma separated list of roles to assign to the user.
-
-	roles?: string
-
-	// Sets the user's password expiration.
-
-	expired?: bool
-
-	// The username used to authenticate with.
-
-	login_user?: string
-
-	// Name of the user to add or remove.
-
-	name: string
-
 	// The user's password encrypted by the MD5 algorithm.
 	// The password must be generated with the format C("md5" + md5[password + username]), resulting in a total of 35 characters. An easy way to do this is by querying the Vertica database with select 'md5'||md5('<user_password><user_name>').
 
 	password?: string
 
-	// Sets the user's resource pool.
+	// Sets the user's profile.
 
-	resource_pool?: string
+	profile?: string
+
+	// Name of the Vertica database.
+
+	db?: string
+
+	// The password used to authenticate with.
+
+	login_password?: string
+
+	// Name of the user to add or remove.
+
+	name: string
 }

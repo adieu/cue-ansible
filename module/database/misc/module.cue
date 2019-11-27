@@ -2,14 +2,13 @@ package misc
 
 elasticsearch_plugin :: {
 
-	// Name of the plugin to install.
+	// Your configured plugin directory specified in Elasticsearch
 
-	name: string
+	plugin_dir?: string
 
-	// Location of the plugin binary. If this file is not found, the default plugin binaries will be used.
-	// The default changed in Ansible 2.4 to None.
+	// Proxy port to use during plugin installation
 
-	plugin_bin?: string
+	proxy_port?: string
 
 	// Timeout setting: 30s, 1m, 1h...
 	// Only valid for Elasticsearch < 5.0. This option is ignored for Elasticsearch > 5.0.
@@ -25,17 +24,18 @@ elasticsearch_plugin :: {
 
 	force?: bool
 
-	// Your configured plugin directory specified in Elasticsearch
+	// Name of the plugin to install.
 
-	plugin_dir?: string
+	name: string
+
+	// Location of the plugin binary. If this file is not found, the default plugin binaries will be used.
+	// The default changed in Ansible 2.4 to None.
+
+	plugin_bin?: string
 
 	// Proxy host to use during plugin installation
 
 	proxy_host?: string
-
-	// Proxy port to use during plugin installation
-
-	proxy_port?: string
 
 	// Optionally set the source location to retrieve the plugin from. This can be a file:// URL to install from a local file, or a remote URL. If this is not set, the plugin location is just based on the name.
 	// The name parameter must match the descriptor in the plugin ZIP specified.
@@ -107,6 +107,10 @@ redis :: {
 
 	master_host?: string
 
+	// A redis config key.
+
+	name?: string
+
 	// the mode of the redis instance [slave command]
 
 	slave_mode?: string
@@ -114,10 +118,6 @@ redis :: {
 	// A redis config value.
 
 	value?: string
-
-	// A redis config key.
-
-	name?: string
 
 	// The database to flush (used in db mode) [flush command]
 
@@ -141,10 +141,6 @@ redis :: {
 }
 
 riak :: {
-
-	// The path to the riak configuration directory
-
-	config_dir?: string
 
 	// The ip address and port that is listening for Riak HTTP queries
 
@@ -173,4 +169,8 @@ riak :: {
 	// The command you would like to perform against the cluster.
 
 	command?: string
+
+	// The path to the riak configuration directory
+
+	config_dir?: string
 }

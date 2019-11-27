@@ -182,9 +182,9 @@ module: synchronize: {
 				"Specify additional rsync options by passing in an array.",
 				"Note that an empty string in C(rsync_opts) will end up transfer the current working directory.",
 			]
-			type: "list"
-			default:
-				null, version_added: "1.6"
+			type:          "list"
+			default:       null
+			version_added: "1.6"
 		}
 		partial: {
 			description: [
@@ -213,9 +213,9 @@ module: synchronize: {
 			description: [
 				"Add a destination to hard link against during the rsync.",
 			]
-			type: "list"
-			default:
-				null, version_added: "2.5"
+			type:          "list"
+			default:       null
+			version_added: "2.5"
 		}
 	}
 	notes: [

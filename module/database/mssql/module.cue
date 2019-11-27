@@ -2,6 +2,14 @@ package mssql
 
 mssql_db :: {
 
+	// The password used to authenticate with
+
+	login_password?: string
+
+	// Port of the MSSQL server. Requires login_host be defined as other than localhost if login_port is used
+
+	login_port?: string
+
 	// The username used to authenticate with
 
 	login_user?: string
@@ -25,12 +33,4 @@ mssql_db :: {
 	// Host running the database
 
 	login_host?: string
-
-	// The password used to authenticate with
-
-	login_password?: string
-
-	// Port of the MSSQL server. Requires login_host be defined as other than localhost if login_port is used
-
-	login_port?: string
 }

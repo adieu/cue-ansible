@@ -1,105 +1,45 @@
 package misc
 
-proxmox_template :: {
+virt_net :: {
 
-	// timeout for operations
+	// name of the network being managed. Note that network must be previously defined with xml.
 
-	timeout?: string
+	name: string
 
-	// the password to authenticate with
-	// you can use PROXMOX_PASSWORD environment variable
-
-	api_password?: string
-
-	// target storage
-
-	storage?: string
-
-	// content type
-	// required only for C(state=present)
-
-	content_type?: string
-
-	// can be used only with C(state=present), exists template will be overwritten
-
-	force?: bool
-
-	// Proxmox VE node, when you will operate with template
-
-	node: string
-
-	// path to uploaded file
-	// required only for C(state=present)
-
-	src?: string
-
-	// Indicate desired state of the template
+	// specify which state you want a network to be in. If 'active', network will be started. If 'present', ensure that network is present but do not change its state; if it's missing, you need to specify xml argument. If 'inactive', network will be stopped. If 'undefined' or 'absent', network will be removed from I(libvirt) configuration.
 
 	state?: string
 
-	// the template name
-	// required only for states C(absent), C(info)
+	// libvirt connection uri.
 
-	template?: string
+	uri?: string
 
-	// the host of the Proxmox VE cluster
+	// XML document used with the define command.
 
-	api_host: string
+	xml?: string
 
-	// the user to authenticate with
+	// Specify if a given network should be started automatically on system boot.
 
-	api_user: string
+	autostart?: bool
 
-	// enable / disable https certificate verification
+	// in addition to state management, various non-idempotent commands are available. See examples. Modify was added in version 2.1
 
-	validate_certs?: bool
-}
-
-serverless :: {
-
-	// A list of specific functions to deploy.
-	// If this is not provided, all functions in the service will be deployed.
-
-	functions?: [..._]
-
-	// AWS region to deploy the service to.
-	// This parameter defaults to C(us-east-1).
-
-	region?: string
-
-	// The name of the serverless framework project stage to deploy to.
-	// This uses the serverless framework default "dev".
-
-	stage?: string
-
-	// Whether or not to deploy artifacts after building them.
-	// When this option is C(false) all the functions will be built, but no stack update will be run to send them out.
-	// This is mostly useful for generating artifacts to be stored/deployed elsewhere.
-
-	deploy?: bool
-
-	// Whether or not to force full deployment, equivalent to serverless C(--force) option.
-
-	force?: bool
-
-	// The path of a serverless framework binary relative to the 'service_path' eg. node_module/.bin/serverless
-
-	serverless_bin_path?: string
-
-	// The path to the root of the Serverless Service to be operated on.
-
-	service_path: string
-
-	// Goal state of given stage/project.
-
-	state?: string
-
-	// Shows all stack events during deployment, and display any Stack Output.
-
-	verbose?: bool
+	command?: string
 }
 
 virt_pool :: {
+
+	// in addition to state management, various non-idempotent commands are available. See examples.
+
+	command?: string
+
+	// Pass additional parameters to 'build' or 'delete' commands.
+
+	mode?: string
+
+	// name of the storage pool being managed. Note that pool must be previously defined with xml.
+
+	name?: string
 
 	// specify which state you want a storage pool to be in. If 'active', pool will be started. If 'present', ensure that pool is present but do not change its state; if it's missing, you need to specify xml argument. If 'inactive', pool will be stopped. If 'undefined' or 'absent', pool will be removed from I(libvirt) configuration. If 'deleted', pool contents will be deleted and then pool undefined.
 
@@ -116,36 +56,71 @@ virt_pool :: {
 	// Specify if a given storage pool should be started automatically on system boot.
 
 	autostart?: bool
-
-	// in addition to state management, various non-idempotent commands are available. See examples.
-
-	command?: string
-
-	// Pass additional parameters to 'build' or 'delete' commands.
-
-	mode?: string
-
-	// name of the storage pool being managed. Note that pool must be previously defined with xml.
-
-	name?: string
 }
 
-xenserver_facts :: {
+terraform :: {
+
+	// Enable statefile locking, if you use a service that accepts locks (such as S3+DynamoDB) to store your statefile.
+
+	lock?: bool
+
+	// A group of key-values to override template variables or those in variables files.
+
+	variables?: string
+
+	// The path of a terraform binary to use, relative to the 'service_path' unless you supply an absolute path.
+
+	binary_path?: string
+
+	// The path to an existing Terraform state file to use when building plan. If this is not specified, the default `terraform.tfstate` will be used.
+	// This option is ignored when plan is specified.
+
+	state_file?: string
+
+	// To avoid duplicating infra, if a state file can't be found this will force a `terraform init`. Generally, this should be turned off unless you intend to provision an entirely new Terraform deployment.
+
+	force_init?: bool
+
+	// How long to maintain the lock on the statefile, if you use a service that accepts locks (such as S3+DynamoDB).
+
+	lock_timeout?: string
+
+	// Goal state of given stage/project
+
+	state?: string
+
+	// A list of specific resources to target in this plan/application. The resources selected here will also auto-include any dependencies.
+
+	targets?: string
+
+	// The terraform workspace to work with.
+
+	workspace?: string
+
+	// A group of key-values to provide at init stage to the -backend-config parameter.
+
+	backend_config?: string
+
+	// The path to the root of the Terraform directory with the vars.tf/main.tf/etc to use.
+
+	project_path: string
+
+	// Only works with state = absent
+	// If true, the workspace will be deleted after the "terraform destroy" action.
+	// The 'default' workspace will not be deleted.
+
+	purge_workspace?: bool
+
+	// The path to a variables file for Terraform to fill into the TF configurations.
+
+	variables_file?: string
+
+	// The path to an existing Terraform plan file to apply. If this is not specified, Ansible will build a new TF plan and execute it. Note that this option is required if 'state' has the 'planned' value.
+
+	plan_file?: string
 }
 
 helm :: {
-
-	// Kubernetes namespace where the chart should be installed.
-
-	namespace?: string
-
-	// Tiller's server port.
-
-	port?: string
-
-	// Whether to install C(present), remove C(absent), or purge C(purged) a package.
-
-	state?: string
 
 	// A map of value options for the chart.
 
@@ -167,208 +142,171 @@ helm :: {
 	// Release name to manage.
 
 	name?: string
+
+	// Kubernetes namespace where the chart should be installed.
+
+	namespace?: string
+
+	// Tiller's server port.
+
+	port?: string
+
+	// Whether to install C(present), remove C(absent), or purge C(purged) a package.
+
+	state?: string
 }
 
 ovirt :: {
-
-	// The Storage Domain where you want to create the instance's disk on.
-
-	sdomain?: string
-
-	// The user to authenticate with.
-
-	user: string
-
-	// Password of the user to authenticate with.
-
-	password: string
-
-	// Define the instance's IP.
-
-	instance_ip?: string
-
-	// Deploy the image to this oVirt cluster.
-
-	zone?: string
-
-	// Define the instance's Netmask.
-
-	instance_netmask?: string
-
-	// Create, terminate or remove instances.
-
-	state?: string
-
-	// Interface type of the disk.
-
-	disk_int?: string
-
-	// The instance's number of CPUs.
-
-	instance_cpus?: string
-
-	// Define the instance's Primary DNS server.
-
-	instance_dns?: string
-
-	// Define the instance's Authorized key.
-
-	instance_key?: string
-
-	// The name of the network interface in oVirt/RHEV.
-
-	instance_nic?: string
-
-	// The url of the oVirt instance.
-
-	url: string
-
-	// Size of the instance's disk in GB.
-
-	instance_disksize?: string
-
-	// Define the instance's Domain.
-
-	instance_domain?: string
-
-	// Define the instance's Hostname.
-
-	instance_hostname?: string
-
-	// Whether you want to deploy an image or create an instance from scratch.
-
-	resource_type?: string
-
-	// Define the instance's number of cores.
-
-	instance_cores?: string
-
-	// Define whether the instance is a server, desktop or high_performance.
-	// I(high_performance) is supported since Ansible 2.5 and oVirt/RHV 4.2.
-
-	instance_type?: string
 
 	// The oVirt/RHEV datacenter where you want to deploy to.
 
 	region?: string
 
+	// The Storage Domain where you want to create the instance's disk on.
+
+	sdomain?: string
+
+	// Define the instance's number of cores.
+
+	instance_cores?: string
+
+	// The instance's number of CPUs.
+
+	instance_cpus?: string
+
+	// Define the instance's Domain.
+
+	instance_domain?: string
+
+	// The user to authenticate with.
+
+	user: string
+
 	// Define whether disk is thin or preallocated.
 
 	disk_alloc?: string
 
-	// The template to use for the instance.
+	// Define the instance's Hostname.
 
-	image?: string
+	instance_hostname?: string
+
+	// Define the instance's IP.
+
+	instance_ip?: string
 
 	// Define the instance's Root password.
 
 	instance_rootpw?: string
 
-	// The instance's amount of memory in MB.
+	// The url of the oVirt instance.
 
-	instance_mem?: string
+	url: string
 
-	// The logical network the machine should belong to.
+	// Interface type of the disk.
 
-	instance_network?: string
+	disk_int?: string
+
+	// Define the instance's Primary DNS server.
+
+	instance_dns?: string
+
+	// Create, terminate or remove instances.
+
+	state?: string
 
 	// The name of the instance to use.
 
 	instance_name: string
 
+	// Define the instance's Netmask.
+
+	instance_netmask?: string
+
+	// The logical network the machine should belong to.
+
+	instance_network?: string
+
+	// The template to use for the instance.
+
+	image?: string
+
+	// Deploy the image to this oVirt cluster.
+
+	zone?: string
+
+	// Define the instance's Authorized key.
+
+	instance_key?: string
+
+	// The instance's amount of memory in MB.
+
+	instance_mem?: string
+
 	// Type of Operating System.
 
 	instance_os?: string
+
+	// Password of the user to authenticate with.
+
+	password: string
+
+	// Whether you want to deploy an image or create an instance from scratch.
+
+	resource_type?: string
+
+	// Size of the instance's disk in GB.
+
+	instance_disksize?: string
+
+	// The name of the network interface in oVirt/RHEV.
+
+	instance_nic?: string
+
+	// Define whether the instance is a server, desktop or high_performance.
+	// I(high_performance) is supported since Ansible 2.5 and oVirt/RHV 4.2.
+
+	instance_type?: string
 }
 
 proxmox :: {
-
-	// numbers of allocated cpus for instance
-
-	cpus?: string
-
-	// hard disk size in GB for instance
-
-	disk?: string
-
-	// specifies network interfaces for the container. As a hash/dictionary defining interfaces.
-
-	netif?: string
-
-	// Public key to add to /root/.ssh/authorized_keys. This was added on Proxmox 4.2, it is ignored for earlier versions
-
-	pubkey?: string
-
-	// swap memory size in MB for instance
-
-	swap?: string
-
-	// the host of the Proxmox VE cluster
-
-	api_host: string
-
-	// Indicate desired state of the instance
-
-	state?: string
-
-	// the user to authenticate with
-
-	api_user: string
-
-	// specifies the address the container will be assigned
-
-	ip_address?: string
-
-	// specifies whether a VM will be started during system bootup
-
-	onboot?: bool
 
 	// the template for VM creating
 	// required only for C(state=present)
 
 	ostemplate?: string
 
+	// Public key to add to /root/.ssh/authorized_keys. This was added on Proxmox 4.2, it is ignored for earlier versions
+
+	pubkey?: string
+
+	// the host of the Proxmox VE cluster
+
+	api_host: string
+
+	// the user to authenticate with
+
+	api_user: string
+
 	// sets DNS search domain for a container
 
 	searchdomain?: string
 
-	// Indicate if the container should be unprivileged
+	// enable / disable https certificate verification
 
-	unprivileged?: bool
-
-	// CPU weight for a VM
-
-	cpuunits?: string
-
-	// memory size in MB for instance
-
-	memory?: string
-
-	// the instance id
-	// if not set, the next available VM ID will be fetched from ProxmoxAPI.
-	// if not set, will be fetched from PromoxAPI based on the hostname
-
-	vmid?: string
+	validate_certs?: bool
 
 	// target storage
 
 	storage?: string
 
-	// sets DNS server IP address for a container
-
-	nameserver?: string
-
-	// Proxmox VE resource pool
-
-	pool?: string
-
 	// timeout for operations
 
 	timeout?: string
 
-	// specifies additional mounts (separate disks) for the container. As a hash/dictionary defining mount points
+	// the password to authenticate with
+	// you can use PROXMOX_PASSWORD environment variable
 
-	mounts?: string
+	api_password?: string
 
 	// forcing operations
 	// can be used only with states C(present), C(stopped), C(restarted)
@@ -377,15 +315,43 @@ proxmox :: {
 
 	force?: bool
 
-	// Specify number of cores per socket.
-
-	cores?: string
-
 	// the instance hostname
 	// required only for C(state=present)
 	// must be unique if vmid is not passed
 
 	hostname?: string
+
+	// memory size in MB for instance
+
+	memory?: string
+
+	// specifies additional mounts (separate disks) for the container. As a hash/dictionary defining mount points
+
+	mounts?: string
+
+	// specifies network interfaces for the container. As a hash/dictionary defining interfaces.
+
+	netif?: string
+
+	// swap memory size in MB for instance
+
+	swap?: string
+
+	// Specify number of cores per socket.
+
+	cores?: string
+
+	// hard disk size in GB for instance
+
+	disk?: string
+
+	// Proxmox VE resource pool
+
+	pool?: string
+
+	// CPU weight for a VM
+
+	cpuunits?: string
 
 	// Proxmox VE node, when new VM will be created
 	// required only for C(state=present)
@@ -393,77 +359,113 @@ proxmox :: {
 
 	node?: string
 
+	// the instance id
+	// if not set, the next available VM ID will be fetched from ProxmoxAPI.
+	// if not set, will be fetched from PromoxAPI based on the hostname
+
+	vmid?: string
+
+	// numbers of allocated cpus for instance
+
+	cpus?: string
+
+	// sets DNS server IP address for a container
+
+	nameserver?: string
+
+	// specifies whether a VM will be started during system bootup
+
+	onboot?: bool
+
 	// the instance root password
 	// required only for C(state=present)
 
 	password?: string
 
-	// enable / disable https certificate verification
+	// Indicate desired state of the instance
 
-	validate_certs?: bool
+	state?: string
 
-	// the password to authenticate with
-	// you can use PROXMOX_PASSWORD environment variable
+	// specifies the address the container will be assigned
 
-	api_password?: string
+	ip_address?: string
+
+	// Indicate if the container should be unprivileged
+
+	unprivileged?: bool
 }
 
 proxmox_kvm :: {
 
-	// Specify the amount of RAM for the VM in MB.
-	// Using zero disables the balloon driver.
+	// Specify number of cores per socket.
 
-	balloon?: string
+	cores?: string
+
+	// Enable/disable the protection flag of the VM. This will enable/disable the remove VM and remove disk operations.
+
+	protection?: bool
+
+	// Sets the number of CPU sockets. (1 - N).
+
+	sockets?: string
+
+	// Timeout for operations.
+
+	timeout?: string
+
+	// Specify if the VM should be automatically restarted after crash (currently ignored in PVE API).
+
+	autostart?: bool
 
 	// Name of VM to be cloned. If C(vmid) is setted, C(clone) can take arbitrary value but required for initiating the clone.
 
 	clone?: string
 
-	// A hash/dictionary of network interfaces for the VM. C(net='{"key":"value", "key":"value"}').
-	// Keys allowed are - C(net[n]) where 0 ≤ n ≤ N.
-	// Values allowed are - C("model="XX:XX:XX:XX:XX:XX",bridge="value",rate="value",tag="value",firewall="1|0",trunks="vlanid"").
-	// Model is one of C(e1000 e1000-82540em e1000-82544gc e1000-82545em i82551 i82557b i82559er ne2k_isa ne2k_pci pcnet rtl8139 virtio vmxnet3).
-	// C(XX:XX:XX:XX:XX:XX) should be an unique MAC address. This is automatically generated if not specified.
-	// The C(bridge) parameter can be used to automatically add the interface to a bridge device. The Proxmox VE standard bridge is called 'vmbr0'.
-	// Option C(rate) is used to limit traffic bandwidth from and to this interface. It is specified as floating point number, unit is 'Megabytes per second'.
-	// If you specify no bridge, we create a kvm 'user' (NATed) network device, which provides DHCP and DNS services.
+	// Allow reboot. If set to C(yes), the VM exit on reboot.
 
-	net?: string
+	reboot?: bool
+
+	// The name of the snapshot. Used only with clone.
+
+	snapname?: string
+
+	// Sets the keyboard layout for VNC server.
+
+	keyboard?: string
 
 	// VMID for the clone. Used only with clone.
 	// If newid is not set, the next available VM ID will be fetched from ProxmoxAPI.
 
 	newid?: string
 
-	// Rets amount of memory shares for auto-ballooning. (0 - 50000).
-	// The larger the number is, the more memory this VM gets.
-	// The number is relative to weights of all other running VMs.
-	// Using 0 disables auto-ballooning, this means no limit.
+	// Create a full copy of all disk. This is always done when you clone a normal VM.
+	// For VM templates, we try to create a linked clone by default.
+	// Used only with clone
 
-	shares?: string
+	full?: bool
 
-	// Specify the target host of the Proxmox VE cluster.
+	// Enable/disable hugepages memory.
 
-	api_host: string
+	hugepages?: string
 
-	// Specify if CPU usage will be limited. Value 0 indicates no CPU limit.
-	// If the computer has 2 CPUs, it has total of '2' CPU time
+	// A hash/dictionary of volume used as IDE hard disk or CD-ROM. C(ide='{"key":"value", "key":"value"}').
+	// Keys allowed are - C(ide[n]) where 0 ≤ n ≤ 3.
+	// Values allowed are - C("storage:size,format=value").
+	// C(storage) is the storage identifier where to create the disk.
+	// C(size) is the size of the disk in GB.
+	// C(format) is the drive's backing file's data format. C(qcow2|raw|subvol).
 
-	cpulimit?: string
+	ide?: string
 
-	// Sets the keyboard layout for VNC server.
+	// Enable/disable KVM hardware virtualization.
 
-	keyboard?: string
+	kvm?: bool
 
 	// A hash/dictionary of map host parallel devices. C(parallel='{"key":"value", "key":"value"}').
 	// Keys allowed are - (parallel[n]) where 0 ≤ n ≤ 2.
 	// Values allowed are - C("/dev/parport\d+|/dev/usb/lp\d+").
 
 	parallel?: string
-
-	// Sets the number of CPU sockets. (1 - N).
-
-	sockets?: string
 
 	// A hash/dictionary of volume used as VIRTIO hard disk. C(virtio='{"key":"value", "key":"value"}').
 	// Keys allowed are - C(virto[n]) where 0 ≤ n ≤ 15.
@@ -474,99 +476,28 @@ proxmox_kvm :: {
 
 	virtio?: string
 
-	// Specifies the VM ID. Instead use I(name) parameter.
-	// If vmid is not set, the next available VM ID will be fetched from ProxmoxAPI.
+	// Specify the user to authenticate with.
 
-	vmid?: string
+	api_user: string
 
-	// Specify the boot order -> boot on floppy C(a), hard disk C(c), CD-ROM C(d), or network C(n).
-	// You can combine to set order.
+	// Specify CPU weight for a VM.
+	// You can disable fair-scheduler configuration by setting this to 0
 
-	boot?: string
+	cpuunits?: string
 
-	// Selectively enable hotplug features.
-	// This is a comma separated list of hotplug features C('network', 'disk', 'cpu', 'memory' and 'usb').
-	// Value 0 disables hotplug completely and value 1 is an alias for the default C('network,disk,usb').
+	// Specifies the Qemu machine type.
+	// type => C((pc|pc(-i440fx)?-\d+\.\d+(\.pxe)?|q35|pc-q35-\d+\.\d+(\.pxe)?))
 
-	hotplug?: string
+	machine?: string
 
-	// Memory size in MB for instance.
+	// Sets maximum tolerated downtime (in seconds) for migrations.
 
-	memory?: string
-
-	// A hash/dictionaries of NUMA topology. C(numa='{"key":"value", "key":"value"}').
-	// Keys allowed are - C(numa[n]) where 0 ≤ n ≤ N.
-	// Values allowed are - C("cpu="<id[-id];...>",hostnodes="<id[-id];...>",memory="number",policy="(bind|interleave|preferred)"").
-	// C(cpus) CPUs accessing this NUMA node.
-	// C(hostnodes) Host NUMA nodes to use.
-	// C(memory) Amount of memory this NUMA node provides.
-	// C(policy) NUMA allocation policy.
-
-	numa?: string
-
-	// A hash/dictionary of serial device to create inside the VM. C('{"key":"value", "key":"value"}').
-	// Keys allowed are - serial[n](str; required) where 0 ≤ n ≤ 3.
-	// Values allowed are - C((/dev/.+|socket)).
-	// /!\ If you pass through a host serial device, it is no longer possible to migrate such machines - use with special care.
-
-	serial?: string
-
-	// Specify the password to authenticate with.
-	// You can use C(PROXMOX_PASSWORD) environment variable.
-
-	api_password?: string
-
-	// Enable/disable hugepages memory.
-
-	hugepages?: string
-
-	// Add the new VM to the specified pool.
-
-	pool?: string
-
-	// Specifies SMBIOS type 1 fields.
-
-	smbios?: string
-
-	// Specify if the QEMU Guest Agent should be enabled/disabled.
-
-	agent?: bool
-
-	// Specify emulated CPU type.
-
-	cpu?: string
-
-	// A hash/dictionary of volume used as SCSI hard disk or CD-ROM. C(scsi='{"key":"value", "key":"value"}').
-	// Keys allowed are - C(sata[n]) where 0 ≤ n ≤ 13.
-	// Values allowed are -  C("storage:size,format=value").
-	// C(storage) is the storage identifier where to create the disk.
-	// C(size) is the size of the disk in GB.
-	// C(format) is the drive's backing file's data format. C(qcow2|raw|subvol).
-
-	scsi?: string
+	migrate_downtime?: string
 
 	// Indicates desired state of the instance.
 	// If C(current), the current state of the VM will be fetched. You can access it with C(results.status)
 
 	state?: string
-
-	// Ignore locks
-	// Only root is allowed to use this option.
-
-	skiplock?: string
-
-	// Target node. Only allowed if the original VM is on shared storage.
-	// Used only with clone
-
-	target?: string
-
-	// Enables/disables the template.
-
-	template?: bool
-
-	// Enable booting from specified disk. C((ide|sata|scsi|virtio)\d+)
-
-	bootdisk?: string
 
 	// Specify a list of settings you want to delete.
 
@@ -577,56 +508,34 @@ proxmox_kvm :: {
 
 	force?: bool
 
-	// Sets maximum speed (in MB/s) for migrations.
-	// A value of 0 is no limit.
+	// Memory size in MB for instance.
 
-	migrate_speed?: string
+	memory?: string
 
-	// A hash/dictionary of volume used as sata hard disk or CD-ROM. C(sata='{"key":"value", "key":"value"}').
-	// Keys allowed are - C(sata[n]) where 0 ≤ n ≤ 5.
-	// Values allowed are -  C("storage:size,format=value").
-	// C(storage) is the storage identifier where to create the disk.
-	// C(size) is the size of the disk in GB.
-	// C(format) is the drive's backing file's data format. C(qcow2|raw|subvol).
+	// Rets amount of memory shares for auto-ballooning. (0 - 50000).
+	// The larger the number is, the more memory this VM gets.
+	// The number is relative to weights of all other running VMs.
+	// Using 0 disables auto-ballooning, this means no limit.
 
-	sata?: string
+	shares?: string
 
-	// Select VGA type. If you want to use high resolution modes (>= 1280x1024x16) then you should use option 'std' or 'vmware'.
+	// Creates a virtual hardware watchdog device.
 
-	vga?: string
+	watchdog?: string
 
-	// Sets the real time clock to local time.
-	// This is enabled by default if ostype indicates a Microsoft OS.
+	// Specify emulated CPU type.
 
-	localtime?: bool
+	cpu?: string
 
-	// Lock/unlock the VM.
+	// Target drive's backing file's data format.
+	// Used only with clone
 
-	lock?: string
+	format?: string
 
-	// If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
+	// Specify the description for the VM. Only used on the configuration web interface.
+	// This is saved as comment inside the configuration file.
 
-	validate_certs?: bool
-
-	// Startup and shutdown behavior. C([[order=]\d+] [,up=\d+] [,down=\d+]).
-	// Order is a non-negative number defining the general startup order.
-	// Shutdown in done with reverse ordering.
-
-	startup?: string
-
-	// Pass arbitrary arguments to kvm.
-	// This option is for experts only!
-
-	args?: string
-
-	// Specify if to prevent changes if current configuration file has different SHA1 digest.
-	// This can be used to prevent concurrent modifications.
-
-	digest?: string
-
-	// Specify if PVE should freeze CPU at startup (use 'c' monitor command to start execution).
-
-	freeze?: bool
+	description?: string
 
 	// Specify a hash/dictionary of map host pci devices into guest. C(hostpci='{"key":"value", "key":"value"}').
 	// Keys allowed are - C(hostpci[n]) where 0 ≤ n ≤ N.
@@ -639,104 +548,173 @@ proxmox_kvm :: {
 
 	hostpci?: string
 
-	// Specifies guest operating system. This is used to enable special optimization/features for specific operating systems.
-	// The l26 is Linux 2.6/3.X Kernel.
+	// A hash/dictionary of network interfaces for the VM. C(net='{"key":"value", "key":"value"}').
+	// Keys allowed are - C(net[n]) where 0 ≤ n ≤ N.
+	// Values allowed are - C("model="XX:XX:XX:XX:XX:XX",bridge="value",rate="value",tag="value",firewall="1|0",trunks="vlanid"").
+	// Model is one of C(e1000 e1000-82540em e1000-82544gc e1000-82545em i82551 i82557b i82559er ne2k_isa ne2k_pci pcnet rtl8139 virtio vmxnet3).
+	// C(XX:XX:XX:XX:XX:XX) should be an unique MAC address. This is automatically generated if not specified.
+	// The C(bridge) parameter can be used to automatically add the interface to a bridge device. The Proxmox VE standard bridge is called 'vmbr0'.
+	// Option C(rate) is used to limit traffic bandwidth from and to this interface. It is specified as floating point number, unit is 'Megabytes per second'.
+	// If you specify no bridge, we create a kvm 'user' (NATed) network device, which provides DHCP and DNS services.
 
-	ostype?: string
-
-	// Enable/disable KVM hardware virtualization.
-
-	kvm?: bool
-
-	// Enables/disables the USB tablet device.
-
-	tablet?: bool
-
-	// Timeout for operations.
-
-	timeout?: string
-
-	// The name of the snapshot. Used only with clone.
-
-	snapname?: string
-
-	// Target storage for full clone.
-
-	storage?: string
-
-	// Specify if ACPI should be enabled/disabled.
-
-	acpi?: bool
-
-	// Specifies the Qemu machine type.
-	// type => C((pc|pc(-i440fx)?-\d+\.\d+(\.pxe)?|q35|pc-q35-\d+\.\d+(\.pxe)?))
-
-	machine?: string
-
-	// Sets maximum tolerated downtime (in seconds) for migrations.
-
-	migrate_downtime?: string
-
-	// Specifies whether a VM will be started during system bootup.
-
-	onboot?: bool
-
-	// Revert a pending change.
-
-	revert?: string
-
-	// Specify number of cores per socket.
-
-	cores?: string
-
-	// A hash/dictionary of volume used as IDE hard disk or CD-ROM. C(ide='{"key":"value", "key":"value"}').
-	// Keys allowed are - C(ide[n]) where 0 ≤ n ≤ 3.
-	// Values allowed are - C("storage:size,format=value").
-	// C(storage) is the storage identifier where to create the disk.
-	// C(size) is the size of the disk in GB.
-	// C(format) is the drive's backing file's data format. C(qcow2|raw|subvol).
-
-	ide?: string
+	net?: string
 
 	// Specifies the SCSI controller model.
 
 	scsihw?: string
 
-	// Creates a virtual hardware watchdog device.
+	// Enables/disables time drift fix.
 
-	watchdog?: string
+	tdf?: bool
 
-	// Specify the description for the VM. Only used on the configuration web interface.
-	// This is saved as comment inside the configuration file.
+	// Select VGA type. If you want to use high resolution modes (>= 1280x1024x16) then you should use option 'std' or 'vmware'.
 
-	description?: string
+	vga?: string
+
+	// Specify if the QEMU Guest Agent should be enabled/disabled.
+
+	agent?: bool
+
+	// Specify the password to authenticate with.
+	// You can use C(PROXMOX_PASSWORD) environment variable.
+
+	api_password?: string
+
+	// Lock/unlock the VM.
+
+	lock?: string
+
+	// Sets the initial date of the real time clock.
+	// Valid format for date are C('now') or C('2016-09-25T16:01:21') or C('2016-09-25').
+
+	startdate?: string
+
+	// Enable booting from specified disk. C((ide|sata|scsi|virtio)\d+)
+
+	bootdisk?: string
+
+	// Enables/disables the USB tablet device.
+
+	tablet?: bool
+
+	// Selectively enable hotplug features.
+	// This is a comma separated list of hotplug features C('network', 'disk', 'cpu', 'memory' and 'usb').
+	// Value 0 disables hotplug completely and value 1 is an alias for the default C('network,disk,usb').
+
+	hotplug?: string
+
+	// Add the new VM to the specified pool.
+
+	pool?: string
+
+	// Sets the real time clock to local time.
+	// This is enabled by default if ostype indicates a Microsoft OS.
+
+	localtime?: bool
+
+	// Specifies guest operating system. This is used to enable special optimization/features for specific operating systems.
+	// The l26 is Linux 2.6/3.X Kernel.
+
+	ostype?: string
+
+	// Ignore locks
+	// Only root is allowed to use this option.
+
+	skiplock?: string
+
+	// If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
+
+	validate_certs?: bool
+
+	// Specifies the VM ID. Instead use I(name) parameter.
+	// If vmid is not set, the next available VM ID will be fetched from ProxmoxAPI.
+
+	vmid?: string
+
+	// Pass arbitrary arguments to kvm.
+	// This option is for experts only!
+
+	args?: string
+
+	// Specify the BIOS implementation.
+
+	bios?: string
+
+	// Startup and shutdown behavior. C([[order=]\d+] [,up=\d+] [,down=\d+]).
+	// Order is a non-negative number defining the general startup order.
+	// Shutdown in done with reverse ordering.
+
+	startup?: string
+
+	// Enables/disables the template.
+
+	template?: bool
+
+	// Specify if CPU usage will be limited. Value 0 indicates no CPU limit.
+	// If the computer has 2 CPUs, it has total of '2' CPU time
+
+	cpulimit?: string
+
+	// Specifies whether a VM will be started during system bootup.
+
+	onboot?: bool
 
 	// Specifies the VM name. Only used on the configuration web interface.
 	// Required only for C(state=present).
 
 	name?: string
 
-	// If C(yes), the VM will be update with new value.
-	// Cause of the operations of the API and security reasons, I have disabled the update of the following parameters
-	// C(net, virtio, ide, sata, scsi). Per example updating C(net) update the MAC address and C(virtio) create always new disk...
+	// A hash/dictionary of volume used as sata hard disk or CD-ROM. C(sata='{"key":"value", "key":"value"}').
+	// Keys allowed are - C(sata[n]) where 0 ≤ n ≤ 5.
+	// Values allowed are -  C("storage:size,format=value").
+	// C(storage) is the storage identifier where to create the disk.
+	// C(size) is the size of the disk in GB.
+	// C(format) is the drive's backing file's data format. C(qcow2|raw|subvol).
 
-	update?: bool
+	sata?: string
 
-	// Specify if the VM should be automatically restarted after crash (currently ignored in PVE API).
+	// A hash/dictionary of volume used as SCSI hard disk or CD-ROM. C(scsi='{"key":"value", "key":"value"}').
+	// Keys allowed are - C(sata[n]) where 0 ≤ n ≤ 13.
+	// Values allowed are -  C("storage:size,format=value").
+	// C(storage) is the storage identifier where to create the disk.
+	// C(size) is the size of the disk in GB.
+	// C(format) is the drive's backing file's data format. C(qcow2|raw|subvol).
 
-	autostart?: bool
+	scsi?: string
 
-	// Enable/disable the protection flag of the VM. This will enable/disable the remove VM and remove disk operations.
+	// Specifies SMBIOS type 1 fields.
 
-	protection?: bool
+	smbios?: string
 
-	// Allow reboot. If set to C(yes), the VM exit on reboot.
+	// Specify if PVE should freeze CPU at startup (use 'c' monitor command to start execution).
 
-	reboot?: bool
+	freeze?: bool
 
-	// Sets number of hotplugged vcpus.
+	// A hash/dictionaries of NUMA topology. C(numa='{"key":"value", "key":"value"}').
+	// Keys allowed are - C(numa[n]) where 0 ≤ n ≤ N.
+	// Values allowed are - C("cpu="<id[-id];...>",hostnodes="<id[-id];...>",memory="number",policy="(bind|interleave|preferred)"").
+	// C(cpus) CPUs accessing this NUMA node.
+	// C(hostnodes) Host NUMA nodes to use.
+	// C(memory) Amount of memory this NUMA node provides.
+	// C(policy) NUMA allocation policy.
 
-	vcpus?: string
+	numa?: string
+
+	// Target node. Only allowed if the original VM is on shared storage.
+	// Used only with clone
+
+	target?: string
+
+	// Specify the target host of the Proxmox VE cluster.
+
+	api_host: string
+
+	// A hash/dictionary of serial device to create inside the VM. C('{"key":"value", "key":"value"}').
+	// Keys allowed are - serial[n](str; required) where 0 ≤ n ≤ 3.
+	// Values allowed are - C((/dev/.+|socket)).
+	// /!\ If you pass through a host serial device, it is no longer possible to migrate such machines - use with special care.
+
+	serial?: string
 
 	// Proxmox VE node, where the new VM will be created.
 	// Only required for C(state=present).
@@ -744,41 +722,137 @@ proxmox_kvm :: {
 
 	node?: string
 
-	// Sets the initial date of the real time clock.
-	// Valid format for date are C('now') or C('2016-09-25T16:01:21') or C('2016-09-25').
+	// Revert a pending change.
 
-	startdate?: string
+	revert?: string
 
-	// Enables/disables time drift fix.
+	// If C(yes), the VM will be update with new value.
+	// Cause of the operations of the API and security reasons, I have disabled the update of the following parameters
+	// C(net, virtio, ide, sata, scsi). Per example updating C(net) update the MAC address and C(virtio) create always new disk...
 
-	tdf?: bool
+	update?: bool
 
-	// Specify the user to authenticate with.
+	// Sets number of hotplugged vcpus.
+
+	vcpus?: string
+
+	// Specify if ACPI should be enabled/disabled.
+
+	acpi?: bool
+
+	// Sets maximum speed (in MB/s) for migrations.
+	// A value of 0 is no limit.
+
+	migrate_speed?: string
+
+	// Specify if to prevent changes if current configuration file has different SHA1 digest.
+	// This can be used to prevent concurrent modifications.
+
+	digest?: string
+
+	// Target storage for full clone.
+
+	storage?: string
+
+	// Specify the amount of RAM for the VM in MB.
+	// Using zero disables the balloon driver.
+
+	balloon?: string
+
+	// Specify the boot order -> boot on floppy C(a), hard disk C(c), CD-ROM C(d), or network C(n).
+	// You can combine to set order.
+
+	boot?: string
+}
+
+proxmox_template :: {
+
+	// timeout for operations
+
+	timeout?: string
+
+	// the user to authenticate with
 
 	api_user: string
 
-	// Specify the BIOS implementation.
+	// can be used only with C(state=present), exists template will be overwritten
 
-	bios?: string
+	force?: bool
 
-	// Specify CPU weight for a VM.
-	// You can disable fair-scheduler configuration by setting this to 0
+	// Indicate desired state of the template
 
-	cpuunits?: string
+	state?: string
 
-	// Target drive's backing file's data format.
-	// Used only with clone
+	// Proxmox VE node, when you will operate with template
 
-	format?: string
+	node: string
 
-	// Create a full copy of all disk. This is always done when you clone a normal VM.
-	// For VM templates, we try to create a linked clone by default.
-	// Used only with clone
+	// path to uploaded file
+	// required only for C(state=present)
 
-	full?: bool
+	src?: string
+
+	// target storage
+
+	storage?: string
+
+	// the template name
+	// required only for states C(absent), C(info)
+
+	template?: string
+
+	// enable / disable https certificate verification
+
+	validate_certs?: bool
+
+	// the host of the Proxmox VE cluster
+
+	api_host: string
+
+	// the password to authenticate with
+	// you can use PROXMOX_PASSWORD environment variable
+
+	api_password?: string
+
+	// content type
+	// required only for C(state=present)
+
+	content_type?: string
 }
 
 rhevm :: {
+
+	// This option uses complex arguments and is a list of items that specify the bootorder.
+
+	boot_order?: [..._]
+
+	// The template to use for the VM.
+
+	image?: string
+
+	// A boolean switch to make a secure or insecure connection to the server.
+
+	insecure_api?: bool
+
+	// The name/IP of your RHEV-m/oVirt instance.
+
+	server?: string
+
+	// This serves to create/remove/update or powermanage your VM.
+
+	state?: string
+
+	// To define if the VM is a server or desktop.
+
+	type?: string
+
+	// The user to authenticate with.
+
+	user?: string
+
+	// The RHEV/oVirt cluster in which you want you VM to start.
+
+	cluster?: string
 
 	// The RHEV/oVirt datacenter in which you want you VM to start.
 
@@ -788,29 +862,9 @@ rhevm :: {
 
 	disks?: [..._]
 
-	// The name of the VM.
+	// This option uses complex arguments and is a list of interfaces with the options name and vlan.
 
-	name?: string
-
-	// This serves to create/remove/update or powermanage your VM.
-
-	state?: string
-
-	// The user to authenticate with.
-
-	user?: string
-
-	// The host you wish your VM to run on.
-
-	vmhost?: string
-
-	// This parameter is used to configure the CPU share.
-
-	cpu_share?: int
-
-	// The name/IP of your RHEV-m/oVirt instance.
-
-	server?: string
+	ifaces?: [..._]
 
 	// The timeout you wish to define for power actions.
 	// When I(state = 'up').
@@ -819,130 +873,114 @@ rhevm :: {
 
 	timeout?: int
 
-	// To define if the VM is a server or desktop.
-
-	type?: string
-
 	// The amount of memory you want your VM to use (in GB).
 
 	vmmem?: int
-
-	// This option sets the delete protection checkbox.
-
-	del_prot?: bool
-
-	// This option uses complex arguments and is a list of interfaces with the options name and vlan.
-
-	ifaces?: [..._]
-
-	// The template to use for the VM.
-
-	image?: string
-
-	// The minimum amount of memory you wish to reserve for this system.
-
-	mempol?: int
-
-	// The password for user authentication.
-
-	password?: string
-
-	// The number of CPUs you want in your VM.
-
-	vmcpu?: int
-
-	// To make your VM High Available.
-
-	vm_ha?: bool
-
-	// This option uses complex arguments and is a list of items that specify the bootorder.
-
-	boot_order?: [..._]
 
 	// The CD you wish to have mounted on the VM when I(state = 'CD').
 
 	cd_drive?: string
 
-	// The RHEV/oVirt cluster in which you want you VM to start.
-
-	cluster?: string
-
-	// A boolean switch to make a secure or insecure connection to the server.
-
-	insecure_api?: bool
-
 	// The operating system option in RHEV/oVirt.
 
 	osver?: string
 
+	// The password for user authentication.
+
+	password?: string
+
+	// To make your VM High Available.
+
+	vm_ha?: bool
+
+	// This parameter is used to configure the CPU share.
+
+	cpu_share?: int
+
+	// This option sets the delete protection checkbox.
+
+	del_prot?: bool
+
+	// The minimum amount of memory you wish to reserve for this system.
+
+	mempol?: int
+
+	// The name of the VM.
+
+	name?: string
+
 	// The port on which the API is reachable.
 
 	port?: int
+
+	// The number of CPUs you want in your VM.
+
+	vmcpu?: int
+
+	// The host you wish your VM to run on.
+
+	vmhost?: string
 }
 
-terraform :: {
+serverless :: {
 
-	// The path to an existing Terraform plan file to apply. If this is not specified, Ansible will build a new TF plan and execute it. Note that this option is required if 'state' has the 'planned' value.
+	// Whether or not to deploy artifacts after building them.
+	// When this option is C(false) all the functions will be built, but no stack update will be run to send them out.
+	// This is mostly useful for generating artifacts to be stored/deployed elsewhere.
 
-	plan_file?: string
+	deploy?: bool
 
-	// How long to maintain the lock on the statefile, if you use a service that accepts locks (such as S3+DynamoDB).
+	// A list of specific functions to deploy.
+	// If this is not provided, all functions in the service will be deployed.
 
-	lock_timeout?: string
+	functions?: [..._]
 
-	// Goal state of given stage/project
+	// The path of a serverless framework binary relative to the 'service_path' eg. node_module/.bin/serverless
+
+	serverless_bin_path?: string
+
+	// The name of the serverless framework project stage to deploy to.
+	// This uses the serverless framework default "dev".
+
+	stage?: string
+
+	// Goal state of given stage/project.
 
 	state?: string
 
-	// A list of specific resources to target in this plan/application. The resources selected here will also auto-include any dependencies.
+	// Whether or not to force full deployment, equivalent to serverless C(--force) option.
 
-	targets?: string
+	force?: bool
 
-	// The path of a terraform binary to use, relative to the 'service_path' unless you supply an absolute path.
+	// AWS region to deploy the service to.
+	// This parameter defaults to C(us-east-1).
 
-	binary_path?: string
+	region?: string
 
-	// A group of key-values to override template variables or those in variables files.
+	// The path to the root of the Serverless Service to be operated on.
 
-	variables?: string
+	service_path: string
 
-	// Only works with state = absent
-	// If true, the workspace will be deleted after the "terraform destroy" action.
-	// The 'default' workspace will not be deleted.
+	// Shows all stack events during deployment, and display any Stack Output.
 
-	purge_workspace?: bool
+	verbose?: bool
+}
 
-	// To avoid duplicating infra, if a state file can't be found this will force a `terraform init`. Generally, this should be turned off unless you intend to provision an entirely new Terraform deployment.
+cloud_init_data_facts :: {
 
-	force_init?: bool
+	// Filter facts
 
-	// Enable statefile locking, if you use a service that accepts locks (such as S3+DynamoDB) to store your statefile.
+	filter?: string
+}
 
-	lock?: bool
-
-	// The path to the root of the Terraform directory with the vars.tf/main.tf/etc to use.
-
-	project_path: string
-
-	// The path to an existing Terraform state file to use when building plan. If this is not specified, the default `terraform.tfstate` will be used.
-	// This option is ignored when plan is specified.
-
-	state_file?: string
-
-	// The path to a variables file for Terraform to fill into the TF configurations.
-
-	variables_file?: string
-
-	// The terraform workspace to work with.
-
-	workspace?: string
-
-	// A group of key-values to provide at init stage to the -backend-config parameter.
-
-	backend_config?: string
+xenserver_facts :: {
 }
 
 virt :: {
+
+	// Note that there may be some lag for state requests like C(shutdown) since these refer only to VM states. After starting a guest, it may not be immediately accessible. state and command are mutually exclusive except when command=list_vms. In this case all VMs in specified state will be listed.
+
+	state?: string
 
 	// libvirt connection uri.
 
@@ -965,42 +1003,4 @@ virt :: {
 	// This option is required unless I(command) is C(list_vms).
 
 	name?: string
-
-	// Note that there may be some lag for state requests like C(shutdown) since these refer only to VM states. After starting a guest, it may not be immediately accessible. state and command are mutually exclusive except when command=list_vms. In this case all VMs in specified state will be listed.
-
-	state?: string
-}
-
-virt_net :: {
-
-	// Specify if a given network should be started automatically on system boot.
-
-	autostart?: bool
-
-	// in addition to state management, various non-idempotent commands are available. See examples. Modify was added in version 2.1
-
-	command?: string
-
-	// name of the network being managed. Note that network must be previously defined with xml.
-
-	name: string
-
-	// specify which state you want a network to be in. If 'active', network will be started. If 'present', ensure that network is present but do not change its state; if it's missing, you need to specify xml argument. If 'inactive', network will be stopped. If 'undefined' or 'absent', network will be removed from I(libvirt) configuration.
-
-	state?: string
-
-	// libvirt connection uri.
-
-	uri?: string
-
-	// XML document used with the define command.
-
-	xml?: string
-}
-
-cloud_init_data_facts :: {
-
-	// Filter facts
-
-	filter?: string
 }

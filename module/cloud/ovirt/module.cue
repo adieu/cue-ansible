@@ -1,134 +1,23 @@
 package ovirt
 
-ovirt_event :: {
-
-	// The id of the cluster associated with this event.
-
-	cluster?: string
-
-	// Custom ID for the event. This ID must be unique for each event.
-	// Required when state is present.
-
-	custom_id?: int
-
-	// The id of the data center associated with this event.
-
-	data_center?: string
-
-	// Severity of the event.
-	// Required when state is present.
-
-	severity?: string
-
-	// Should the event be present/absent.
-	// The C(wait) option must be set to false when state is absent.
-
-	state?: string
-
-	// The id of the template associated with this event.
-
-	template?: string
-
-	// The id of the user associated with this event.
-
-	user?: string
-
-	// Message for the event.
-	// Required when state is present.
-
-	description?: string
-
-	// The id of the host associated with this event.
-
-	host?: string
-
-	// The event ID in the oVirt/RHV audit_log table. This ID is not the same as custom_id and is only used when state is absent.
-	// Required when state is absent.
-
-	id?: string
-
-	// Originator of the event.
-	// Required when state is present.
-
-	origin?: string
-
-	// The id of the storage domain associated with this event.
-
-	storage_domain?: string
-
-	// The id of the VM associated with this event.
-
-	vm?: string
-}
-
-ovirt_user_info :: {
-
-	// Search term which is accepted by oVirt/RHV search backend.
-	// For example to search user X use following pattern: name=X
-
-	pattern?: string
-}
-
-ovirt_affinity_label :: {
-
-	// List of the hosts names, which should have assigned this affinity label.
-
-	hosts?: string
-
-	// Name of the affinity label to manage.
-
-	name: string
-
-	// Should the affinity label be present or absent.
-
-	state?: string
-
-	// List of the VMs names, which should have assigned this affinity label.
-
-	vms?: string
-
-	// Name of the cluster where vms and hosts resides.
-
-	cluster?: string
-}
-
-ovirt_affinity_label_info :: {
-
-	// Name of the VM, which affinity labels should be listed.
-
-	vm?: string
-
-	// Name of the host, which affinity labels should be listed.
-
-	host?: string
-
-	// Name of the affinity labels which should be listed.
-
-	name?: string
-}
-
-ovirt_cluster_info :: {
-
-	// Search term which is accepted by oVirt/RHV search backend.
-	// For example to search cluster X from datacenter Y use following pattern: name=X and datacenter=Y
-
-	pattern?: string
-}
-
 ovirt_quota :: {
-
-	// ID of the quota to manage.
-
-	id?: string
 
 	// Should the quota be present/absent.
 
 	state?: string
 
+	// Storage threshold(soft limit) defined in percentage (0-100).
+
+	storage_threshold?: string
+
 	// List of dictionary of storage limits, which is valid to specific storage.
 	// If storage isn't specified it's valid to all storages in system:
 
 	storages?: string
+
+	// Cluster grace(hard limit) defined in percentage (1-100).
+
+	cluster_grace?: string
 
 	// Cluster threshold(soft limit) defined in percentage (0-100).
 
@@ -139,787 +28,256 @@ ovirt_quota :: {
 
 	clusters?: string
 
-	// Description of the quota to manage.
+	// Name of the quota to manage.
 
-	description?: string
+	name: string
 
 	// Storage grace(hard limit) defined in percentage (1-100).
 
 	storage_grace?: string
 
-	// Storage threshold(soft limit) defined in percentage (0-100).
-
-	storage_threshold?: string
-
-	// Cluster grace(hard limit) defined in percentage (1-100).
-
-	cluster_grace?: string
-
 	// Name of the datacenter where quota should be managed.
 
 	data_center: string
 
-	// Name of the quota to manage.
-
-	name: string
-}
-
-ovirt_external_provider :: {
-
-	// Keystone authentication URL of the openstack provider.
-	// Applicable for those types: I(os_image), I(os_volume) and I(network).
-
-	authentication_url?: string
-
-	// Description of the external provider.
+	// Description of the quota to manage.
 
 	description?: string
 
-	// Name of the external provider to manage.
+	// ID of the quota to manage.
 
-	name?: string
-
-	// Type of the external network provider either external (for example OVN) or neutron.
-	// Applicable if C(type) is I(network).
-
-	network_type?: string
-
-	// Password of the user specified in C(username) parameter.
-	// Applicable for all types.
-
-	password?: string
-
-	// Specify if the network should be read only.
-	// Applicable if C(type) is I(network).
-
-	read_only?: bool
-
-	// Should the external be present or absent
-	// When you are using absent for I(os_volume), you need to make sure that SD is not attached to the data center!
-
-	state?: string
-
-	// List of authentication keys. Each key is represented by dict like {'uuid': 'our-uuid', 'value': 'YourSecretValue=='}
-	// When you will not pass these keys and there are already some of them defined in the system they will be removed.
-	// Applicable for I(os_volume).
-
-	authentication_keys?: string
-
-	// Username to be used for login to external provider.
-	// Applicable for all types.
-
-	username?: string
-
-	// Type of the external provider.
-
-	type?: string
-
-	// Name of the tenant.
-	// Applicable for those types: I(os_image), I(os_volume) and I(network).
-
-	tenant_name?: string
-
-	// URL where external provider is hosted.
-	// Applicable for those types: I(os_image), I(os_volume), I(network) and I(foreman).
-
-	url?: string
-
-	// Name of the data center where provider should be attached.
-	// Applicable for those type: I(os_volume).
-
-	data_center?: string
+	id?: string
 }
 
-ovirt_host_pm :: {
+ovirt_cluster :: {
 
-	// Dictionary of additional fence agent options (including Power Management slot).
-	// Additional information about options can be found at U(https://github.com/ClusterLabs/fence-agents/blob/master/doc/FenceAgentAPI.md).
+	// The bandwidth settings define the maximum bandwidth of both outgoing and incoming migrations per host.
+	// Following bandwidth options are supported:
+	// C(auto) - Bandwidth is copied from the I(rate limit) [Mbps] setting in the data center host network QoS.
+	// C(hypervisor_default) - Bandwidth is controlled by local VDSM setting on sending host.
+	// C(custom) - Defined by user (in Mbps).
 
-	options?: string
+	migration_bandwidth?: string
 
-	// Should the host be present/absent.
-
-	state?: string
-
-	// Type of the power management. oVirt/RHV predefined values are I(drac5), I(ipmilan), I(rsa), I(bladecenter), I(alom), I(apc), I(apc_snmp), I(eps), I(wti), I(rsb), I(cisco_ucs), I(drac7), I(hpblade), I(ilo), I(ilo2), I(ilo3), I(ilo4), I(ilo_ssh), but user can have defined custom type.
-
-	type?: string
-
-	// Username to be used to connect to power management interface.
-
-	username?: string
-
-	// Address of the power management interface.
-
-	address?: string
-
-	// If I(true) options will be encrypted when send to agent.
-
-	encrypt_options?: bool
-
-	// Name of the host to manage.
+	// Name of the cluster to manage.
 
 	name: string
 
-	// Integer value specifying, by default it's added at the end.
+	// The resilience policy defines how the virtual machines are prioritized in the migration.
+	// Following values are supported:
+	// C(do_not_migrate) -  Prevents virtual machines from being migrated. 
+	// C(migrate) - Migrates all virtual machines in order of their defined priority.
+	// C(migrate_highly_available) - Migrates only highly available virtual machines to prevent overloading other hosts.
 
-	order?: string
+	resilience_policy?: string
 
-	// Password of the user specified in C(username) parameter.
+	// List that specify the random number generator devices that all hosts in the cluster will use.
+	// Supported generators are: I(hwrng) and I(random).
 
-	password?: string
+	rng_sources?: string
 
-	// Power management interface port.
+	// If I(True), hosts in this cluster will be used to run virtual machines.
 
-	port?: string
-}
+	virt?: bool
 
-ovirt_storage_vm_info :: {
+	// If I(True) any hosts in the cluster that are Non Responsive and still connected to storage will not be fenced.
 
-	// Sets the maximum number of virtual machines to return. If not specified all the virtual machines are returned.
+	fence_skip_if_sd_active?: bool
 
-	max?: string
+	// The name of the U(https://fedorahosted.org/tuned) to set on all the hosts in the cluster. This is not mandatory and relevant only for clusters with Gluster service.
+	// Could be for example I(virtual-host), I(rhgs-sequential-io), I(rhgs-random-io)
 
-	// The storage domain name where the virtual machines should be listed.
+	gluster_tuned_profile?: string
 
-	storage_domain?: string
+	// I I(True) MoM enables to run Kernel Same-page Merging I(KSM) when necessary and when it can yield a memory saving benefit that outweighs its CPU cost.
 
-	// Flag which indicates whether to get unregistered virtual machines which contain one or more disks which reside on a storage domain or diskless virtual machines.
+	ksm?: bool
 
-	unregistered?: bool
-}
+	// Name of the scheduling policy to be used for cluster.
 
-ovirt_disk :: {
+	scheduling_policy?: string
 
-	// Specify if the disk is a data disk or ISO image or a one of a the Hosted Engine disk types
-	// The Hosted Engine disk content types are available with Engine 4.3+ and Ansible 2.8
+	// If I(True) fencing will be temporarily disabled if the percentage of hosts in the cluster that are experiencing connectivity issues is greater than or equal to the defined threshold.
+	// The threshold can be specified by C(fence_connectivity_threshold).
 
-	content_type?: string
+	fence_skip_if_connectivity_broken?: bool
 
-	// Specify format of the disk.
-	// Note that this option isn't idempotent as it's not currently possible to change format of the disk via API.
+	// A flag indicating if fencing should be skipped if Gluster bricks are up and running in the host being fenced.
+	// This flag is optional, and the default value is `false`.
 
-	format?: string
+	fence_skip_if_gluster_bricks_up?: bool
 
-	// Should the Virtual Machine disk be present/absent/attached/detached/exported/imported.
+	// If I(True) enables KSM C(ksm) for best performance inside NUMA nodes.
 
-	state?: string
+	ksm_numa?: bool
 
-	// Name of the Virtual Machine to manage. Either C(vm_id) or C(vm_name) is required if C(state) is I(attached) or I(detached).
+	// The threshold used by C(fence_skip_if_connectivity_broken).
 
-	vm_name?: string
+	fence_connectivity_threshold?: string
 
-	// I(True) if the disk should be sparse (also known as I(thin provision)). If the parameter is omitted, cow disks will be created as sparse and raw disks as I(preallocated)
-	// Note that this option isn't idempotent as it's not currently possible to change sparseness of the disk via API.
+	// If I(True) enables fencing on the cluster.
+	// Fencing is enabled by default.
 
-	sparse?: bool
+	fence_enabled?: bool
 
-	// ID of the Virtual Machine to manage. Either C(vm_id) or C(vm_name) is required if C(state) is I(attached) or I(detached).
+	// Custom scheduling policy properties of the cluster.
+	// These optional properties override the properties of the scheduling policy specified by the C(scheduling_policy) parameter.
 
-	vm_id?: string
+	scheduling_policy_properties?: string
 
-	// I(True) if the disk should be shareable. By default when disk is created it isn't shareable.
+	// A flag indicating if fencing should be skipped if Gluster bricks are up and running and Gluster quorum will not be met without those bricks.
+	// This flag is optional, and the default value is `false`.
 
-	shareable?: bool
+	fence_skip_if_gluster_quorum_not_met?: bool
 
-	// Size of the disk. Size should be specified using IEC standard units. For example 10GiB, 1024MiB, etc.
-	// Size can be only increased, not decreased.
+	// If I(True) enables the oVirt/RHV to monitor cluster capacity for highly available virtual machines.
 
-	size?: string
+	ha_reservation?: bool
 
-	// Path to disk image, which should be uploaded.
-	// Note that currently we support only compatibility version 0.10 of the qcow disk.
-	// Note that you must have an valid oVirt/RHV engine CA in your system trust store or you must provide it in C(ca_file) parameter.
-	// Note that there is no reliable way to achieve idempotency, so if you want to upload the disk even if the disk with C(id) or C(name) exists, then please use C(force) I(true). If you will use C(force) I(false), which is default, then the disk image won't be uploaded.
-
-	upload_image_path?: string
-
-	// ID of the disk to manage. Either C(id) or C(name) is required.
+	// ID of the cluster to manage.
 
 	id?: string
 
-	// Name of the disk to manage. Either C(id) or C(name)/C(alias) is required.
+	// If I(True) auto-convergence is used during live migration of virtual machines.
+	// Used only when C(migration_policy) is set to I(legacy).
+	// Following options are supported:
+	// C(true) - Override the global setting to I(true).
+	// C(false) - Override the global setting to I(false).
+	// C(inherit) - Use value which is set globally.
 
-	name?: string
+	migration_auto_converge?: string
 
-	// I(True) if the disk should be bootable. By default when disk is created it isn't bootable.
+	// The proxy by which the SPICE client will connect to virtual machines.
+	// The address must be in the following format: I(protocol://[host]:[port])
 
-	bootable?: bool
+	spice_proxy?: string
 
-	// Path on a file system where disk should be downloaded.
-	// Note that you must have an valid oVirt/RHV engine CA in your system trust store or you must provide it in C(ca_file) parameter.
-	// Note that the disk is not downloaded when the file already exists, but you can forcibly download the disk when using C(force) I (true).
+	// If I(True) enable memory balloon optimization. Memory balloon is used to re-distribute / reclaim the host memory based on VM needs in a dynamic way.
 
-	download_image_path?: string
+	ballooning?: bool
 
-	// Please take a look at C(image_path) documentation to see the correct usage of this parameter.
+	// The compatibility version of the cluster. All hosts in this cluster must support at least this compatibility version.
 
-	force?: bool
+	compatibility_version?: string
 
-	// When the hypervisor name is specified the newly created disk or an existing disk will refresh its information about the underlying storage( Disk size, Serial, Product ID, Vendor ID ...) The specified host will be used for gathering the storage related information. This option is only valid for passthrough disks. This option requires at least the logical_unit.id to be specified
+	// List of references to the external network providers available in the cluster. If the automatic deployment of the external network provider is supported, the networks of the referenced network provider are available on every host in the cluster.
+	// This is supported since oVirt version 4.2.
 
-	host?: string
+	external_network_providers?: string
 
-	// When C(state) is I(exported) disk is exported to given Glance image provider.
-	// When C(state) is I(imported) disk is imported from given Glance image provider.
-	// C(**IMPORTANT**)
-	// There is no reliable way to achieve idempotency, so every time you specify this parameter the disk is exported, so please handle your playbook accordingly to not export the disk all the time. This option is valid only for template disks.
+	// Type of switch to be used by all networks in given cluster. Either I(legacy) which is using linux bridge or I(ovs) using Open vSwitch.
 
-	image_provider?: string
+	switch_type?: string
 
-	// I(True) if the disk should be sparsified.
-	// Sparsification frees space in the disk image that is not used by its filesystem. As a result, the image will occupy less space on the storage.
-	// Note that this parameter isn't idempotent, as it's not possible to check if the disk should be or should not be sparsified.
+	// If I(True) enables integration with an OpenAttestation server.
 
-	sparsify?: bool
+	trusted_service?: bool
 
-	// Storage domain name where disk should be created. By default storage is chosen by oVirt/RHV engine.
+	// If I(True) enables an optional reason field when a virtual machine is shut down from the Manager, allowing the administrator to provide an explanation for the maintenance.
 
-	storage_domain?: string
+	vm_reason?: bool
 
-	// Dictionary which describes LUN to be directly attached to VM:
+	// If I(True) the exposed host threads would be treated as cores which can be utilized by virtual machines.
 
-	logical_unit?: string
+	threads_as_cores?: bool
 
-	// Storage domain names where disk should be copied.
-	// C(**IMPORTANT**)
-	// There is no reliable way to achieve idempotency, so every time you specify this parameter the disks are copied, so please handle your playbook accordingly to not copy the disks all the time. This is valid only for VM and floating disks, template disks works as expected.
-
-	storage_domains?: string
-
-	// Driver of the storage interface.
-	// It's required parameter when creating the new disk.
-
-	interface?: string
-
-	// Disk quota ID to be used for disk. By default quota is chosen by oVirt/RHV engine.
-
-	quota_id?: string
-
-	// I(True) if the disk should be activated.
-	// When creating disk of virtual machine it is set to I(True).
-
-	activate?: bool
-
-	// Description of the disk image to manage.
-
-	description?: string
-
-	// Name of the openstack volume type. This is valid when working with cinder.
-
-	openstack_volume_type?: string
-
-	// Disk profile name to be attached to disk. By default profile is chosen by oVirt/RHV engine.
-
-	profile?: string
-
-	// If the disk's Wipe After Delete is enabled, then the disk is first wiped.
-
-	wipe_after_delete?: bool
-}
-
-ovirt_external_provider_info :: {
-
-	// Type of the external provider.
-
-	type: string
-
-	// Name of the external provider, can be used as glob expression.
-
-	name?: string
-}
-
-ovirt_instance_type :: {
-
-	// Number of virtual CPUs sockets of the Instance Type.
-	// Default value is set by oVirt/RHV engine.
-
-	cpu_threads?: string
-
-	// If I(yes) Instance Type will be set as highly available.
-	// If I(no) Instance Type won't be set as highly available.
-	// If no value is passed, default value is set by oVirt/RHV engine.
-
-	high_availability?: bool
-
-	// Number of bytes allowed to consume per period.
-
-	rng_bytes?: string
-
-	// Should the Instance Type be present/absent.
-	// I(present) state will create/update instance type and don't change its state if it already exists.
-
-	state?: string
-
-	// Assign watchdog device for the instance type.
-	// Watchdogs is a dictionary which can have following values:
-	// C(model) - Model of the watchdog device. For example: I(i6300esb), I(diag288) or I(null).
-	// C(action) - Watchdog action to be performed when watchdog is triggered. For example: I(none), I(reset), I(poweroff), I(pause) or I(dump).
-
-	watchdog?: string
-
-	// List of boot devices which should be used to boot. For example C([ cdrom, hd ]).
-	// Default value is set by oVirt/RHV engine.
-
-	boot_devices?: string
-
-	// Number of virtual CPUs sockets of the Instance Type.
-	// Default value is set by oVirt/RHV engine.
-
-	cpu_sockets?: string
-
-	// List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
-	// C(name) - Name of the NIC.
-	// C(profile_name) - Profile name where NIC should be attached.
-	// C(interface) -  Type of the network interface. One of following I(virtio), I(e1000), I(rtl8139), default is I(virtio).
-	// C(mac_address) - Custom MAC address of the network interface, by default it's obtained from MAC pool.
-	// NOTE - This parameter is used only when C(state) is I(running) or I(present) and is able to only create NICs. To manage NICs of the instance type in more depth please use M(ovirt_nic) module instead.
-
-	nics?: string
-
-	// If I(true), the sound card is added to the instance type.
-
-	soundcard_enabled?: bool
-
-	// I(True) enable USB support, I(False) to disable it. By default is chosen by oVirt/RHV engine.
-
-	usb_support?: bool
-
-	// Number of virtual CPUs cores of the Instance Type.
-	// Default value is set by oVirt/RHV engine.
-
-	cpu_cores?: string
-
-	// Amount of memory of the Instance Type. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
-	// Default value is set by engine.
-
-	memory?: string
-
-	// Amount of minimal guaranteed memory of the Instance Type. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
-	// C(memory_guaranteed) parameter can't be lower than C(memory) parameter.
-	// Default value is set by engine.
-
-	memory_guaranteed?: string
-
-	// If I(true), use smart card authentication.
-
-	smartcard_enabled?: bool
-
-	// If I(true), virtio scsi will be enabled.
-
-	virtio_scsi?: bool
-
-	// If I(true), use memory ballooning.
-	// Memory balloon is a guest device, which may be used to re-distribute / reclaim the host memory based on instance type needs in a dynamic way. In this way it's possible to create memory over commitment states.
-
-	ballooning_enabled?: bool
-
-	// CPU Pinning topology to map instance type CPU to host CPU.
-	// CPU Pinning topology is a list of dictionary which can have following values:
-	// C(cpu) - Number of the host CPU.
-	// C(vcpu) - Number of the instance type CPU.
-
-	cpu_pinning?: string
-
-	// Assign graphical console to the instance type.
-	// Graphical console is a dictionary which can have following values:
-	// C(headless_mode) - If I(true) disable the graphics console for this instance type.
-	// C(protocol) - Graphical protocol, a list of I(spice), I(vnc), or both.
-
-	graphical_console?: string
-
-	// I(True) enable VirtIO serial console, I(False) to disable it. By default is chosen by oVirt/RHV engine.
-
-	serial_console?: bool
-
-	// Upper bound of instance type memory up to which memory hot-plug can be performed. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
-	// Default value is set by engine.
-
-	memory_max?: string
-
-	// Name of the Instance Type to manage.
-	// If instance type don't exists C(name) is required. Otherwise C(id) or C(name) can be used.
-
-	name?: string
-
-	// Specify host where Instance Type should be running. By default the host is chosen by engine scheduler.
-	// This parameter is used only when C(state) is I(running) or I(present).
-
-	host?: string
-
-	// ID of the Instance Type to manage.
-
-	id?: string
-
-	// Number of IO threads used by instance type. I(0) means IO threading disabled.
-
-	io_threads?: string
-
-	// The configuration of the instance type's placement policy.
-	// Placement policy can be one of the following values:
-	// C(migratable) - Allow manual and automatic migration.
-	// C(pinned) - Do not allow migration.
-	// C(user_migratable) - Allow manual migration only.
-	// If no value is passed, default value is set by oVirt/RHV engine.
-
-	placement_policy?: string
-
-	// Random number generator (RNG). You can choose of one the following devices I(urandom), I(random) or I(hwrng).
-	// In order to select I(hwrng), you must have it enabled on cluster first.
-	// /dev/urandom is used for cluster version >= 4.1, and /dev/random for cluster version <= 4.0
-
-	rng_device?: string
-
-	// Duration of one period in milliseconds.
-
-	rng_period?: string
-
-	// CPU mode of the instance type. It can be some of the following: I(host_passthrough), I(host_model) or I(custom).
-	// For I(host_passthrough) CPU type you need to set C(placement_policy) to I(pinned).
-	// If no value is passed, default value is set by oVirt/RHV engine.
-
-	cpu_mode?: string
-
-	// Indicates the priority of the instance type inside the run and migration queues. Instance Type with higher priorities will be started and migrated before instance types with lower priorities. The value is an integer between 0 and 100. The higher the value, the higher the priority.
-	// If no value is passed, default value is set by oVirt/RHV engine.
-
-	high_availability_priority?: string
-
-	// Description of the instance type.
-
-	description?: string
-
-	// Operating system of the Instance Type.
-	// Default value is set by oVirt/RHV engine.
-	// Possible values: debian_7, freebsd, freebsdx64, other, other_linux, other_linux_ppc64, other_ppc64, rhel_3, rhel_4, rhel_4x64, rhel_5, rhel_5x64, rhel_6, rhel_6x64, rhel_6_ppc64, rhel_7x64, rhel_7_ppc64, sles_11, sles_11_ppc64, ubuntu_12_04, ubuntu_12_10, ubuntu_13_04, ubuntu_13_10, ubuntu_14_04, ubuntu_14_04_ppc64, windows_10, windows_10x64, windows_2003, windows_2003x64, windows_2008, windows_2008x64, windows_2008r2x64, windows_2008R2x64, windows_2012x64, windows_2012R2x64, windows_7, windows_7x64, windows_8, windows_8x64, windows_xp
-
-	operating_system?: string
-}
-
-ovirt_storage_domain :: {
-
-	// Name of the storage domain to manage. (Not required when state is I(imported))
-
-	name?: string
-
-	// Dictionary with values for NFS storage type:
-	// Note that these parameters are not idempotent.
-
-	nfs?: string
-
-	// Indicates the minimum percentage of a free space in a storage domain to present a warning.
-
-	warning_low_space?: string
-
-	// Logical remove of the storage domain. If I(true) retains the storage domain's data for import.
-	// This parameter is relevant only when C(state) is I(absent).
-
-	destroy?: bool
-
-	// Function of the storage domain.
-	// This parameter isn't idempotent, it's not possible to change domain function of storage domain.
-
-	domain_function?: string
-
-	// Dictionary with values for fibre channel storage type:
-	// Note that these parameters are not idempotent.
-
-	fcp?: string
-
-	// Id of the storage domain to be imported.
-
-	id?: string
-
-	// Dictionary with values for localfs storage type:
-	// Note that these parameters are not idempotent.
-
-	localfs?: string
-
-	// Comment of the storage domain.
+	// Comment of the cluster.
 
 	comment?: string
 
-	// Data center name where storage domain should be attached.
-	// This parameter isn't idempotent, it's not possible to change data center of storage domain.
+	// If I(True) enables an optional reason field when a host is placed into maintenance mode from the Manager, allowing the administrator to provide an explanation for the maintenance.
+
+	host_reason?: bool
+
+	// Should the cluster be present or absent.
+
+	state?: string
+
+	// The type of firewall to be used on hosts in this cluster.
+	// Up to version 4.1, it was always I(iptables). Since version 4.2, you can choose between I(iptables) and I(firewalld). For clusters with a compatibility version of 4.2 and higher, the default firewall type is I(firewalld).
+
+	firewall_type?: string
+
+	// If I(True), hosts in this cluster will be used as Gluster Storage server nodes, and not for running virtual machines.
+	// By default the cluster is created for virtual machine hosts.
+
+	gluster?: bool
+
+	// I(disabled) - Disables memory page sharing.
+	// I(server) - Sets the memory page sharing threshold to 150% of the system memory on each host.
+	// I(desktop) - Sets the memory page sharing threshold to 200% of the system memory on each host.
+
+	memory_policy?: string
+
+	// Allows you to specify a custom serial number.
+	// This parameter is used only when C(serial_policy) is I(custom).
+
+	serial_policy_value?: string
+
+	// Datacenter name where cluster reside.
 
 	data_center?: string
 
-	// Description of the storage domain.
+	// Set the I(custom) migration bandwidth limit.
+	// This parameter is used only when C(migration_bandwidth) is I(custom).
+
+	migration_bandwidth_limit?: string
+
+	// If I(True) compression is used during live migration of the virtual machine.
+	// Used only when C(migration_policy) is set to I(legacy).
+	// Following options are supported:
+	// C(true) - Override the global setting to I(true).
+	// C(false) - Override the global setting to I(false).
+	// C(inherit) - Use value which is set globally.
+
+	migration_compressed?: string
+
+	// MAC pool to be used by this cluster.
+	// C(Note:)
+	// This is supported since oVirt version 4.1.
+
+	mac_pool?: string
+
+	// A migration policy defines the conditions for live migrating virtual machines in the event of host failure.
+	// Following policies are supported:
+	// C(legacy) - Legacy behavior of 3.6 version.
+	// C(minimal_downtime) - Virtual machines should not experience any significant downtime.
+	// C(suspend_workload) - Virtual machines may experience a more significant downtime.
+	// C(post_copy) - Virtual machines should not experience any significant downtime. If the VM migration is not converging for a long time, the migration will be switched to post-copy. Added in version I(2.4).
+
+	migration_policy?: string
+
+	// Management network of cluster to access cluster hosts.
+
+	network?: string
+
+	// Specify a serial number policy for the virtual machines in the cluster.
+	// Following options are supported:
+	// C(vm) - Sets the virtual machine's UUID as its serial number.
+	// C(host) - Sets the host's UUID as the virtual machine's serial number.
+	// C(custom) - Allows you to specify a custom serial number in C(serial_policy_value).
+
+	serial_policy?: string
+
+	// CPU architecture of cluster.
+
+	cpu_arch?: string
+
+	// CPU codename. For example I(Intel SandyBridge Family).
+
+	cpu_type?: string
+
+	// Description of the cluster.
 
 	description?: string
-
-	// If I(True) storage domain will be formatted after removing it from oVirt/RHV.
-	// This parameter is relevant only when C(state) is I(absent).
-
-	format?: bool
-
-	// Dictionary with values for iSCSI storage type:
-	// Note that these parameters are not idempotent.
-
-	iscsi?: string
-
-	// Dictionary with values for PosixFS storage type:
-	// Note that these parameters are not idempotent.
-
-	posixfs?: string
-
-	// Should the storage domain be present/absent/maintenance/unattached/imported/update_ovf_store
-	// I(imported) is supported since version 2.4.
-	// I(update_ovf_store) is supported since version 2.5, currently if C(wait) is (true), we don't wait for update.
-
-	state?: string
-
-	// Boolean flag which indicates whether the storage domain should wipe the data after delete.
-
-	wipe_after_delete?: bool
-
-	// Boolean flag which indicates whether the storage domain is configured as backup or not.
-
-	backup?: bool
-
-	// Indicates the minimal free space the storage domain should contain in percentages.
-
-	critical_space_action_blocker?: string
-
-	// If I(True) storage domain blocks will be discarded upon deletion. Enabled by default.
-	// This parameter is relevant only for block based storage domains.
-
-	discard_after_delete?: bool
-
-	// Host to be used to mount storage.
-
-	host?: string
-
-	// Dictionary with values for GlusterFS storage type:
-	// Note that these parameters are not idempotent.
-
-	glusterfs?: string
-
-	// Dictionary with values for managed block storage type
-	// Note: available from ovirt 4.3
-
-	managed_block_storage?: string
 }
 
-ovirt_template :: {
+ovirt_datacenter_info :: {
 
-	// I(True) enable USB support, I(False) to disable it. By default is chosen by oVirt/RHV engine.
+	// Search term which is accepted by oVirt/RHV search backend.
+	// For example to search datacenter I(X) use following pattern: I(name=X)
 
-	usb_support?: bool
-
-	// Mapper which maps an external virtual NIC profile to one that exists in the engine when C(state) is registered. vnic_profile is described by the following dictionary:
-
-	vnic_profile_mappings?: string
-
-	// List of dictionaries representing network interfaces to be setup by cloud init.
-	// This option is used, when user needs to setup more network interfaces via cloud init.
-	// If one network interface is enough, user should use C(cloud_init) I(nic_*) parameters. C(cloud_init) I(nic_*) parameters are merged with C(cloud_init_nics) parameters.
-
-	cloud_init_nics?: string
-
-	// CPU profile to be set to template.
-
-	cpu_profile?: string
-
-	// Amount of memory of the template. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
-
-	memory?: string
-
-	// C(name) - The name of this version.
-	// C(number) - The index of this version in the versions hierarchy of the template. Used for editing of sub template.
-
-	version?: string
-
-	// Boolean indication whether to allow partial registration of a template when C(state) is registered.
-
-	allow_partial_import?: bool
-
-	// 'Sealing' is an operation that erases all machine-specific configurations from a filesystem: This includes SSH keys, UDEV rules, MAC addresses, system ID, hostname, etc. If I(true) subsequent virtual machines made from this template will avoid configuration inheritance.
-	// This parameter is used only when C(state) I(present).
-
-	seal?: bool
-
-	// Should the template be present/absent/exported/imported/registered. When C(state) is I(registered) and the unregistered template's name belongs to an already registered in engine template in the same DC then we fail to register the unregistered template.
-
-	state?: string
-
-	// I(True) enable Single Sign On by Guest Agent, I(False) to disable it. By default is chosen by oVirt/RHV engine.
-
-	sso?: bool
-
-	// Name of the VM, which will be used to create template.
-
-	vm?: string
-
-	// Name for importing Template from storage domain.
-	// If not defined, C(name) will be used.
-
-	clone_name?: string
-
-	// Mapper which maps aaa domain name between Template's OVF and the destination aaa domain this Template should be registered to, relevant when C(state) is registered. The aaa domain mapping is described by the following dictionary:
-
-	domain_mappings?: string
-
-	// Operating system of the template.
-	// Default value is set by oVirt/RHV engine.
-	// Possible values are: debian_7, freebsd, freebsdx64, other, other_linux, other_linux_ppc64, other_ppc64, rhel_3, rhel_4, rhel_4x64, rhel_5, rhel_5x64, rhel_6, rhel_6x64, rhel_6_ppc64, rhel_7x64, rhel_7_ppc64, sles_11, sles_11_ppc64, ubuntu_12_04, ubuntu_12_10, ubuntu_13_04, ubuntu_13_10, ubuntu_14_04, ubuntu_14_04_ppc64, windows_10, windows_10x64, windows_2003, windows_2003x64, windows_2008, windows_2008x64, windows_2008r2x64, windows_2008R2x64, windows_2012x64, windows_2012R2x64, windows_7, windows_7x64, windows_8, windows_8x64, windows_xp
-
-	operating_system?: string
-
-	// When C(state) is I(exported) or I(imported) this parameter specifies the name of the export storage domain.
-
-	export_domain?: string
-
-	// ID of the template to be registered.
-
-	id?: string
-
-	// When C(state) is I(imported) and C(image_provider) is used this parameter specifies the name of disk to be imported as template.
-
-	image_disk?: string
-
-	// When C(state) is I(imported) this parameter specifies the name of the image provider to be used.
-
-	image_provider?: string
-
-	// Sets time zone offset of the guest hardware clock.
-	// For example C(Etc/GMT)
-
-	timezone?: string
-
-	// If I(true), use memory ballooning.
-	// Memory balloon is a guest device, which may be used to re-distribute / reclaim the host memory based on VM needs in a dynamic way. In this way it's possible to create memory over commitment states.
-
-	ballooning_enabled?: bool
-
-	// If I(True) then the permissions of the VM (only the direct ones, not the inherited ones) will be copied to the created template.
-	// This parameter is used only when C(state) I(present).
-
-	clone_permissions?: bool
-
-	// Dictionary with values for Unix-like Virtual Machine initialization using cloud init.
-
-	cloud_init?: string
-
-	// List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
-
-	nics?: string
-
-	// If I(true), use smart card authentication.
-
-	smartcard_enabled?: bool
-
-	// If I(true), the sound card is added to the virtual machine.
-
-	soundcard_enabled?: bool
-
-	// Mapper which maps cluster name between Template's OVF and the destination cluster this Template should be registered to, relevant when C(state) is registered. Cluster mapping is described by the following dictionary:
-
-	cluster_mappings?: string
-
-	// When C(state) is I(exported) this parameter indicates if the existing templates with the same name should be overwritten.
-
-	exclusive?: bool
-
-	// Amount of minimal guaranteed memory of the template. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
-	// C(memory_guaranteed) parameter can't be lower than C(memory) parameter.
-
-	memory_guaranteed?: string
-
-	// Description of the template.
-
-	description?: string
-
-	// When C(state) is I(imported) this parameter specifies the name of the destination data storage domain. When C(state) is I(registered) this parameter specifies the name of the data storage domain of the unregistered template.
-
-	storage_domain?: string
-
-	// Number of IO threads used by virtual machine. I(0) means IO threading disabled.
-
-	io_threads?: string
-
-	// Name of the template to manage.
-
-	name?: string
-
-	// Dictionary with values for Windows Virtual Machine initialization using sysprep.
-
-	sysprep?: string
-
-	// When C(state) is I(imported) and C(image_provider) is used this parameter specifies the new name for imported disk, if omitted then I(image_disk) name is used by default. This parameter is used only in case of importing disk image from Glance domain.
-
-	template_image_disk_name?: string
-
-	// Name of the cluster, where template should be created/imported.
-
-	cluster?: string
-
-	// Upper bound of template memory up to which memory hot-plug can be performed. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
-
-	memory_max?: string
-
-	// Mapper which maps role name between Template's OVF and the destination role this Template should be registered to, relevant when C(state) is registered. Role mapping is described by the following dictionary:
-
-	role_mappings?: string
-}
-
-ovirt_vmpool :: {
-
-	// Should the VM pool be present/absent.
-	// Note that when C(state) is I(absent) all VMs in VM pool are stopped and removed.
-
-	state?: string
-
-	// Type of the VM pool. Either manual or automatic.
-	// C(manual) - The administrator is responsible for explicitly returning the virtual machine to the pool. The virtual machine reverts to the original base image after the administrator returns it to the pool.
-	// C(Automatic) - When the virtual machine is shut down, it automatically reverts to its base image and is returned to the virtual machine pool.
-	// Default value is set by engine.
-
-	type?: string
-
-	// For creating vm pool without editing template.
-	// Note: You can use C(vm) only for creating vm pool.
-
-	vm?: {...}
-
-	// Number of VMs in the pool.
-	// Default value is set by engine.
-
-	vm_count?: string
-
-	// Maximum number of VMs a single user can attach to from this pool.
-	// Default value is set by engine.
-
-	vm_per_user?: string
-
-	// Comment of the Virtual Machine pool.
-
-	comment?: string
-
-	// Description of the VM pool.
-
-	description?: string
-
-	// ID of the vmpool to manage.
-
-	id?: string
-
-	// Name of the template, which will be used to create VM pool.
-
-	template?: string
-
-	// Name of the cluster, where VM pool should be created.
-
-	cluster?: string
-
-	// Name of the VM pool to manage.
-
-	name: string
-
-	// Number of pre-started VMs defines the number of VMs in run state, that are waiting to be attached to Users.
-	// Default value is set by engine.
-
-	prestarted?: string
+	pattern?: string
 }
 
 ovirt_permission_info :: {
@@ -941,127 +299,30 @@ ovirt_permission_info :: {
 	user_name?: string
 }
 
-ovirt_auth :: {
+ovirt_affinity_label_info :: {
 
-	// A dictionary of HTTP headers to be added to each API call.
+	// Name of the host, which affinity labels should be listed.
 
-	headers?: string
+	host?: string
 
-	// A boolean flag that indicates if the server TLS certificate and host name should be checked.
+	// Name of the affinity labels which should be listed.
 
-	insecure?: bool
+	name?: string
 
-	// A boolean flag indicating if Kerberos authentication should be used instead of the default basic authentication.
+	// Name of the VM, which affinity labels should be listed.
 
-	kerberos?: bool
-
-	// The password of the user. Default value is set by I(OVIRT_PASSWORD) environment variable.
-
-	password?: string
-
-	// SSO token to be used instead of login with username/password. Default value is set by I(OVIRT_TOKEN) environment variable.
-
-	token?: string
-
-	// A string containing the API URL of the server. For example: I(https://server.example.com/ovirt-engine/api). Default value is set by I(OVIRT_URL) environment variable.
-	// Either C(url) or C(hostname) is required.
-
-	url?: string
-
-	// The name of the user. For example: I(admin@internal) Default value is set by I(OVIRT_USERNAME) environment variable.
-
-	username?: string
-
-	// A boolean flag indicating if the SDK should ask the server to send compressed responses. The default is I(True). Note that this is a hint for the server, and that it may return uncompressed data even when this parameter is set to I(True).
-
-	compress?: bool
-
-	// A string containing the hostname of the server. For example: I(server.example.com). Default value is set by I(OVIRT_HOSTNAME) environment variable.
-	// Either C(url) or C(hostname) is required.
-
-	hostname?: string
-
-	// Specifies if a token should be created or revoked.
-
-	state?: string
-
-	// The maximum total time to wait for the response, in seconds. A value of zero (the default) means wait forever. If the timeout expires before the response is received an exception will be raised.
-
-	timeout?: string
-
-	// A PEM file containing the trusted CA certificates. The certificate presented by the server will be verified using these CA certificates. If C(ca_file) parameter is not set, system wide CA certificate store is used. Default value is set by I(OVIRT_CAFILE) environment variable.
-
-	ca_file?: string
+	vm?: string
 }
 
-ovirt_datacenter :: {
+ovirt_quota_info :: {
 
-	// I(True) if the data center should be local, I(False) if should be shared.
-	// Default value is set by engine.
+	// Name of the datacenter where quota resides.
 
-	local?: bool
+	data_center: string
 
-	// MAC pool to be used by this datacenter.
-	// IMPORTANT: This option is deprecated in oVirt/RHV 4.1. You should use C(mac_pool) in C(ovirt_clusters) module, as MAC pools are set per cluster since 4.1.
+	// Name of the quota, can be used as glob expression.
 
-	mac_pool?: string
-
-	// Name of the data center to manage.
-
-	name: string
-
-	// ID of the datacenter to manage.
-
-	id?: string
-
-	// Compatibility version of the data center.
-
-	compatibility_version?: string
-
-	// Description of the data center.
-
-	description?: string
-
-	// This parameter can be used only when removing a data center. If I(True) data center will be forcibly removed, even though it contains some clusters. Default value is I(False), which means that only empty data center can be removed.
-
-	force?: bool
-
-	// Quota mode of the data center. One of I(disabled), I(audit) or I(enabled)
-
-	quota_mode?: string
-
-	// Should the data center be present or absent.
-
-	state?: string
-
-	// Comment of the data center.
-
-	comment?: string
-}
-
-ovirt_disk_info :: {
-
-	// Search term which is accepted by oVirt/RHV search backend.
-	// For example to search Disk X from storage Y use following pattern: name=X and storage.name=Y
-
-	pattern?: string
-}
-
-ovirt_job :: {
-
-	// Description of the job.
-
-	description: string
-
-	// Should the job be C(present)/C(absent)/C(failed).
-	// C(started) is alias for C(present). C(finished) is alias for C(absent). Same in the steps.
-	// Note when C(finished)/C(failed) it will finish/fail all steps.
-
-	state?: string
-
-	// The steps of the job.
-
-	steps?: [..._]
+	name?: string
 }
 
 ovirt_scheduling_policy_info :: {
@@ -1075,106 +336,18 @@ ovirt_scheduling_policy_info :: {
 	name?: string
 }
 
-ovirt_storage_template_info :: {
+ovirt_external_provider_info :: {
 
-	// Sets the maximum number of templates to return. If not specified all the templates are returned.
-
-	max?: string
-
-	// The storage domain name where the templates should be listed.
-
-	storage_domain?: string
-
-	// Flag which indicates whether to get unregistered templates which contain one or more disks which reside on a storage domain or diskless templates.
-
-	unregistered?: bool
-}
-
-ovirt_tag :: {
-
-	// ID of the tag to manage.
-
-	id?: string
-
-	// Name of the tag to manage.
-
-	name: string
-
-	// Name of the parent tag.
-
-	parent?: string
-
-	// Should the tag be present/absent/attached/detached.
-	// C(Note): I(attached) and I(detached) states are supported since version 2.4.
-
-	state?: string
-
-	// List of the VMs names, which should have assigned this tag.
-
-	vms?: string
-
-	// Description of the tag to manage.
-
-	description?: string
-
-	// List of the hosts names, which should have assigned this tag.
-
-	hosts?: string
-}
-
-ovirt_vnic_profile_info :: {
-
-	// The maximum number of results to return.
-
-	max?: int
-
-	// Name of vnic profile.
-
-	name?: string
-}
-
-ovirt_tag_info :: {
-
-	// Name of the host, which tags should be listed.
-
-	host?: string
-
-	// Name of the tag which should be listed.
+	// Name of the external provider, can be used as glob expression.
 
 	name?: string
 
-	// Name of the VM, which tags should be listed.
+	// Type of the external provider.
 
-	vm?: string
-}
-
-ovirt_host_info :: {
-
-	// If I(true) all the attributes of the hosts should be included in the response.
-
-	all_content?: bool
-
-	// Filter the hosts based on the cluster version.
-
-	cluster_version?: string
-
-	// Search term which is accepted by oVirt/RHV search backend.
-	// For example to search host X from datacenter Y use following pattern: name=X and datacenter=Y
-
-	pattern?: string
+	type: string
 }
 
 ovirt_role :: {
-
-	// List of permits which role will have
-	// Permit 'login' is default and all roles will have it.
-	// List can contain name of permit.
-
-	permits?: string
-
-	// Should the role be present/absent.
-
-	state?: string
 
 	// Defines the role as administrative-only or not.
 
@@ -1191,256 +364,16 @@ ovirt_role :: {
 	// Name of the role to manage.
 
 	name?: string
-}
 
-ovirt_user :: {
+	// List of permits which role will have
+	// Permit 'login' is default and all roles will have it.
+	// List can contain name of permit.
 
-	// Should the user be present/absent.
+	permits?: string
+
+	// Should the role be present/absent.
 
 	state?: string
-
-	// Authorization provider of the user. In previous versions of oVirt/RHV known as domain.
-
-	authz_name: string
-
-	// Name of the user to manage. In most LDAPs it's I(uid) of the user, but in Active Directory you must specify I(UPN) of the user.
-
-	name: string
-
-	// Namespace where the user resides. When using the authorization provider that stores users in the LDAP server, this attribute equals the naming context of the LDAP server.
-
-	namespace?: string
-}
-
-ovirt_vmpool_info :: {
-
-	// Search term which is accepted by oVirt/RHV search backend.
-	// For example to search vmpool X: name=X
-
-	pattern?: string
-}
-
-ovirt_cluster :: {
-
-	// Comment of the cluster.
-
-	comment?: string
-
-	// List of references to the external network providers available in the cluster. If the automatic deployment of the external network provider is supported, the networks of the referenced network provider are available on every host in the cluster.
-	// This is supported since oVirt version 4.2.
-
-	external_network_providers?: string
-
-	// If I(True), hosts in this cluster will be used as Gluster Storage server nodes, and not for running virtual machines.
-	// By default the cluster is created for virtual machine hosts.
-
-	gluster?: bool
-
-	// The bandwidth settings define the maximum bandwidth of both outgoing and incoming migrations per host.
-	// Following bandwidth options are supported:
-	// C(auto) - Bandwidth is copied from the I(rate limit) [Mbps] setting in the data center host network QoS.
-	// C(hypervisor_default) - Bandwidth is controlled by local VDSM setting on sending host.
-	// C(custom) - Defined by user (in Mbps).
-
-	migration_bandwidth?: string
-
-	// Management network of cluster to access cluster hosts.
-
-	network?: string
-
-	// If I(True) enable memory balloon optimization. Memory balloon is used to re-distribute / reclaim the host memory based on VM needs in a dynamic way.
-
-	ballooning?: bool
-
-	// I(disabled) - Disables memory page sharing.
-	// I(server) - Sets the memory page sharing threshold to 150% of the system memory on each host.
-	// I(desktop) - Sets the memory page sharing threshold to 200% of the system memory on each host.
-
-	memory_policy?: string
-
-	// A migration policy defines the conditions for live migrating virtual machines in the event of host failure.
-	// Following policies are supported:
-	// C(legacy) - Legacy behavior of 3.6 version.
-	// C(minimal_downtime) - Virtual machines should not experience any significant downtime.
-	// C(suspend_workload) - Virtual machines may experience a more significant downtime.
-	// C(post_copy) - Virtual machines should not experience any significant downtime. If the VM migration is not converging for a long time, the migration will be switched to post-copy. Added in version I(2.4).
-
-	migration_policy?: string
-
-	// If I(True) enables an optional reason field when a virtual machine is shut down from the Manager, allowing the administrator to provide an explanation for the maintenance.
-
-	vm_reason?: bool
-
-	// If I(True) fencing will be temporarily disabled if the percentage of hosts in the cluster that are experiencing connectivity issues is greater than or equal to the defined threshold.
-	// The threshold can be specified by C(fence_connectivity_threshold).
-
-	fence_skip_if_connectivity_broken?: bool
-
-	// If I(True) enables fencing on the cluster.
-	// Fencing is enabled by default.
-
-	fence_enabled?: bool
-
-	// If I(True) enables the oVirt/RHV to monitor cluster capacity for highly available virtual machines.
-
-	ha_reservation?: bool
-
-	// ID of the cluster to manage.
-
-	id?: string
-
-	// Name of the cluster to manage.
-
-	name: string
-
-	// The threshold used by C(fence_skip_if_connectivity_broken).
-
-	fence_connectivity_threshold?: string
-
-	// CPU codename. For example I(Intel SandyBridge Family).
-
-	cpu_type?: string
-
-	// A flag indicating if fencing should be skipped if Gluster bricks are up and running in the host being fenced.
-	// This flag is optional, and the default value is `false`.
-
-	fence_skip_if_gluster_bricks_up?: bool
-
-	// A flag indicating if fencing should be skipped if Gluster bricks are up and running and Gluster quorum will not be met without those bricks.
-	// This flag is optional, and the default value is `false`.
-
-	fence_skip_if_gluster_quorum_not_met?: bool
-
-	// If I(True) enables an optional reason field when a host is placed into maintenance mode from the Manager, allowing the administrator to provide an explanation for the maintenance.
-
-	host_reason?: bool
-
-	// MAC pool to be used by this cluster.
-	// C(Note:)
-	// This is supported since oVirt version 4.1.
-
-	mac_pool?: string
-
-	// Set the I(custom) migration bandwidth limit.
-	// This parameter is used only when C(migration_bandwidth) is I(custom).
-
-	migration_bandwidth_limit?: string
-
-	// The proxy by which the SPICE client will connect to virtual machines.
-	// The address must be in the following format: I(protocol://[host]:[port])
-
-	spice_proxy?: string
-
-	// The compatibility version of the cluster. All hosts in this cluster must support at least this compatibility version.
-
-	compatibility_version?: string
-
-	// If I(True) the exposed host threads would be treated as cores which can be utilized by virtual machines.
-
-	threads_as_cores?: bool
-
-	// If I(True) enables integration with an OpenAttestation server.
-
-	trusted_service?: bool
-
-	// Type of switch to be used by all networks in given cluster. Either I(legacy) which is using linux bridge or I(ovs) using Open vSwitch.
-
-	switch_type?: string
-
-	// Description of the cluster.
-
-	description?: string
-
-	// The type of firewall to be used on hosts in this cluster.
-	// Up to version 4.1, it was always I(iptables). Since version 4.2, you can choose between I(iptables) and I(firewalld). For clusters with a compatibility version of 4.2 and higher, the default firewall type is I(firewalld).
-
-	firewall_type?: string
-
-	// If I(True) auto-convergence is used during live migration of virtual machines.
-	// Used only when C(migration_policy) is set to I(legacy).
-	// Following options are supported:
-	// C(true) - Override the global setting to I(true).
-	// C(false) - Override the global setting to I(false).
-	// C(inherit) - Use value which is set globally.
-
-	migration_auto_converge?: string
-
-	// Specify a serial number policy for the virtual machines in the cluster.
-	// Following options are supported:
-	// C(vm) - Sets the virtual machine's UUID as its serial number.
-	// C(host) - Sets the host's UUID as the virtual machine's serial number.
-	// C(custom) - Allows you to specify a custom serial number in C(serial_policy_value).
-
-	serial_policy?: string
-
-	// CPU architecture of cluster.
-
-	cpu_arch?: string
-
-	// The name of the U(https://fedorahosted.org/tuned) to set on all the hosts in the cluster. This is not mandatory and relevant only for clusters with Gluster service.
-	// Could be for example I(virtual-host), I(rhgs-sequential-io), I(rhgs-random-io)
-
-	gluster_tuned_profile?: string
-
-	// The resilience policy defines how the virtual machines are prioritized in the migration.
-	// Following values are supported:
-	// C(do_not_migrate) -  Prevents virtual machines from being migrated. 
-	// C(migrate) - Migrates all virtual machines in order of their defined priority.
-	// C(migrate_highly_available) - Migrates only highly available virtual machines to prevent overloading other hosts.
-
-	resilience_policy?: string
-
-	// Custom scheduling policy properties of the cluster.
-	// These optional properties override the properties of the scheduling policy specified by the C(scheduling_policy) parameter.
-
-	scheduling_policy_properties?: string
-
-	// Allows you to specify a custom serial number.
-	// This parameter is used only when C(serial_policy) is I(custom).
-
-	serial_policy_value?: string
-
-	// Datacenter name where cluster reside.
-
-	data_center?: string
-
-	// If I(True) compression is used during live migration of the virtual machine.
-	// Used only when C(migration_policy) is set to I(legacy).
-	// Following options are supported:
-	// C(true) - Override the global setting to I(true).
-	// C(false) - Override the global setting to I(false).
-	// C(inherit) - Use value which is set globally.
-
-	migration_compressed?: string
-
-	// If I(True) enables KSM C(ksm) for best performance inside NUMA nodes.
-
-	ksm_numa?: bool
-
-	// I I(True) MoM enables to run Kernel Same-page Merging I(KSM) when necessary and when it can yield a memory saving benefit that outweighs its CPU cost.
-
-	ksm?: bool
-
-	// List that specify the random number generator devices that all hosts in the cluster will use.
-	// Supported generators are: I(hwrng) and I(random).
-
-	rng_sources?: string
-
-	// Name of the scheduling policy to be used for cluster.
-
-	scheduling_policy?: string
-
-	// Should the cluster be present or absent.
-
-	state?: string
-
-	// If I(True), hosts in this cluster will be used to run virtual machines.
-
-	virt?: bool
-
-	// If I(True) any hosts in the cluster that are Non Responsive and still connected to storage will not be fenced.
-
-	fence_skip_if_sd_active?: bool
 }
 
 ovirt_vm_info :: {
@@ -1467,408 +400,66 @@ ovirt_vm_info :: {
 	pattern?: string
 }
 
-ovirt_affinity_group :: {
-
-	// Description of the affinity group.
-
-	description?: string
-
-	// If I(positive) I(all) VMs in this group should run on the this host.
-	// If I(negative) I(no) VMs in this group should run on the this host.
-	// This parameter is support since oVirt/RHV 4.1 version.
-
-	host_rule?: string
-
-	// List of the hosts names, which should have assigned this affinity group.
-	// This parameter is support since oVirt/RHV 4.1 version.
-
-	hosts?: string
-
-	// Name of the affinity group to manage.
-
-	name: string
-
-	// If I(yes) VM cannot start if it does not satisfy the C(vm_rule).
-
-	vm_enforcing?: bool
-
-	// If I(positive) I(all) VMs in this group should run on the host defined by C(host_rule).
-	// If I(negative) I(no) VMs in this group should run on the host defined by C(host_rule).
-	// If I(disabled) this affinity group doesn't take effect.
-
-	vm_rule?: string
-
-	// Name of the cluster of the affinity group.
-
-	cluster?: string
-
-	// If I(yes) VM cannot start on host if it does not satisfy the C(host_rule).
-	// This parameter is support since oVirt/RHV 4.1 version.
-
-	host_enforcing?: bool
-
-	// Should the affinity group be present or absent.
-
-	state?: string
-
-	// List of the VMs names, which should have assigned this affinity group.
-
-	vms?: string
-}
-
-ovirt_quota_info :: {
-
-	// Name of the datacenter where quota resides.
-
-	data_center: string
-
-	// Name of the quota, can be used as glob expression.
-
-	name?: string
-}
-
-ovirt_network :: {
-
-	// Should the network be present or absent
-
-	state?: string
-
-	// Specify VLAN tag.
-
-	vlan_tag?: string
-
-	// List of dictionaries describing how the network is managed in specific cluster.
-
-	clusters?: string
-
-	// Comment of the network.
-
-	comment?: string
-
-	// Datacenter name where network reside.
-
-	data_center?: string
-
-	// Name of external network provider.
-
-	external_provider?: string
-
-	// Name of the label to assign to the network.
-
-	label?: string
-
-	// Maximum transmission unit (MTU) of the network.
-
-	mtu?: string
-
-	// Description of the network.
-
-	description?: string
-
-	// ID of the network to manage.
-
-	id?: string
-
-	// Name of the network to manage.
-
-	name: string
-
-	// If I(True) network will be marked as network for VM.
-	// VM network carries traffic relevant to the virtual machine.
-
-	vm_network?: bool
-}
-
-ovirt_snapshot_info :: {
-
-	// Description of the snapshot, can be used as glob expression.
-
-	description?: string
-
-	// Id of the snapshot we want to retrieve information about.
-
-	snapshot_id?: string
-
-	// Name of the VM with snapshot.
-
-	vm: string
-}
-
-ovirt_template_info :: {
-
-	// Search term which is accepted by oVirt/RHV search backend.
-	// For example to search template X from datacenter Y use following pattern: name=X and datacenter=Y
-
-	pattern?: string
-}
-
-ovirt_host_storage_info :: {
-
-	// Dictionary with values for fibre channel storage type:
-	// C(address) - Address of the fibre channel storage server.
-	// C(port) - Port of the fibre channel storage server.
-	// C(lun_id) - LUN id.
-
-	fcp?: string
-
-	// Host to get device list from.
-
-	host: string
-
-	// Dictionary with values for iSCSI storage type:
-	// C(address) - Address of the iSCSI storage server.
-	// C(target) - The target IQN for the storage device.
-	// C(username) - A CHAP user name for logging into a target.
-	// C(password) - A CHAP password for logging into a target.
-
-	iscsi?: string
-}
-
-ovirt_storage_connection :: {
-
-	// This parameter is relevant only when updating a connection.
-	// If I(true) the storage domain don't have to be in I(MAINTENANCE) state, so the storage connection is updated.
-
-	force?: bool
-
-	// Id of the storage connection to manage.
-
-	id?: string
-
-	// Option which will be passed when mounting storage.
-
-	mount_options?: string
-
-	// The target IQN for the storage device.
-
-	target?: string
-
-	// Storage type. For example: I(nfs), I(iscsi), etc.
+ovirt_vmpool :: {
+
+	// Type of the VM pool. Either manual or automatic.
+	// C(manual) - The administrator is responsible for explicitly returning the virtual machine to the pool. The virtual machine reverts to the original base image after the administrator returns it to the pool.
+	// C(Automatic) - When the virtual machine is shut down, it automatically reverts to its base image and is returned to the virtual machine pool.
+	// Default value is set by engine.
 
 	type?: string
 
-	// A CHAP username for logging into a target.
-
-	username?: string
-
-	// The number of times to retry a request before attempting further recovery actions. Range 0 to 65535.
-
-	nfs_retrans?: string
-
-	// A CHAP password for logging into a target.
-
-	password?: string
-
-	// Path of the mount point of the storage. E.g.: /path/to/my/data
-
-	path?: string
-
-	// Name of the storage domain to be used with storage connection.
-
-	storage?: string
-
-	// The time in tenths of a second to wait for a response before retrying NFS requests. Range 0 to 65535.
-
-	nfs_timeout?: string
-
-	// Port of the iSCSI storage server.
-
-	port?: string
-
-	// Address of the storage server. E.g.: myserver.mydomain.com
-
-	address?: string
-
-	// NFS version. One of: I(auto), I(v3), I(v4) or I(v4_1).
-
-	nfs_version?: string
-
-	// Should the storage connection be present or absent.
-
-	state?: string
-
-	// Virtual File System type.
-
-	vfs_type?: string
-}
-
-ovirt_storage_domain_info :: {
-
-	// Search term which is accepted by oVirt/RHV search backend.
-	// For example to search storage domain X from datacenter Y use following pattern: name=X and datacenter=Y
-
-	pattern?: string
-}
-
-ovirt_api_info :: {
-}
-
-ovirt_group :: {
-
-	// Name of the group to manage.
-
-	name: string
-
-	// Namespace of the authorization provider, where group resides.
-
-	namespace?: string
-
-	// Should the group be present/absent.
-
-	state?: string
-
-	// Authorization provider of the group. In previous versions of oVirt/RHV known as domain.
-
-	authz_name: string
-}
-
-ovirt_group_info :: {
-
-	// Search term which is accepted by oVirt/RHV search backend.
-	// For example to search group X use following pattern: name=X
-
-	pattern?: string
-}
-
-ovirt_host :: {
-
-	// ID of the host to manage.
-
-	id?: string
-
-	// Password of the root. It's required in case C(public_key) is set to I(False).
-
-	password?: string
-
-	// SPM priority of the host. Integer value from 1 to 10, where higher number means higher priority.
-
-	spm_priority?: string
-
-	// If True host iptables will be overridden by host deploy script.
-	// Note that C(override_iptables) is I(false) by default in oVirt/RHV.
-
-	override_iptables?: bool
-
-	// Enable or disable power management of the host.
-	// For more comprehensive setup of PM use C(ovirt_host_pm) module.
-
-	power_management_enabled?: bool
-
-	// If I(true) and C(state) is I(upgraded) reboot host after successful upgrade.
-
-	reboot_after_upgrade?: bool
-
-	// State which should a host to be in after successful completion.
-	// I(iscsilogin) and I(iscsidiscover) are supported since version 2.4.
-
-	state?: string
-
-	// Name of the cluster, where host should be created.
-
-	cluster?: string
-
-	// Description of the host.
+	// Comment of the Virtual Machine pool.
 
 	comment?: string
 
-	// If I(deploy) it means this host should deploy also hosted engine components.
-	// If I(undeploy) it means this host should un-deploy hosted engine components and this host will not function as part of the High Availability cluster.
+	// Description of the VM pool.
 
-	hosted_engine?: string
+	description?: string
 
-	// Specify if host will have enabled Kdump integration.
-
-	kdump_integration?: string
-
-	// If I(consolidated), each vGPU is placed on the first physical card with available space. This is the default placement, utilizing all available space on the physical cards.
-	// If I(separated), each vGPU is placed on a separate physical card, if possible. This can be useful for improving vGPU performance.
-
-	vgpu_placement?: string
-
-	// List of kernel boot parameters.
-	// Following are most common kernel parameters used for host:
-	// Hostdev Passthrough & SR-IOV: intel_iommu=on
-	// Nested Virtualization: kvm-intel.nested=1
-	// Unsafe Interrupts: vfio_iommu_type1.allow_unsafe_interrupts=1
-	// PCI Reallocation: pci=realloc
-	// C(Note:)
-	// Modifying kernel boot parameters settings can lead to a host boot failure. Please consult the product documentation before doing any changes.
-	// Kernel boot parameters changes require host deploy and restart. The host needs to be I(reinstalled) successfully and then to be I(rebooted) for kernel boot parameters to be applied.
-
-	kernel_params?: string
-
-	// Name of the host to manage.
+	// Name of the VM pool to manage.
 
 	name: string
 
-	// Override the display address of all VMs on this host with specified address.
-
-	override_display?: bool
-
-	// The amount of time in seconds the module should wait for the host to get into desired state.
-
-	timeout?: string
-
-	// If C(state) is I(present) activate the host.
-	// This parameter is good to disable, when you don't want to change the state of host when using I(present) C(state).
-
-	activate?: bool
-
-	// Host address. It can be either FQDN (preferred) or IP address.
-
-	address?: string
-
-	// If I(true) and C(state) is I(upgraded) run check for upgrade action before executing upgrade action.
-
-	check_upgrade?: bool
-
-	// Indicates that the host should be removed even if it is non-responsive, or if it is part of a Gluster Storage cluster and has volume bricks on it.
-	// WARNING: It doesn't forcibly remove the host if another host related operation is being executed on the host at the same time.
-
-	force?: bool
-
-	// If C(state) is I(iscsidiscover) it means that the iscsi attribute is being used to discover targets
-	// If C(state) is I(iscsilogin) it means that the iscsi attribute is being used to login to the specified targets passed as part of the iscsi attribute
-
-	iscsi?: string
-
-	// I(True) if the public key should be used to authenticate to host.
-	// It's required in case C(password) is not set.
-
-	public_key?: bool
-}
-
-ovirt_network_info :: {
-
-	// Search term which is accepted by oVirt/RHV search backend.
-	// For example to search network starting with string vlan1 use: name=vlan1*
-
-	pattern?: string
-}
-
-ovirt_nic :: {
-
-	// Defines if the NIC is linked to the virtual machine.
-
-	linked?: bool
-
-	// Name of the network interface to manage.
-
-	name: string
-
-	// Should the Virtual Machine NIC be present/absent/plugged/unplugged.
+	// Should the VM pool be present/absent.
+	// Note that when C(state) is I(absent) all VMs in VM pool are stopped and removed.
 
 	state?: string
 
-	// Name of the template to manage.
-	// You must provide either C(vm) parameter or C(template) parameter.
+	// Name of the template, which will be used to create VM pool.
 
 	template?: string
 
-	// Name of the Virtual Machine to manage.
-	// You must provide either C(vm) parameter or C(template) parameter.
+	// For creating vm pool without editing template.
+	// Note: You can use C(vm) only for creating vm pool.
 
-	vm?: string
+	vm?: {...}
+
+	// Number of VMs in the pool.
+	// Default value is set by engine.
+
+	vm_count?: string
+
+	// Maximum number of VMs a single user can attach to from this pool.
+	// Default value is set by engine.
+
+	vm_per_user?: string
+
+	// Name of the cluster, where VM pool should be created.
+
+	cluster?: string
+
+	// ID of the vmpool to manage.
+
+	id?: string
+
+	// Number of pre-started VMs defines the number of VMs in run state, that are waiting to be attached to Users.
+	// Default value is set by engine.
+
+	prestarted?: string
+}
+
+ovirt_nic :: {
 
 	// ID of the nic to manage.
 
@@ -1879,6 +470,24 @@ ovirt_nic :: {
 
 	interface?: string
 
+	// Name of the network interface to manage.
+
+	name: string
+
+	// Virtual network interface profile to be attached to VM network interface.
+	// When not specified and network has only single profile it will be auto-selected, otherwise you must specify profile.
+
+	profile?: string
+
+	// Name of the template to manage.
+	// You must provide either C(vm) parameter or C(template) parameter.
+
+	template?: string
+
+	// Defines if the NIC is linked to the virtual machine.
+
+	linked?: bool
+
 	// Custom MAC address of the network interface, by default it's obtained from MAC pool.
 
 	mac_address?: string
@@ -1887,154 +496,189 @@ ovirt_nic :: {
 
 	network?: string
 
-	// Virtual network interface profile to be attached to VM network interface.
-	// When not specified and network has only single profile it will be auto-selected, otherwise you must specify profile.
-
-	profile?: string
-}
-
-ovirt_nic_info :: {
-
-	// Name of the NIC, can be used as glob expression.
-
-	name?: string
-
-	// Name of the VM where NIC is attached.
-
-	vm: string
-}
-
-ovirt_vnic_profile :: {
-
-	// Quality of Service attributes regulate inbound and outbound network traffic of the NIC.
-
-	qos?: string
-
-	// Should the vNIC be absent/present.
+	// Should the Virtual Machine NIC be present/absent/plugged/unplugged.
 
 	state?: string
 
-	// Custom properties applied to the vNIC profile.
-	// Custom properties is a list of dictionary which can have following values:
+	// Name of the Virtual Machine to manage.
+	// You must provide either C(vm) parameter or C(template) parameter.
 
-	custom_properties?: string
+	vm?: string
+}
 
-	// Name of network to which is vNIC attached.
+ovirt_cluster_info :: {
 
-	network: string
+	// Search term which is accepted by oVirt/RHV search backend.
+	// For example to search cluster X from datacenter Y use following pattern: name=X and datacenter=Y
 
-	// Enables passthrough to an SR-IOV-enabled host NIC.
-	// When enabled C(qos) and  C(network_filter) are automatically set to None and C(port_mirroring) to False.
-	// When enabled and C(migratable) not specified then C(migratable) is enabled.
-	// Port mirroring, QoS and network filters are not supported on passthrough profiles.
+	pattern?: string
+}
 
-	pass_through?: string
+ovirt_instance_type :: {
 
-	// A human-readable name in plain text.
+	// Indicates the priority of the instance type inside the run and migration queues. Instance Type with higher priorities will be started and migrated before instance types with lower priorities. The value is an integer between 0 and 100. The higher the value, the higher the priority.
+	// If no value is passed, default value is set by oVirt/RHV engine.
 
-	name: string
+	high_availability_priority?: string
 
-	// The network filter enables to filter packets send to/from the VM's nic according to defined rules.
+	// ID of the Instance Type to manage.
 
-	network_filter?: string
+	id?: string
 
-	// Enables port mirroring.
+	// If I(true), use smart card authentication.
 
-	port_mirroring?: bool
+	smartcard_enabled?: bool
 
-	// Datacenter name where network reside.
+	// Should the Instance Type be present/absent.
+	// I(present) state will create/update instance type and don't change its state if it already exists.
 
-	data_center: string
+	state?: string
 
-	// A human-readable description in plain text.
+	// If I(true), virtio scsi will be enabled.
+
+	virtio_scsi?: bool
+
+	// Amount of memory of the Instance Type. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
+	// Default value is set by engine.
+
+	memory?: string
+
+	// Upper bound of instance type memory up to which memory hot-plug can be performed. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
+	// Default value is set by engine.
+
+	memory_max?: string
+
+	// Operating system of the Instance Type.
+	// Default value is set by oVirt/RHV engine.
+	// Possible values: debian_7, freebsd, freebsdx64, other, other_linux, other_linux_ppc64, other_ppc64, rhel_3, rhel_4, rhel_4x64, rhel_5, rhel_5x64, rhel_6, rhel_6x64, rhel_6_ppc64, rhel_7x64, rhel_7_ppc64, sles_11, sles_11_ppc64, ubuntu_12_04, ubuntu_12_10, ubuntu_13_04, ubuntu_13_10, ubuntu_14_04, ubuntu_14_04_ppc64, windows_10, windows_10x64, windows_2003, windows_2003x64, windows_2008, windows_2008x64, windows_2008r2x64, windows_2008R2x64, windows_2012x64, windows_2012R2x64, windows_7, windows_7x64, windows_8, windows_8x64, windows_xp
+
+	operating_system?: string
+
+	// Number of bytes allowed to consume per period.
+
+	rng_bytes?: string
+
+	// I(True) enable VirtIO serial console, I(False) to disable it. By default is chosen by oVirt/RHV engine.
+
+	serial_console?: bool
+
+	// If I(true), use memory ballooning.
+	// Memory balloon is a guest device, which may be used to re-distribute / reclaim the host memory based on instance type needs in a dynamic way. In this way it's possible to create memory over commitment states.
+
+	ballooning_enabled?: bool
+
+	// If I(yes) Instance Type will be set as highly available.
+	// If I(no) Instance Type won't be set as highly available.
+	// If no value is passed, default value is set by oVirt/RHV engine.
+
+	high_availability?: bool
+
+	// Random number generator (RNG). You can choose of one the following devices I(urandom), I(random) or I(hwrng).
+	// In order to select I(hwrng), you must have it enabled on cluster first.
+	// /dev/urandom is used for cluster version >= 4.1, and /dev/random for cluster version <= 4.0
+
+	rng_device?: string
+
+	// If I(true), the sound card is added to the instance type.
+
+	soundcard_enabled?: bool
+
+	// Number of virtual CPUs cores of the Instance Type.
+	// Default value is set by oVirt/RHV engine.
+
+	cpu_cores?: string
+
+	// Number of virtual CPUs sockets of the Instance Type.
+	// Default value is set by oVirt/RHV engine.
+
+	cpu_threads?: string
+
+	// Description of the instance type.
 
 	description?: string
 
-	// Marks whether pass_through NIC is migratable or not.
+	// Name of the Instance Type to manage.
+	// If instance type don't exists C(name) is required. Otherwise C(id) or C(name) can be used.
 
-	migratable?: bool
-}
+	name?: string
 
-ovirt_event_info :: {
+	// Number of virtual CPUs sockets of the Instance Type.
+	// Default value is set by oVirt/RHV engine.
 
-	// Indicates if the search performed using the search parameter should be performed taking case into account. The default value is true, which means that case is taken into account. If you want to search ignoring case set it to false.
+	cpu_sockets?: string
 
-	case_sensitive?: bool
+	// Amount of minimal guaranteed memory of the Instance Type. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
+	// C(memory_guaranteed) parameter can't be lower than C(memory) parameter.
+	// Default value is set by engine.
 
-	// Indicates the event index after which events should be returned. The indexes of events are strictly increasing, so when this parameter is used only the events with greater indexes will be returned.
+	memory_guaranteed?: string
 
-	from_?: int
+	// Assign watchdog device for the instance type.
+	// Watchdogs is a dictionary which can have following values:
+	// C(model) - Model of the watchdog device. For example: I(i6300esb), I(diag288) or I(null).
+	// C(action) - Watchdog action to be performed when watchdog is triggered. For example: I(none), I(reset), I(poweroff), I(pause) or I(dump).
 
-	// Additional HTTP headers.
+	watchdog?: string
 
-	headers?: string
+	// CPU mode of the instance type. It can be some of the following: I(host_passthrough), I(host_model) or I(custom).
+	// For I(host_passthrough) CPU type you need to set C(placement_policy) to I(pinned).
+	// If no value is passed, default value is set by oVirt/RHV engine.
 
-	// Sets the maximum number of events to return. If not specified all the events are returned.
+	cpu_mode?: string
 
-	max?: int
+	// CPU Pinning topology to map instance type CPU to host CPU.
+	// CPU Pinning topology is a list of dictionary which can have following values:
+	// C(cpu) - Number of the host CPU.
+	// C(vcpu) - Number of the instance type CPU.
 
-	// Additional URL query parameters.
+	cpu_pinning?: string
 
-	query?: string
+	// Assign graphical console to the instance type.
+	// Graphical console is a dictionary which can have following values:
+	// C(headless_mode) - If I(true) disable the graphics console for this instance type.
+	// C(protocol) - Graphical protocol, a list of I(spice), I(vnc), or both.
 
-	// Search term which is accepted by the oVirt/RHV API.
-	// For example to search for events of severity alert use the following pattern: severity=alert
+	graphical_console?: string
 
-	search?: string
+	// Number of IO threads used by instance type. I(0) means IO threading disabled.
 
-	// If True wait for the response.
+	io_threads?: string
 
-	wait?: bool
-}
+	// List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
+	// C(name) - Name of the NIC.
+	// C(profile_name) - Profile name where NIC should be attached.
+	// C(interface) -  Type of the network interface. One of following I(virtio), I(e1000), I(rtl8139), default is I(virtio).
+	// C(mac_address) - Custom MAC address of the network interface, by default it's obtained from MAC pool.
+	// NOTE - This parameter is used only when C(state) is I(running) or I(present) and is able to only create NICs. To manage NICs of the instance type in more depth please use M(ovirt_nic) module instead.
 
-ovirt_host_network :: {
+	nics?: string
 
-	// Dictionary describing network bond:
-	// C(name) - Bond name.
-	// C(mode) - Bonding mode.
-	// C(options) - Bonding options.
-	// C(interfaces) - List of interfaces to create a bond.
+	// List of boot devices which should be used to boot. For example C([ cdrom, hd ]).
+	// Default value is set by oVirt/RHV engine.
 
-	bond?: string
+	boot_devices?: string
 
-	// Name of the network interface where logical network should be attached.
+	// Specify host where Instance Type should be running. By default the host is chosen by engine scheduler.
+	// This parameter is used only when C(state) is I(running) or I(present).
 
-	interface?: string
+	host?: string
 
-	// List of names of the network label to be assigned to bond or interface.
+	// The configuration of the instance type's placement policy.
+	// Placement policy can be one of the following values:
+	// C(migratable) - Allow manual and automatic migration.
+	// C(pinned) - Do not allow migration.
+	// C(user_migratable) - Allow manual migration only.
+	// If no value is passed, default value is set by oVirt/RHV engine.
 
-	labels?: string
+	placement_policy?: string
 
-	// Should the host be present/absent.
+	// Duration of one period in milliseconds.
 
-	state?: string
+	rng_period?: string
 
-	// If I(true) verify connectivity between host and engine.
-	// Network configuration changes will be rolled back if connectivity between engine and the host is lost after changing network configuration.
+	// I(True) enable USB support, I(False) to disable it. By default is chosen by oVirt/RHV engine.
 
-	check?: bool
-
-	// Name of the host to manage networks for.
-
-	name: string
-
-	// List of dictionary describing networks to be attached to interface or bond:
-	// C(name) - Name of the logical network to be assigned to bond or interface.
-	// C(boot_protocol) - Boot protocol one of the I(none), I(static) or I(dhcp).
-	// C(address) - IP address in case of I(static) boot protocol is used.
-	// C(netmask) - Subnet mask in case of I(static) boot protocol is used.
-	// C(gateway) - Gateway in case of I(static) boot protocol is used.
-	// C(version) - IP version. Either v4 or v6. Default is v4.
-
-	networks?: string
-
-	// If I(true) network configuration will be persistent, otherwise it is temporary. Default I(true) since Ansible 2.8.
-
-	save?: bool
-
-	// If I(true) all networks will be synchronized before modification
-
-	sync_networks?: bool
+	usb_support?: bool
 }
 
 ovirt_mac_pool :: {
@@ -2066,12 +710,456 @@ ovirt_mac_pool :: {
 	ranges?: string
 }
 
+ovirt_affinity_label :: {
+
+	// Name of the cluster where vms and hosts resides.
+
+	cluster?: string
+
+	// List of the hosts names, which should have assigned this affinity label.
+
+	hosts?: string
+
+	// Name of the affinity label to manage.
+
+	name: string
+
+	// Should the affinity label be present or absent.
+
+	state?: string
+
+	// List of the VMs names, which should have assigned this affinity label.
+
+	vms?: string
+}
+
+ovirt_group :: {
+
+	// Authorization provider of the group. In previous versions of oVirt/RHV known as domain.
+
+	authz_name: string
+
+	// Name of the group to manage.
+
+	name: string
+
+	// Namespace of the authorization provider, where group resides.
+
+	namespace?: string
+
+	// Should the group be present/absent.
+
+	state?: string
+}
+
+ovirt_vnic_profile_info :: {
+
+	// The maximum number of results to return.
+
+	max?: int
+
+	// Name of vnic profile.
+
+	name?: string
+}
+
+ovirt_datacenter :: {
+
+	// MAC pool to be used by this datacenter.
+	// IMPORTANT: This option is deprecated in oVirt/RHV 4.1. You should use C(mac_pool) in C(ovirt_clusters) module, as MAC pools are set per cluster since 4.1.
+
+	mac_pool?: string
+
+	// Quota mode of the data center. One of I(disabled), I(audit) or I(enabled)
+
+	quota_mode?: string
+
+	// Compatibility version of the data center.
+
+	compatibility_version?: string
+
+	// ID of the datacenter to manage.
+
+	id?: string
+
+	// I(True) if the data center should be local, I(False) if should be shared.
+	// Default value is set by engine.
+
+	local?: bool
+
+	// Name of the data center to manage.
+
+	name: string
+
+	// Should the data center be present or absent.
+
+	state?: string
+
+	// Comment of the data center.
+
+	comment?: string
+
+	// Description of the data center.
+
+	description?: string
+
+	// This parameter can be used only when removing a data center. If I(True) data center will be forcibly removed, even though it contains some clusters. Default value is I(False), which means that only empty data center can be removed.
+
+	force?: bool
+}
+
+ovirt_disk :: {
+
+	// Name of the Virtual Machine to manage. Either C(vm_id) or C(vm_name) is required if C(state) is I(attached) or I(detached).
+
+	vm_name?: string
+
+	// I(True) if the disk should be bootable. By default when disk is created it isn't bootable.
+
+	bootable?: bool
+
+	// Specify format of the disk.
+	// Note that this option isn't idempotent as it's not currently possible to change format of the disk via API.
+
+	format?: string
+
+	// ID of the disk to manage. Either C(id) or C(name) is required.
+
+	id?: string
+
+	// Driver of the storage interface.
+	// It's required parameter when creating the new disk.
+
+	interface?: string
+
+	// Path to disk image, which should be uploaded.
+	// Note that currently we support only compatibility version 0.10 of the qcow disk.
+	// Note that you must have an valid oVirt/RHV engine CA in your system trust store or you must provide it in C(ca_file) parameter.
+	// Note that there is no reliable way to achieve idempotency, so if you want to upload the disk even if the disk with C(id) or C(name) exists, then please use C(force) I(true). If you will use C(force) I(false), which is default, then the disk image won't be uploaded.
+
+	upload_image_path?: string
+
+	// If the disk's Wipe After Delete is enabled, then the disk is first wiped.
+
+	wipe_after_delete?: bool
+
+	// Please take a look at C(image_path) documentation to see the correct usage of this parameter.
+
+	force?: bool
+
+	// Disk profile name to be attached to disk. By default profile is chosen by oVirt/RHV engine.
+
+	profile?: string
+
+	// Size of the disk. Size should be specified using IEC standard units. For example 10GiB, 1024MiB, etc.
+	// Size can be only increased, not decreased.
+
+	size?: string
+
+	// Should the Virtual Machine disk be present/absent/attached/detached/exported/imported.
+
+	state?: string
+
+	// Storage domain names where disk should be copied.
+	// C(**IMPORTANT**)
+	// There is no reliable way to achieve idempotency, so every time you specify this parameter the disks are copied, so please handle your playbook accordingly to not copy the disks all the time. This is valid only for VM and floating disks, template disks works as expected.
+
+	storage_domains?: string
+
+	// ID of the Virtual Machine to manage. Either C(vm_id) or C(vm_name) is required if C(state) is I(attached) or I(detached).
+
+	vm_id?: string
+
+	// Description of the disk image to manage.
+
+	description?: string
+
+	// Path on a file system where disk should be downloaded.
+	// Note that you must have an valid oVirt/RHV engine CA in your system trust store or you must provide it in C(ca_file) parameter.
+	// Note that the disk is not downloaded when the file already exists, but you can forcibly download the disk when using C(force) I (true).
+
+	download_image_path?: string
+
+	// Name of the openstack volume type. This is valid when working with cinder.
+
+	openstack_volume_type?: string
+
+	// I(True) if the disk should be activated.
+	// When creating disk of virtual machine it is set to I(True).
+
+	activate?: bool
+
+	// Dictionary which describes LUN to be directly attached to VM:
+
+	logical_unit?: string
+
+	// I(True) if the disk should be sparsified.
+	// Sparsification frees space in the disk image that is not used by its filesystem. As a result, the image will occupy less space on the storage.
+	// Note that this parameter isn't idempotent, as it's not possible to check if the disk should be or should not be sparsified.
+
+	sparsify?: bool
+
+	// Disk quota ID to be used for disk. By default quota is chosen by oVirt/RHV engine.
+
+	quota_id?: string
+
+	// I(True) if the disk should be sparse (also known as I(thin provision)). If the parameter is omitted, cow disks will be created as sparse and raw disks as I(preallocated)
+	// Note that this option isn't idempotent as it's not currently possible to change sparseness of the disk via API.
+
+	sparse?: bool
+
+	// Specify if the disk is a data disk or ISO image or a one of a the Hosted Engine disk types
+	// The Hosted Engine disk content types are available with Engine 4.3+ and Ansible 2.8
+
+	content_type?: string
+
+	// When the hypervisor name is specified the newly created disk or an existing disk will refresh its information about the underlying storage( Disk size, Serial, Product ID, Vendor ID ...) The specified host will be used for gathering the storage related information. This option is only valid for passthrough disks. This option requires at least the logical_unit.id to be specified
+
+	host?: string
+
+	// When C(state) is I(exported) disk is exported to given Glance image provider.
+	// When C(state) is I(imported) disk is imported from given Glance image provider.
+	// C(**IMPORTANT**)
+	// There is no reliable way to achieve idempotency, so every time you specify this parameter the disk is exported, so please handle your playbook accordingly to not export the disk all the time. This option is valid only for template disks.
+
+	image_provider?: string
+
+	// Storage domain name where disk should be created. By default storage is chosen by oVirt/RHV engine.
+
+	storage_domain?: string
+
+	// Name of the disk to manage. Either C(id) or C(name)/C(alias) is required.
+
+	name?: string
+
+	// I(True) if the disk should be shareable. By default when disk is created it isn't shareable.
+
+	shareable?: bool
+}
+
+ovirt_storage_vm_info :: {
+
+	// Sets the maximum number of virtual machines to return. If not specified all the virtual machines are returned.
+
+	max?: string
+
+	// The storage domain name where the virtual machines should be listed.
+
+	storage_domain?: string
+
+	// Flag which indicates whether to get unregistered virtual machines which contain one or more disks which reside on a storage domain or diskless virtual machines.
+
+	unregistered?: bool
+}
+
+ovirt_template_info :: {
+
+	// Search term which is accepted by oVirt/RHV search backend.
+	// For example to search template X from datacenter Y use following pattern: name=X and datacenter=Y
+
+	pattern?: string
+}
+
+ovirt_api_info :: {
+}
+
+ovirt_external_provider :: {
+
+	// Name of the data center where provider should be attached.
+	// Applicable for those type: I(os_volume).
+
+	data_center?: string
+
+	// Description of the external provider.
+
+	description?: string
+
+	// Type of the external network provider either external (for example OVN) or neutron.
+	// Applicable if C(type) is I(network).
+
+	network_type?: string
+
+	// Specify if the network should be read only.
+	// Applicable if C(type) is I(network).
+
+	read_only?: bool
+
+	// Name of the tenant.
+	// Applicable for those types: I(os_image), I(os_volume) and I(network).
+
+	tenant_name?: string
+
+	// URL where external provider is hosted.
+	// Applicable for those types: I(os_image), I(os_volume), I(network) and I(foreman).
+
+	url?: string
+
+	// List of authentication keys. Each key is represented by dict like {'uuid': 'our-uuid', 'value': 'YourSecretValue=='}
+	// When you will not pass these keys and there are already some of them defined in the system they will be removed.
+	// Applicable for I(os_volume).
+
+	authentication_keys?: string
+
+	// Name of the external provider to manage.
+
+	name?: string
+
+	// Password of the user specified in C(username) parameter.
+	// Applicable for all types.
+
+	password?: string
+
+	// Should the external be present or absent
+	// When you are using absent for I(os_volume), you need to make sure that SD is not attached to the data center!
+
+	state?: string
+
+	// Type of the external provider.
+
+	type?: string
+
+	// Username to be used for login to external provider.
+	// Applicable for all types.
+
+	username?: string
+
+	// Keystone authentication URL of the openstack provider.
+	// Applicable for those types: I(os_image), I(os_volume) and I(network).
+
+	authentication_url?: string
+}
+
+ovirt_host :: {
+
+	// If I(true) and C(state) is I(upgraded) run check for upgrade action before executing upgrade action.
+
+	check_upgrade?: bool
+
+	// Indicates that the host should be removed even if it is non-responsive, or if it is part of a Gluster Storage cluster and has volume bricks on it.
+	// WARNING: It doesn't forcibly remove the host if another host related operation is being executed on the host at the same time.
+
+	force?: bool
+
+	// Specify if host will have enabled Kdump integration.
+
+	kdump_integration?: string
+
+	// List of kernel boot parameters.
+	// Following are most common kernel parameters used for host:
+	// Hostdev Passthrough & SR-IOV: intel_iommu=on
+	// Nested Virtualization: kvm-intel.nested=1
+	// Unsafe Interrupts: vfio_iommu_type1.allow_unsafe_interrupts=1
+	// PCI Reallocation: pci=realloc
+	// C(Note:)
+	// Modifying kernel boot parameters settings can lead to a host boot failure. Please consult the product documentation before doing any changes.
+	// Kernel boot parameters changes require host deploy and restart. The host needs to be I(reinstalled) successfully and then to be I(rebooted) for kernel boot parameters to be applied.
+
+	kernel_params?: string
+
+	// Name of the host to manage.
+
+	name: string
+
+	// If True host iptables will be overridden by host deploy script.
+	// Note that C(override_iptables) is I(false) by default in oVirt/RHV.
+
+	override_iptables?: bool
+
+	// Password of the root. It's required in case C(public_key) is set to I(False).
+
+	password?: string
+
+	// Host address. It can be either FQDN (preferred) or IP address.
+
+	address?: string
+
+	// Name of the cluster, where host should be created.
+
+	cluster?: string
+
+	// If I(deploy) it means this host should deploy also hosted engine components.
+	// If I(undeploy) it means this host should un-deploy hosted engine components and this host will not function as part of the High Availability cluster.
+
+	hosted_engine?: string
+
+	// I(True) if the public key should be used to authenticate to host.
+	// It's required in case C(password) is not set.
+
+	public_key?: bool
+
+	// If I(true) and C(state) is I(upgraded) reboot host after successful upgrade.
+
+	reboot_after_upgrade?: bool
+
+	// The amount of time in seconds the module should wait for the host to get into desired state.
+
+	timeout?: string
+
+	// If C(state) is I(present) activate the host.
+	// This parameter is good to disable, when you don't want to change the state of host when using I(present) C(state).
+
+	activate?: bool
+
+	// ID of the host to manage.
+
+	id?: string
+
+	// If C(state) is I(iscsidiscover) it means that the iscsi attribute is being used to discover targets
+	// If C(state) is I(iscsilogin) it means that the iscsi attribute is being used to login to the specified targets passed as part of the iscsi attribute
+
+	iscsi?: string
+
+	// Enable or disable power management of the host.
+	// For more comprehensive setup of PM use C(ovirt_host_pm) module.
+
+	power_management_enabled?: bool
+
+	// State which should a host to be in after successful completion.
+	// I(iscsilogin) and I(iscsidiscover) are supported since version 2.4.
+
+	state?: string
+
+	// If I(consolidated), each vGPU is placed on the first physical card with available space. This is the default placement, utilizing all available space on the physical cards.
+	// If I(separated), each vGPU is placed on a separate physical card, if possible. This can be useful for improving vGPU performance.
+
+	vgpu_placement?: string
+
+	// Description of the host.
+
+	comment?: string
+
+	// SPM priority of the host. Integer value from 1 to 10, where higher number means higher priority.
+
+	spm_priority?: string
+
+	// Override the display address of all VMs on this host with specified address.
+
+	override_display?: bool
+}
+
 ovirt_permission :: {
+
+	// Should the permission be present/absent.
+
+	state?: string
+
+	// Username of the user to manage. In most LDAPs it's I(uid) of the user, but in Active Directory you must specify I(UPN) of the user.
+	// Note that if user does not exist in the system this module will fail, you should ensure the user exists by using M(ovirt_users) module.
+
+	user_name?: string
+
+	// Authorization provider of the user/group.
+
+	authz_name: string
 
 	// Name of the group to manage.
 	// Note that if group does not exist in the system this module will fail, you should ensure the group exists by using M(ovirt_groups) module.
 
 	group_name?: string
+
+	// Namespace of the authorization provider, where user/group resides.
+
+	namespace?: string
 
 	// ID of the object where the permissions should be managed.
 
@@ -2089,481 +1177,347 @@ ovirt_permission :: {
 
 	quota_name?: string
 
-	// Should the permission be present/absent.
-
-	state?: string
-
-	// Authorization provider of the user/group.
-
-	authz_name: string
-
 	// Name of the role to be assigned to user/group on specific object.
 
 	role?: string
-
-	// Username of the user to manage. In most LDAPs it's I(uid) of the user, but in Active Directory you must specify I(UPN) of the user.
-	// Note that if user does not exist in the system this module will fail, you should ensure the user exists by using M(ovirt_users) module.
-
-	user_name?: string
-
-	// Namespace of the authorization provider, where user/group resides.
-
-	namespace?: string
 }
 
-ovirt_vm :: {
+ovirt_host_network :: {
 
-	// Path to a kernel image used to boot the virtual machine.
-	// Kernel image must be stored on either the ISO domain or on the host's storage.
-	// Usable with oVirt 4.3 and lower; removed in oVirt 4.4.
+	// Dictionary describing network bond:
+	// C(name) - Bond name.
+	// C(mode) - Bonding mode.
+	// C(options) - Bonding options.
+	// C(interfaces) - List of interfaces to create a bond.
 
-	kernel_path?: string
+	bond?: string
 
-	// Name of the template, which should be used to create Virtual Machine.
-	// Required if creating VM.
-	// If template is not specified and VM doesn't exist, VM will be created from I(Blank) template.
+	// Name of the host to manage networks for.
 
-	template?: string
+	name: string
 
-	// I(True) enable USB support, I(False) to disable it. By default is chosen by oVirt/RHV engine.
+	// If I(true) verify connectivity between host and engine.
+	// Network configuration changes will be rolled back if connectivity between engine and the host is lost after changing network configuration.
 
-	usb_support?: bool
+	check?: bool
 
-	// Please check to I(Synopsis) to more detailed description of force parameter, it can behave differently in different situations.
+	// Name of the network interface where logical network should be attached.
 
-	force?: bool
+	interface?: string
 
-	// If I(true), the VM will migrate when I(placement_policy=user-migratable) but not when I(placement_policy=pinned).
+	// List of names of the network label to be assigned to bond or interface.
 
-	force_migrate?: bool
+	labels?: string
 
-	// Sets the value of the custom_emulated_machine attribute.
+	// List of dictionary describing networks to be attached to interface or bond:
+	// C(name) - Name of the logical network to be assigned to bond or interface.
+	// C(boot_protocol) - Boot protocol one of the I(none), I(static) or I(dhcp).
+	// C(address) - IP address in case of I(static) boot protocol is used.
+	// C(netmask) - Subnet mask in case of I(static) boot protocol is used.
+	// C(gateway) - Gateway in case of I(static) boot protocol is used.
+	// C(version) - IP version. Either v4 or v6. Default is v4.
 
-	custom_emulated_machine?: string
+	networks?: string
 
-	// Version number of the template to be used for VM.
-	// By default the latest available version of the template is used.
+	// If I(true) network configuration will be persistent, otherwise it is temporary. Default I(true) since Ansible 2.8.
 
-	template_version?: string
+	save?: bool
 
-	// Allows you to specify a custom serial number.
-	// This parameter is used only when C(serial_policy) is I(custom).
-
-	serial_policy_value?: string
-
-	// Should the Virtual Machine be running/stopped/present/absent/suspended/next_run/registered/exported/reboot. When C(state) is I(registered) and the unregistered VM's name belongs to an already registered in engine VM in the same DC then we fail to register the unregistered template.
-	// I(present) state will create/update VM and don't change its state if it already exists.
-	// I(running) state will create/update VM and start it.
-	// I(next_run) state updates the VM and if the VM has next run configuration it will be rebooted.
-	// Please check I(notes) to more detailed description of states.
-	// I(exported) state will export the VM to export domain or as OVA.
-	// I(registered) is supported since 2.4.
-	// I(reboot) is supported since 2.10, virtual machine is rebooted only if it's in up state.
+	// Should the host be present/absent.
 
 	state?: string
 
-	// If I(true), in addition return I(remote_vv_file) inside I(vm) dictionary, which contains compatible content for remote-viewer application. Works only C(state) is I(running).
+	// If I(true) all networks will be synchronized before modification
 
-	ticket?: bool
+	sync_networks?: bool
+}
 
-	// Dictionary of values to be used to connect to XEN and import a virtual machine to oVirt.
+ovirt_affinity_group :: {
 
-	xen?: string
-
-	// Mapper which maps affinity label name between VM's OVF and the destination label this VM should be registered to, relevant when C(state) is registered.
-
-	affinity_label_mappings?: string
-
-	// Upper bound of virtual machine memory up to which memory hot-plug can be performed. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
-	// Default value is set by engine.
-
-	memory_max?: string
-
-	// Enables a virtual machine to be customized to its own compatibility version. If 'C(custom_compatibility_version)' is set, it overrides the cluster's compatibility version for this particular virtual machine.
-
-	custom_compatibility_version?: string
-
-	// When C(state) is I(exported)this parameter specifies the name of the export storage domain.
-
-	export_domain?: string
-
-	// If I(true), the sound card is added to the virtual machine.
-
-	soundcard_enabled?: bool
-
-	// ISO file from ISO storage domain which should be attached to Virtual Machine.
-	// If you pass empty string the CD will be ejected from VM.
-	// If used with C(state) I(running) or I(present) and VM is running the CD will be attached to VM.
-	// If used with C(state) I(running) or I(present) and VM is down the CD will be attached to VM persistently.
-
-	cd_iso?: string
-
-	// If I(yes) the C(cloud_init) or C(sysprep) parameters will be saved for the virtual machine and the virtual machine won't be started as run-once.
-
-	cloud_init_persist?: bool
-
-	// Name of the cluster, where Virtual Machine should be created.
-	// Required if creating VM.
-
-	cluster?: string
-
-	// Properties sent to VDSM to configure various hooks.
-	// Custom properties is a list of dictionary which can have following values:
-
-	custom_properties?: string
-
-	// When C(state) is I(exported) this parameter indicates if the existing VM with the same name should be overwritten.
-
-	exclusive?: bool
-
-	// Assign graphical console to the virtual machine.
-
-	graphical_console?: string
-
-	// Single Root I/O Virtualization - technology that allows single device to expose multiple endpoints that can be passed to VMs
-	// host_devices is an list which contain dictionary with name and state of device
-
-	host_devices?: string
-
-	// Path to an initial ramdisk to be used with the kernel specified by C(kernel_path) option.
-	// Ramdisk image must be stored on either the ISO domain or on the host's storage.
-	// Usable with oVirt 4.3 and lower; removed in oVirt 4.4.
-
-	initrd_path?: string
-
-	// List of boot devices which should be used to boot. For example C([ cdrom, hd ]).
-	// Default value is set by oVirt/RHV engine.
-
-	boot_devices?: string
-
-	// If I(yes) then the disks of the created virtual machine will be cloned and independent of the template.
-	// This parameter is used only when C(state) is I(running) or I(present) and VM didn't exist before.
-
-	clone?: bool
-
-	// Set how the memory allocation for NUMA nodes of this VM is applied (relevant if NUMA nodes are set for this VM).
-	// It can be one of the following: I(interleave), I(preferred) or I(strict).
-	// If no value is passed, default value is set by oVirt/RHV engine.
-
-	numa_tune_mode?: string
-
-	// Number of IO threads used by virtual machine. I(0) means IO threading disabled.
-
-	io_threads?: string
-
-	// If I(true), the update will not be applied to the VM immediately and will be only applied when virtual machine is restarted.
-	// NOTE - If there are multiple next run configuration changes on the VM, the first change may get reverted if this option is not passed.
-
-	next_run?: bool
-
-	// If I(yes) Virtual Machine will be set as highly available.
-	// If I(no) Virtual Machine won't be set as highly available.
-	// If no value is passed, default value is set by oVirt/RHV engine.
-
-	high_availability?: bool
-
-	// Mapper which maps lun between VM's OVF and the destination lun this VM should contain, relevant when C(state) is registered. lun_mappings is described by the following dictionary: - C(logical_unit_id): The logical unit number to identify a logical unit, - C(logical_unit_port): The port being used to connect with the LUN disk. - C(logical_unit_portal): The portal being used to connect with the LUN disk. - C(logical_unit_address): The address of the block storage host. - C(logical_unit_target): The iSCSI specification located on an iSCSI server - C(logical_unit_username): Username to be used to connect to the block storage host. - C(logical_unit_password): Password to be used to connect to the block storage host. - C(storage_type): The storage type which the LUN reside on (iscsi or fcp)
-
-	lun_mappings?: string
-
-	// Assign watchdog device for the virtual machine.
-	// Watchdogs is a dictionary which can have following values:
-
-	watchdog?: string
-
-	// If I(yes) then the permissions of the template (only the direct ones, not the inherited ones) will be copied to the created virtual machine.
-	// This parameter is used only when C(state) is I(running) or I(present) and VM didn't exist before.
-
-	clone_permissions?: bool
-
-	// Mapper which maps cluster name between VM's OVF and the destination cluster this VM should be registered to, relevant when C(state) is registered. Cluster mapping is described by the following dictionary:
-
-	cluster_mappings?: string
-
-	// Specify format of the disk.
-	// If C(cow) format is used, disk will by created as sparse, so space will be allocated for the volume as needed, also known as I(thin provision).
-	// If C(raw) format is used, disk storage will be allocated right away, also known as I(preallocated).
-	// Note that this option isn't idempotent as it's not currently possible to change format of the disk via API.
-	// This parameter is considered only when C(template) and C(storage domain) is provided.
-
-	disk_format?: string
-
-	// Mapper which maps affinity name between VM's OVF and the destination affinity this VM should be registered to, relevant when C(state) is registered.
-
-	affinity_group_mappings?: string
-
-	// I(True) enable menu to select boot device, I(False) to disable it. By default is chosen by oVirt/RHV engine.
-
-	boot_menu?: bool
-
-	// ID of the Virtual Machine to manage.
-
-	id?: string
-
-	// Boolean indication whether to reassign bad macs when C(state) is registered.
-
-	reassign_bad_macs?: bool
-
-	// Name of the storage domain where all template disks should be created.
-	// This parameter is considered only when C(template) is provided.
-	// IMPORTANT - This parameter is not idempotent, if the VM exists and you specify different storage domain, disk won't move.
-
-	storage_domain?: string
-
-	// Type of the Virtual Machine.
-	// Default value is set by oVirt/RHV engine.
-	// I(high_performance) is supported since Ansible 2.5 and oVirt/RHV 4.2.
-
-	type?: string
-
-	// Comment of the Virtual Machine.
-
-	comment?: string
-
-	// Description of the Virtual Machine.
+	// Description of the affinity group.
 
 	description?: string
 
-	// If I(true) C(kernel_params), C(initrd_path) and C(kernel_path) will persist in virtual machine configuration, if I(False) it will be used for run once.
-	// Usable with oVirt 4.3 and lower; removed in oVirt 4.4.
+	// If I(positive) I(all) VMs in this group should run on the this host.
+	// If I(negative) I(no) VMs in this group should run on the this host.
+	// This parameter is support since oVirt/RHV 4.1 version.
 
-	kernel_params_persist?: bool
+	host_rule?: string
 
-	// Sets time zone offset of the guest hardware clock.
-	// For example C(Etc/GMT)
+	// List of the hosts names, which should have assigned this affinity group.
+	// This parameter is support since oVirt/RHV 4.1 version.
 
-	timezone?: string
+	hosts?: string
 
-	// If I(true), use memory ballooning.
-	// Memory balloon is a guest device, which may be used to re-distribute / reclaim the host memory based on VM needs in a dynamic way. In this way it's possible to create memory over commitment states.
+	// Should the affinity group be present or absent.
 
-	ballooning_enabled?: bool
+	state?: string
 
-	// Number of virtual CPUs sockets of the Virtual Machine.
-	// Default value is set by oVirt/RHV engine.
+	// If I(positive) I(all) VMs in this group should run on the host defined by C(host_rule).
+	// If I(negative) I(no) VMs in this group should run on the host defined by C(host_rule).
+	// If I(disabled) this affinity group doesn't take effect.
 
-	cpu_sockets?: string
+	vm_rule?: string
 
-	// Amount of memory of the Virtual Machine. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
-	// Default value is set by engine.
+	// List of the VMs names, which should have assigned this affinity group.
 
-	memory?: string
+	vms?: string
 
-	// If I(true), the VM will migrate to any available host.
+	// Name of the cluster of the affinity group.
 
-	migrate?: bool
+	cluster?: string
 
-	// List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
+	// If I(yes) VM cannot start on host if it does not satisfy the C(host_rule).
+	// This parameter is support since oVirt/RHV 4.1 version.
 
-	nics?: string
+	host_enforcing?: bool
 
-	// Virtual Machine quota ID to be used for disk. By default quota is chosen by oVirt/RHV engine.
+	// Name of the affinity group to manage.
 
-	quota_id?: string
+	name: string
 
-	// If I(yes) Virtual Machine will be set as stateless.
-	// If I(no) Virtual Machine will be unset as stateless.
-	// If no value is passed, default value is set by oVirt/RHV engine.
+	// If I(yes) VM cannot start if it does not satisfy the C(vm_rule).
 
-	stateless?: bool
+	vm_enforcing?: bool
+}
 
-	// List of dictionaries representing network interfaces to be setup by cloud init.
-	// This option is used, when user needs to setup more network interfaces via cloud init.
-	// If one network interface is enough, user should use C(cloud_init) I(nic_*) parameters. C(cloud_init) I(nic_*) parameters are merged with C(cloud_init_nics) parameters.
+ovirt_storage_domain :: {
 
-	cloud_init_nics?: string
+	// Logical remove of the storage domain. If I(true) retains the storage domain's data for import.
+	// This parameter is relevant only when C(state) is I(absent).
 
-	// Kernel command line parameters (formatted as string) to be used with the kernel specified by C(kernel_path) option.
-	// Usable with oVirt 4.3 and lower; removed in oVirt 4.4.
+	destroy?: bool
 
-	kernel_params?: string
+	// Dictionary with values for GlusterFS storage type:
+	// Note that these parameters are not idempotent.
 
-	// CPU Pinning topology to map virtual machine CPU to host CPU.
-	// CPU Pinning topology is a list of dictionary which can have following values:
+	glusterfs?: string
 
-	cpu_pinning?: string
+	// Dictionary with values for localfs storage type:
+	// Note that these parameters are not idempotent.
 
-	// Set a CPU shares for this Virtual Machine.
-	// Default value is set by oVirt/RHV engine.
+	localfs?: string
 
-	cpu_shares?: string
+	// Dictionary with values for PosixFS storage type:
+	// Note that these parameters are not idempotent.
 
-	// List of disks, which should be attached to Virtual Machine. Disk is described by following dictionary.
+	posixfs?: string
 
-	disks?: string
+	// Function of the storage domain.
+	// This parameter isn't idempotent, it's not possible to change domain function of storage domain.
 
-	// Mapper which maps aaa domain name between VM's OVF and the destination aaa domain this VM should be registered to, relevant when C(state) is registered. The aaa domain mapping is described by the following dictionary:
+	domain_function?: string
 
-	domain_mappings?: string
+	// Id of the storage domain to be imported.
 
-	// Dictionary of values to be used to connect to kvm and import a virtual machine to oVirt.
+	id?: string
 
-	kvm?: string
+	// Dictionary with values for iSCSI storage type:
+	// Note that these parameters are not idempotent.
 
-	// Boolean indication whether to allow partial registration of Virtual Machine when C(state) is registered.
+	iscsi?: string
 
-	allow_partial_import?: bool
+	// Should the storage domain be present/absent/maintenance/unattached/imported/update_ovf_store
+	// I(imported) is supported since version 2.4.
+	// I(update_ovf_store) is supported since version 2.5, currently if C(wait) is (true), we don't wait for update.
 
-	// CPU mode of the virtual machine. It can be some of the following: I(host_passthrough), I(host_model) or I(custom).
-	// For I(host_passthrough) CPU type you need to set C(placement_policy) to I(pinned).
-	// If no value is passed, default value is set by oVirt/RHV engine.
+	state?: string
 
-	cpu_mode?: string
+	// Boolean flag which indicates whether the storage domain is configured as backup or not.
 
-	// Source VM to clone VM from.
-	// VM should have snapshot specified by C(snapshot).
-	// If C(snapshot_name) specified C(snapshot_vm) is required.
+	backup?: bool
 
-	snapshot_vm?: string
+	// Indicates the minimal free space the storage domain should contain in percentages.
 
-	// Dictionary with values for Windows Virtual Machine initialization using sysprep.
+	critical_space_action_blocker?: string
 
-	sysprep?: string
+	// Data center name where storage domain should be attached.
+	// This parameter isn't idempotent, it's not possible to change data center of storage domain.
 
-	// Specify if latest template version should be used, when running a stateless VM.
-	// If this parameter is set to I(yes) stateless VM is created.
+	data_center?: string
 
-	use_latest_template_version?: bool
+	// Description of the storage domain.
 
-	// If I(true), use smart card authentication.
+	description?: string
 
-	smartcard_enabled?: bool
+	// Boolean flag which indicates whether the storage domain should wipe the data after delete.
 
-	// Snapshot to clone VM from.
-	// Snapshot with description specified should exist.
-	// You have to specify C(snapshot_vm) parameter with virtual machine name of this snapshot.
+	wipe_after_delete?: bool
 
-	snapshot_name?: string
+	// Comment of the storage domain.
 
-	// Random number generator (RNG). You can choose of one the following devices I(urandom), I(random) or I(hwrng).
-	// In order to select I(hwrng), you must have it enabled on cluster first.
-	// /dev/urandom is used for cluster version >= 4.1, and /dev/random for cluster version <= 4.0
+	comment?: string
 
-	rng_device?: string
+	// Dictionary with values for managed block storage type
+	// Note: available from ovirt 4.3
 
-	// I(True) enable Single Sign On by Guest Agent, I(False) to disable it. By default is chosen by oVirt/RHV engine.
+	managed_block_storage?: string
 
-	sso?: bool
-
-	// Dictionary of values to be used to connect to VMware and import a virtual machine to oVirt.
-
-	vmware?: string
-
-	// Specify host where Virtual Machine should be running. By default the host is chosen by engine scheduler.
-	// This parameter is used only when C(state) is I(running) or I(present).
-
-	host?: string
-
-	// List of vNUMA Nodes to set for this VM and pin them to assigned host's physical NUMA node.
-	// Each vNUMA node is described by following dictionary:
-
-	numa_nodes?: string
-
-	// Mapper which maps an external virtual NIC profile to one that exists in the engine when C(state) is registered. vnic_profile is described by the following dictionary:
-
-	vnic_profile_mappings?: string
-
-	// Dictionary with values for Unix-like Virtual Machine initialization using cloud init.
-
-	cloud_init?: string
-
-	// Amount of minimal guaranteed memory of the Virtual Machine. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
-	// C(memory_guaranteed) parameter can't be lower than C(memory) parameter.
-	// Default value is set by engine.
-
-	memory_guaranteed?: string
-
-	// If I(yes) Virtual Machine will be set as delete protected.
-	// If I(no) Virtual Machine won't be set as delete protected.
-	// If no value is passed, default value is set by oVirt/RHV engine.
-
-	delete_protected?: bool
-
-	// Dictionary of values to be used to export VM as OVA.
-
-	export_ova?: string
-
-	// Name of virtual machine's hardware configuration.
-	// By default no instance type is used.
-
-	instance_type?: string
-
-	// Specify a serial number policy for the Virtual Machine.
-	// Following options are supported.
-	// C(vm) - Sets the Virtual Machine's UUID as its serial number.
-	// C(host) - Sets the host's UUID as the Virtual Machine's serial number.
-	// C(custom) - Allows you to specify a custom serial number in C(serial_policy_value).
-
-	serial_policy?: string
-
-	// Number of virtual CPUs cores of the Virtual Machine.
-	// Default value is set by oVirt/RHV engine.
-
-	cpu_cores?: string
-
-	// Number of threads per core of the Virtual Machine.
-	// Default value is set by oVirt/RHV engine.
-
-	cpu_threads?: string
-
-	// Name of the Virtual Machine to manage.
-	// If VM don't exists C(name) is required. Otherwise C(id) or C(name) can be used.
+	// Name of the storage domain to manage. (Not required when state is I(imported))
 
 	name?: string
 
-	// Operating system of the Virtual Machine.
-	// Default value is set by oVirt/RHV engine.
-	// Possible values: debian_7, freebsd, freebsdx64, other, other_linux, other_linux_ppc64, other_ppc64, rhel_3, rhel_4, rhel_4x64, rhel_5, rhel_5x64, rhel_6, rhel_6x64, rhel_6_ppc64, rhel_7x64, rhel_7_ppc64, sles_11, sles_11_ppc64, ubuntu_12_04, ubuntu_12_10, ubuntu_13_04, ubuntu_13_10, ubuntu_14_04, ubuntu_14_04_ppc64, windows_10, windows_10x64, windows_2003, windows_2003x64, windows_2008, windows_2008x64, windows_2008r2x64, windows_2008R2x64, windows_2012x64, windows_2012R2x64, windows_7, windows_7x64, windows_8, windows_8x64, windows_xp
+	// Dictionary with values for NFS storage type:
+	// Note that these parameters are not idempotent.
 
-	operating_system?: string
+	nfs?: string
 
-	// The configuration of the virtual machine's placement policy.
-	// If no value is passed, default value is set by oVirt/RHV engine.
-	// Placement policy can be one of the following values:
+	// Indicates the minimum percentage of a free space in a storage domain to present a warning.
 
-	placement_policy?: string
+	warning_low_space?: string
 
-	// Mapper which maps role name between VM's OVF and the destination role this VM should be registered to, relevant when C(state) is registered. Role mapping is described by the following dictionary:
+	// If I(True) storage domain blocks will be discarded upon deletion. Enabled by default.
+	// This parameter is relevant only for block based storage domains.
 
-	role_mappings?: string
+	discard_after_delete?: bool
 
-	// I(True) enable VirtIO serial console, I(False) to disable it. By default is chosen by oVirt/RHV engine.
+	// Dictionary with values for fibre channel storage type:
+	// Note that these parameters are not idempotent.
 
-	serial_console?: bool
+	fcp?: string
 
-	// Indicates the priority of the virtual machine inside the run and migration queues. Virtual machines with higher priorities will be started and migrated before virtual machines with lower priorities. The value is an integer between 0 and 100. The higher the value, the higher the priority.
-	// If no value is passed, default value is set by oVirt/RHV engine.
+	// If I(True) storage domain will be formatted after removing it from oVirt/RHV.
+	// This parameter is relevant only when C(state) is I(absent).
 
-	high_availability_priority?: string
+	format?: bool
 
-	// Name of the storage domain this virtual machine lease reside on. Pass an empty string to remove the lease.
-	// NOTE - Supported since oVirt 4.1.
+	// Host to be used to mount storage.
 
-	lease?: string
+	host?: string
 }
 
-ovirt_datacenter_info :: {
+ovirt_user_info :: {
 
 	// Search term which is accepted by oVirt/RHV search backend.
-	// For example to search datacenter I(X) use following pattern: I(name=X)
+	// For example to search user X use following pattern: name=X
 
 	pattern?: string
 }
 
+ovirt_vnic_profile :: {
+
+	// Quality of Service attributes regulate inbound and outbound network traffic of the NIC.
+
+	qos?: string
+
+	// Custom properties applied to the vNIC profile.
+	// Custom properties is a list of dictionary which can have following values:
+
+	custom_properties?: string
+
+	// Datacenter name where network reside.
+
+	data_center: string
+
+	// Marks whether pass_through NIC is migratable or not.
+
+	migratable?: bool
+
+	// Name of network to which is vNIC attached.
+
+	network: string
+
+	// The network filter enables to filter packets send to/from the VM's nic according to defined rules.
+
+	network_filter?: string
+
+	// Enables passthrough to an SR-IOV-enabled host NIC.
+	// When enabled C(qos) and  C(network_filter) are automatically set to None and C(port_mirroring) to False.
+	// When enabled and C(migratable) not specified then C(migratable) is enabled.
+	// Port mirroring, QoS and network filters are not supported on passthrough profiles.
+
+	pass_through?: string
+
+	// Enables port mirroring.
+
+	port_mirroring?: bool
+
+	// A human-readable description in plain text.
+
+	description?: string
+
+	// A human-readable name in plain text.
+
+	name: string
+
+	// Should the vNIC be absent/present.
+
+	state?: string
+}
+
+ovirt_host_pm :: {
+
+	// Address of the power management interface.
+
+	address?: string
+
+	// Name of the host to manage.
+
+	name: string
+
+	// Password of the user specified in C(username) parameter.
+
+	password?: string
+
+	// Should the host be present/absent.
+
+	state?: string
+
+	// Username to be used to connect to power management interface.
+
+	username?: string
+
+	// If I(true) options will be encrypted when send to agent.
+
+	encrypt_options?: bool
+
+	// Dictionary of additional fence agent options (including Power Management slot).
+	// Additional information about options can be found at U(https://github.com/ClusterLabs/fence-agents/blob/master/doc/FenceAgentAPI.md).
+
+	options?: string
+
+	// Integer value specifying, by default it's added at the end.
+
+	order?: string
+
+	// Power management interface port.
+
+	port?: string
+
+	// Type of the power management. oVirt/RHV predefined values are I(drac5), I(ipmilan), I(rsa), I(bladecenter), I(alom), I(apc), I(apc_snmp), I(eps), I(wti), I(rsb), I(cisco_ucs), I(drac7), I(hpblade), I(ilo), I(ilo2), I(ilo3), I(ilo4), I(ilo_ssh), but user can have defined custom type.
+
+	type?: string
+}
+
+ovirt_network_info :: {
+
+	// Search term which is accepted by oVirt/RHV search backend.
+	// For example to search network starting with string vlan1 use: name=vlan1*
+
+	pattern?: string
+}
+
+ovirt_nic_info :: {
+
+	// Name of the NIC, can be used as glob expression.
+
+	name?: string
+
+	// Name of the VM where NIC is attached.
+
+	vm: string
+}
+
 ovirt_snapshot :: {
 
-	// Name of the Virtual Machine to manage.
+	// Description of the snapshot.
 
-	vm_name: string
+	description?: string
 
 	// Disk id which you want to upload or download
 	// To get disk, you need to define disk_id or disk_name
 
 	disk_id?: string
-
-	// Disk name which you want to upload or download
-
-	disk_name?: string
 
 	// Path on a file system where snapshot should be downloaded.
 	// Note that you must have an valid oVirt/RHV engine CA in your system trust store or you must provide it in C(ca_file) parameter.
@@ -2576,15 +1530,13 @@ ovirt_snapshot :: {
 
 	keep_days_old?: string
 
-	// If I(true) and C(state) is I(present) save memory of the Virtual Machine if it's running.
-	// If I(true) and C(state) is I(restore) restore memory of the Virtual Machine.
-	// Note that Virtual Machine will be paused while saving the memory.
+	// Name of the Virtual Machine to manage.
 
-	use_memory?: bool
+	vm_name: string
 
-	// Description of the snapshot.
+	// Disk name which you want to upload or download
 
-	description?: string
+	disk_name?: string
 
 	// ID of the snapshot to manage.
 
@@ -2597,4 +1549,1052 @@ ovirt_snapshot :: {
 	// Path to disk image, which should be uploaded.
 
 	upload_image_path?: string
+
+	// If I(true) and C(state) is I(present) save memory of the Virtual Machine if it's running.
+	// If I(true) and C(state) is I(restore) restore memory of the Virtual Machine.
+	// Note that Virtual Machine will be paused while saving the memory.
+
+	use_memory?: bool
+}
+
+ovirt_tag_info :: {
+
+	// Name of the VM, which tags should be listed.
+
+	vm?: string
+
+	// Name of the host, which tags should be listed.
+
+	host?: string
+
+	// Name of the tag which should be listed.
+
+	name?: string
+}
+
+ovirt_vm :: {
+
+	// Path to an initial ramdisk to be used with the kernel specified by C(kernel_path) option.
+	// Ramdisk image must be stored on either the ISO domain or on the host's storage.
+	// Usable with oVirt 4.3 and lower; removed in oVirt 4.4.
+
+	initrd_path?: string
+
+	// Amount of minimal guaranteed memory of the Virtual Machine. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
+	// C(memory_guaranteed) parameter can't be lower than C(memory) parameter.
+	// Default value is set by engine.
+
+	memory_guaranteed?: string
+
+	// ID of the Virtual Machine to manage.
+
+	id?: string
+
+	// If I(yes) Virtual Machine will be set as delete protected.
+	// If I(no) Virtual Machine won't be set as delete protected.
+	// If no value is passed, default value is set by oVirt/RHV engine.
+
+	delete_protected?: bool
+
+	// Amount of memory of the Virtual Machine. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
+	// Default value is set by engine.
+
+	memory?: string
+
+	// Specify a serial number policy for the Virtual Machine.
+	// Following options are supported.
+	// C(vm) - Sets the Virtual Machine's UUID as its serial number.
+	// C(host) - Sets the host's UUID as the Virtual Machine's serial number.
+	// C(custom) - Allows you to specify a custom serial number in C(serial_policy_value).
+
+	serial_policy?: string
+
+	// Type of the Virtual Machine.
+	// Default value is set by oVirt/RHV engine.
+	// I(high_performance) is supported since Ansible 2.5 and oVirt/RHV 4.2.
+
+	type?: string
+
+	// I(True) enable USB support, I(False) to disable it. By default is chosen by oVirt/RHV engine.
+
+	usb_support?: bool
+
+	// Specify if latest template version should be used, when running a stateless VM.
+	// If this parameter is set to I(yes) stateless VM is created.
+
+	use_latest_template_version?: bool
+
+	// Dictionary with values for Unix-like Virtual Machine initialization using cloud init.
+
+	cloud_init?: string
+
+	// Dictionary of values to be used to export VM as OVA.
+
+	export_ova?: string
+
+	// If I(true), the VM will migrate when I(placement_policy=user-migratable) but not when I(placement_policy=pinned).
+
+	force_migrate?: bool
+
+	// Path to a kernel image used to boot the virtual machine.
+	// Kernel image must be stored on either the ISO domain or on the host's storage.
+	// Usable with oVirt 4.3 and lower; removed in oVirt 4.4.
+
+	kernel_path?: string
+
+	// Upper bound of virtual machine memory up to which memory hot-plug can be performed. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
+	// Default value is set by engine.
+
+	memory_max?: string
+
+	// If I(yes) then the permissions of the template (only the direct ones, not the inherited ones) will be copied to the created virtual machine.
+	// This parameter is used only when C(state) is I(running) or I(present) and VM didn't exist before.
+
+	clone_permissions?: bool
+
+	// Description of the Virtual Machine.
+
+	description?: string
+
+	// When C(state) is I(exported)this parameter specifies the name of the export storage domain.
+
+	export_domain?: string
+
+	// If I(true), the update will not be applied to the VM immediately and will be only applied when virtual machine is restarted.
+	// NOTE - If there are multiple next run configuration changes on the VM, the first change may get reverted if this option is not passed.
+
+	next_run?: bool
+
+	// Source VM to clone VM from.
+	// VM should have snapshot specified by C(snapshot).
+	// If C(snapshot_name) specified C(snapshot_vm) is required.
+
+	snapshot_vm?: string
+
+	// Set a CPU shares for this Virtual Machine.
+	// Default value is set by oVirt/RHV engine.
+
+	cpu_shares?: string
+
+	// Specify format of the disk.
+	// If C(cow) format is used, disk will by created as sparse, so space will be allocated for the volume as needed, also known as I(thin provision).
+	// If C(raw) format is used, disk storage will be allocated right away, also known as I(preallocated).
+	// Note that this option isn't idempotent as it's not currently possible to change format of the disk via API.
+	// This parameter is considered only when C(template) and C(storage domain) is provided.
+
+	disk_format?: string
+
+	// If I(true) C(kernel_params), C(initrd_path) and C(kernel_path) will persist in virtual machine configuration, if I(False) it will be used for run once.
+	// Usable with oVirt 4.3 and lower; removed in oVirt 4.4.
+
+	kernel_params_persist?: bool
+
+	// Virtual Machine quota ID to be used for disk. By default quota is chosen by oVirt/RHV engine.
+
+	quota_id?: string
+
+	// Number of virtual CPUs sockets of the Virtual Machine.
+	// Default value is set by oVirt/RHV engine.
+
+	cpu_sockets?: string
+
+	// Boolean indication whether to allow partial registration of Virtual Machine when C(state) is registered.
+
+	allow_partial_import?: bool
+
+	// Enables a virtual machine to be customized to its own compatibility version. If 'C(custom_compatibility_version)' is set, it overrides the cluster's compatibility version for this particular virtual machine.
+
+	custom_compatibility_version?: string
+
+	// List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
+
+	nics?: string
+
+	// If I(true), the sound card is added to the virtual machine.
+
+	soundcard_enabled?: bool
+
+	// Name of the storage domain where all template disks should be created.
+	// This parameter is considered only when C(template) is provided.
+	// IMPORTANT - This parameter is not idempotent, if the VM exists and you specify different storage domain, disk won't move.
+
+	storage_domain?: string
+
+	// Sets time zone offset of the guest hardware clock.
+	// For example C(Etc/GMT)
+
+	timezone?: string
+
+	// Mapper which maps affinity name between VM's OVF and the destination affinity this VM should be registered to, relevant when C(state) is registered.
+
+	affinity_group_mappings?: string
+
+	// If I(yes) Virtual Machine will be set as highly available.
+	// If I(no) Virtual Machine won't be set as highly available.
+	// If no value is passed, default value is set by oVirt/RHV engine.
+
+	high_availability?: bool
+
+	// Mapper which maps lun between VM's OVF and the destination lun this VM should contain, relevant when C(state) is registered. lun_mappings is described by the following dictionary: - C(logical_unit_id): The logical unit number to identify a logical unit, - C(logical_unit_port): The port being used to connect with the LUN disk. - C(logical_unit_portal): The portal being used to connect with the LUN disk. - C(logical_unit_address): The address of the block storage host. - C(logical_unit_target): The iSCSI specification located on an iSCSI server - C(logical_unit_username): Username to be used to connect to the block storage host. - C(logical_unit_password): Password to be used to connect to the block storage host. - C(storage_type): The storage type which the LUN reside on (iscsi or fcp)
+
+	lun_mappings?: string
+
+	// Name of the Virtual Machine to manage.
+	// If VM don't exists C(name) is required. Otherwise C(id) or C(name) can be used.
+
+	name?: string
+
+	// I(True) enable VirtIO serial console, I(False) to disable it. By default is chosen by oVirt/RHV engine.
+
+	serial_console?: bool
+
+	// Assign graphical console to the virtual machine.
+
+	graphical_console?: string
+
+	// ISO file from ISO storage domain which should be attached to Virtual Machine.
+	// If you pass empty string the CD will be ejected from VM.
+	// If used with C(state) I(running) or I(present) and VM is running the CD will be attached to VM.
+	// If used with C(state) I(running) or I(present) and VM is down the CD will be attached to VM persistently.
+
+	cd_iso?: string
+
+	// List of dictionaries representing network interfaces to be setup by cloud init.
+	// This option is used, when user needs to setup more network interfaces via cloud init.
+	// If one network interface is enough, user should use C(cloud_init) I(nic_*) parameters. C(cloud_init) I(nic_*) parameters are merged with C(cloud_init_nics) parameters.
+
+	cloud_init_nics?: string
+
+	// Number of threads per core of the Virtual Machine.
+	// Default value is set by oVirt/RHV engine.
+
+	cpu_threads?: string
+
+	// Name of the storage domain this virtual machine lease reside on. Pass an empty string to remove the lease.
+	// NOTE - Supported since oVirt 4.1.
+
+	lease?: string
+
+	// The configuration of the virtual machine's placement policy.
+	// If no value is passed, default value is set by oVirt/RHV engine.
+	// Placement policy can be one of the following values:
+
+	placement_policy?: string
+
+	// Boolean indication whether to reassign bad macs when C(state) is registered.
+
+	reassign_bad_macs?: bool
+
+	// If I(yes) Virtual Machine will be set as stateless.
+	// If I(no) Virtual Machine will be unset as stateless.
+	// If no value is passed, default value is set by oVirt/RHV engine.
+
+	stateless?: bool
+
+	// If I(true), use memory ballooning.
+	// Memory balloon is a guest device, which may be used to re-distribute / reclaim the host memory based on VM needs in a dynamic way. In this way it's possible to create memory over commitment states.
+
+	ballooning_enabled?: bool
+
+	// Mapper which maps an external virtual NIC profile to one that exists in the engine when C(state) is registered. vnic_profile is described by the following dictionary:
+
+	vnic_profile_mappings?: string
+
+	// Dictionary with values for Windows Virtual Machine initialization using sysprep.
+
+	sysprep?: string
+
+	// When C(state) is I(exported) this parameter indicates if the existing VM with the same name should be overwritten.
+
+	exclusive?: bool
+
+	// List of vNUMA Nodes to set for this VM and pin them to assigned host's physical NUMA node.
+	// Each vNUMA node is described by following dictionary:
+
+	numa_nodes?: string
+
+	// Random number generator (RNG). You can choose of one the following devices I(urandom), I(random) or I(hwrng).
+	// In order to select I(hwrng), you must have it enabled on cluster first.
+	// /dev/urandom is used for cluster version >= 4.1, and /dev/random for cluster version <= 4.0
+
+	rng_device?: string
+
+	// Assign watchdog device for the virtual machine.
+	// Watchdogs is a dictionary which can have following values:
+
+	watchdog?: string
+
+	// Number of virtual CPUs cores of the Virtual Machine.
+	// Default value is set by oVirt/RHV engine.
+
+	cpu_cores?: string
+
+	// If I(yes) then the disks of the created virtual machine will be cloned and independent of the template.
+	// This parameter is used only when C(state) is I(running) or I(present) and VM didn't exist before.
+
+	clone?: bool
+
+	// Properties sent to VDSM to configure various hooks.
+	// Custom properties is a list of dictionary which can have following values:
+
+	custom_properties?: string
+
+	// If I(true), the VM will migrate to any available host.
+
+	migrate?: bool
+
+	// Dictionary of values to be used to connect to VMware and import a virtual machine to oVirt.
+
+	vmware?: string
+
+	// I(True) enable menu to select boot device, I(False) to disable it. By default is chosen by oVirt/RHV engine.
+
+	boot_menu?: bool
+
+	// Sets the value of the custom_emulated_machine attribute.
+
+	custom_emulated_machine?: string
+
+	// Specify host where Virtual Machine should be running. By default the host is chosen by engine scheduler.
+	// This parameter is used only when C(state) is I(running) or I(present).
+
+	host?: string
+
+	// Number of IO threads used by virtual machine. I(0) means IO threading disabled.
+
+	io_threads?: string
+
+	// Operating system of the Virtual Machine.
+	// Default value is set by oVirt/RHV engine.
+	// Possible values: debian_7, freebsd, freebsdx64, other, other_linux, other_linux_ppc64, other_ppc64, rhel_3, rhel_4, rhel_4x64, rhel_5, rhel_5x64, rhel_6, rhel_6x64, rhel_6_ppc64, rhel_7x64, rhel_7_ppc64, sles_11, sles_11_ppc64, ubuntu_12_04, ubuntu_12_10, ubuntu_13_04, ubuntu_13_10, ubuntu_14_04, ubuntu_14_04_ppc64, windows_10, windows_10x64, windows_2003, windows_2003x64, windows_2008, windows_2008x64, windows_2008r2x64, windows_2008R2x64, windows_2012x64, windows_2012R2x64, windows_7, windows_7x64, windows_8, windows_8x64, windows_xp
+
+	operating_system?: string
+
+	// If I(true), use smart card authentication.
+
+	smartcard_enabled?: bool
+
+	// Mapper which maps affinity label name between VM's OVF and the destination label this VM should be registered to, relevant when C(state) is registered.
+
+	affinity_label_mappings?: string
+
+	// Name of the cluster, where Virtual Machine should be created.
+	// Required if creating VM.
+
+	cluster?: string
+
+	// Kernel command line parameters (formatted as string) to be used with the kernel specified by C(kernel_path) option.
+	// Usable with oVirt 4.3 and lower; removed in oVirt 4.4.
+
+	kernel_params?: string
+
+	// Allows you to specify a custom serial number.
+	// This parameter is used only when C(serial_policy) is I(custom).
+
+	serial_policy_value?: string
+
+	// If I(true), in addition return I(remote_vv_file) inside I(vm) dictionary, which contains compatible content for remote-viewer application. Works only C(state) is I(running).
+
+	ticket?: bool
+
+	// List of boot devices which should be used to boot. For example C([ cdrom, hd ]).
+	// Default value is set by oVirt/RHV engine.
+
+	boot_devices?: string
+
+	// Single Root I/O Virtualization - technology that allows single device to expose multiple endpoints that can be passed to VMs
+	// host_devices is an list which contain dictionary with name and state of device
+
+	host_devices?: string
+
+	// Dictionary of values to be used to connect to kvm and import a virtual machine to oVirt.
+
+	kvm?: string
+
+	// Snapshot to clone VM from.
+	// Snapshot with description specified should exist.
+	// You have to specify C(snapshot_vm) parameter with virtual machine name of this snapshot.
+
+	snapshot_name?: string
+
+	// I(True) enable Single Sign On by Guest Agent, I(False) to disable it. By default is chosen by oVirt/RHV engine.
+
+	sso?: bool
+
+	// If I(yes) the C(cloud_init) or C(sysprep) parameters will be saved for the virtual machine and the virtual machine won't be started as run-once.
+
+	cloud_init_persist?: bool
+
+	// Mapper which maps aaa domain name between VM's OVF and the destination aaa domain this VM should be registered to, relevant when C(state) is registered. The aaa domain mapping is described by the following dictionary:
+
+	domain_mappings?: string
+
+	// Mapper which maps role name between VM's OVF and the destination role this VM should be registered to, relevant when C(state) is registered. Role mapping is described by the following dictionary:
+
+	role_mappings?: string
+
+	// Should the Virtual Machine be running/stopped/present/absent/suspended/next_run/registered/exported/reboot. When C(state) is I(registered) and the unregistered VM's name belongs to an already registered in engine VM in the same DC then we fail to register the unregistered template.
+	// I(present) state will create/update VM and don't change its state if it already exists.
+	// I(running) state will create/update VM and start it.
+	// I(next_run) state updates the VM and if the VM has next run configuration it will be rebooted.
+	// Please check I(notes) to more detailed description of states.
+	// I(exported) state will export the VM to export domain or as OVA.
+	// I(registered) is supported since 2.4.
+	// I(reboot) is supported since 2.10, virtual machine is rebooted only if it's in up state.
+
+	state?: string
+
+	// CPU mode of the virtual machine. It can be some of the following: I(host_passthrough), I(host_model) or I(custom).
+	// For I(host_passthrough) CPU type you need to set C(placement_policy) to I(pinned).
+	// If no value is passed, default value is set by oVirt/RHV engine.
+
+	cpu_mode?: string
+
+	// CPU Pinning topology to map virtual machine CPU to host CPU.
+	// CPU Pinning topology is a list of dictionary which can have following values:
+
+	cpu_pinning?: string
+
+	// List of disks, which should be attached to Virtual Machine. Disk is described by following dictionary.
+
+	disks?: string
+
+	// Name of virtual machine's hardware configuration.
+	// By default no instance type is used.
+
+	instance_type?: string
+
+	// Set how the memory allocation for NUMA nodes of this VM is applied (relevant if NUMA nodes are set for this VM).
+	// It can be one of the following: I(interleave), I(preferred) or I(strict).
+	// If no value is passed, default value is set by oVirt/RHV engine.
+
+	numa_tune_mode?: string
+
+	// Comment of the Virtual Machine.
+
+	comment?: string
+
+	// Please check to I(Synopsis) to more detailed description of force parameter, it can behave differently in different situations.
+
+	force?: bool
+
+	// Indicates the priority of the virtual machine inside the run and migration queues. Virtual machines with higher priorities will be started and migrated before virtual machines with lower priorities. The value is an integer between 0 and 100. The higher the value, the higher the priority.
+	// If no value is passed, default value is set by oVirt/RHV engine.
+
+	high_availability_priority?: string
+
+	// Name of the template, which should be used to create Virtual Machine.
+	// Required if creating VM.
+	// If template is not specified and VM doesn't exist, VM will be created from I(Blank) template.
+
+	template?: string
+
+	// Version number of the template to be used for VM.
+	// By default the latest available version of the template is used.
+
+	template_version?: string
+
+	// Dictionary of values to be used to connect to XEN and import a virtual machine to oVirt.
+
+	xen?: string
+
+	// Mapper which maps cluster name between VM's OVF and the destination cluster this VM should be registered to, relevant when C(state) is registered. Cluster mapping is described by the following dictionary:
+
+	cluster_mappings?: string
+}
+
+ovirt_event_info :: {
+
+	// Sets the maximum number of events to return. If not specified all the events are returned.
+
+	max?: int
+
+	// Additional URL query parameters.
+
+	query?: string
+
+	// Search term which is accepted by the oVirt/RHV API.
+	// For example to search for events of severity alert use the following pattern: severity=alert
+
+	search?: string
+
+	// If True wait for the response.
+
+	wait?: bool
+
+	// Indicates if the search performed using the search parameter should be performed taking case into account. The default value is true, which means that case is taken into account. If you want to search ignoring case set it to false.
+
+	case_sensitive?: bool
+
+	// Indicates the event index after which events should be returned. The indexes of events are strictly increasing, so when this parameter is used only the events with greater indexes will be returned.
+
+	from_?: int
+
+	// Additional HTTP headers.
+
+	headers?: string
+}
+
+ovirt_event :: {
+
+	// The id of the data center associated with this event.
+
+	data_center?: string
+
+	// Message for the event.
+	// Required when state is present.
+
+	description?: string
+
+	// Severity of the event.
+	// Required when state is present.
+
+	severity?: string
+
+	// The id of the storage domain associated with this event.
+
+	storage_domain?: string
+
+	// The id of the template associated with this event.
+
+	template?: string
+
+	// The id of the user associated with this event.
+
+	user?: string
+
+	// The id of the cluster associated with this event.
+
+	cluster?: string
+
+	// Custom ID for the event. This ID must be unique for each event.
+	// Required when state is present.
+
+	custom_id?: int
+
+	// Originator of the event.
+	// Required when state is present.
+
+	origin?: string
+
+	// Should the event be present/absent.
+	// The C(wait) option must be set to false when state is absent.
+
+	state?: string
+
+	// The id of the VM associated with this event.
+
+	vm?: string
+
+	// The id of the host associated with this event.
+
+	host?: string
+
+	// The event ID in the oVirt/RHV audit_log table. This ID is not the same as custom_id and is only used when state is absent.
+	// Required when state is absent.
+
+	id?: string
+}
+
+ovirt_host_info :: {
+
+	// Filter the hosts based on the cluster version.
+
+	cluster_version?: string
+
+	// Search term which is accepted by oVirt/RHV search backend.
+	// For example to search host X from datacenter Y use following pattern: name=X and datacenter=Y
+
+	pattern?: string
+
+	// If I(true) all the attributes of the hosts should be included in the response.
+
+	all_content?: bool
+}
+
+ovirt_template :: {
+
+	// Mapper which maps aaa domain name between Template's OVF and the destination aaa domain this Template should be registered to, relevant when C(state) is registered. The aaa domain mapping is described by the following dictionary:
+
+	domain_mappings?: string
+
+	// Name of the template to manage.
+
+	name?: string
+
+	// Operating system of the template.
+	// Default value is set by oVirt/RHV engine.
+	// Possible values are: debian_7, freebsd, freebsdx64, other, other_linux, other_linux_ppc64, other_ppc64, rhel_3, rhel_4, rhel_4x64, rhel_5, rhel_5x64, rhel_6, rhel_6x64, rhel_6_ppc64, rhel_7x64, rhel_7_ppc64, sles_11, sles_11_ppc64, ubuntu_12_04, ubuntu_12_10, ubuntu_13_04, ubuntu_13_10, ubuntu_14_04, ubuntu_14_04_ppc64, windows_10, windows_10x64, windows_2003, windows_2003x64, windows_2008, windows_2008x64, windows_2008r2x64, windows_2008R2x64, windows_2012x64, windows_2012R2x64, windows_7, windows_7x64, windows_8, windows_8x64, windows_xp
+
+	operating_system?: string
+
+	// Dictionary with values for Unix-like Virtual Machine initialization using cloud init.
+
+	cloud_init?: string
+
+	// Description of the template.
+
+	description?: string
+
+	// I(True) enable USB support, I(False) to disable it. By default is chosen by oVirt/RHV engine.
+
+	usb_support?: bool
+
+	// Boolean indication whether to allow partial registration of a template when C(state) is registered.
+
+	allow_partial_import?: bool
+
+	// Mapper which maps cluster name between Template's OVF and the destination cluster this Template should be registered to, relevant when C(state) is registered. Cluster mapping is described by the following dictionary:
+
+	cluster_mappings?: string
+
+	// Number of IO threads used by virtual machine. I(0) means IO threading disabled.
+
+	io_threads?: string
+
+	// List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
+
+	nics?: string
+
+	// I(True) enable Single Sign On by Guest Agent, I(False) to disable it. By default is chosen by oVirt/RHV engine.
+
+	sso?: bool
+
+	// When C(state) is I(imported) this parameter specifies the name of the destination data storage domain. When C(state) is I(registered) this parameter specifies the name of the data storage domain of the unregistered template.
+
+	storage_domain?: string
+
+	// Name of the VM, which will be used to create template.
+
+	vm?: string
+
+	// If I(true), use memory ballooning.
+	// Memory balloon is a guest device, which may be used to re-distribute / reclaim the host memory based on VM needs in a dynamic way. In this way it's possible to create memory over commitment states.
+
+	ballooning_enabled?: bool
+
+	// Name for importing Template from storage domain.
+	// If not defined, C(name) will be used.
+
+	clone_name?: string
+
+	// Name of the cluster, where template should be created/imported.
+
+	cluster?: string
+
+	// Amount of memory of the template. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
+
+	memory?: string
+
+	// When C(state) is I(exported) or I(imported) this parameter specifies the name of the export storage domain.
+
+	export_domain?: string
+
+	// Should the template be present/absent/exported/imported/registered. When C(state) is I(registered) and the unregistered template's name belongs to an already registered in engine template in the same DC then we fail to register the unregistered template.
+
+	state?: string
+
+	// Sets time zone offset of the guest hardware clock.
+	// For example C(Etc/GMT)
+
+	timezone?: string
+
+	// Mapper which maps an external virtual NIC profile to one that exists in the engine when C(state) is registered. vnic_profile is described by the following dictionary:
+
+	vnic_profile_mappings?: string
+
+	// If I(True) then the permissions of the VM (only the direct ones, not the inherited ones) will be copied to the created template.
+	// This parameter is used only when C(state) I(present).
+
+	clone_permissions?: bool
+
+	// When C(state) is I(exported) this parameter indicates if the existing templates with the same name should be overwritten.
+
+	exclusive?: bool
+
+	// ID of the template to be registered.
+
+	id?: string
+
+	// When C(state) is I(imported) and C(image_provider) is used this parameter specifies the name of disk to be imported as template.
+
+	image_disk?: string
+
+	// 'Sealing' is an operation that erases all machine-specific configurations from a filesystem: This includes SSH keys, UDEV rules, MAC addresses, system ID, hostname, etc. If I(true) subsequent virtual machines made from this template will avoid configuration inheritance.
+	// This parameter is used only when C(state) I(present).
+
+	seal?: bool
+
+	// When C(state) is I(imported) and C(image_provider) is used this parameter specifies the new name for imported disk, if omitted then I(image_disk) name is used by default. This parameter is used only in case of importing disk image from Glance domain.
+
+	template_image_disk_name?: string
+
+	// CPU profile to be set to template.
+
+	cpu_profile?: string
+
+	// When C(state) is I(imported) this parameter specifies the name of the image provider to be used.
+
+	image_provider?: string
+
+	// Upper bound of template memory up to which memory hot-plug can be performed. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
+
+	memory_max?: string
+
+	// Mapper which maps role name between Template's OVF and the destination role this Template should be registered to, relevant when C(state) is registered. Role mapping is described by the following dictionary:
+
+	role_mappings?: string
+
+	// Dictionary with values for Windows Virtual Machine initialization using sysprep.
+
+	sysprep?: string
+
+	// C(name) - The name of this version.
+	// C(number) - The index of this version in the versions hierarchy of the template. Used for editing of sub template.
+
+	version?: string
+
+	// List of dictionaries representing network interfaces to be setup by cloud init.
+	// This option is used, when user needs to setup more network interfaces via cloud init.
+	// If one network interface is enough, user should use C(cloud_init) I(nic_*) parameters. C(cloud_init) I(nic_*) parameters are merged with C(cloud_init_nics) parameters.
+
+	cloud_init_nics?: string
+
+	// Amount of minimal guaranteed memory of the template. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
+	// C(memory_guaranteed) parameter can't be lower than C(memory) parameter.
+
+	memory_guaranteed?: string
+
+	// If I(true), use smart card authentication.
+
+	smartcard_enabled?: bool
+
+	// If I(true), the sound card is added to the virtual machine.
+
+	soundcard_enabled?: bool
+}
+
+ovirt_vmpool_info :: {
+
+	// Search term which is accepted by oVirt/RHV search backend.
+	// For example to search vmpool X: name=X
+
+	pattern?: string
+}
+
+ovirt_auth :: {
+
+	// A boolean flag that indicates if the server TLS certificate and host name should be checked.
+
+	insecure?: bool
+
+	// Specifies if a token should be created or revoked.
+
+	state?: string
+
+	// SSO token to be used instead of login with username/password. Default value is set by I(OVIRT_TOKEN) environment variable.
+
+	token?: string
+
+	// A string containing the API URL of the server. For example: I(https://server.example.com/ovirt-engine/api). Default value is set by I(OVIRT_URL) environment variable.
+	// Either C(url) or C(hostname) is required.
+
+	url?: string
+
+	// The name of the user. For example: I(admin@internal) Default value is set by I(OVIRT_USERNAME) environment variable.
+
+	username?: string
+
+	// A boolean flag indicating if the SDK should ask the server to send compressed responses. The default is I(True). Note that this is a hint for the server, and that it may return uncompressed data even when this parameter is set to I(True).
+
+	compress?: bool
+
+	// A string containing the hostname of the server. For example: I(server.example.com). Default value is set by I(OVIRT_HOSTNAME) environment variable.
+	// Either C(url) or C(hostname) is required.
+
+	hostname?: string
+
+	// A boolean flag indicating if Kerberos authentication should be used instead of the default basic authentication.
+
+	kerberos?: bool
+
+	// The password of the user. Default value is set by I(OVIRT_PASSWORD) environment variable.
+
+	password?: string
+
+	// The maximum total time to wait for the response, in seconds. A value of zero (the default) means wait forever. If the timeout expires before the response is received an exception will be raised.
+
+	timeout?: string
+
+	// A PEM file containing the trusted CA certificates. The certificate presented by the server will be verified using these CA certificates. If C(ca_file) parameter is not set, system wide CA certificate store is used. Default value is set by I(OVIRT_CAFILE) environment variable.
+
+	ca_file?: string
+
+	// A dictionary of HTTP headers to be added to each API call.
+
+	headers?: string
+}
+
+ovirt_snapshot_info :: {
+
+	// Description of the snapshot, can be used as glob expression.
+
+	description?: string
+
+	// Id of the snapshot we want to retrieve information about.
+
+	snapshot_id?: string
+
+	// Name of the VM with snapshot.
+
+	vm: string
+}
+
+ovirt_user :: {
+
+	// Namespace where the user resides. When using the authorization provider that stores users in the LDAP server, this attribute equals the naming context of the LDAP server.
+
+	namespace?: string
+
+	// Should the user be present/absent.
+
+	state?: string
+
+	// Authorization provider of the user. In previous versions of oVirt/RHV known as domain.
+
+	authz_name: string
+
+	// Name of the user to manage. In most LDAPs it's I(uid) of the user, but in Active Directory you must specify I(UPN) of the user.
+
+	name: string
+}
+
+ovirt_job :: {
+
+	// Description of the job.
+
+	description: string
+
+	// Should the job be C(present)/C(absent)/C(failed).
+	// C(started) is alias for C(present). C(finished) is alias for C(absent). Same in the steps.
+	// Note when C(finished)/C(failed) it will finish/fail all steps.
+
+	state?: string
+
+	// The steps of the job.
+
+	steps?: [..._]
+}
+
+ovirt_network :: {
+
+	// Specify VLAN tag.
+
+	vlan_tag?: string
+
+	// List of dictionaries describing how the network is managed in specific cluster.
+
+	clusters?: string
+
+	// Datacenter name where network reside.
+
+	data_center?: string
+
+	// Description of the network.
+
+	description?: string
+
+	// ID of the network to manage.
+
+	id?: string
+
+	// Name of the label to assign to the network.
+
+	label?: string
+
+	// If I(True) network will be marked as network for VM.
+	// VM network carries traffic relevant to the virtual machine.
+
+	vm_network?: bool
+
+	// Comment of the network.
+
+	comment?: string
+
+	// Name of external network provider.
+
+	external_provider?: string
+
+	// Maximum transmission unit (MTU) of the network.
+
+	mtu?: string
+
+	// Name of the network to manage.
+
+	name: string
+
+	// Should the network be present or absent
+
+	state?: string
+}
+
+ovirt_storage_connection :: {
+
+	// Id of the storage connection to manage.
+
+	id?: string
+
+	// Port of the iSCSI storage server.
+
+	port?: string
+
+	// Storage type. For example: I(nfs), I(iscsi), etc.
+
+	type?: string
+
+	// The number of times to retry a request before attempting further recovery actions. Range 0 to 65535.
+
+	nfs_retrans?: string
+
+	// Should the storage connection be present or absent.
+
+	state?: string
+
+	// Name of the storage domain to be used with storage connection.
+
+	storage?: string
+
+	// The target IQN for the storage device.
+
+	target?: string
+
+	// Address of the storage server. E.g.: myserver.mydomain.com
+
+	address?: string
+
+	// Option which will be passed when mounting storage.
+
+	mount_options?: string
+
+	// The time in tenths of a second to wait for a response before retrying NFS requests. Range 0 to 65535.
+
+	nfs_timeout?: string
+
+	// Path of the mount point of the storage. E.g.: /path/to/my/data
+
+	path?: string
+
+	// A CHAP username for logging into a target.
+
+	username?: string
+
+	// This parameter is relevant only when updating a connection.
+	// If I(true) the storage domain don't have to be in I(MAINTENANCE) state, so the storage connection is updated.
+
+	force?: bool
+
+	// NFS version. One of: I(auto), I(v3), I(v4) or I(v4_1).
+
+	nfs_version?: string
+
+	// A CHAP password for logging into a target.
+
+	password?: string
+
+	// Virtual File System type.
+
+	vfs_type?: string
+}
+
+ovirt_storage_domain_info :: {
+
+	// Search term which is accepted by oVirt/RHV search backend.
+	// For example to search storage domain X from datacenter Y use following pattern: name=X and datacenter=Y
+
+	pattern?: string
+}
+
+ovirt_tag :: {
+
+	// List of the VMs names, which should have assigned this tag.
+
+	vms?: string
+
+	// Description of the tag to manage.
+
+	description?: string
+
+	// List of the hosts names, which should have assigned this tag.
+
+	hosts?: string
+
+	// ID of the tag to manage.
+
+	id?: string
+
+	// Name of the tag to manage.
+
+	name: string
+
+	// Name of the parent tag.
+
+	parent?: string
+
+	// Should the tag be present/absent/attached/detached.
+	// C(Note): I(attached) and I(detached) states are supported since version 2.4.
+
+	state?: string
+}
+
+ovirt_host_storage_info :: {
+
+	// Dictionary with values for fibre channel storage type:
+	// C(address) - Address of the fibre channel storage server.
+	// C(port) - Port of the fibre channel storage server.
+	// C(lun_id) - LUN id.
+
+	fcp?: string
+
+	// Host to get device list from.
+
+	host: string
+
+	// Dictionary with values for iSCSI storage type:
+	// C(address) - Address of the iSCSI storage server.
+	// C(target) - The target IQN for the storage device.
+	// C(username) - A CHAP user name for logging into a target.
+	// C(password) - A CHAP password for logging into a target.
+
+	iscsi?: string
+}
+
+ovirt_group_info :: {
+
+	// Search term which is accepted by oVirt/RHV search backend.
+	// For example to search group X use following pattern: name=X
+
+	pattern?: string
+}
+
+ovirt_storage_template_info :: {
+
+	// Flag which indicates whether to get unregistered templates which contain one or more disks which reside on a storage domain or diskless templates.
+
+	unregistered?: bool
+
+	// Sets the maximum number of templates to return. If not specified all the templates are returned.
+
+	max?: string
+
+	// The storage domain name where the templates should be listed.
+
+	storage_domain?: string
+}
+
+ovirt_disk_info :: {
+
+	// Search term which is accepted by oVirt/RHV search backend.
+	// For example to search Disk X from storage Y use following pattern: name=X and storage.name=Y
+
+	pattern?: string
 }

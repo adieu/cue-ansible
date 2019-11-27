@@ -133,9 +133,9 @@ module: ecs_service: {
 			version_added: 2.4
 			type:          "list"
 			elements:      "dict"
-			suboptions:
-				null
-		}, placement_strategy: {
+			suboptions:    null
+		}
+		placement_strategy: {
 			description: [
 				"The placement strategy objects to use for tasks in your service. You can specify a maximum of 5 strategy rules per service.",
 			]

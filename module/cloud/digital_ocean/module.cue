@@ -1,32 +1,28 @@
 package digital_ocean
 
-digital_ocean_domain :: {
+digital_ocean_tag_info :: {
 
-	// Numeric, the droplet id you want to operate on.
+	// Tag name that can be used to identify and reference a tag.
 
-	id?: string
-
-	// An 'A' record for '@' ($ORIGIN) will be created with the value 'ip'.  'ip' is an IP version 4 address.
-
-	ip?: string
-
-	// String, this is the name of the droplet - must be formatted by hostname rules, or the name of a SSH key, or the name of a domain.
-
-	name?: string
-
-	// Indicate desired state of the target.
-
-	state?: string
+	tag_name?: string
 }
 
-digital_ocean_firewall_info :: {
+digital_ocean_volume_info :: {
 
-	// Firewall rule name that can be used to identify and reference a specific firewall rule.
+	// Name of region to restrict results to volumes available in a specific region.
+	// Please use M(digital_ocean_region_info) for getting valid values related regions.
 
-	name?: string
+	region_name?: string
+}
+
+digital_ocean_account_info :: {
 }
 
 digital_ocean_floating_ip :: {
+
+	// The region that the Floating IP is reserved to.
+
+	region?: string
 
 	// Indicate desired state of the target.
 
@@ -43,10 +39,6 @@ digital_ocean_floating_ip :: {
 	// DigitalOcean OAuth token.
 
 	oauth_token: string
-
-	// The region that the Floating IP is reserved to.
-
-	region?: string
 }
 
 digital_ocean_image_info :: {
@@ -58,9 +50,6 @@ digital_ocean_image_info :: {
 	// If not set to any of above, then information are gathered related to all images.
 
 	image_type?: string
-}
-
-digital_ocean_size_info :: {
 }
 
 digital_ocean_snapshot_info :: {
@@ -80,96 +69,10 @@ digital_ocean_snapshot_info :: {
 	snapshot_type?: string
 }
 
-digital_ocean_account_info :: {
-}
-
-digital_ocean_certificate_info :: {
-
-	// Certificate ID that can be used to identify and reference a certificate.
-
-	certificate_id?: string
-}
-
-digital_ocean_tag :: {
-
-	// The name of the tag. The supported characters for names include alphanumeric characters, dashes, and underscores.
-
-	name: string
-
-	// The ID of the resource to operate on.
-	// The data type of resource_id is changed from integer to string, from version 2.5.
-
-	resource_id?: string
-
-	// The type of resource to operate on. Currently, only tagging of droplets is supported.
-
-	resource_type?: string
-
-	// Whether the tag should be present or absent on the resource.
-
-	state?: string
-}
-
-digital_ocean_tag_info :: {
-
-	// Tag name that can be used to identify and reference a tag.
-
-	tag_name?: string
+digital_ocean_sshkey_facts :: {
 }
 
 digital_ocean :: {
-
-	// Indicate desired state of the target.
-
-	state?: string
-
-	// How long before wait gives up, in seconds.
-
-	wait_timeout?: string
-
-	// Bool, add an additional, private network interface to droplet for inter-droplet communication.
-
-	private_networking?: bool
-
-	// This is the slug of the region you would like your server to be created in.
-
-	region_id?: string
-
-	// Optional, array of SSH key (numeric) ID that you would like to be added to the server.
-
-	ssh_key_ids?: string
-
-	// Which target you want to operate on.
-
-	command?: string
-
-	// This is the slug of the image you would like the droplet created with.
-
-	image_id?: string
-
-	// Numeric, the droplet id you want to operate on.
-
-	id?: string
-
-	// String, this is the name of the droplet - must be formatted by hostname rules, or the name of a SSH key.
-
-	name?: string
-
-	// This is the slug of the size you would like the droplet created with.
-
-	size_id?: string
-
-	// The public SSH key you want to add to your account.
-
-	ssh_pub_key?: string
-
-	// Bool, require unique hostnames.  By default, DigitalOcean allows multiple hosts with the same name.  Setting this to "yes" allows only one host per name.  Useful for idempotence.
-
-	unique_name?: bool
-
-	// opaque blob of data which is made available to the droplet
-
-	user_data?: string
 
 	// DigitalOcean api token.
 
@@ -179,162 +82,97 @@ digital_ocean :: {
 
 	backups_enabled?: bool
 
-	// Wait for the droplet to be in state 'running' before returning.  If wait is "no" an ip_address may not be returned.
+	// Indicate desired state of the target.
 
-	wait?: bool
+	state?: string
 
-	// Optional, Boolean, enable IPv6 for your droplet.
+	// Bool, require unique hostnames.  By default, DigitalOcean allows multiple hosts with the same name.  Setting this to "yes" allows only one host per name.  Useful for idempotence.
 
-	ipv6?: bool
+	unique_name?: bool
 
 	// Bool, turn on virtio driver in droplet for improved network and storage I/O.
 
 	virtio?: bool
-}
-
-digital_ocean_region_info :: {
-}
-
-digital_ocean_volume_info :: {
-
-	// Name of region to restrict results to volumes available in a specific region.
-	// Please use M(digital_ocean_region_info) for getting valid values related regions.
-
-	region_name?: string
-}
-
-digital_ocean_block_storage :: {
-
-	// Which operation do you want to perform.
-
-	command: string
-
-	// Description of the Block Storage volume.
-
-	description?: string
-
-	// The droplet id you want to operate on. Required when command=attach.
-
-	droplet_id?: string
-
-	// The slug of the region where your Block Storage volume should be located in. If snapshot_id is included, this will be ignored.
-
-	region: string
-
-	// The snapshot id you would like the Block Storage volume created with. If included, region and block_size will be ignored and changed to null.
-
-	snapshot_id?: string
-
-	// Indicate desired state of the target.
-
-	state: string
-
-	// The name of the Block Storage volume.
-
-	volume_name: string
-
-	// The size of the Block Storage volume in gigabytes. Required when command=create and state=present. If snapshot_id is included, this will be ignored.
-
-	block_size?: string
-}
-
-digital_ocean_domain_info :: {
-
-	// Name of the domain to gather information for.
-
-	domain_name?: string
-}
-
-digital_ocean_droplet :: {
-
-	// String, this is the name of the droplet - must be formatted by hostname rules.
-
-	name?: string
-
-	// add an additional, private network interface to droplet for inter-droplet communication.
-
-	private_networking?: bool
-
-	// array of SSH key (numeric) ID that you would like to be added to the server.
-
-	ssh_keys?: string
-
-	// opaque blob of data which is made available to the droplet
-
-	user_data?: string
-
-	// Wait for the droplet to be active before returning.  If wait is "no" an ip_address may not be returned.
-
-	wait?: bool
-
-	// indicates whether automated backups should be enabled.
-
-	backups?: bool
-
-	// This is the slug of the image you would like the droplet created with.
-
-	image?: string
-
-	// enable IPv6 for your droplet.
-
-	ipv6?: bool
-
-	// DigitalOcean OAuth token. Can be specified in C(DO_API_KEY), C(DO_API_TOKEN), or C(DO_OAUTH_TOKEN) environment variables
-
-	oauth_token: string
-
-	// List, A list including the unique string identifier for each Block Storage volume to be attached to the Droplet.
-
-	volumes?: string
 
 	// Numeric, the droplet id you want to operate on.
 
 	id?: string
 
-	// This is the slug of the region you would like your server to be created in.
+	// This is the slug of the image you would like the droplet created with.
 
-	region?: string
+	image_id?: string
 
-	// How long before wait gives up, in seconds, when creating a droplet.
+	// String, this is the name of the droplet - must be formatted by hostname rules, or the name of a SSH key.
+
+	name?: string
+
+	// Bool, add an additional, private network interface to droplet for inter-droplet communication.
+
+	private_networking?: bool
+
+	// opaque blob of data which is made available to the droplet
+
+	user_data?: string
+
+	// Optional, array of SSH key (numeric) ID that you would like to be added to the server.
+
+	ssh_key_ids?: string
+
+	// How long before wait gives up, in seconds.
 
 	wait_timeout?: string
 
-	// indicates whether to install the DigitalOcean agent for monitoring.
+	// Which target you want to operate on.
 
-	monitoring?: bool
+	command?: string
+
+	// Optional, Boolean, enable IPv6 for your droplet.
+
+	ipv6?: bool
+
+	// This is the slug of the region you would like your server to be created in.
+
+	region_id?: string
 
 	// This is the slug of the size you would like the droplet created with.
 
-	size?: string
+	size_id?: string
+
+	// The public SSH key you want to add to your account.
+
+	ssh_pub_key?: string
+
+	// Wait for the droplet to be in state 'running' before returning.  If wait is "no" an ip_address may not be returned.
+
+	wait?: bool
+}
+
+digital_ocean_domain :: {
+
+	// Numeric, the droplet id you want to operate on.
+
+	id?: string
+
+	// An 'A' record for '@' ($ORIGIN) will be created with the value 'ip'.  'ip' is an IP version 4 address.
+
+	ip?: string
+
+	// String, this is the name of the droplet - must be formatted by hostname rules, or the name of a SSH key, or the name of a domain.
+
+	name?: string
 
 	// Indicate desired state of the target.
 
 	state?: string
+}
 
-	// List, A list of tag names as strings to apply to the Droplet after it is created. Tag names can either be existing or new tags.
-
-	tags?: string
-
-	// require unique hostnames.  By default, DigitalOcean allows multiple hosts with the same name.  Setting this to "yes" allows only one host per name.  Useful for idempotence.
-
-	unique_name?: bool
+digital_ocean_region_info :: {
 }
 
 digital_ocean_floating_ip_info :: {
 }
 
-digital_ocean_load_balancer_info :: {
-
-	// Load balancer ID that can be used to identify and reference a load_balancer.
-
-	load_balancer_id?: string
-}
-
 digital_ocean_sshkey :: {
-
-	// DigitalOcean OAuth token.
-
-	oauth_token: string
 
 	// The Public SSH key to add.
 
@@ -351,9 +189,10 @@ digital_ocean_sshkey :: {
 	// The name for the SSH key
 
 	name?: string
-}
 
-digital_ocean_sshkey_facts :: {
+	// DigitalOcean OAuth token.
+
+	oauth_token: string
 }
 
 digital_ocean_sshkey_info :: {
@@ -380,4 +219,165 @@ digital_ocean_certificate :: {
 	// A PEM-formatted private key content of SSL Certificate.
 
 	private_key?: string
+}
+
+digital_ocean_certificate_info :: {
+
+	// Certificate ID that can be used to identify and reference a certificate.
+
+	certificate_id?: string
+}
+
+digital_ocean_firewall_info :: {
+
+	// Firewall rule name that can be used to identify and reference a specific firewall rule.
+
+	name?: string
+}
+
+digital_ocean_load_balancer_info :: {
+
+	// Load balancer ID that can be used to identify and reference a load_balancer.
+
+	load_balancer_id?: string
+}
+
+digital_ocean_size_info :: {
+}
+
+digital_ocean_tag :: {
+
+	// The ID of the resource to operate on.
+	// The data type of resource_id is changed from integer to string, from version 2.5.
+
+	resource_id?: string
+
+	// The type of resource to operate on. Currently, only tagging of droplets is supported.
+
+	resource_type?: string
+
+	// Whether the tag should be present or absent on the resource.
+
+	state?: string
+
+	// The name of the tag. The supported characters for names include alphanumeric characters, dashes, and underscores.
+
+	name: string
+}
+
+digital_ocean_block_storage :: {
+
+	// The snapshot id you would like the Block Storage volume created with. If included, region and block_size will be ignored and changed to null.
+
+	snapshot_id?: string
+
+	// Indicate desired state of the target.
+
+	state: string
+
+	// The name of the Block Storage volume.
+
+	volume_name: string
+
+	// The size of the Block Storage volume in gigabytes. Required when command=create and state=present. If snapshot_id is included, this will be ignored.
+
+	block_size?: string
+
+	// Which operation do you want to perform.
+
+	command: string
+
+	// Description of the Block Storage volume.
+
+	description?: string
+
+	// The droplet id you want to operate on. Required when command=attach.
+
+	droplet_id?: string
+
+	// The slug of the region where your Block Storage volume should be located in. If snapshot_id is included, this will be ignored.
+
+	region: string
+}
+
+digital_ocean_domain_info :: {
+
+	// Name of the domain to gather information for.
+
+	domain_name?: string
+}
+
+digital_ocean_droplet :: {
+
+	// Indicate desired state of the target.
+
+	state?: string
+
+	// require unique hostnames.  By default, DigitalOcean allows multiple hosts with the same name.  Setting this to "yes" allows only one host per name.  Useful for idempotence.
+
+	unique_name?: bool
+
+	// How long before wait gives up, in seconds, when creating a droplet.
+
+	wait_timeout?: string
+
+	// enable IPv6 for your droplet.
+
+	ipv6?: bool
+
+	// indicates whether to install the DigitalOcean agent for monitoring.
+
+	monitoring?: bool
+
+	// String, this is the name of the droplet - must be formatted by hostname rules.
+
+	name?: string
+
+	// This is the slug of the size you would like the droplet created with.
+
+	size?: string
+
+	// Numeric, the droplet id you want to operate on.
+
+	id?: string
+
+	// array of SSH key (numeric) ID that you would like to be added to the server.
+
+	ssh_keys?: string
+
+	// List, A list of tag names as strings to apply to the Droplet after it is created. Tag names can either be existing or new tags.
+
+	tags?: string
+
+	// List, A list including the unique string identifier for each Block Storage volume to be attached to the Droplet.
+
+	volumes?: string
+
+	// This is the slug of the image you would like the droplet created with.
+
+	image?: string
+
+	// Wait for the droplet to be active before returning.  If wait is "no" an ip_address may not be returned.
+
+	wait?: bool
+
+	// opaque blob of data which is made available to the droplet
+
+	user_data?: string
+
+	// indicates whether automated backups should be enabled.
+
+	backups?: bool
+
+	// DigitalOcean OAuth token. Can be specified in C(DO_API_KEY), C(DO_API_TOKEN), or C(DO_OAUTH_TOKEN) environment variables
+
+	oauth_token: string
+
+	// add an additional, private network interface to droplet for inter-droplet communication.
+
+	private_networking?: bool
+
+	// This is the slug of the region you would like your server to be created in.
+
+	region?: string
 }

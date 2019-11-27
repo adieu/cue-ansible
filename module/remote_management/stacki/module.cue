@@ -2,6 +2,18 @@ package stacki
 
 stacki_host :: {
 
+	// Username for authenticating with Stacki API, but if not specified, the environment variable C(stacki_user) is used instead.
+
+	stacki_user: string
+
+	// Set value to True to force node into install state if it already exists in stacki.
+
+	force_install?: bool
+
+	// Name of the host to be added to Stacki.
+
+	name: string
+
 	// Name of the primary network interface.
 
 	prim_intf?: string
@@ -21,18 +33,6 @@ stacki_host :: {
 	// Password for authenticating with Stacki API, but if not specified, the environment variable C(stacki_password) is used instead.
 
 	stacki_password: string
-
-	// Username for authenticating with Stacki API, but if not specified, the environment variable C(stacki_user) is used instead.
-
-	stacki_user: string
-
-	// Set value to True to force node into install state if it already exists in stacki.
-
-	force_install?: bool
-
-	// Name of the host to be added to Stacki.
-
-	name: string
 }
 
 wakeonlan :: {

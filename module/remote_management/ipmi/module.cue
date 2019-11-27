@@ -2,6 +2,18 @@ package ipmi
 
 ipmi_boot :: {
 
+	// If set, request UEFI boot explicitly. Strictly speaking, the spec suggests that if not set, the system should BIOS boot and offers no "don't care" option. In practice, this flag not being set does not preclude UEFI boot on any system I've encountered.
+
+	uefiboot?: bool
+
+	// Username to use to connect to the BMC.
+
+	user: string
+
+	// Set boot device to use on next reboot
+
+	bootdev: string
+
 	// Hostname or ip address of the BMC.
 
 	name: string
@@ -21,29 +33,9 @@ ipmi_boot :: {
 	// Whether to ensure that boot devices is desired.
 
 	state?: string
-
-	// If set, request UEFI boot explicitly. Strictly speaking, the spec suggests that if not set, the system should BIOS boot and offers no "don't care" option. In practice, this flag not being set does not preclude UEFI boot on any system I've encountered.
-
-	uefiboot?: bool
-
-	// Username to use to connect to the BMC.
-
-	user: string
-
-	// Set boot device to use on next reboot
-
-	bootdev: string
 }
 
 ipmi_power :: {
-
-	// Username to use to connect to the BMC.
-
-	user: string
-
-	// Hostname or ip address of the BMC.
-
-	name: string
 
 	// Password to connect to the BMC.
 
@@ -60,13 +52,17 @@ ipmi_power :: {
 	// Maximum number of seconds before interrupt request.
 
 	timeout?: string
+
+	// Username to use to connect to the BMC.
+
+	user: string
+
+	// Hostname or ip address of the BMC.
+
+	name: string
 }
 
 wakeonlan :: {
-
-	// UDP port to use for magic Wake-on-LAN packet.
-
-	port?: string
 
 	// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
 
@@ -75,4 +71,8 @@ wakeonlan :: {
 	// MAC address to send Wake-on-LAN broadcast packet for.
 
 	mac: string
+
+	// UDP port to use for magic Wake-on-LAN packet.
+
+	port?: string
 }

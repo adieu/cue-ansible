@@ -1,56 +1,54 @@
 package ipa
 
-ipa_hbacrule :: {
+ipa_vault :: {
 
-	// List of service names to assign.
-	// If an empty list is passed all services will be removed from the rule.
-	// If option is omitted services will not be checked or changed.
-
-	service?: string
-
-	// List of user names to assign.
-	// If an empty list if passed all assigned users will be removed from the rule.
-	// If option is omitted users will not be checked or changed.
-
-	user?: string
-
-	// List of service group names to assign.
-	// If an empty list is passed all assigned service groups will be removed from the rule.
-	// If option is omitted service groups will not be checked or changed.
-
-	servicegroup?: string
-
-	// User category
-
-	usercategory?: string
-
-	// List of user group names to assign.
-	// If an empty list if passed all assigned user groups will be removed from the rule.
-	// If option is omitted user groups will not be checked or changed.
-
-	usergroup?: string
-
-	// List of source host names to assign.
-	// If an empty list if passed all assigned source hosts will be removed from the rule.
-	// If option is omitted source hosts will not be checked or changed.
-
-	sourcehost?: string
-
-	// Source host category
-
-	sourcehostcategory?: string
-
-	// List of source host group names to assign.
-	// If an empty list if passed all assigned source host groups will be removed from the rule.
-	// If option is omitted source host groups will not be checked or changed.
-
-	sourcehostgroup?: string
-
-	// State to ensure
+	// State to ensure.
 
 	state?: string
 
-	// Canonical name.
+	// Validate IPA server certificates.
+
+	validate_certs?: bool
+
+	// Vault name.
+	// Can not be changed as it is the unique identifier.
+
+	cn: string
+
+	// Description.
+
+	description?: string
+
+	// Vault Salt.
+
+	ipavaultsalt?: string
+
+	// Force replace the existant vault on IPA server.
+
+	replace?: bool
+
+	// Public key.
+
+	ipavaultpublickey?: string
+
+	// Vault types are based on security level.
+
+	ipavaulttype: string
+
+	// Any service can own one or more service vaults.
+	// Mutually exclusive with user.
+
+	service?: string
+
+	// Any user can own one or more user vaults.
+	// Mutually exclusive with service.
+
+	username?: string
+}
+
+ipa_hostgroup :: {
+
+	// Name of host-group.
 	// Can not be changed as it is the unique identifier.
 
 	cn: string
@@ -59,65 +57,26 @@ ipa_hbacrule :: {
 
 	description?: string
 
-	// List of host names to assign.
-	// If an empty list is passed all hosts will be removed from the rule.
+	// List of hosts that belong to the host-group.
+	// If an empty list is passed all hosts will be removed from the group.
 	// If option is omitted hosts will not be checked or changed.
+	// If option is passed all assigned hosts that are not passed will be unassigned from the group.
 
 	host?: string
 
-	// Host category
-
-	hostcategory?: string
-
-	// List of hostgroup names to assign.
-	// If an empty list is passed all hostgroups will be removed. from the rule
-	// If option is omitted hostgroups will not be checked or changed.
+	// List of host-groups than belong to that host-group.
+	// If an empty list is passed all host-groups will be removed from the group.
+	// If option is omitted host-groups will not be checked or changed.
+	// If option is passed all assigned hostgroups that are not passed will be unassigned from the group.
 
 	hostgroup?: string
 
-	// Service category
-
-	servicecategory?: string
-}
-
-ipa_sudocmdgroup :: {
-
-	// Sudo Command Group.
-
-	cn: string
-
-	// Group description.
-
-	description?: string
-
-	// State to ensure
+	// State to ensure.
 
 	state?: string
-
-	// List of sudo commands to assign to the group.
-	// If an empty list is passed all assigned commands will be removed from the group.
-	// If option is omitted sudo commands will not be checked or changed.
-
-	sudocmd?: string
-}
-
-ipa_config :: {
-
-	// Default e-mail domain for new users.
-
-	ipadefaultemaildomain?: string
-
-	// Default shell for new users.
-
-	ipadefaultloginshell?: string
 }
 
 ipa_role :: {
-
-	// Role name.
-	// Can not be changed as it is the unique identifier.
-
-	cn: string
 
 	// A description of this role-group.
 
@@ -129,13 +88,6 @@ ipa_role :: {
 	// If option is passed all assigned groups that are not passed will be unassigned from the role.
 
 	group?: string
-
-	// List of host group names to assign.
-	// If an empty list is passed all assigned host groups will be removed from the role.
-	// If option is omitted host groups will not be checked or changed.
-	// If option is passed all assigned hostgroups that are not passed will be unassigned from the role.
-
-	hostgroup?: string
 
 	// List of privileges granted to the role.
 	// If an empty list is passed all assigned privileges will be removed.
@@ -150,12 +102,24 @@ ipa_role :: {
 
 	user?: string
 
+	// Role name.
+	// Can not be changed as it is the unique identifier.
+
+	cn: string
+
 	// List of host names to assign.
 	// If an empty list is passed all assigned hosts will be unassigned from the role.
 	// If option is omitted hosts will not be checked or changed.
 	// If option is passed all assigned hosts that are not passed will be unassigned from the role.
 
 	host?: string
+
+	// List of host group names to assign.
+	// If an empty list is passed all assigned host groups will be removed from the role.
+	// If option is omitted host groups will not be checked or changed.
+	// If option is passed all assigned hostgroups that are not passed will be unassigned from the role.
+
+	hostgroup?: string
 
 	// List of service names to assign.
 	// If an empty list is passed all assigned services will be removed from the role.
@@ -171,6 +135,10 @@ ipa_role :: {
 
 ipa_service :: {
 
+	// Force principal name even if host is not in DNS.
+
+	force?: bool
+
 	// defines the list of 'ManagedBy' hosts
 
 	hosts?: string
@@ -183,27 +151,30 @@ ipa_service :: {
 	// State to ensure
 
 	state?: string
+}
 
-	// Force principal name even if host is not in DNS.
+ipa_sudocmdgroup :: {
 
-	force?: bool
+	// Group description.
+
+	description?: string
+
+	// State to ensure
+
+	state?: string
+
+	// List of sudo commands to assign to the group.
+	// If an empty list is passed all assigned commands will be removed from the group.
+	// If option is omitted sudo commands will not be checked or changed.
+
+	sudocmd?: string
+
+	// Sudo Command Group.
+
+	cn: string
 }
 
 ipa_user :: {
-
-	// Password for a user. Will not be set for an existing user unless C(update_password) is set to C(always), which is the default.
-
-	password?: string
-
-	// First name
-
-	givenname?: string
-
-	// Date at which the user password will expire
-	// In the format YYYYMMddHHmmss
-	// e.g. 20180121182022 will expire on 21 January 2018 at 18:20:22
-
-	krbpasswordexpiration?: string
 
 	// List of mail addresses assigned to the user.
 	// If an empty list is passed all assigned email addresses will be deleted.
@@ -211,41 +182,39 @@ ipa_user :: {
 
 	mail?: string
 
+	// Password for a user. Will not be set for an existing user unless C(update_password) is set to C(always), which is the default.
+
+	password?: string
+
 	// List of telephone numbers assigned to the user.
 	// If an empty list is passed all assigned telephone numbers will be deleted.
 	// If None is passed telephone numbers will not be checked or changed.
 
 	telephonenumber?: string
 
-	// Display name
+	// Account Settings UID/Posix User ID number
 
-	displayname?: string
+	uidnumber?: string
 
-	// Posix Group ID
+	// Date at which the user password will expire
+	// In the format YYYYMMddHHmmss
+	// e.g. 20180121182022 will expire on 21 January 2018 at 18:20:22
 
-	gidnumber?: string
+	krbpasswordexpiration?: string
 
-	// Login shell
+	// First name
 
-	loginshell?: string
+	givenname?: string
+
+	// Surname
+
+	sn?: string
 
 	// List of public SSH key.
 	// If an empty list is passed all assigned public keys will be deleted.
 	// If None is passed SSH public keys will not be checked or changed.
 
 	sshpubkey?: string
-
-	// uid of the user
-
-	uid: string
-
-	// Set password for a user.
-
-	update_password?: string
-
-	// Surname
-
-	sn?: string
 
 	// State to ensure
 
@@ -255,171 +224,124 @@ ipa_user :: {
 
 	title?: string
 
-	// Account Settings UID/Posix User ID number
+	// uid of the user
 
-	uidnumber?: string
-}
+	uid: string
 
-ipa_group :: {
+	// Set password for a user.
 
-	// List of user names assigned to this group.
-	// If an empty list is passed all users will be removed from this group.
-	// If option is omitted assigned users will not be checked or changed.
-	// Users that are already assigned but not passed will be removed.
+	update_password?: string
 
-	user?: string
+	// Display name
 
-	// Canonical name.
-	// Can not be changed as it is the unique identifier.
+	displayname?: string
 
-	cn: string
+	// Login shell
 
-	// Description of the group.
+	loginshell?: string
 
-	description?: string
-
-	// Allow adding external non-IPA members from trusted domains.
-
-	external?: bool
-
-	// GID (use this option to set it manually).
+	// Posix Group ID
 
 	gidnumber?: string
-
-	// List of group names assigned to this group.
-	// If an empty list is passed all groups will be removed from this group.
-	// If option is omitted assigned groups will not be checked or changed.
-	// Groups that are already assigned but not passed will be removed.
-
-	group?: string
-
-	// Create as a non-POSIX group.
-
-	nonposix?: bool
-
-	// State to ensure
-
-	state?: string
 }
 
-ipa_sudorule :: {
+ipa_host :: {
 
-	// Host category the rule applies to.
-	// If 'all' is passed one must omit C(host) and C(hostgroup).
-	// Option C(host) and C(hostgroup) must be omitted to assign 'all'.
+	// A description of this host.
 
-	hostcategory?: string
+	description?: string
 
-	// List of options to add to the sudo rule.
+	// Force host name even if not in DNS.
 
-	sudoopt?: string
+	force?: bool
 
-	// List of hosts assigned to the rule.
-	// If an empty list is passed all hosts will be removed from the rule.
-	// If option is omitted hosts will not be checked or changed.
-	// Option C(hostcategory) must be omitted to assign hosts.
+	// Add the host to DNS with this IP address.
 
-	host?: string
+	ip_address?: string
 
-	// List of host groups assigned to the rule.
-	// If an empty list is passed all host groups will be removed from the rule.
-	// If option is omitted host groups will not be checked or changed.
-	// Option C(hostcategory) must be omitted to assign host groups.
+	// Host hardware platform (e.g. "Lenovo T61")
 
-	hostgroup?: string
+	ns_hardware_platform?: string
 
-	// RunAs User category the rule applies to.
+	// Host location (e.g. "Lab 2")
 
-	runasusercategory?: string
+	ns_host_location?: string
 
-	// User category the rule applies to.
+	// Generate a random password to be used in bulk enrollment
 
-	usercategory?: string
+	random_password?: bool
 
-	// Command category the rule applies to.
+	// If set C("True") with state as C("absent"), then removes DNS records of the host managed by FreeIPA DNS.
+	// This option has no effect for states other than "absent".
 
-	cmdcategory?: string
+	update_dns?: bool
 
-	// RunAs Group category the rule applies to.
+	// Full qualified domain name.
+	// Can not be changed as it is the unique identifier.
 
-	runasgroupcategory?: string
+	fqdn: string
+
+	// List of Hardware MAC address(es) off this host.
+	// If option is omitted MAC addresses will not be checked or changed.
+	// If an empty list is passed all assigned MAC addresses will be removed.
+	// MAC addresses that are already assigned but not passed will be removed.
+
+	mac_address?: string
+
+	// Host operating system and version (e.g. "Fedora 9")
+
+	ns_os_version?: string
 
 	// State to ensure
 
 	state?: string
 
-	// List of users assigned to the rule.
-	// If an empty list is passed all users will be removed from the rule.
-	// If option is omitted users will not be checked or changed.
+	// List of Base-64 encoded server certificates.
+	// If option is omitted certificates will not be checked or changed.
+	// If an empty list is passed all assigned certificates will be removed.
+	// Certificates already assigned but not passed will be removed.
 
-	user?: string
-
-	// List of commands assigned to the rule.
-	// If an empty list is passed all commands will be removed from the rule.
-	// If option is omitted commands will not be checked or changed.
-
-	cmd?: string
-
-	// Canonical name.
-	// Can not be changed as it is the unique identifier.
-
-	cn: string
-
-	// Description of the sudo rule.
-
-	description?: string
-
-	// List of user groups assigned to the rule.
-	// If an empty list is passed all user groups will be removed from the rule.
-	// If option is omitted user groups will not be checked or changed.
-
-	usergroup?: string
+	user_certificate?: string
 }
 
-ipa_vault :: {
+ipa_subca :: {
 
-	// Force replace the existant vault on IPA server.
+	// The Sub Certificate Authority's Subject. e.g., 'CN=SampleSubCA1,O=testrelm.test'
 
-	replace?: bool
+	subca_subject: string
 
-	// Validate IPA server certificates.
-
-	validate_certs?: bool
-
-	// Description.
-
-	description?: string
-
-	// Vault Salt.
-
-	ipavaultsalt?: string
-
-	// Vault types are based on security level.
-
-	ipavaulttype: string
-
-	// Any service can own one or more service vaults.
-	// Mutually exclusive with user.
-
-	service?: string
-
-	// State to ensure.
+	// State to ensure
+	// State 'disable' and 'enable' is available for FreeIPA 4.4.2 version and onwards
 
 	state?: string
 
-	// Any user can own one or more user vaults.
-	// Mutually exclusive with service.
+	// The Sub Certificate Authority's description.
 
-	username?: string
+	subca_desc: string
 
-	// Vault name.
-	// Can not be changed as it is the unique identifier.
+	// The Sub Certificate Authority name which needs to be managed.
 
-	cn: string
+	subca_name: string
+}
 
-	// Public key.
+onepassword_info :: {
 
-	ipavaultpublickey?: string
+	// A dictionary containing authentication details. If this is set, M(onepassword_info) will attempt to sign in to 1Password automatically.
+	// Without this option, you must have already logged in via the 1Password CLI before running Ansible.
+	// It is B(highly) recommended to store 1Password credentials in an Ansible Vault. Ensure that the key used to encrypt the Ansible Vault is equal to or greater in strength than the 1Password master password.
+
+	auto_login?: {...}
+
+	// Used to specify the exact path to the C(op) command line interface
+
+	cli_path?: string
+
+	// A list of one or more search terms.
+	// Each search term can either be a simple string or it can be a dictionary for more control.
+	// When passing a simple string, I(field) is assumed to be C(password).
+	// When passing a dictionary, the following fields are available.
+
+	search_terms: [..._]
 }
 
 ipa_dnsrecord :: {
@@ -463,6 +385,10 @@ ipa_dnsrecord :: {
 
 ipa_dnszone :: {
 
+	// Apply dynamic update to zone
+
+	dynamicupdate?: string
+
 	// State to ensure
 
 	state?: string
@@ -470,122 +396,135 @@ ipa_dnszone :: {
 	// The DNS zone name to which needs to be managed.
 
 	zone_name: string
-
-	// Apply dynamic update to zone
-
-	dynamicupdate?: string
 }
 
-ipa_host :: {
+ipa_group :: {
 
-	// List of Hardware MAC address(es) off this host.
-	// If option is omitted MAC addresses will not be checked or changed.
-	// If an empty list is passed all assigned MAC addresses will be removed.
-	// MAC addresses that are already assigned but not passed will be removed.
+	// List of group names assigned to this group.
+	// If an empty list is passed all groups will be removed from this group.
+	// If option is omitted assigned groups will not be checked or changed.
+	// Groups that are already assigned but not passed will be removed.
 
-	mac_address?: string
+	group?: string
 
-	// Host hardware platform (e.g. "Lenovo T61")
+	// Create as a non-POSIX group.
 
-	ns_hardware_platform?: string
-
-	// Host location (e.g. "Lab 2")
-
-	ns_host_location?: string
-
-	// Generate a random password to be used in bulk enrollment
-
-	random_password?: bool
-
-	// If set C("True") with state as C("absent"), then removes DNS records of the host managed by FreeIPA DNS.
-	// This option has no effect for states other than "absent".
-
-	update_dns?: bool
-
-	// Force host name even if not in DNS.
-
-	force?: bool
-
-	// Full qualified domain name.
-	// Can not be changed as it is the unique identifier.
-
-	fqdn: string
-
-	// Add the host to DNS with this IP address.
-
-	ip_address?: string
-
-	// Host operating system and version (e.g. "Fedora 9")
-
-	ns_os_version?: string
+	nonposix?: bool
 
 	// State to ensure
 
 	state?: string
 
-	// List of Base-64 encoded server certificates.
-	// If option is omitted certificates will not be checked or changed.
-	// If an empty list is passed all assigned certificates will be removed.
-	// Certificates already assigned but not passed will be removed.
+	// List of user names assigned to this group.
+	// If an empty list is passed all users will be removed from this group.
+	// If option is omitted assigned users will not be checked or changed.
+	// Users that are already assigned but not passed will be removed.
 
-	user_certificate?: string
+	user?: string
 
-	// A description of this host.
+	// Canonical name.
+	// Can not be changed as it is the unique identifier.
+
+	cn: string
+
+	// Description of the group.
 
 	description?: string
+
+	// Allow adding external non-IPA members from trusted domains.
+
+	external?: bool
+
+	// GID (use this option to set it manually).
+
+	gidnumber?: string
 }
 
-ipa_hostgroup :: {
+ipa_hbacrule :: {
+
+	// Canonical name.
+	// Can not be changed as it is the unique identifier.
+
+	cn: string
 
 	// Description
 
 	description?: string
 
-	// List of hosts that belong to the host-group.
-	// If an empty list is passed all hosts will be removed from the group.
-	// If option is omitted hosts will not be checked or changed.
-	// If option is passed all assigned hosts that are not passed will be unassigned from the group.
+	// Host category
 
-	host?: string
+	hostcategory?: string
 
-	// List of host-groups than belong to that host-group.
-	// If an empty list is passed all host-groups will be removed from the group.
-	// If option is omitted host-groups will not be checked or changed.
-	// If option is passed all assigned hostgroups that are not passed will be unassigned from the group.
+	// List of hostgroup names to assign.
+	// If an empty list is passed all hostgroups will be removed. from the rule
+	// If option is omitted hostgroups will not be checked or changed.
 
 	hostgroup?: string
 
-	// State to ensure.
+	// List of source host group names to assign.
+	// If an empty list if passed all assigned source host groups will be removed from the rule.
+	// If option is omitted source host groups will not be checked or changed.
 
-	state?: string
+	sourcehostgroup?: string
 
-	// Name of host-group.
-	// Can not be changed as it is the unique identifier.
+	// User category
 
-	cn: string
-}
+	usercategory?: string
 
-ipa_subca :: {
+	// List of host names to assign.
+	// If an empty list is passed all hosts will be removed from the rule.
+	// If option is omitted hosts will not be checked or changed.
+
+	host?: string
+
+	// List of service group names to assign.
+	// If an empty list is passed all assigned service groups will be removed from the rule.
+	// If option is omitted service groups will not be checked or changed.
+
+	servicegroup?: string
+
+	// List of source host names to assign.
+	// If an empty list if passed all assigned source hosts will be removed from the rule.
+	// If option is omitted source hosts will not be checked or changed.
+
+	sourcehost?: string
 
 	// State to ensure
-	// State 'disable' and 'enable' is available for FreeIPA 4.4.2 version and onwards
 
 	state?: string
 
-	// The Sub Certificate Authority's description.
+	// List of user names to assign.
+	// If an empty list if passed all assigned users will be removed from the rule.
+	// If option is omitted users will not be checked or changed.
 
-	subca_desc: string
+	user?: string
 
-	// The Sub Certificate Authority name which needs to be managed.
+	// List of user group names to assign.
+	// If an empty list if passed all assigned user groups will be removed from the rule.
+	// If option is omitted user groups will not be checked or changed.
 
-	subca_name: string
+	usergroup?: string
 
-	// The Sub Certificate Authority's Subject. e.g., 'CN=SampleSubCA1,O=testrelm.test'
+	// List of service names to assign.
+	// If an empty list is passed all services will be removed from the rule.
+	// If option is omitted services will not be checked or changed.
 
-	subca_subject: string
+	service?: string
+
+	// Service category
+
+	servicecategory?: string
+
+	// Source host category
+
+	sourcehostcategory?: string
 }
 
 ipa_sudocmd :: {
+
+	// Sudo Command.
+
+	sudocmd: string
 
 	// A description of this command.
 
@@ -594,28 +533,89 @@ ipa_sudocmd :: {
 	// State to ensure
 
 	state?: string
-
-	// Sudo Command.
-
-	sudocmd: string
 }
 
-onepassword_info :: {
+ipa_config :: {
 
-	// A dictionary containing authentication details. If this is set, M(onepassword_info) will attempt to sign in to 1Password automatically.
-	// Without this option, you must have already logged in via the 1Password CLI before running Ansible.
-	// It is B(highly) recommended to store 1Password credentials in an Ansible Vault. Ensure that the key used to encrypt the Ansible Vault is equal to or greater in strength than the 1Password master password.
+	// Default e-mail domain for new users.
 
-	auto_login?: {...}
+	ipadefaultemaildomain?: string
 
-	// Used to specify the exact path to the C(op) command line interface
+	// Default shell for new users.
 
-	cli_path?: string
+	ipadefaultloginshell?: string
+}
 
-	// A list of one or more search terms.
-	// Each search term can either be a simple string or it can be a dictionary for more control.
-	// When passing a simple string, I(field) is assumed to be C(password).
-	// When passing a dictionary, the following fields are available.
+ipa_sudorule :: {
 
-	search_terms: [..._]
+	// List of commands assigned to the rule.
+	// If an empty list is passed all commands will be removed from the rule.
+	// If option is omitted commands will not be checked or changed.
+
+	cmd?: string
+
+	// Description of the sudo rule.
+
+	description?: string
+
+	// RunAs Group category the rule applies to.
+
+	runasgroupcategory?: string
+
+	// List of options to add to the sudo rule.
+
+	sudoopt?: string
+
+	// List of hosts assigned to the rule.
+	// If an empty list is passed all hosts will be removed from the rule.
+	// If option is omitted hosts will not be checked or changed.
+	// Option C(hostcategory) must be omitted to assign hosts.
+
+	host?: string
+
+	// List of host groups assigned to the rule.
+	// If an empty list is passed all host groups will be removed from the rule.
+	// If option is omitted host groups will not be checked or changed.
+	// Option C(hostcategory) must be omitted to assign host groups.
+
+	hostgroup?: string
+
+	// State to ensure
+
+	state?: string
+
+	// Host category the rule applies to.
+	// If 'all' is passed one must omit C(host) and C(hostgroup).
+	// Option C(host) and C(hostgroup) must be omitted to assign 'all'.
+
+	hostcategory?: string
+
+	// List of users assigned to the rule.
+	// If an empty list is passed all users will be removed from the rule.
+	// If option is omitted users will not be checked or changed.
+
+	user?: string
+
+	// List of user groups assigned to the rule.
+	// If an empty list is passed all user groups will be removed from the rule.
+	// If option is omitted user groups will not be checked or changed.
+
+	usergroup?: string
+
+	// Command category the rule applies to.
+
+	cmdcategory?: string
+
+	// Canonical name.
+	// Can not be changed as it is the unique identifier.
+
+	cn: string
+
+	// RunAs User category the rule applies to.
+
+	runasusercategory?: string
+
+	// User category the rule applies to.
+
+	usercategory?: string
 }

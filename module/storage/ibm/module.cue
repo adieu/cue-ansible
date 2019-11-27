@@ -1,42 +1,107 @@
 package ibm
 
-ibm_sa_domain :: {
+ibm_sa_pool :: {
 
-	// Hard capacity of the domain.
+	// Adds the pool to the specified domain.
 
-	hard_capacity?: string
+	domain?: string
 
-	// Number of max cgs.
+	// Assigns a perf_class to the pool.
 
-	max_cgs?: string
+	perf_class?: string
 
-	// Soft capacity of the domain.
+	// Pool name.
 
-	soft_capacity?: string
+	pool: string
 
-	// The desired state of the domain.
+	// Pool size in GB
+
+	size?: string
+
+	// Pool snapshot size in GB
+
+	snapshot_size?: string
+
+	// Pool state.
+
+	state: string
+}
+
+ibm_sa_vol :: {
+
+	// Volume pool.
+
+	pool?: string
+
+	// Volume size.
+
+	size?: string
+
+	// Volume state.
 
 	state: string
 
-	// Size of the domain.
+	// Volume name.
 
-	size?: string
+	vol: string
+}
+
+ibm_sa_vol_map :: {
+
+	// Overrides the existing volume mapping.
+
+	override?: string
+
+	// When the state is present the volume is mapped. When the state is absent, the volume is meant to be unmapped.
+
+	state: string
+
+	// Volume name.
+
+	vol: string
+
+	// Maps the volume to a cluster.
+
+	cluster?: string
+
+	// Maps the volume to a host.
+
+	host?: string
+
+	// The LUN identifier.
+
+	lun?: string
+}
+
+ibm_sa_domain :: {
 
 	// Name of the domain to be managed.
 
 	domain: string
 
+	// Hard capacity of the domain.
+
+	hard_capacity?: string
+
 	// ldap id to add to the domain.
 
 	ldap_id?: string
 
-	// Number of max dms.
+	// Number of max cgs.
 
-	max_dms?: string
+	max_cgs?: string
 
 	// Number of max_mirrors.
 
 	max_mirrors?: string
+
+	// The desired state of the domain.
+
+	state: string
+
+	// Number of max dms.
+
+	max_dms?: string
 
 	// Number of max_pools.
 
@@ -49,6 +114,14 @@ ibm_sa_domain :: {
 	// Add the domain to a performance class.
 
 	perf_class?: string
+
+	// Size of the domain.
+
+	size?: string
+
+	// Soft capacity of the domain.
+
+	soft_capacity?: string
 }
 
 ibm_sa_host :: {
@@ -99,77 +172,4 @@ ibm_sa_host_ports :: {
 	// Host ports state.
 
 	state: string
-}
-
-ibm_sa_pool :: {
-
-	// Pool snapshot size in GB
-
-	snapshot_size?: string
-
-	// Pool state.
-
-	state: string
-
-	// Adds the pool to the specified domain.
-
-	domain?: string
-
-	// Assigns a perf_class to the pool.
-
-	perf_class?: string
-
-	// Pool name.
-
-	pool: string
-
-	// Pool size in GB
-
-	size?: string
-}
-
-ibm_sa_vol :: {
-
-	// Volume pool.
-
-	pool?: string
-
-	// Volume size.
-
-	size?: string
-
-	// Volume state.
-
-	state: string
-
-	// Volume name.
-
-	vol: string
-}
-
-ibm_sa_vol_map :: {
-
-	// Maps the volume to a cluster.
-
-	cluster?: string
-
-	// Maps the volume to a host.
-
-	host?: string
-
-	// The LUN identifier.
-
-	lun?: string
-
-	// Overrides the existing volume mapping.
-
-	override?: string
-
-	// When the state is present the volume is mapped. When the state is absent, the volume is meant to be unmapped.
-
-	state: string
-
-	// Volume name.
-
-	vol: string
 }

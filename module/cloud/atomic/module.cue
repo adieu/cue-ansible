@@ -2,6 +2,18 @@ package atomic
 
 atomic_container :: {
 
+	// Define the rootfs of the image
+
+	rootfs?: string
+
+	// State of the container
+
+	state: string
+
+	// Values for the installation of the container.  This option is permitted only with mode 'user' or 'system'. The values specified here will be used at installation time as --set arguments for atomic install.
+
+	values?: string
+
 	// Define the backend to use for the container
 
 	backend: string
@@ -17,18 +29,6 @@ atomic_container :: {
 	// Name of the container
 
 	name: string
-
-	// Define the rootfs of the image
-
-	rootfs?: string
-
-	// State of the container
-
-	state: string
-
-	// Values for the installation of the container.  This option is permitted only with mode 'user' or 'system'. The values specified here will be used at installation time as --set arguments for atomic install.
-
-	values?: string
 }
 
 atomic_host :: {

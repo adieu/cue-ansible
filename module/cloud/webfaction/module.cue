@@ -1,5 +1,28 @@
 package webfaction
 
+webfaction_domain :: {
+
+	// The webfaction password to use
+
+	login_password: string
+
+	// The name of the domain
+
+	name: string
+
+	// Whether the domain should exist
+
+	state?: string
+
+	// Any subdomains to create.
+
+	subdomains?: string
+
+	// The webfaction account to use
+
+	login_name: string
+}
+
 webfaction_mailbox :: {
 
 	// The webfaction account to use
@@ -60,33 +83,9 @@ webfaction_site :: {
 
 webfaction_app :: {
 
-	// The name of the application
-
-	name: string
-
-	// The type of application to create. See the Webfaction docs at U(https://docs.webfaction.com/xmlrpc-api/apps.html) for a list.
-
-	type: string
-
 	// Whether the app should restart with an C(autostart.cgi) script
 
 	autostart?: bool
-
-	// The webfaction account to use
-
-	login_name: string
-
-	// The machine name to use (optional for accounts with only one machine)
-
-	machine?: string
-
-	// IF the port should be opened
-
-	port_open?: bool
-
-	// Whether the application should exist
-
-	state?: string
 
 	// Any extra parameters required by the app
 
@@ -95,13 +94,33 @@ webfaction_app :: {
 	// The webfaction password to use
 
 	login_password: string
+
+	// The machine name to use (optional for accounts with only one machine)
+
+	machine?: string
+
+	// The type of application to create. See the Webfaction docs at U(https://docs.webfaction.com/xmlrpc-api/apps.html) for a list.
+
+	type: string
+
+	// The webfaction account to use
+
+	login_name: string
+
+	// The name of the application
+
+	name: string
+
+	// IF the port should be opened
+
+	port_open?: bool
+
+	// Whether the application should exist
+
+	state?: string
 }
 
 webfaction_db :: {
-
-	// The password for the new database user.
-
-	password?: string
 
 	// Whether the database should exist
 
@@ -126,27 +145,8 @@ webfaction_db :: {
 	// The name of the database
 
 	name: string
-}
 
-webfaction_domain :: {
+	// The password for the new database user.
 
-	// The webfaction password to use
-
-	login_password: string
-
-	// The name of the domain
-
-	name: string
-
-	// Whether the domain should exist
-
-	state?: string
-
-	// Any subdomains to create.
-
-	subdomains?: string
-
-	// The webfaction account to use
-
-	login_name: string
+	password?: string
 }

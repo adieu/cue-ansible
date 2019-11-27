@@ -2,36 +2,31 @@ package xenserver
 
 xenserver_guest :: {
 
-	// A list of disks to add to VM.
+	// UUID of the VM to manage if known. This is XenServer's unique identifier.
+	// It is required if name is not unique.
+	// Please note that a supplied UUID will be ignored on VM creation, as XenServer creates the UUID internally.
+
+	uuid?: string
+
+	// A CD-ROM configuration for the VM.
 	// All parameters are case sensitive.
-	// Removing or detaching existing disks of VM is not supported.
-	// Required parameters per entry:
-	//  - C(size_[tb,gb,mb,kb,b]) (integer): Disk storage size in specified unit. VM needs to be shut down to reconfigure this parameter.
-	// Optional parameters per entry:
-	//  - C(name) (string): Disk name. You can also use C(name_label) as an alias.
-	//  - C(name_desc) (string): Disk description.
-	//  - C(sr) (string): Storage Repository to create disk on. If not specified, will use default SR. Cannot be used for moving disk to other SR.
-	//  - C(sr_uuid) (string): UUID of a SR to create disk on. Use if SR name is not unique.
-
-	disks?: [..._]
-
-	// Ignore warnings and complete the actions.
-	// This parameter is useful for removing VM in running state or reconfiguring VM params that require VM to be shut down.
-
-	force?: bool
-
-	// Manage VM's hardware parameters. VM needs to be shut down to reconfigure these parameters.
 	// Valid parameters are:
-	//  - C(num_cpus) (integer): Number of CPUs.
-	//  - C(num_cpu_cores_per_socket) (integer): Number of Cores Per Socket. C(num_cpus) has to be a multiple of C(num_cpu_cores_per_socket).
-	//  - C(memory_mb) (integer): Amount of memory in MB.
+	//  - C(type) (string): The type of CD-ROM, valid options are C(none) or C(iso). With C(none) the CD-ROM device will be present but empty.
+	//  - C(iso_name) (string): The file name of an ISO image from one of the XenServer ISO Libraries (implies C(type: iso)). Required if C(type) is set to C(iso).
 
-	hardware?: {...}
+	cdrom?: {...}
 
-	// Name of a XenServer host that will be a Home Server for the VM.
-	// This parameter is case sensitive.
+	// Specify the state VM should be in.
+	// If C(state) is set to C(present) and VM exists, ensure the VM configuration conforms to given parameters.
+	// If C(state) is set to C(present) and VM does not exist, then VM is deployed with given parameters.
+	// If C(state) is set to C(absent) and VM exists, then VM is removed with its associated components.
+	// If C(state) is set to C(poweredon) and VM does not exist, then VM is deployed with given parameters and powered on automatically.
 
-	home_server?: string
+	state?: string
+
+	// Convert VM to template.
+
+	is_template?: bool
 
 	// Whether to create a Linked Clone from the template, existing VM or snapshot. If no, will create a full copy.
 	// This is equivalent to C(Use storage-level fast disk clone) option in XenCenter.
@@ -50,33 +45,19 @@ xenserver_guest :: {
 
 	template?: string
 
-	// Specify the state VM should be in.
-	// If C(state) is set to C(present) and VM exists, ensure the VM configuration conforms to given parameters.
-	// If C(state) is set to C(present) and VM does not exist, then VM is deployed with given parameters.
-	// If C(state) is set to C(absent) and VM exists, then VM is removed with its associated components.
-	// If C(state) is set to C(poweredon) and VM does not exist, then VM is deployed with given parameters and powered on automatically.
+	// Define a list of custom VM params to set on VM.
+	// Useful for advanced users familiar with managing VM params trough xe CLI.
+	// A custom value object takes two fields C(key) and C(value) (see example below).
 
-	state?: string
+	custom_params?: [..._]
 
-	// UUID of a template, an existing VM or a snapshot that should be used to create VM.
-	// It is required if template name is not unique.
-
-	template_uuid?: string
-
-	// A CD-ROM configuration for the VM.
-	// All parameters are case sensitive.
+	// Manage VM's hardware parameters. VM needs to be shut down to reconfigure these parameters.
 	// Valid parameters are:
-	//  - C(type) (string): The type of CD-ROM, valid options are C(none) or C(iso). With C(none) the CD-ROM device will be present but empty.
-	//  - C(iso_name) (string): The file name of an ISO image from one of the XenServer ISO Libraries (implies C(type: iso)). Required if C(type) is set to C(iso).
+	//  - C(num_cpus) (integer): Number of CPUs.
+	//  - C(num_cpu_cores_per_socket) (integer): Number of Cores Per Socket. C(num_cpus) has to be a multiple of C(num_cpu_cores_per_socket).
+	//  - C(memory_mb) (integer): Amount of memory in MB.
 
-	cdrom?: {...}
-
-	// Destination folder for VM.
-	// This parameter is case sensitive.
-	// Example:
-	//   folder: /folder1/folder2
-
-	folder?: string
+	hardware?: {...}
 
 	// Name of the VM to work with.
 	// VMs running on XenServer do not necessarily have unique names. The module will fail if multiple VMs with same name are found.
@@ -102,6 +83,29 @@ xenserver_guest :: {
 
 	networks?: [..._]
 
+	// UUID of a template, an existing VM or a snapshot that should be used to create VM.
+	// It is required if template name is not unique.
+
+	template_uuid?: string
+
+	// A list of disks to add to VM.
+	// All parameters are case sensitive.
+	// Removing or detaching existing disks of VM is not supported.
+	// Required parameters per entry:
+	//  - C(size_[tb,gb,mb,kb,b]) (integer): Disk storage size in specified unit. VM needs to be shut down to reconfigure this parameter.
+	// Optional parameters per entry:
+	//  - C(name) (string): Disk name. You can also use C(name_label) as an alias.
+	//  - C(name_desc) (string): Disk description.
+	//  - C(sr) (string): Storage Repository to create disk on. If not specified, will use default SR. Cannot be used for moving disk to other SR.
+	//  - C(sr_uuid) (string): UUID of a SR to create disk on. Use if SR name is not unique.
+
+	disks?: [..._]
+
+	// Name of a XenServer host that will be a Home Server for the VM.
+	// This parameter is case sensitive.
+
+	home_server?: string
+
 	// By default, module will wait indefinitely for VM to accquire an IP address if C(wait_for_ip_address: yes).
 	// If this parameter is set to positive value, the module will instead wait specified number of seconds for the state change.
 	// In case of timeout, module will generate an error message.
@@ -113,21 +117,17 @@ xenserver_guest :: {
 
 	wait_for_ip_address?: bool
 
-	// Define a list of custom VM params to set on VM.
-	// Useful for advanced users familiar with managing VM params trough xe CLI.
-	// A custom value object takes two fields C(key) and C(value) (see example below).
+	// Destination folder for VM.
+	// This parameter is case sensitive.
+	// Example:
+	//   folder: /folder1/folder2
 
-	custom_params?: [..._]
+	folder?: string
 
-	// Convert VM to template.
+	// Ignore warnings and complete the actions.
+	// This parameter is useful for removing VM in running state or reconfiguring VM params that require VM to be shut down.
 
-	is_template?: bool
-
-	// UUID of the VM to manage if known. This is XenServer's unique identifier.
-	// It is required if name is not unique.
-	// Please note that a supplied UUID will be ignored on VM creation, as XenServer creates the UUID internally.
-
-	uuid?: string
+	force?: bool
 }
 
 xenserver_guest_info :: {

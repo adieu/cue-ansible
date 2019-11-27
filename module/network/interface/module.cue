@@ -2,45 +2,31 @@ package interface
 
 net_interface :: {
 
-	// Purge Interfaces not defined in the aggregate parameter. This applies only for logical interface.
-
-	purge?: string
-
 	// Receiver rate in bits per second (bps).
 	// This is state check parameter only.
 	// Supports conditionals, see L(Conditionals in Networking Modules,../network/user_guide/network_working_with_command_output.html)
 
 	rx_rate?: string
 
+	// Interface link speed.
+
+	speed?: string
+
 	// State of the Interface configuration, C(up) indicates present and operationally up and C(down) indicates present and operationally C(down)
 
 	state?: string
-
-	// List of Interfaces definitions.
-
-	aggregate?: string
 
 	// Time in seconds to wait before checking for the operational state on remote device. This wait is applicable for operational state argument which are I(state) with values C(up)/C(down), I(tx_rate) and I(rx_rate).
 
 	delay?: string
 
-	// Description of Interface.
-
-	description?: string
-
 	// Configure interface link status.
 
 	enabled?: string
 
-	// Transmit rate in bits per second (bps).
-	// This is state check parameter only.
-	// Supports conditionals, see L(Conditionals in Networking Modules,../network/user_guide/network_working_with_command_output.html)
+	// Purge Interfaces not defined in the aggregate parameter. This applies only for logical interface.
 
-	tx_rate?: string
-
-	// Interface link status
-
-	duplex?: string
+	purge?: string
 
 	// Maximum size of transmit packet.
 
@@ -50,12 +36,34 @@ net_interface :: {
 
 	name: string
 
-	// Interface link speed.
+	// Transmit rate in bits per second (bps).
+	// This is state check parameter only.
+	// Supports conditionals, see L(Conditionals in Networking Modules,../network/user_guide/network_working_with_command_output.html)
 
-	speed?: string
+	tx_rate?: string
+
+	// List of Interfaces definitions.
+
+	aggregate?: string
+
+	// Description of Interface.
+
+	description?: string
+
+	// Interface link status
+
+	duplex?: string
 }
 
 net_linkagg :: {
+
+	// Mode of the link aggregation group. A value of C(on) will enable LACP. C(active) configures the link to actively information about the state of the link, or it can be configured in C(passive) mode ie. send link state information only when received them from another link.
+
+	mode?: string
+
+	// Name of the link aggregation group.
+
+	name: string
 
 	// Purge link aggregation groups not defined in the I(aggregate) parameter.
 
@@ -76,14 +84,6 @@ net_linkagg :: {
 	// Minimum members that should be up before bringing up the link aggregation group.
 
 	min_links?: string
-
-	// Mode of the link aggregation group. A value of C(on) will enable LACP. C(active) configures the link to actively information about the state of the link, or it can be configured in C(passive) mode ie. send link state information only when received them from another link.
-
-	mode?: string
-
-	// Name of the link aggregation group.
-
-	name: string
 }
 
 net_lldp_interface :: {

@@ -1,40 +1,10 @@
 package hpilo
 
-hponcfg :: {
-
-	// Path to the hponcfg executable (`hponcfg` which uses $PATH).
-
-	executable?: string
-
-	// The minimum firmware level needed.
-
-	minfw?: string
-
-	// The XML file as accepted by hponcfg.
-
-	path: string
-
-	// Run hponcfg in verbose mode (-v).
-
-	verbose?: bool
-}
-
-wakeonlan :: {
-
-	// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
-
-	broadcast?: string
-
-	// MAC address to send Wake-on-LAN broadcast packet for.
-
-	mac: string
-
-	// UDP port to use for magic Wake-on-LAN packet.
-
-	port?: string
-}
-
 hpilo_boot :: {
+
+	// The boot media to boot the system from
+
+	media?: string
 
 	// The password to authenticate to the HP iLO interface.
 
@@ -73,10 +43,6 @@ hpilo_boot :: {
 	// The login name to authenticate to the HP iLO interface.
 
 	login?: string
-
-	// The boot media to boot the system from
-
-	media?: string
 }
 
 hpilo_info :: {
@@ -96,4 +62,38 @@ hpilo_info :: {
 	// Change the ssl_version used.
 
 	ssl_version?: string
+}
+
+hponcfg :: {
+
+	// Path to the hponcfg executable (`hponcfg` which uses $PATH).
+
+	executable?: string
+
+	// The minimum firmware level needed.
+
+	minfw?: string
+
+	// The XML file as accepted by hponcfg.
+
+	path: string
+
+	// Run hponcfg in verbose mode (-v).
+
+	verbose?: bool
+}
+
+wakeonlan :: {
+
+	// UDP port to use for magic Wake-on-LAN packet.
+
+	port?: string
+
+	// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
+
+	broadcast?: string
+
+	// MAC address to send Wake-on-LAN broadcast packet for.
+
+	mac: string
 }

@@ -43,8 +43,8 @@ module: cloudfront_invalidation: {
 				"Defaults to current datetime stamp.",
 			]
 			required: false
-			default:
-				null, type: "str"
+			default:  null
+			type:     "str"
 		}
 		target_paths: {
 			description: [

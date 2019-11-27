@@ -2,9 +2,17 @@ package ovh
 
 ovh_ip_failover :: {
 
-	// The applicationKey to use
+	// The application secret to use
 
-	application_key: string
+	application_secret: string
+
+	// The IP address to manage (can be a single IP like 1.1.1.1 or a block like 1.1.1.1/28 )
+
+	name: string
+
+	// The timeout in seconds used to wait for a task to be completed. Default is 120 seconds.
+
+	timeout?: string
 
 	// If true, the module will wait for the IP address to be moved. If false, exit without waiting. The taskId will be returned in module output
 
@@ -14,9 +22,9 @@ ovh_ip_failover :: {
 
 	wait_task_completion?: string
 
-	// The application secret to use
+	// The applicationKey to use
 
-	application_secret: string
+	application_key: string
 
 	// The consumer key to use
 
@@ -26,32 +34,20 @@ ovh_ip_failover :: {
 
 	endpoint: string
 
-	// The IP address to manage (can be a single IP like 1.1.1.1 or a block like 1.1.1.1/28 )
-
-	name: string
-
 	// The name of the OVH service this IP address should be routed
 
 	service: string
-
-	// The timeout in seconds used to wait for a task to be completed. Default is 120 seconds.
-
-	timeout?: string
 }
 
 ovh_ip_loadbalancing_backend :: {
-
-	// Determines the weight for this backend
-
-	weight?: string
 
 	// The application secret to use
 
 	application_secret: string
 
-	// The consumer key to use
+	// The IP address of the backend to update / modify / delete
 
-	consumer_key: string
+	backend: string
 
 	// The endpoint to use ( for instance ovh-eu)
 
@@ -65,19 +61,23 @@ ovh_ip_loadbalancing_backend :: {
 
 	probe?: string
 
-	// Determines whether the backend is to be created/modified or deleted
-
-	state?: string
-
 	// The applicationKey to use
 
 	application_key: string
 
-	// The IP address of the backend to update / modify / delete
+	// The consumer key to use
 
-	backend: string
+	consumer_key: string
+
+	// Determines whether the backend is to be created/modified or deleted
+
+	state?: string
 
 	// The timeout in seconds used to wait for a task to be completed.
 
 	timeout?: string
+
+	// Determines the weight for this backend
+
+	weight?: string
 }

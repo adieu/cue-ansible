@@ -82,8 +82,7 @@ module: fortios_antivirus_quarantine: {
 						"Choose whether to quarantine files to the FortiGate disk or to FortiAnalyzer or to delete them instead of quarantining them.",
 					]
 					type: "str"
-					choices: [
-						null,
+					choices: [ null,
 						"disk",
 						"FortiAnalyzer",
 					]

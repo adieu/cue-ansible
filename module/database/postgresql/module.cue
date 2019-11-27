@@ -1,173 +1,91 @@
 package postgresql
 
-postgresql_user :: {
+postgresql_sequence :: {
 
-	// The user (role) state.
+	// The new schema for the I(sequence). Will be used for moving a I(sequence) to another I(schema).
+	// Works only for existing sequences.
 
-	state?: string
+	newschema?: string
 
-	// Slash-separated PostgreSQL privileges string: C(priv1/priv2), where privileges can be defined for database ( allowed options - 'CREATE', 'CONNECT', 'TEMPORARY', 'TEMP', 'ALL'. For example C(CONNECT) ) or for table ( allowed options - 'SELECT', 'INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'REFERENCES', 'TRIGGER', 'ALL'. For example C(table:SELECT) ). Mixed example of this string: C(CONNECT/CREATE/table1:SELECT/table2:INSERT).
+	// Set the owner for the I(sequence).
 
-	priv?: string
+	owner?: string
 
-	// Determines whether or with what priority a secure SSL TCP/IP connection will be negotiated with the server.
-	// See https://www.postgresql.org/docs/current/static/libpq-ssl.html for more information on the modes.
-	// Default of C(prefer) matches libpq default.
-
-	ssl_mode?: string
-
-	// Name of database to connect to and where user's permissions will be granted.
-
-	db?: string
-
-	// Whether the password is stored hashed in the database.
-	// Passwords can be passed already hashed or unhashed, and postgresql ensures the stored password is hashed when C(encrypted) is set.
-	// Note: Postgresql 10 and newer doesn't support unhashed passwords.
-	// Previous to Ansible 2.6, this was C(no) by default.
-
-	encrypted?: bool
-
-	// If C(yes), fail when user (role) can't be removed. Otherwise just log and continue.
-
-	fail_on_user?: bool
-
-	// If C(yes), don't inspect database for password changes. Effective when C(pg_authid) is not accessible (such as AWS RDS). Otherwise, make password changes as necessary.
-
-	no_password_changes?: bool
-
-	// PostgreSQL user attributes string in the format: CREATEDB,CREATEROLE,SUPERUSER.
-	// Note that '[NO]CREATEUSER' is deprecated.
-	// To create a simple role for using it like a group, use C(NOLOGIN) flag.
-
-	role_attr_flags?: string
-
-	// The date at which the user's password is to expire.
-	// If set to C('infinity'), user's password never expire.
-	// Note that this value should be a valid SQL date and time type.
-
-	expires?: string
-
-	// The list of groups (roles) that need to be granted to the user.
-
-	groups?: [...string]
-
-	// Name of the user (role) to add or remove.
-
-	name: string
-
-	// Set the user's password, before 1.4 this was required.
-	// Password can be passed unhashed or hashed (MD5-hashed).
-	// Unhashed password will automatically be hashed when saved into the database if C(encrypted) parameter is set, otherwise it will be save in plain text format.
-	// When passing a hashed password it must be generated with the format C('str["md5"] + md5[ password + username ]'), resulting in a total of 35 characters. An easy way to do this is C(echo "md5$(echo -n 'verysecretpasswordJOE' | md5sum | awk '{print $1}')").
-	// Note that if the provided password string is already in MD5-hashed format, then it is used as-is, regardless of C(encrypted) parameter.
-
-	password?: string
-
-	// Specifies the name of a file containing SSL certificate authority (CA) certificate(s).
-	// If the file exists, the server's certificate will be verified to be signed by one of these authorities.
-
-	ca_cert?: string
-
-	// Specifies the user (role) connection limit.
-
-	conn_limit?: int
-
-	// Switch to session_role after connecting.
-	// The specified session_role must be a role that the current login_user is a member of.
-	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
-
-	session_role?: string
-}
-
-postgresql_ext :: {
-
-	// Switch to session_role after connecting.
-	// The specified session_role must be a role that the current login_user is a member of.
-	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
-
-	session_role?: string
-
-	// Extension version to add or update to. Has effect with I(state=present) only.
-	// If not specified, the latest extension version will be created.
-	// It can't downgrade an extension version. When version downgrade is needed, remove the extension and create new one with appropriate version.
-	// Set I(version=latest) to update the extension to the latest available version.
-
-	version?: string
-
-	// Specifies the name of a file containing SSL certificate authority (CA) certificate(s).
-	// If the file exists, the server's certificate will be verified to be signed by one of these authorities.
-
-	ca_cert?: string
-
-	// Automatically install/remove any extensions that this extension depends on that are not already installed/removed (supported since PostgreSQL 9.6).
-
-	cascade?: bool
-
-	// Name of the extension to add or remove.
-
-	name: string
-
-	// Name of the schema to add the extension to.
+	// The schema of the I(sequence). This is be used to create and relocate a I(sequence) in the given schema.
 
 	schema?: string
 
-	// Name of the database to add or remove the extension to/from.
+	// Start allows the sequence to begin anywhere. The default starting value is I(minvalue) for ascending sequences and I(maxvalue) for descending ones.
 
-	db: string
+	start?: int
 
-	// Path to a Unix domain socket for local connections.
+	// Increment specifies which value is added to the current sequence value to create a new value.
+	// A positive value will make an ascending sequence, a negative one a descending sequence. The default value is 1.
 
-	login_unix_socket?: string
+	increment?: int
 
-	// Determines whether or with what priority a secure SSL TCP/IP connection will be negotiated with the server.
-	// See https://www.postgresql.org/docs/current/static/libpq-ssl.html for more information on the modes.
-	// Default of C(prefer) matches libpq default.
+	// The cycle option allows the sequence to wrap around when the I(maxvalue) or I(minvalue) has been reached by an ascending or descending sequence respectively. If the limit is reached, the next number generated will be the minvalue or maxvalue, respectively.
+	// If C(false) (NO CYCLE) is specified, any calls to nextval after the sequence has reached its maximum value will return an error. False (NO CYCLE) is the default.
 
-	ssl_mode?: string
+	cycle?: bool
 
-	// The database extension state.
+	// Name of database to connect to and run queries against.
 
-	state?: string
-}
+	db?: string
 
-postgresql_membership :: {
+	// Maxvalue determines the maximum value for the sequence. The default for an ascending sequence is the maximum value of the data type. The default for a descending sequence is -1.
 
-	// If C(yes), fail when group or target_role doesn't exist. If C(no), just warn and continue.
+	maxvalue?: int
 
-	fail_on_role?: bool
+	// The name of the sequence.
 
-	// The list of groups (roles) that need to be granted to or revoked from I(target_roles).
+	sequence: string
 
-	groups: [...string]
-
-	// Switch to session_role after connecting. The specified session_role must be a role that the current login_user is a member of.
-	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
+	// Switch to session_role after connecting. The specified I(session_role) must be a role that the current I(login_user) is a member of.
+	// Permissions checking for SQL commands is carried out as though the I(session_role) were the one that had logged in originally.
 
 	session_role?: string
 
-	// Membership state.
-	// I(state=present) implies the I(groups)must be granted to I(target_roles).
-	// I(state=absent) implies the I(groups) must be revoked from I(target_roles).
+	// The sequence state.
+	// If I(state=absent) other options will be ignored except of I(name) and I(schema).
 
 	state?: string
 
-	// The list of target roles (groups will be granted to them).
+	// Cache specifies how many sequence numbers are to be preallocated and stored in memory for faster access. The minimum value is 1 (only one value can be generated at a time, i.e., no cache), and this is also the default.
 
-	target_roles: [...string]
+	cache?: int
 
-	// Name of database to connect to.
+	// Specifies the data type of the sequence. Valid types are bigint, integer, and smallint. bigint is the default. The data type determines the default minimum and maximum values of the sequence. For more info see the documentation U(https://www.postgresql.org/docs/current/sql-createsequence.html).
+	// Supported from PostgreSQL 10.
 
-	db?: string
-}
+	data_type?: string
 
-postgresql_ping :: {
+	// Minvalue determines the minimum value a sequence can generate. The default for an ascending sequence is 1. The default for a descending sequence is the minimum value of the data type.
 
-	// Name of a database to connect to.
+	minvalue?: int
 
-	db?: string
+	// The new name for the I(sequence).
+	// Works only for existing sequences.
+
+	rename_to?: string
+
+	// Automatically drop objects that depend on the sequence, and in turn all objects that depend on those objects.
+	// Ignored if I(state=present).
+	// Only used with I(state=absent).
+
+	cascade?: bool
 }
 
 postgresql_subscription :: {
+
+	// The publication names on the publisher to use for the subscription.
+	// Ignored when I(state) is not C(present).
+
+	publications?: [..._]
+
+	// Get information of the state for each replicated relation in the subscription.
+
+	relinfo?: bool
 
 	// Drop subscription dependencies. Has effect with I(state=absent) only.
 	// Ignored when I(state) is not C(absent).
@@ -180,21 +98,6 @@ postgresql_subscription :: {
 
 	connparams?: {...}
 
-	// Subscription owner.
-	// If I(owner) is not defined, the owner will be set as I(login_user) or I(session_role).
-	// Ignored when I(state) is not C(present).
-
-	owner?: string
-
-	// The publication names on the publisher to use for the subscription.
-	// Ignored when I(state) is not C(present).
-
-	publications?: [..._]
-
-	// Get information of the state for each replicated relation in the subscription.
-
-	relinfo?: bool
-
 	// Name of the database to connect to and where the subscription state will be changed.
 
 	db: string
@@ -202,6 +105,12 @@ postgresql_subscription :: {
 	// Name of the subscription to add, update, or remove.
 
 	name: string
+
+	// Subscription owner.
+	// If I(owner) is not defined, the owner will be set as I(login_user) or I(session_role).
+	// Ignored when I(state) is not C(present).
+
+	owner?: string
 
 	// The subscription state.
 	// C(present) implies that if I(name) subscription doesn't exist, it will be created.
@@ -220,183 +129,6 @@ postgresql_subscription :: {
 	subsparams?: {...}
 }
 
-postgresql_privs :: {
-
-	// Specifies the name of a file containing SSL certificate authority (CA) certificate(s).
-	// If the file exists, the server's certificate will be verified to be signed by one of these authorities.
-
-	ca_cert?: string
-
-	// If C(yes), fail when target role (for whom privs need to be granted) does not exist. Otherwise just warn and continue.
-
-	fail_on_role?: bool
-
-	// Database host address. If unspecified, connect via Unix socket.
-
-	host?: string
-
-	// The username to authenticate with.
-
-	login?: string
-
-	// Schema that contains the database objects specified via I(objs).
-	// May only be provided if I(type) is C(table), C(sequence), C(function), C(type), or C(default_privs). Defaults to C(public) in these cases.
-	// Pay attention, for embedded types when I(type=type) I(schema) can be C(pg_catalog) or C(information_schema) respectively.
-
-	schema?: string
-
-	// Determines whether or with what priority a secure SSL TCP/IP connection will be negotiated with the server.
-	// See https://www.postgresql.org/docs/current/static/libpq-ssl.html for more information on the modes.
-	// Default of C(prefer) matches libpq default.
-
-	ssl_mode?: string
-
-	// A list of existing role (user/group) names to set as the default permissions for database objects subsequently created by them.
-	// Parameter I(target_roles) is only available with C(type=default_privs).
-
-	target_roles?: string
-
-	// Path to a Unix domain socket for local connections.
-
-	unix_socket?: string
-
-	// Whether C(role) may grant/revoke the specified privileges/group memberships to others.
-	// Set to C(no) to revoke GRANT OPTION, leave unspecified to make no changes.
-	// I(grant_option) only has an effect if I(state) is C(present).
-
-	grant_option?: bool
-
-	// Comma separated list of database objects to set privileges on.
-	// If I(type) is C(table), C(partition table), C(sequence) or C(function), the special valueC(ALL_IN_SCHEMA) can be provided instead to specify all database objects of type I(type) in the schema specified via I(schema). (This also works with PostgreSQL < 9.0.) (C(ALL_IN_SCHEMA) is available for C(function) and C(partition table) from version 2.8)
-	// If I(type) is C(database), this parameter can be omitted, in which case privileges are set for the database specified via I(database).
-	// If I(type) is I(function), colons (":") in object names will be replaced with commas (needed to specify function signatures, see examples)
-
-	objs?: string
-
-	// Comma separated list of role (user/group) names to set permissions for.
-	// The special value C(PUBLIC) can be provided instead to set permissions for the implicitly defined PUBLIC group.
-
-	roles: string
-
-	// If C(present), the specified privileges are granted, if C(absent) they are revoked.
-
-	state?: string
-
-	// Type of database object to set privileges on.
-	// The C(default_privs) choice is available starting at version 2.7.
-	// The C(foreign_data_wrapper) and C(foreign_server) object types are available from Ansible version '2.8'.
-	// The C(type) choice is available from Ansible version '2.10'.
-
-	type?: string
-
-	// Database port to connect to.
-
-	port?: int
-
-	// Switch to session_role after connecting.
-	// The specified session_role must be a role that the current login_user is a member of.
-	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
-
-	session_role?: string
-
-	// Name of database to connect to.
-
-	database: string
-
-	// The password to authenticate with.
-
-	password?: string
-
-	// Comma separated list of privileges to grant/revoke.
-
-	privs?: string
-}
-
-postgresql_set :: {
-
-	// Parameter value to set.
-	// To remove parameter string from postgresql.auto.conf and reload the server configuration you must pass I(value=default). With I(value=default) the playbook always returns changed is true.
-
-	value: string
-
-	// Name of database to connect.
-
-	db?: string
-
-	// Name of PostgreSQL server parameter.
-
-	name: string
-
-	// Restore parameter to initial state (boot_val). Mutually exclusive with I(value).
-
-	reset?: bool
-
-	// Switch to session_role after connecting. The specified session_role must be a role that the current login_user is a member of.
-	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
-
-	session_role?: string
-}
-
-postgresql_table :: {
-
-	// Create a table like another table (with similar DDL). Mutually exclusive with I(columns), I(rename), and I(truncate).
-
-	like?: string
-
-	// Storage parameters like fillfactor, autovacuum_vacuum_treshold, etc. Mutually exclusive with I(rename) and I(truncate).
-
-	storage_params?: [...string]
-
-	// Create an unlogged table.
-
-	unlogged?: bool
-
-	// Automatically drop objects that depend on the table (such as views). Used with I(state=absent) only.
-
-	cascade?: bool
-
-	// Set a table owner.
-
-	owner?: string
-
-	// New table name. Mutually exclusive with I(tablespace), I(owner), I(unlogged), I(like), I(including), I(columns), I(truncate), and I(storage_params).
-
-	rename?: string
-
-	// Switch to session_role after connecting. The specified session_role must be a role that the current login_user is a member of.
-	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
-
-	session_role?: string
-
-	// Columns that are needed.
-
-	columns?: [...string]
-
-	// Keywords that are used with like parameter, may be DEFAULTS, CONSTRAINTS, INDEXES, STORAGE, COMMENTS or ALL. Needs I(like) specified. Mutually exclusive with I(columns), I(rename), and I(truncate).
-
-	including?: string
-
-	// The table state. I(state=absent) is mutually exclusive with I(tablespace), I(owner), I(unlogged), I(like), I(including), I(columns), I(truncate), I(storage_params) and, I(rename).
-
-	state?: string
-
-	// Table name.
-
-	table: string
-
-	// Set a tablespace for the table.
-
-	tablespace?: string
-
-	// Truncate a table. Mutually exclusive with I(tablespace), I(owner), I(unlogged), I(like), I(including), I(columns), I(rename), and I(storage_params).
-
-	truncate?: bool
-
-	// Name of database to connect and where the table will be created.
-
-	db?: string
-}
-
 postgresql_copy :: {
 
 	// Switch to session_role after connecting. The specified session_role must be a role that the current login_user is a member of.
@@ -409,14 +141,16 @@ postgresql_copy :: {
 
 	src?: string
 
-	// List of column names for the src/dst table to COPY FROM/TO.
-
-	columns?: [...string]
-
 	// Copy data from a file to a table (appending the data to whatever is in the table already).
 	// Mutually exclusive with I(copy_to) and I(src).
 
 	copy_from?: string
+
+	// Copy the contents of a table to a file.
+	// Can also copy the results of a SELECT query.
+	// Mutually exclusive with I(copy_from) and I(dst).
+
+	copy_to?: string
 
 	// Copy data to I(dst=tablename) from I(copy_from=/path/to/data.file).
 	// Used with I(copy_from) only.
@@ -428,167 +162,21 @@ postgresql_copy :: {
 
 	options?: {...}
 
-	// Copy the contents of a table to a file.
-	// Can also copy the results of a SELECT query.
-	// Mutually exclusive with I(copy_from) and I(dst).
-
-	copy_to?: string
-
-	// Name of database to connect to.
-
-	db?: string
-
 	// Mark I(src)/I(dst) as a program. Data will be copied to/from a program.
 	// See block Examples and PROGRAM arg description U(https://www.postgresql.org/docs/current/sql-copy.html).
 
 	program?: bool
-}
 
-postgresql_db :: {
+	// List of column names for the src/dst table to COPY FROM/TO.
 
-	// Database port to connect (if needed)
-
-	port?: int
-
-	// Further arguments for pg_dump or pg_restore.
-	// Used when I(state) is C(dump) or C(restore).
-
-	target_opts?: string
-
-	// Template used to create the database
-
-	template?: string
-
-	// Specifies the database connection limit.
-
-	conn_limit?: string
-
-	// Collation order (LC_COLLATE) to use in the database. Must match collation order of template database unless C(template0) is used as template.
-
-	lc_collate?: string
-
-	// Name of the database to add or remove
-
-	name: string
-
-	// Switch to session_role after connecting. The specified session_role must be a role that the current login_user is a member of.
-	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
-
-	session_role?: string
-
-	// The tablespace to set for the database U(https://www.postgresql.org/docs/current/sql-alterdatabase.html).
-	// If you want to move the database back to the default tablespace, explicitly set this to pg_default.
-
-	tablespace?: string
-
-	// Encoding of the database
-
-	encoding?: string
-
-	// The value specifies the initial database (which is also called as maintenance DB) that Ansible connects to.
-
-	maintenance_db?: string
-
-	// Name of the role to set as owner of the database
-
-	owner?: string
-
-	// The database state.
-	// C(present) implies that the database should be created if necessary.
-	// C(absent) implies that the database should be removed if present.
-	// C(dump) requires a target definition to which the database will be backed up. (Added in Ansible 2.4) Note that in some PostgreSQL versions of pg_dump, which is an embedded PostgreSQL utility and is used by the module, returns rc 0 even when errors occurred (e.g. the connection is forbidden by pg_hba.conf, etc.), so the module returns changed=True but the dump has not actually been done. Please, be sure that your version of pg_dump returns rc 1 in this case.
-	// C(restore) also requires a target definition from which the database will be restored. (Added in Ansible 2.4)
-	// The format of the backup will be detected based on the target name.
-	// Supported compression formats for dump and restore include C(.pgc), C(.bz2), C(.gz) and C(.xz)
-	// Supported formats for dump and restore include C(.sql) and C(.tar)
-
-	state?: string
-
-	// File to back up or restore from.
-	// Used when I(state) is C(dump) or C(restore).
-
-	target?: string
-
-	// Character classification (LC_CTYPE) to use in the database (e.g. lower, upper, ...) Must match LC_CTYPE of template database unless C(template0) is used as template.
-
-	lc_ctype?: string
-}
-
-postgresql_lang :: {
-
-	// Determines whether or with what priority a secure SSL TCP/IP connection will be negotiated with the server.
-	// See U(https://www.postgresql.org/docs/current/static/libpq-ssl.html) for more information on the modes.
-	// Default of C(prefer) matches libpq default.
-
-	ssl_mode?: string
-
-	// The state of the language for the selected database.
-
-	state?: string
-
-	// Specifies the name of a file containing SSL certificate authority (CA) certificate(s).
-	// If the file exists, the server's certificate will be verified to be signed by one of these authorities.
-
-	ca_cert?: string
-
-	// Name of database to connect to and where the language will be added, removed or changed.
-
-	db?: string
-
-	// Marks the language as trusted, even if it's marked as untrusted in pg_pltemplate.
-	// Use with care!
-
-	force_trust?: bool
-
-	// Path to a Unix domain socket for local connections.
-
-	login_unix_socket?: string
-
-	// Switch to session_role after connecting.
-	// The specified I(session_role) must be a role that the current I(login_user) is a member of.
-	// Permissions checking for SQL commands is carried out as though the I(session_role) were the one that had logged in originally.
-
-	session_role?: string
-
-	// When dropping a language, also delete object that depend on this language.
-	// Only used when I(state=absent).
-
-	cascade?: bool
-
-	// If C(yes), fail when removing a language. Otherwise just log and continue.
-	// In some cases, it is not possible to remove a language (used by the db-system).
-	// When dependencies block the removal, consider using I(cascade).
-
-	fail_on_drop?: bool
-
-	// Name of the procedural language to add, remove or change.
-
-	lang: string
-
-	// Set an owner for the language.
-	// Ignored when I(state=absent).
-
-	owner?: string
-
-	// Make this language trusted for the selected db.
-
-	trust?: bool
-}
-
-postgresql_owner :: {
+	columns?: [...string]
 
 	// Name of database to connect to.
 
 	db?: string
+}
 
-	// If C(yes), fail when I(reassign_owned_by) role does not exist. Otherwise just warn and continue.
-	// Mutually exclusive with I(obj_name) and I(obj_type).
-
-	fail_on_role?: bool
-
-	// Role (user/group) to set as an I(obj_name) owner.
-
-	new_owner: string
+postgresql_owner :: {
 
 	// Name of a database object to change ownership.
 	// Mutually exclusive with I(reassign_owned_by).
@@ -612,99 +200,111 @@ postgresql_owner :: {
 	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
 
 	session_role?: string
-}
 
-postgresql_pg_hba :: {
-
-	// The entries will be written out in a specific order. With this option you can control by which field they are ordered first, second and last. s=source, d=databases, u=users. This option is deprecated since 2.9 and will be removed in 2.11. Sortorder is now hardcoded to sdu.
-
-	order?: string
-
-	// The source address/net where the connections could come from.
-	// Will not be used for entries of I(type)=C(local).
-	// You can also use keywords C(all), C(samehost), and C(samenet).
-
-	address?: string
-
-	// If set, create a backup of the C(pg_hba) file before it is modified. The location of the backup is returned in the (backup) variable by this module.
-
-	backup?: bool
-
-	// Create an C(pg_hba) file if none exists.
-	// When set to false, an error is raised when the C(pg_hba) file doesn't exist.
-
-	create?: bool
-
-	// Databases this line applies to.
-
-	databases?: string
-
-	// Path to C(pg_hba) file to modify.
-
-	dest: string
-
-	// Additional options for the authentication I(method).
-
-	options?: string
-
-	// Write backup to a specific backupfile rather than a temp file.
-
-	backup_file?: string
-
-	// Type of the rule. If not set, C(postgresql_pg_hba) will only return contents.
-
-	contype?: string
-
-	// Authentication method to be used.
-
-	method?: string
-
-	// The netmask of the source address.
-
-	netmask?: string
-
-	// The lines will be added/modified when C(state=present) and removed when C(state=absent).
-
-	state?: string
-
-	// Users this line applies to.
-
-	users?: string
-}
-
-postgresql_publication :: {
-
-	// Drop publication dependencies. Has effect with I(state=absent) only.
-
-	cascade?: bool
-
-	// Name of the database to connect to and where the publication state will be changed.
+	// Name of database to connect to.
 
 	db?: string
 
-	// Name of the publication to add, update, or remove.
+	// If C(yes), fail when I(reassign_owned_by) role does not exist. Otherwise just warn and continue.
+	// Mutually exclusive with I(obj_name) and I(obj_type).
 
-	name: string
+	fail_on_role?: bool
 
-	// Publication owner.
-	// If I(owner) is not defined, the owner will be set as I(login_user) or I(session_role).
+	// Role (user/group) to set as an I(obj_name) owner.
 
-	owner?: string
+	new_owner: string
+}
 
-	// Dictionary with optional publication parameters.
-	// Available parameters depend on PostgreSQL version.
+postgresql_privs :: {
 
-	parameters?: {...}
+	// Specifies the name of a file containing SSL certificate authority (CA) certificate(s).
+	// If the file exists, the server's certificate will be verified to be signed by one of these authorities.
 
-	// The publication state.
+	ca_cert?: string
+
+	// Comma separated list of database objects to set privileges on.
+	// If I(type) is C(table), C(partition table), C(sequence) or C(function), the special valueC(ALL_IN_SCHEMA) can be provided instead to specify all database objects of type I(type) in the schema specified via I(schema). (This also works with PostgreSQL < 9.0.) (C(ALL_IN_SCHEMA) is available for C(function) and C(partition table) from version 2.8)
+	// If I(type) is C(database), this parameter can be omitted, in which case privileges are set for the database specified via I(database).
+	// If I(type) is I(function), colons (":") in object names will be replaced with commas (needed to specify function signatures, see examples)
+
+	objs?: string
+
+	// Comma separated list of role (user/group) names to set permissions for.
+	// The special value C(PUBLIC) can be provided instead to set permissions for the implicitly defined PUBLIC group.
+
+	roles: string
+
+	// Schema that contains the database objects specified via I(objs).
+	// May only be provided if I(type) is C(table), C(sequence), C(function), C(type), or C(default_privs). Defaults to C(public) in these cases.
+	// Pay attention, for embedded types when I(type=type) I(schema) can be C(pg_catalog) or C(information_schema) respectively.
+
+	schema?: string
+
+	// Database host address. If unspecified, connect via Unix socket.
+
+	host?: string
+
+	// Type of database object to set privileges on.
+	// The C(default_privs) choice is available starting at version 2.7.
+	// The C(foreign_data_wrapper) and C(foreign_server) object types are available from Ansible version '2.8'.
+	// The C(type) choice is available from Ansible version '2.10'.
+
+	type?: string
+
+	// Name of database to connect to.
+
+	database: string
+
+	// Determines whether or with what priority a secure SSL TCP/IP connection will be negotiated with the server.
+	// See https://www.postgresql.org/docs/current/static/libpq-ssl.html for more information on the modes.
+	// Default of C(prefer) matches libpq default.
+
+	ssl_mode?: string
+
+	// A list of existing role (user/group) names to set as the default permissions for database objects subsequently created by them.
+	// Parameter I(target_roles) is only available with C(type=default_privs).
+
+	target_roles?: string
+
+	// If C(yes), fail when target role (for whom privs need to be granted) does not exist. Otherwise just warn and continue.
+
+	fail_on_role?: bool
+
+	// Whether C(role) may grant/revoke the specified privileges/group memberships to others.
+	// Set to C(no) to revoke GRANT OPTION, leave unspecified to make no changes.
+	// I(grant_option) only has an effect if I(state) is C(present).
+
+	grant_option?: bool
+
+	// The username to authenticate with.
+
+	login?: string
+
+	// The password to authenticate with.
+
+	password?: string
+
+	// Database port to connect to.
+
+	port?: int
+
+	// Comma separated list of privileges to grant/revoke.
+
+	privs?: string
+
+	// Switch to session_role after connecting.
+	// The specified session_role must be a role that the current login_user is a member of.
+	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
+
+	session_role?: string
+
+	// If C(present), the specified privileges are granted, if C(absent) they are revoked.
 
 	state?: string
 
-	// List of tables to add to the publication.
-	// If no value is set all tables are targeted.
-	// If the publication already exists for specific tables and I(tables) is not passed, nothing will be changed. If you need to add all tables to the publication with the same name, drop existent and create new without passing I(tables).
+	// Path to a Unix domain socket for local connections.
 
-	tables?: [...string]
+	unix_socket?: string
 }
 
 postgresql_query :: {
@@ -744,23 +344,57 @@ postgresql_query :: {
 	session_role?: string
 }
 
-postgresql_schema :: {
+postgresql_ping :: {
 
-	// Drop schema with CASCADE to remove child objects.
+	// Name of a database to connect to.
 
-	cascade_drop?: bool
+	db?: string
+}
 
-	// Name of the database to connect to and add or remove the schema.
+postgresql_publication :: {
 
-	database?: string
-
-	// Name of the schema to add or remove.
+	// Name of the publication to add, update, or remove.
 
 	name: string
 
-	// Name of the role to set as owner of the schema.
+	// Publication owner.
+	// If I(owner) is not defined, the owner will be set as I(login_user) or I(session_role).
 
 	owner?: string
+
+	// Dictionary with optional publication parameters.
+	// Available parameters depend on PostgreSQL version.
+
+	parameters?: {...}
+
+	// The publication state.
+
+	state?: string
+
+	// List of tables to add to the publication.
+	// If no value is set all tables are targeted.
+	// If the publication already exists for specific tables and I(tables) is not passed, nothing will be changed. If you need to add all tables to the publication with the same name, drop existent and create new without passing I(tables).
+
+	tables?: [...string]
+
+	// Drop publication dependencies. Has effect with I(state=absent) only.
+
+	cascade?: bool
+
+	// Name of the database to connect to and where the publication state will be changed.
+
+	db?: string
+}
+
+postgresql_ext :: {
+
+	// Name of the database to add or remove the extension to/from.
+
+	db: string
+
+	// Path to a Unix domain socket for local connections.
+
+	login_unix_socket?: string
 
 	// Switch to session_role after connecting.
 	// The specified session_role must be a role that the current login_user is a member of.
@@ -774,14 +408,393 @@ postgresql_schema :: {
 
 	ssl_mode?: string
 
-	// The schema state.
+	// The database extension state.
 
 	state?: string
+
+	// Extension version to add or update to. Has effect with I(state=present) only.
+	// If not specified, the latest extension version will be created.
+	// It can't downgrade an extension version. When version downgrade is needed, remove the extension and create new one with appropriate version.
+	// Set I(version=latest) to update the extension to the latest available version.
+
+	version?: string
 
 	// Specifies the name of a file containing SSL certificate authority (CA) certificate(s).
 	// If the file exists, the server's certificate will be verified to be signed by one of these authorities.
 
 	ca_cert?: string
+
+	// Automatically install/remove any extensions that this extension depends on that are not already installed/removed (supported since PostgreSQL 9.6).
+
+	cascade?: bool
+
+	// Name of the extension to add or remove.
+
+	name: string
+
+	// Name of the schema to add the extension to.
+
+	schema?: string
+}
+
+postgresql_idx :: {
+
+	// List of index columns that need to be covered by index.
+	// Mutually exclusive with I(state=absent).
+
+	columns?: [...string]
+
+	// Name of database to connect to and where the index will be created/dropped.
+
+	db?: string
+
+	// Name of the index to create or drop.
+
+	idxname: string
+
+	// Index type (like btree, gist, gin, etc.).
+	// Mutually exclusive with I(state=absent).
+
+	idxtype?: string
+
+	// Table to create index on it.
+	// Mutually exclusive with I(state=absent).
+
+	table: string
+
+	// Set a tablespace for the index.
+	// Mutually exclusive with I(state=absent).
+
+	tablespace?: string
+
+	// Automatically drop objects that depend on the index, and in turn all objects that depend on those objects.
+	// It used only with I(state=absent).
+	// Mutually exclusive with I(concurrent=yes)
+
+	cascade?: bool
+
+	// Index conditions.
+	// Mutually exclusive with I(state=absent).
+
+	cond?: string
+
+	// Name of a database schema where the index will be created.
+
+	schema?: string
+
+	// Switch to session_role after connecting. The specified session_role must be a role that the current login_user is a member of.
+	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
+
+	session_role?: string
+
+	// Index state.
+	// C(present) implies the index will be created if it does not exist.
+	// C(absent) implies the index will be dropped if it exists.
+	// C(stat) returns index statistics information from the ``pg_stat_user_indexes`` standard view. Supported from Ansible 2.10.
+	// When C(stat) following parameters will be ignored:
+	// I(schema), I(table), I(columns), I(cond), I(idxtype), I(tablespace), I(concurrent), I(cascade).
+
+	state?: string
+
+	// Storage parameters like fillfactor, vacuum_cleanup_index_scale_factor, etc.
+	// Mutually exclusive with I(state=absent).
+
+	storage_params?: [...string]
+
+	// Enable or disable concurrent mode (CREATE / DROP INDEX CONCURRENTLY).
+	// Pay attention, if I(concurrent=no), the table will be locked (ACCESS EXCLUSIVE) during the building process. For more information about the lock levels see U(https://www.postgresql.org/docs/current/explicit-locking.html).
+	// If the building process was interrupted for any reason when I(cuncurrent=yes), the index becomes invalid. In this case it should be dropped and created again.
+	// Mutually exclusive with I(cascade=yes).
+
+	concurrent?: bool
+}
+
+postgresql_info :: {
+
+	// Name of database to connect.
+
+	db?: string
+
+	// Limit the collected information by comma separated string or YAML list.
+	// Allowable values are C(version), C(databases), C(settings), C(tablespaces), C(roles), C(replications), C(repl_slots).
+	// By default, collects all subsets.
+	// You can use shell-style (fnmatch) wildcard to pass groups of values (see Examples).
+	// You can use '!' before value (for example, C(!settings)) to exclude it from the information.
+	// If you pass including and excluding values to the filter, for example, I(filter=!settings,ver), the excluding values will be ignored.
+
+	filter?: [...string]
+
+	// Switch to session_role after connecting. The specified session_role must be a role that the current login_user is a member of.
+	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
+
+	session_role?: string
+}
+
+postgresql_lang :: {
+
+	// The state of the language for the selected database.
+
+	state?: string
+
+	// Path to a Unix domain socket for local connections.
+
+	login_unix_socket?: string
+
+	// Set an owner for the language.
+	// Ignored when I(state=absent).
+
+	owner?: string
+
+	// Switch to session_role after connecting.
+	// The specified I(session_role) must be a role that the current I(login_user) is a member of.
+	// Permissions checking for SQL commands is carried out as though the I(session_role) were the one that had logged in originally.
+
+	session_role?: string
+
+	// If C(yes), fail when removing a language. Otherwise just log and continue.
+	// In some cases, it is not possible to remove a language (used by the db-system).
+	// When dependencies block the removal, consider using I(cascade).
+
+	fail_on_drop?: bool
+
+	// Marks the language as trusted, even if it's marked as untrusted in pg_pltemplate.
+	// Use with care!
+
+	force_trust?: bool
+
+	// Name of the procedural language to add, remove or change.
+
+	lang: string
+
+	// Determines whether or with what priority a secure SSL TCP/IP connection will be negotiated with the server.
+	// See U(https://www.postgresql.org/docs/current/static/libpq-ssl.html) for more information on the modes.
+	// Default of C(prefer) matches libpq default.
+
+	ssl_mode?: string
+
+	// Make this language trusted for the selected db.
+
+	trust?: bool
+
+	// Specifies the name of a file containing SSL certificate authority (CA) certificate(s).
+	// If the file exists, the server's certificate will be verified to be signed by one of these authorities.
+
+	ca_cert?: string
+
+	// When dropping a language, also delete object that depend on this language.
+	// Only used when I(state=absent).
+
+	cascade?: bool
+
+	// Name of database to connect to and where the language will be added, removed or changed.
+
+	db?: string
+}
+
+postgresql_membership :: {
+
+	// Name of database to connect to.
+
+	db?: string
+
+	// If C(yes), fail when group or target_role doesn't exist. If C(no), just warn and continue.
+
+	fail_on_role?: bool
+
+	// The list of groups (roles) that need to be granted to or revoked from I(target_roles).
+
+	groups: [...string]
+
+	// Switch to session_role after connecting. The specified session_role must be a role that the current login_user is a member of.
+	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
+
+	session_role?: string
+
+	// Membership state.
+	// I(state=present) implies the I(groups)must be granted to I(target_roles).
+	// I(state=absent) implies the I(groups) must be revoked from I(target_roles).
+
+	state?: string
+
+	// The list of target roles (groups will be granted to them).
+
+	target_roles: [...string]
+}
+
+postgresql_pg_hba :: {
+
+	// Write backup to a specific backupfile rather than a temp file.
+
+	backup_file?: string
+
+	// Create an C(pg_hba) file if none exists.
+	// When set to false, an error is raised when the C(pg_hba) file doesn't exist.
+
+	create?: bool
+
+	// Databases this line applies to.
+
+	databases?: string
+
+	// Path to C(pg_hba) file to modify.
+
+	dest: string
+
+	// The netmask of the source address.
+
+	netmask?: string
+
+	// Additional options for the authentication I(method).
+
+	options?: string
+
+	// The entries will be written out in a specific order. With this option you can control by which field they are ordered first, second and last. s=source, d=databases, u=users. This option is deprecated since 2.9 and will be removed in 2.11. Sortorder is now hardcoded to sdu.
+
+	order?: string
+
+	// The lines will be added/modified when C(state=present) and removed when C(state=absent).
+
+	state?: string
+
+	// The source address/net where the connections could come from.
+	// Will not be used for entries of I(type)=C(local).
+	// You can also use keywords C(all), C(samehost), and C(samenet).
+
+	address?: string
+
+	// If set, create a backup of the C(pg_hba) file before it is modified. The location of the backup is returned in the (backup) variable by this module.
+
+	backup?: bool
+
+	// Type of the rule. If not set, C(postgresql_pg_hba) will only return contents.
+
+	contype?: string
+
+	// Authentication method to be used.
+
+	method?: string
+
+	// Users this line applies to.
+
+	users?: string
+}
+
+postgresql_slot :: {
+
+	// All logical slots must indicate which output plugin decoder they're using.
+	// This parameter does not apply to physical slots.
+	// It will be ignored with I(slot_type=physical).
+
+	output_plugin?: string
+
+	// Switch to session_role after connecting. The specified session_role must be a role that the current login_user is a member of.
+	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
+
+	session_role?: string
+
+	// Slot type.
+
+	slot_type?: string
+
+	// The slot state.
+	// I(state=present) implies the slot must be present in the system.
+	// I(state=absent) implies the I(groups) must be revoked from I(target_roles).
+
+	state?: string
+
+	// Name of database to connect to.
+
+	db?: string
+
+	// Optional parameter the when C(yes) specifies that the LSN for this replication slot be reserved immediately, otherwise the default, C(no), specifies that the LSN is reserved on the first connection from a streaming replication client.
+	// Is available from PostgreSQL version 9.6.
+	// Uses only with I(slot_type=physical).
+	// Mutually exclusive with I(slot_type=logical).
+
+	immediately_reserve?: bool
+
+	// Name of the slot to add or remove.
+
+	name: string
+}
+
+postgresql_user :: {
+
+	// Switch to session_role after connecting.
+	// The specified session_role must be a role that the current login_user is a member of.
+	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
+
+	session_role?: string
+
+	// Determines whether or with what priority a secure SSL TCP/IP connection will be negotiated with the server.
+	// See https://www.postgresql.org/docs/current/static/libpq-ssl.html for more information on the modes.
+	// Default of C(prefer) matches libpq default.
+
+	ssl_mode?: string
+
+	// The date at which the user's password is to expire.
+	// If set to C('infinity'), user's password never expire.
+	// Note that this value should be a valid SQL date and time type.
+
+	expires?: string
+
+	// Specifies the user (role) connection limit.
+
+	conn_limit?: int
+
+	// Name of the user (role) to add or remove.
+
+	name: string
+
+	// If C(yes), don't inspect database for password changes. Effective when C(pg_authid) is not accessible (such as AWS RDS). Otherwise, make password changes as necessary.
+
+	no_password_changes?: bool
+
+	// Slash-separated PostgreSQL privileges string: C(priv1/priv2), where privileges can be defined for database ( allowed options - 'CREATE', 'CONNECT', 'TEMPORARY', 'TEMP', 'ALL'. For example C(CONNECT) ) or for table ( allowed options - 'SELECT', 'INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'REFERENCES', 'TRIGGER', 'ALL'. For example C(table:SELECT) ). Mixed example of this string: C(CONNECT/CREATE/table1:SELECT/table2:INSERT).
+
+	priv?: string
+
+	// Specifies the name of a file containing SSL certificate authority (CA) certificate(s).
+	// If the file exists, the server's certificate will be verified to be signed by one of these authorities.
+
+	ca_cert?: string
+
+	// Set the user's password, before 1.4 this was required.
+	// Password can be passed unhashed or hashed (MD5-hashed).
+	// Unhashed password will automatically be hashed when saved into the database if C(encrypted) parameter is set, otherwise it will be save in plain text format.
+	// When passing a hashed password it must be generated with the format C('str["md5"] + md5[ password + username ]'), resulting in a total of 35 characters. An easy way to do this is C(echo "md5$(echo -n 'verysecretpasswordJOE' | md5sum | awk '{print $1}')").
+	// Note that if the provided password string is already in MD5-hashed format, then it is used as-is, regardless of C(encrypted) parameter.
+
+	password?: string
+
+	// PostgreSQL user attributes string in the format: CREATEDB,CREATEROLE,SUPERUSER.
+	// Note that '[NO]CREATEUSER' is deprecated.
+	// To create a simple role for using it like a group, use C(NOLOGIN) flag.
+
+	role_attr_flags?: string
+
+	// The user (role) state.
+
+	state?: string
+
+	// If C(yes), fail when user (role) can't be removed. Otherwise just log and continue.
+
+	fail_on_user?: bool
+
+	// Whether the password is stored hashed in the database.
+	// Passwords can be passed already hashed or unhashed, and postgresql ensures the stored password is hashed when C(encrypted) is set.
+	// Note: Postgresql 10 and newer doesn't support unhashed passwords.
+	// Previous to Ansible 2.6, this was C(no) by default.
+
+	encrypted?: bool
+
+	// The list of groups (roles) that need to be granted to the user.
+
+	groups?: [...string]
+
+	// Name of database to connect to and where user's permissions will be granted.
+
+	db?: string
 }
 
 postgresql_tablespace :: {
@@ -828,210 +841,197 @@ postgresql_tablespace :: {
 	session_role?: string
 }
 
-postgresql_idx :: {
+postgresql_db :: {
 
-	// Index conditions.
-	// Mutually exclusive with I(state=absent).
+	// Further arguments for pg_dump or pg_restore.
+	// Used when I(state) is C(dump) or C(restore).
 
-	cond?: string
+	target_opts?: string
 
-	// Name of the index to create or drop.
+	// Encoding of the database
 
-	idxname: string
+	encoding?: string
 
-	// Name of a database schema where the index will be created.
+	// Collation order (LC_COLLATE) to use in the database. Must match collation order of template database unless C(template0) is used as template.
 
-	schema?: string
+	lc_collate?: string
 
-	// Table to create index on it.
-	// Mutually exclusive with I(state=absent).
+	// The value specifies the initial database (which is also called as maintenance DB) that Ansible connects to.
 
-	table: string
-
-	// Set a tablespace for the index.
-	// Mutually exclusive with I(state=absent).
-
-	tablespace?: string
-
-	// Automatically drop objects that depend on the index, and in turn all objects that depend on those objects.
-	// It used only with I(state=absent).
-	// Mutually exclusive with I(concurrent=yes)
-
-	cascade?: bool
-
-	// Enable or disable concurrent mode (CREATE / DROP INDEX CONCURRENTLY).
-	// Pay attention, if I(concurrent=no), the table will be locked (ACCESS EXCLUSIVE) during the building process. For more information about the lock levels see U(https://www.postgresql.org/docs/current/explicit-locking.html).
-	// If the building process was interrupted for any reason when I(cuncurrent=yes), the index becomes invalid. In this case it should be dropped and created again.
-	// Mutually exclusive with I(cascade=yes).
-
-	concurrent?: bool
-
-	// Index type (like btree, gist, gin, etc.).
-	// Mutually exclusive with I(state=absent).
-
-	idxtype?: string
+	maintenance_db?: string
 
 	// Switch to session_role after connecting. The specified session_role must be a role that the current login_user is a member of.
 	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
 
 	session_role?: string
 
-	// Index state.
-	// C(present) implies the index will be created if it does not exist.
-	// C(absent) implies the index will be dropped if it exists.
-	// C(stat) returns index statistics information from the ``pg_stat_user_indexes`` standard view. Supported from Ansible 2.10.
-	// When C(stat) following parameters will be ignored:
-	// I(schema), I(table), I(columns), I(cond), I(idxtype), I(tablespace), I(concurrent), I(cascade).
+	// File to back up or restore from.
+	// Used when I(state) is C(dump) or C(restore).
+
+	target?: string
+
+	// Character classification (LC_CTYPE) to use in the database (e.g. lower, upper, ...) Must match LC_CTYPE of template database unless C(template0) is used as template.
+
+	lc_ctype?: string
+
+	// Name of the database to add or remove
+
+	name: string
+
+	// Name of the role to set as owner of the database
+
+	owner?: string
+
+	// Template used to create the database
+
+	template?: string
+
+	// Database port to connect (if needed)
+
+	port?: int
+
+	// The database state.
+	// C(present) implies that the database should be created if necessary.
+	// C(absent) implies that the database should be removed if present.
+	// C(dump) requires a target definition to which the database will be backed up. (Added in Ansible 2.4) Note that in some PostgreSQL versions of pg_dump, which is an embedded PostgreSQL utility and is used by the module, returns rc 0 even when errors occurred (e.g. the connection is forbidden by pg_hba.conf, etc.), so the module returns changed=True but the dump has not actually been done. Please, be sure that your version of pg_dump returns rc 1 in this case.
+	// C(restore) also requires a target definition from which the database will be restored. (Added in Ansible 2.4)
+	// The format of the backup will be detected based on the target name.
+	// Supported compression formats for dump and restore include C(.pgc), C(.bz2), C(.gz) and C(.xz)
+	// Supported formats for dump and restore include C(.sql) and C(.tar)
 
 	state?: string
 
-	// Storage parameters like fillfactor, vacuum_cleanup_index_scale_factor, etc.
-	// Mutually exclusive with I(state=absent).
+	// The tablespace to set for the database U(https://www.postgresql.org/docs/current/sql-alterdatabase.html).
+	// If you want to move the database back to the default tablespace, explicitly set this to pg_default.
 
-	storage_params?: [...string]
+	tablespace?: string
 
-	// List of index columns that need to be covered by index.
-	// Mutually exclusive with I(state=absent).
+	// Specifies the database connection limit.
 
-	columns?: [...string]
-
-	// Name of database to connect to and where the index will be created/dropped.
-
-	db?: string
+	conn_limit?: string
 }
 
-postgresql_info :: {
+postgresql_schema :: {
+
+	// Name of the database to connect to and add or remove the schema.
+
+	database?: string
+
+	// Name of the schema to add or remove.
+
+	name: string
+
+	// Name of the role to set as owner of the schema.
+
+	owner?: string
+
+	// Switch to session_role after connecting.
+	// The specified session_role must be a role that the current login_user is a member of.
+	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
+
+	session_role?: string
+
+	// Determines whether or with what priority a secure SSL TCP/IP connection will be negotiated with the server.
+	// See https://www.postgresql.org/docs/current/static/libpq-ssl.html for more information on the modes.
+	// Default of C(prefer) matches libpq default.
+
+	ssl_mode?: string
+
+	// The schema state.
+
+	state?: string
+
+	// Specifies the name of a file containing SSL certificate authority (CA) certificate(s).
+	// If the file exists, the server's certificate will be verified to be signed by one of these authorities.
+
+	ca_cert?: string
+
+	// Drop schema with CASCADE to remove child objects.
+
+	cascade_drop?: bool
+}
+
+postgresql_set :: {
 
 	// Name of database to connect.
 
 	db?: string
 
-	// Limit the collected information by comma separated string or YAML list.
-	// Allowable values are C(version), C(databases), C(settings), C(tablespaces), C(roles), C(replications), C(repl_slots).
-	// By default, collects all subsets.
-	// You can use shell-style (fnmatch) wildcard to pass groups of values (see Examples).
-	// You can use '!' before value (for example, C(!settings)) to exclude it from the information.
-	// If you pass including and excluding values to the filter, for example, I(filter=!settings,ver), the excluding values will be ignored.
-
-	filter?: [...string]
-
-	// Switch to session_role after connecting. The specified session_role must be a role that the current login_user is a member of.
-	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
-
-	session_role?: string
-}
-
-postgresql_sequence :: {
-
-	// Start allows the sequence to begin anywhere. The default starting value is I(minvalue) for ascending sequences and I(maxvalue) for descending ones.
-
-	start?: int
-
-	// The sequence state.
-	// If I(state=absent) other options will be ignored except of I(name) and I(schema).
-
-	state?: string
-
-	// Cache specifies how many sequence numbers are to be preallocated and stored in memory for faster access. The minimum value is 1 (only one value can be generated at a time, i.e., no cache), and this is also the default.
-
-	cache?: int
-
-	// Name of database to connect to and run queries against.
-
-	db?: string
-
-	// Increment specifies which value is added to the current sequence value to create a new value.
-	// A positive value will make an ascending sequence, a negative one a descending sequence. The default value is 1.
-
-	increment?: int
-
-	// Set the owner for the I(sequence).
-
-	owner?: string
-
-	// The schema of the I(sequence). This is be used to create and relocate a I(sequence) in the given schema.
-
-	schema?: string
-
-	// Switch to session_role after connecting. The specified I(session_role) must be a role that the current I(login_user) is a member of.
-	// Permissions checking for SQL commands is carried out as though the I(session_role) were the one that had logged in originally.
-
-	session_role?: string
-
-	// The new schema for the I(sequence). Will be used for moving a I(sequence) to another I(schema).
-	// Works only for existing sequences.
-
-	newschema?: string
-
-	// The new name for the I(sequence).
-	// Works only for existing sequences.
-
-	rename_to?: string
-
-	// Automatically drop objects that depend on the sequence, and in turn all objects that depend on those objects.
-	// Ignored if I(state=present).
-	// Only used with I(state=absent).
-
-	cascade?: bool
-
-	// The cycle option allows the sequence to wrap around when the I(maxvalue) or I(minvalue) has been reached by an ascending or descending sequence respectively. If the limit is reached, the next number generated will be the minvalue or maxvalue, respectively.
-	// If C(false) (NO CYCLE) is specified, any calls to nextval after the sequence has reached its maximum value will return an error. False (NO CYCLE) is the default.
-
-	cycle?: bool
-
-	// Specifies the data type of the sequence. Valid types are bigint, integer, and smallint. bigint is the default. The data type determines the default minimum and maximum values of the sequence. For more info see the documentation U(https://www.postgresql.org/docs/current/sql-createsequence.html).
-	// Supported from PostgreSQL 10.
-
-	data_type?: string
-
-	// Maxvalue determines the maximum value for the sequence. The default for an ascending sequence is the maximum value of the data type. The default for a descending sequence is -1.
-
-	maxvalue?: int
-
-	// Minvalue determines the minimum value a sequence can generate. The default for an ascending sequence is 1. The default for a descending sequence is the minimum value of the data type.
-
-	minvalue?: int
-
-	// The name of the sequence.
-
-	sequence: string
-}
-
-postgresql_slot :: {
-
-	// Optional parameter the when C(yes) specifies that the LSN for this replication slot be reserved immediately, otherwise the default, C(no), specifies that the LSN is reserved on the first connection from a streaming replication client.
-	// Is available from PostgreSQL version 9.6.
-	// Uses only with I(slot_type=physical).
-	// Mutually exclusive with I(slot_type=logical).
-
-	immediately_reserve?: bool
-
-	// Name of the slot to add or remove.
+	// Name of PostgreSQL server parameter.
 
 	name: string
 
-	// All logical slots must indicate which output plugin decoder they're using.
-	// This parameter does not apply to physical slots.
-	// It will be ignored with I(slot_type=physical).
+	// Restore parameter to initial state (boot_val). Mutually exclusive with I(value).
 
-	output_plugin?: string
+	reset?: bool
 
 	// Switch to session_role after connecting. The specified session_role must be a role that the current login_user is a member of.
 	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
 
 	session_role?: string
 
-	// Slot type.
+	// Parameter value to set.
+	// To remove parameter string from postgresql.auto.conf and reload the server configuration you must pass I(value=default). With I(value=default) the playbook always returns changed is true.
 
-	slot_type?: string
+	value: string
+}
 
-	// The slot state.
-	// I(state=present) implies the slot must be present in the system.
-	// I(state=absent) implies the I(groups) must be revoked from I(target_roles).
+postgresql_table :: {
+
+	// Create an unlogged table.
+
+	unlogged?: bool
+
+	// Columns that are needed.
+
+	columns?: [...string]
+
+	// New table name. Mutually exclusive with I(tablespace), I(owner), I(unlogged), I(like), I(including), I(columns), I(truncate), and I(storage_params).
+
+	rename?: string
+
+	// Switch to session_role after connecting. The specified session_role must be a role that the current login_user is a member of.
+	// Permissions checking for SQL commands is carried out as though the session_role were the one that had logged in originally.
+
+	session_role?: string
+
+	// The table state. I(state=absent) is mutually exclusive with I(tablespace), I(owner), I(unlogged), I(like), I(including), I(columns), I(truncate), I(storage_params) and, I(rename).
 
 	state?: string
 
-	// Name of database to connect to.
+	// Truncate a table. Mutually exclusive with I(tablespace), I(owner), I(unlogged), I(like), I(including), I(columns), I(rename), and I(storage_params).
+
+	truncate?: bool
+
+	// Name of database to connect and where the table will be created.
 
 	db?: string
+
+	// Create a table like another table (with similar DDL). Mutually exclusive with I(columns), I(rename), and I(truncate).
+
+	like?: string
+
+	// Set a table owner.
+
+	owner?: string
+
+	// Table name.
+
+	table: string
+
+	// Set a tablespace for the table.
+
+	tablespace?: string
+
+	// Automatically drop objects that depend on the table (such as views). Used with I(state=absent) only.
+
+	cascade?: bool
+
+	// Keywords that are used with like parameter, may be DEFAULTS, CONSTRAINTS, INDEXES, STORAGE, COMMENTS or ALL. Needs I(like) specified. Mutually exclusive with I(columns), I(rename), and I(truncate).
+
+	including?: string
+
+	// Storage parameters like fillfactor, autovacuum_vacuum_treshold, etc. Mutually exclusive with I(rename) and I(truncate).
+
+	storage_params?: [...string]
 }

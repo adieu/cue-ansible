@@ -1,18 +1,282 @@
 package language
 
+bower :: {
+
+	// Relative path to bower executable from install path
+
+	relative_execpath?: string
+
+	// The state of the bower package
+
+	state?: string
+
+	// The version to be installed
+
+	version?: string
+
+	// The name of a bower package to install
+
+	name?: string
+
+	// Install packages from local cache, if the packages were installed before
+
+	offline?: bool
+
+	// The base path where to install the bower packages
+
+	path: string
+
+	// Install with --production flag
+
+	production?: bool
+}
+
+gem :: {
+
+	// Install the gems into a specific directory. These gems will be independent from the global installed ones. Specifying this requires user_install to be false.
+
+	install_dir?: string
+
+	// Whether to include dependencies or not.
+
+	include_dependencies?: bool
+
+	// Install with or without docs.
+
+	include_doc?: bool
+
+	// Allow installation of pre-release versions of the gem.
+
+	pre_release?: bool
+
+	// The desired state of the gem. C(latest) ensures that the latest version is installed.
+
+	state?: string
+
+	// Install gem in user's local gems cache or for all users
+
+	user_install?: bool
+
+	// Allow adding build flags for gem compilation
+
+	build_flags?: string
+
+	// Force gem to install, bypassing dependency checks.
+
+	force?: bool
+
+	// The path to a local gem used as installation source.
+
+	gem_source?: string
+
+	// Override the path to the gem executable
+
+	executable?: string
+
+	// The name of the gem to be managed.
+
+	name: string
+
+	// The repository from which the gem will be installed
+
+	repository?: string
+
+	// Version of the gem to be installed/removed.
+
+	version?: string
+
+	// Rewrite the shebang line on installed scripts to use /usr/bin/env.
+
+	env_shebang?: bool
+}
+
+maven_artifact :: {
+
+	// The maven classifier coordinate
+
+	classifier?: string
+
+	// The Maven groupId coordinate
+
+	group_id: string
+
+	// If C(yes), the downloaded artifact's name is preserved, i.e the version number remains part of it.
+	// This option only has effect when C(dest) is a directory and C(version) is set to C(latest) or C(version_by_spec) is defined.
+
+	keep_name?: bool
+
+	// The maven artifactId coordinate
+
+	artifact_id: string
+
+	// Add custom HTTP headers to a request in hash/dict format.
+
+	headers?: {...}
+
+	// The password to authenticate with to the Maven Repository. Use AWS secret access key of the repository is hosted on S3
+
+	password?: string
+
+	// The URL of the Maven Repository to download from.
+	// Use s3://... if the repository is hosted on Amazon S3, added in version 2.2.
+	// Use file://... if the repository is local, added in version 2.6
+
+	repository_url?: string
+
+	// Specifies a timeout in seconds for the connection attempt
+
+	timeout?: string
+
+	// If C(never), the md5 checksum will never be downloaded and verified.
+	// If C(download), the md5 checksum will be downloaded and verified only after artifact download. This is the default.
+	// If C(change), the md5 checksum will be downloaded and verified if the destination already exist, to verify if they are identical. This was the behaviour before 2.6. Since it downloads the md5 before (maybe) downloading the artifact, and since some repository software, when acting as a proxy/cache, return a 404 error if the artifact has not been cached yet, it may fail unexpectedly. If you still need it, you should consider using C(always) instead - if you deal with a checksum, it is better to use it to verify integrity after download.
+	// C(always) combines C(download) and C(change).
+
+	verify_checksum?: string
+
+	// The maven version coordinate
+	// Mutually exclusive with I(version_by_spec).
+
+	version?: string
+
+	// The maven dependency version ranges.
+	// See supported version ranges on U(https://cwiki.apache.org/confluence/display/MAVENOLD/Dependency+Mediation+and+Conflict+Resolution)
+	// The range type "(,1.0],[1.2,)" and "(,1.1),(1.1,)" is not supported.
+	// Mutually exclusive with I(version).
+
+	version_by_spec?: string
+
+	// The path where the artifact should be written to
+	// If file mode or ownerships are specified and destination path already exists, they affect the downloaded file
+
+	dest: string
+
+	// The maven type/extension coordinate
+
+	extension?: string
+
+	// The desired state of the artifact
+
+	state?: string
+
+	// The username to authenticate as to the Maven Repository. Use AWS secret key of the repository is hosted on S3
+
+	username?: string
+
+	// If C(no), SSL certificates will not be validated. This should only be set to C(no) when no other option exists.
+
+	validate_certs?: bool
+}
+
+npm :: {
+
+	// The version to be installed
+
+	version?: string
+
+	// Install packages based on package-lock file, same as running npm ci
+
+	ci?: bool
+
+	// Install the node.js library globally
+
+	global?: bool
+
+	// Install dependencies in production mode, excluding devDependencies
+
+	production?: bool
+
+	// The registry to install modules from.
+
+	registry?: string
+
+	// The state of the node.js library
+
+	state?: string
+
+	// The executable location for npm.
+	// This is useful if you are using a version manager, such as nvm
+
+	executable?: string
+
+	// Use the C(--ignore-scripts) flag when installing.
+
+	ignore_scripts?: bool
+
+	// The name of a node.js library to install
+
+	name?: string
+
+	// The base path where to install the node.js libraries
+
+	path?: string
+
+	// Use the C(--unsafe-perm) flag when installing.
+
+	unsafe_perm?: bool
+}
+
+yarn :: {
+
+	// The executable location for yarn.
+
+	executable?: string
+
+	// The registry to install modules from.
+
+	registry?: string
+
+	// Installation state of the named node.js library
+	// If absent is selected, a name option must be provided
+
+	state?: string
+
+	// The version of the library to be installed.
+	// Must be in semver format. If "latest" is desired, use "state" arg instead
+
+	version?: string
+
+	// Install the node.js library globally
+
+	global?: bool
+
+	// Use the --ignore-scripts flag when installing.
+
+	ignore_scripts?: bool
+
+	// The name of a node.js library to install
+	// If omitted all packages in package.json are installed.
+
+	name?: string
+
+	// The base path where Node.js libraries will be installed.
+	// This is where the node_modules folder lives.
+
+	path?: string
+
+	// Install dependencies in production mode.
+	// Yarn will ignore any dependencies under devDependencies in package.json
+
+	production?: bool
+}
+
 bundler :: {
-
-	// Only applies if state is C(present). Specifies the directory to install the gems into. If C(chdir) is set then this path is relative to C(chdir)
-
-	gem_path?: string
 
 	// The desired state of the Gem bundle. C(latest) updates gems to the most recent, acceptable version
 
 	state?: string
 
-	// Only applies if state is C(present). Installs gems in the local user's cache or for all users
+	// Only applies if state is C(present). If set removes any gems on the target host that are not in the gemfile
 
-	user_install?: bool
+	clean?: bool
+
+	// A list of Gemfile groups to exclude during operations. This only applies when state is C(present). Bundler considers this a 'remembered' property for the Gemfile and will automatically exclude groups in future operations even if C(exclude_groups) is not set
+
+	exclude_groups?: string
+
+	// Only applies if state is C(present). If set it will install gems in ./vendor/bundle instead of the default location. Requires a Gemfile.lock file to have been created prior
+
+	deployment_mode?: bool
 
 	// The path to the bundler executable
 
@@ -22,9 +286,17 @@ bundler :: {
 
 	extra_args?: string
 
+	// Only applies if state is C(present). Specifies the directory to install the gems into. If C(chdir) is set then this path is relative to C(chdir)
+
+	gem_path?: string
+
 	// Only applies if state is C(present). The path to the gemfile to use to install gems.
 
 	gemfile?: string
+
+	// If set only installs gems from the cache on the target host
+
+	local?: bool
 
 	// Only applies if state is C(present). Specifies the directory to install any gem bins files to. When executed the bin files will run within the context of the Gemfile and fail if any required gem dependencies are not installed. If C(chdir) is set then this path is relative to C(chdir)
 
@@ -34,36 +306,37 @@ bundler :: {
 
 	chdir?: string
 
-	// Only applies if state is C(present). If set removes any gems on the target host that are not in the gemfile
+	// Only applies if state is C(present). Installs gems in the local user's cache or for all users
 
-	clean?: bool
-
-	// Only applies if state is C(present). If set it will install gems in ./vendor/bundle instead of the default location. Requires a Gemfile.lock file to have been created prior
-
-	deployment_mode?: bool
-
-	// A list of Gemfile groups to exclude during operations. This only applies when state is C(present). Bundler considers this a 'remembered' property for the Gemfile and will automatically exclude groups in future operations even if C(exclude_groups) is not set
-
-	exclude_groups?: string
-
-	// If set only installs gems from the cache on the target host
-
-	local?: bool
+	user_install?: bool
 }
 
 composer :: {
 
-	// Uses APCu to cache found/not-found classes
+	// Skips the execution of all scripts defined in composer.json (see --no-scripts).
 
-	apcu_autoloader?: bool
+	no_scripts?: bool
 
 	// Composer arguments like required package, version and so on.
 
 	arguments?: string
 
-	// Skips the execution of all scripts defined in composer.json (see --no-scripts).
+	// Composer command like "install", "update" and so on.
 
-	no_scripts?: bool
+	command?: string
+
+	// Runs the specified command globally.
+
+	global_command?: bool
+
+	// Forces installation from package dist even for dev versions (see --prefer-dist).
+
+	prefer_dist?: bool
+
+	// Directory of your project (see --working-dir). This is required when the command is not run globally.
+	// Will be ignored if C(global_command=true).
+
+	working_dir?: string
 
 	// Autoload classes from classmap only.
 	// Implicitely enable optimize_autoloader.
@@ -71,19 +344,17 @@ composer :: {
 
 	classmap_authoritative?: bool
 
-	// Runs the specified command globally.
+	// Ignore php, hhvm, lib-* and ext-* requirements and force the installation even if the local machine does not fulfill these.
 
-	global_command?: bool
+	ignore_platform_reqs?: bool
 
 	// Disables all plugins ( see --no-plugins ).
 
 	no_plugins?: bool
 
-	// Optimize autoloader during autoloader dump (see --optimize-autoloader).
-	// Convert PSR-0/4 autoloading to classmap to get a faster autoloader.
-	// Recommended especially for production, but can take a bit of time to run.
+	// Uses APCu to cache found/not-found classes
 
-	optimize_autoloader?: bool
+	apcu_autoloader?: bool
 
 	// Path to PHP Executable on the remote host, if PHP is not in PATH.
 
@@ -93,41 +364,51 @@ composer :: {
 
 	no_dev?: bool
 
-	// Forces installation from package dist even for dev versions (see --prefer-dist).
+	// Optimize autoloader during autoloader dump (see --optimize-autoloader).
+	// Convert PSR-0/4 autoloading to classmap to get a faster autoloader.
+	// Recommended especially for production, but can take a bit of time to run.
 
-	prefer_dist?: bool
+	optimize_autoloader?: bool
 
 	// Forces installation from package sources when possible (see --prefer-source).
 
 	prefer_source?: bool
-
-	// Directory of your project (see --working-dir). This is required when the command is not run globally.
-	// Will be ignored if C(global_command=true).
-
-	working_dir?: string
-
-	// Composer command like "install", "update" and so on.
-
-	command?: string
-
-	// Ignore php, hhvm, lib-* and ext-* requirements and force the installation even if the local machine does not fulfill these.
-
-	ignore_platform_reqs?: bool
 }
 
 cpanm :: {
+
+	// Use this if you want to install modules to the system perl include path. You must be root or have "passwordless" sudo for this to work.
+	// This uses the cpanm commandline option '--sudo', which has nothing to do with ansible privilege escalation.
+
+	system_lib?: bool
+
+	// Only install dependencies
+
+	installdeps?: bool
+
+	// Specify the install base to install modules
+
+	locallib?: string
 
 	// The name of the Perl library to install. You may use the "full distribution path", e.g.  MIYAGAWA/Plack-0.99_05.tar.gz
 
 	name?: string
 
+	// Do not run unit tests
+
+	notest?: bool
+
+	// minimum version of perl module to consider acceptable
+
+	version?: string
+
 	// Override the path to the cpanm executable
 
 	executable?: string
 
-	// Specify the install base to install modules
+	// The local directory from where to install
 
-	locallib?: string
+	from_path?: string
 
 	// Specifies the base URL for the CPAN mirror to use
 
@@ -136,27 +417,6 @@ cpanm :: {
 	// Use the mirror's index file instead of the CPAN Meta DB
 
 	mirror_only?: bool
-
-	// Do not run unit tests
-
-	notest?: bool
-
-	// Use this if you want to install modules to the system perl include path. You must be root or have "passwordless" sudo for this to work.
-	// This uses the cpanm commandline option '--sudo', which has nothing to do with ansible privilege escalation.
-
-	system_lib?: bool
-
-	// minimum version of perl module to consider acceptable
-
-	version?: string
-
-	// The local directory from where to install
-
-	from_path?: string
-
-	// Only install dependencies
-
-	installdeps?: bool
 }
 
 easy_install :: {
@@ -186,137 +446,7 @@ easy_install :: {
 	name: string
 }
 
-maven_artifact :: {
-
-	// The maven classifier coordinate
-
-	classifier?: string
-
-	// The URL of the Maven Repository to download from.
-	// Use s3://... if the repository is hosted on Amazon S3, added in version 2.2.
-	// Use file://... if the repository is local, added in version 2.6
-
-	repository_url?: string
-
-	// The path where the artifact should be written to
-	// If file mode or ownerships are specified and destination path already exists, they affect the downloaded file
-
-	dest: string
-
-	// The Maven groupId coordinate
-
-	group_id: string
-
-	// The maven version coordinate
-	// Mutually exclusive with I(version_by_spec).
-
-	version?: string
-
-	// The maven type/extension coordinate
-
-	extension?: string
-
-	// Add custom HTTP headers to a request in hash/dict format.
-
-	headers?: {...}
-
-	// If C(no), SSL certificates will not be validated. This should only be set to C(no) when no other option exists.
-
-	validate_certs?: bool
-
-	// If C(never), the md5 checksum will never be downloaded and verified.
-	// If C(download), the md5 checksum will be downloaded and verified only after artifact download. This is the default.
-	// If C(change), the md5 checksum will be downloaded and verified if the destination already exist, to verify if they are identical. This was the behaviour before 2.6. Since it downloads the md5 before (maybe) downloading the artifact, and since some repository software, when acting as a proxy/cache, return a 404 error if the artifact has not been cached yet, it may fail unexpectedly. If you still need it, you should consider using C(always) instead - if you deal with a checksum, it is better to use it to verify integrity after download.
-	// C(always) combines C(download) and C(change).
-
-	verify_checksum?: string
-
-	// The maven artifactId coordinate
-
-	artifact_id: string
-
-	// If C(yes), the downloaded artifact's name is preserved, i.e the version number remains part of it.
-	// This option only has effect when C(dest) is a directory and C(version) is set to C(latest) or C(version_by_spec) is defined.
-
-	keep_name?: bool
-
-	// The password to authenticate with to the Maven Repository. Use AWS secret access key of the repository is hosted on S3
-
-	password?: string
-
-	// The desired state of the artifact
-
-	state?: string
-
-	// Specifies a timeout in seconds for the connection attempt
-
-	timeout?: string
-
-	// The username to authenticate as to the Maven Repository. Use AWS secret key of the repository is hosted on S3
-
-	username?: string
-
-	// The maven dependency version ranges.
-	// See supported version ranges on U(https://cwiki.apache.org/confluence/display/MAVENOLD/Dependency+Mediation+and+Conflict+Resolution)
-	// The range type "(,1.0],[1.2,)" and "(,1.1),(1.1,)" is not supported.
-	// Mutually exclusive with I(version).
-
-	version_by_spec?: string
-}
-
-npm :: {
-
-	// The registry to install modules from.
-
-	registry?: string
-
-	// The state of the node.js library
-
-	state?: string
-
-	// Install packages based on package-lock file, same as running npm ci
-
-	ci?: bool
-
-	// The executable location for npm.
-	// This is useful if you are using a version manager, such as nvm
-
-	executable?: string
-
-	// Use the C(--ignore-scripts) flag when installing.
-
-	ignore_scripts?: bool
-
-	// The name of a node.js library to install
-
-	name?: string
-
-	// The version to be installed
-
-	version?: string
-
-	// Install the node.js library globally
-
-	global?: bool
-
-	// The base path where to install the node.js libraries
-
-	path?: string
-
-	// Install dependencies in production mode, excluding devDependencies
-
-	production?: bool
-
-	// Use the C(--unsafe-perm) flag when installing.
-
-	unsafe_perm?: bool
-}
-
 pear :: {
-
-	// Path to the pear executable
-
-	executable?: string
 
 	// Name of the package to install, upgrade, or remove.
 
@@ -325,13 +455,21 @@ pear :: {
 	// Desired state of the package.
 
 	state?: string
+
+	// Path to the pear executable
+
+	executable?: string
 }
 
 pip :: {
 
-	// The Python executable used for creating the virtual environment. For example C(python3.5), C(python2.7). When not specified, the Python version used to run the ansible module is used. This parameter should not be used when C(virtualenv_command) is using C(pyvenv) or the C(-m venv) module.
+	// Extra arguments passed to pip.
 
-	virtualenv_python?: string
+	extra_args?: string
+
+	// The version number to install of the Python library specified in the I(name) parameter.
+
+	version?: string
 
 	// Pass the editable flag.
 
@@ -344,30 +482,10 @@ pip :: {
 
 	executable?: string
 
-	// Extra arguments passed to pip.
-
-	extra_args?: string
-
 	// The name of a Python library to install or the url(bzr+,hg+,git+,svn+) of the remote package.
 	// This can be a list (since 2.2) and contain version specifiers (since 2.7).
 
 	name?: [..._]
-
-	// The system umask to apply before installing the pip package. This is useful, for example, when installing on systems that have a very restrictive umask by default (e.g., "0077") and you want to pip install packages which are to be used by all users. Note that this requires you to specify desired umask mode as an octal string, (e.g., "0022").
-
-	umask?: string
-
-	// The version number to install of the Python library specified in the I(name) parameter.
-
-	version?: string
-
-	// An optional path to a I(virtualenv) directory to install into. It cannot be specified together with the 'executable' parameter (added in 2.1). If the virtualenv does not exist, it will be created before installing packages. The optional virtualenv_site_packages, virtualenv_command, and virtualenv_python options affect the creation of the virtualenv.
-
-	virtualenv?: string
-
-	// cd into this directory before running the command
-
-	chdir?: string
 
 	// The path to a pip requirements file, which should be local to the remote system. File can be specified as a relative path if using the chdir option.
 
@@ -378,103 +496,29 @@ pip :: {
 
 	state?: string
 
+	// The system umask to apply before installing the pip package. This is useful, for example, when installing on systems that have a very restrictive umask by default (e.g., "0077") and you want to pip install packages which are to be used by all users. Note that this requires you to specify desired umask mode as an octal string, (e.g., "0022").
+
+	umask?: string
+
+	// An optional path to a I(virtualenv) directory to install into. It cannot be specified together with the 'executable' parameter (added in 2.1). If the virtualenv does not exist, it will be created before installing packages. The optional virtualenv_site_packages, virtualenv_command, and virtualenv_python options affect the creation of the virtualenv.
+
+	virtualenv?: string
+
 	// The command or a pathname to the command to create the virtual environment with. For example C(pyvenv), C(virtualenv), C(virtualenv2), C(~/bin/virtualenv), C(/usr/local/bin/virtualenv).
 
 	virtualenv_command?: string
 
+	// cd into this directory before running the command
+
+	chdir?: string
+
 	// Whether the virtual environment will inherit packages from the global site-packages directory.  Note that if this setting is changed on an already existing virtual environment it will not have any effect, the environment must be deleted and newly created.
 
 	virtualenv_site_packages?: bool
-}
 
-bower :: {
+	// The Python executable used for creating the virtual environment. For example C(python3.5), C(python2.7). When not specified, the Python version used to run the ansible module is used. This parameter should not be used when C(virtualenv_command) is using C(pyvenv) or the C(-m venv) module.
 
-	// Install packages from local cache, if the packages were installed before
-
-	offline?: bool
-
-	// The base path where to install the bower packages
-
-	path: string
-
-	// Install with --production flag
-
-	production?: bool
-
-	// Relative path to bower executable from install path
-
-	relative_execpath?: string
-
-	// The state of the bower package
-
-	state?: string
-
-	// The version to be installed
-
-	version?: string
-
-	// The name of a bower package to install
-
-	name?: string
-}
-
-gem :: {
-
-	// Force gem to install, bypassing dependency checks.
-
-	force?: bool
-
-	// Install with or without docs.
-
-	include_doc?: bool
-
-	// The desired state of the gem. C(latest) ensures that the latest version is installed.
-
-	state?: string
-
-	// Install gem in user's local gems cache or for all users
-
-	user_install?: bool
-
-	// Version of the gem to be installed/removed.
-
-	version?: string
-
-	// Allow adding build flags for gem compilation
-
-	build_flags?: string
-
-	// Rewrite the shebang line on installed scripts to use /usr/bin/env.
-
-	env_shebang?: bool
-
-	// Allow installation of pre-release versions of the gem.
-
-	pre_release?: bool
-
-	// The name of the gem to be managed.
-
-	name: string
-
-	// Override the path to the gem executable
-
-	executable?: string
-
-	// Whether to include dependencies or not.
-
-	include_dependencies?: bool
-
-	// Install the gems into a specific directory. These gems will be independent from the global installed ones. Specifying this requires user_install to be false.
-
-	install_dir?: string
-
-	// The path to a local gem used as installation source.
-
-	gem_source?: string
-
-	// The repository from which the gem will be installed
-
-	repository?: string
+	virtualenv_python?: string
 }
 
 pip_package_info :: {
@@ -482,48 +526,4 @@ pip_package_info :: {
 	// A list of the pip executables that will be used to get the packages. They can be supplied with the full path or just the executable name, i.e `pip3.7`.
 
 	clients?: [..._]
-}
-
-yarn :: {
-
-	// Use the --ignore-scripts flag when installing.
-
-	ignore_scripts?: bool
-
-	// The name of a node.js library to install
-	// If omitted all packages in package.json are installed.
-
-	name?: string
-
-	// The base path where Node.js libraries will be installed.
-	// This is where the node_modules folder lives.
-
-	path?: string
-
-	// Install dependencies in production mode.
-	// Yarn will ignore any dependencies under devDependencies in package.json
-
-	production?: bool
-
-	// The executable location for yarn.
-
-	executable?: string
-
-	// Install the node.js library globally
-
-	global?: bool
-
-	// The version of the library to be installed.
-	// Must be in semver format. If "latest" is desired, use "state" arg instead
-
-	version?: string
-
-	// The registry to install modules from.
-
-	registry?: string
-
-	// Installation state of the named node.js library
-	// If absent is selected, a name option must be provided
-
-	state?: string
 }

@@ -2,16 +2,6 @@ package nso
 
 nso_action :: {
 
-	// NSO action parameters.
-
-
-	input?: string
-
-	// List of result parameter names that will cause the task to fail if they are present.
-
-
-	output_invalid?: string
-
 	// Required output parameters.
 
 
@@ -25,6 +15,16 @@ nso_action :: {
 
 
 	validate_strict?: bool
+
+	// NSO action parameters.
+
+
+	input?: string
+
+	// List of result parameter names that will cause the task to fail if they are present.
+
+
+	output_invalid?: string
 }
 
 nso_config :: {
@@ -49,14 +49,14 @@ nso_query :: {
 
 nso_show :: {
 
-	// Path to NSO data.
-
-	path: string
-
 	// Controls whether or not operational data is included in the result.
 
 
 	operational?: bool
+
+	// Path to NSO data.
+
+	path: string
 }
 
 nso_verify :: {

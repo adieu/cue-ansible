@@ -1,176 +1,137 @@
 package monitoring
 
-airbrake_deployment :: {
+logentries :: {
 
-	// API token.
+	// type of the log
 
-	token: string
+	logtype?: string
 
-	// Optional URL to submit the notification to. Use to send notifications to Airbrake-compliant tools like Errbit.
+	// name of the log
 
-	url?: string
+	name?: string
 
-	// The username of the person doing the deployment
+	// path to a log file
 
-	user?: string
+	path: string
 
-	// If C(no), SSL certificates for the target url will not be validated. This should only be used on personally controlled sites using self-signed certificates.
-
-	validate_certs?: bool
-
-	// The airbrake environment name, typically 'production', 'staging', etc.
-
-	environment: string
-
-	// URL of the project repository
-
-	repo?: string
-
-	// A hash, number, tag, or other identifier showing what revision was deployed
-
-	revision?: string
-}
-
-icinga2_host :: {
-
-	// Apply feature state.
+	// following state of the log
 
 	state?: string
-
-	// List of variables.
-
-	variables?: string
-
-	// PEM formatted certificate chain file to be used for SSL client authentication. This file can also include the key as well, and if the key is included, C(client_key) is not required.
-
-	client_cert?: string
-
-	// The name used to display the host.
-
-	display_name?: string
-
-	// The IP address of the host.
-
-	ip: string
-
-	// Name used to create / delete the host. This does not need to be the FQDN, but does needs to be unique.
-
-	name: string
-
-	// The command used to check if the host is alive.
-
-	check_command?: string
-
-	// PEM formatted file that contains your private key to be used for SSL client authentication. If C(client_cert) contains both the certificate and key, this option is not required.
-
-	client_key?: string
-
-	// httplib2, the library used by the uri module only sends authentication information when a webservice responds to an initial request with a 401 status. Since some basic auth services do not properly send a 401, logins will fail. This option forces the sending of the Basic authentication header upon initial request.
-
-	force_basic_auth?: bool
-
-	// If C(no), it will not use a proxy, even if one is defined in an environment variable on the target hosts.
-
-	use_proxy?: bool
-
-	// The template used to define the host.
-	// Template cannot be modified after object creation.
-
-	template?: string
-
-	// HTTP, HTTPS, or FTP URL in the form (http|https|ftp)://[user[:pass]]@host.domain[:port]/path
-
-	url: string
-
-	// The username for use in HTTP basic authentication.
-	// This parameter can be used without C(url_password) for sites that allow empty passwords.
-
-	url_username?: string
-
-	// If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
-
-	validate_certs?: bool
-
-	// The password for use in HTTP basic authentication.
-	// If the C(url_username) parameter is not specified, the C(url_password) parameter will not be used.
-
-	url_password?: string
-
-	// The zone from where this host should be polled.
-
-	zone?: string
 }
 
-logstash_plugin :: {
+logicmonitor :: {
 
-	// Specify logstash-plugin to use for plugin management.
+	// The duration (minutes) of the Scheduled Down Time (SDT).
+	// Optional for putting an object into SDT (action=sdt).
 
-	plugin_bin?: string
+	duration?: string
 
-	// Proxy host to use during plugin installation.
+	// A list of groups that the host should be a member of.
+	// Optional for managing hosts (target=host; action=add or action=update).
 
-	proxy_host?: string
+	groups?: string
 
-	// Proxy port to use during plugin installation.
+	// A dictionary of properties to set on the LogicMonitor host or host group.
+	// Optional for managing hosts and host groups (target=host or target=hostgroup; action=add or action=update).
+	// This parameter will add or update existing properties in your LogicMonitor account.
 
-	proxy_port?: string
+	properties?: string
 
-	// Apply plugin state.
+	// A boolean flag to turn alerting on or off for an object.
+	// Optional for managing all hosts (action=add or action=update).
 
-	state?: string
+	alertenable?: bool
 
-	// Specify plugin Version of the plugin to install. If plugin exists with previous version, it will NOT be updated.
+	// The LogicMonitor account company name. If you would log in to your account at "superheroes.logicmonitor.com" you would use "superheroes."
 
-	version?: string
+	company: string
 
-	// Install plugin with that name.
+	// The display name of a host in your LogicMonitor account or the desired display name of a device to manage.
+	// Optional for managing hosts (target=host).
 
-	name: string
-}
+	displayname?: string
 
-nagios :: {
+	// ID of the datasource to target.
+	// Required for management of LogicMonitor datasources (target=datasource).
 
-	// Author to leave downtime comments as. Only usable with the C(downtime) action.
+	id?: string
 
-	author?: string
+	// The fully qualified domain name of a collector in your LogicMonitor account.
+	// This is required for the creation of a LogicMonitor host (target=host action=add).
+	// This is required for updating, removing or scheduling downtime for hosts if 'displayname' isn't specified (target=host action=update action=remove action=sdt).
 
-	// Minutes to schedule downtime for.
-	// Only usable with the C(downtime) action.
+	collector?: string
 
-	minutes?: int
+	// The long text description of the object in your LogicMonitor account.
+	// Optional for managing hosts and host groups (target=host or target=hostgroup; action=add or action=update).
 
-	// What to manage downtime/alerts for. Separate multiple services with commas. C(service) is an alias for C(services). B(Required) option when using the C(downtime), C(enable_alerts), and C(disable_alerts) actions.
+	description?: string
 
-	services: string
+	// The hostname of a host in your LogicMonitor account, or the desired hostname of a device to manage.
+	// Optional for managing hosts (target=host).
 
-	// The Servicegroup we want to set downtimes/alerts for. B(Required) option when using the C(servicegroup_service_downtime) amd C(servicegroup_host_downtime).
+	hostname?: string
 
-	servicegroup?: string
+	// The time that the Scheduled Down Time (SDT) should begin.
+	// Optional for managing SDT (action=sdt).
+	// Y-m-d H:M
 
-	// Action to take.
-	// servicegroup options were added in 2.0.
-	// delete_downtime options were added in 2.2.
+	starttime?: string
+
+	// The type of LogicMonitor object you wish to manage.
+	// Collector: Perform actions on a LogicMonitor collector.
+	// NOTE You should use Ansible service modules such as M(service) or M(supervisorctl) for managing the Collector 'logicmonitor-agent' and 'logicmonitor-watchdog' services. Specifically, you'll probably want to start these services after a Collector add and stop these services before a Collector remove.
+	// Host: Perform actions on a host device.
+	// Hostgroup: Perform actions on a LogicMonitor host group.
+	// NOTE Host and Hostgroup tasks should always be performed via delegate_to: localhost. There are no benefits to running these tasks on the remote host and doing so will typically cause problems.
+
+
+	target: string
+
+	// A LogicMonitor user name. The module will authenticate and perform actions on behalf of this user.
+
+	user: string
+
+	// The action you wish to perform on target.
+	// Add: Add an object to your LogicMonitor account.
+	// Remove: Remove an object from your LogicMonitor account.
+	// Update: Update properties, description, or groups (target=host) for an object in your LogicMonitor account.
+	// SDT: Schedule downtime for an object in your LogicMonitor account.
 
 	action: string
 
-	// Path to the nagios I(command file) (FIFO pipe). Only required if auto-detection fails.
+	// The fullpath of the host group object you would like to manage.
+	// Recommend running on a single Ansible host.
+	// Required for management of LogicMonitor host groups (target=hostgroup).
 
-	cmdfile?: string
+	fullpath?: string
 
-	// The raw command to send to nagios, which should not include the submitted time header or the line-feed B(Required) option when using the C(command) action.
+	// The password of the specified LogicMonitor user
 
-	command: string
-
-	// Comment for C(downtime) action.
-
-	comment?: string
-
-	// Host to operate on in Nagios.
-
-	host?: string
+	password: string
 }
 
 newrelic_deployment :: {
+
+	// API token, to place in the x-api-key header.
+
+	token: string
+
+	// (one of app_name or application_id are required) The application id, found in the URL when viewing the application in RPM
+
+	application_id?: string
+
+	// Name of the application
+
+	appname?: string
+
+	// The environment for this deployment
+
+	environment?: string
+
+	// A revision number (e.g., git commit SHA)
+
+	revision?: string
 
 	// If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
 
@@ -188,32 +149,278 @@ newrelic_deployment :: {
 
 	description?: string
 
-	// API token, to place in the x-api-key header.
-
-	token: string
-
 	// The name of the user/process that triggered this deployment
 
 	user?: string
+}
 
-	// (one of app_name or application_id are required) The application id, found in the URL when viewing the application in RPM
+pagerduty_alert :: {
 
-	application_id?: string
+	// The GUID of one of your "Generic API" services.
+	// This is the "integration key" listed on a "Integrations" tab of PagerDuty service.
 
-	// Name of the application
+	integration_key: string
 
-	appname?: string
+	// The name of the monitoring client that is triggering this event.
 
-	// The environment for this deployment
+	client?: string
 
-	environment?: string
+	// The URL of the monitoring client that is triggering this event.
 
-	// A revision number (e.g., git commit SHA)
+	client_url?: string
+
+	// For C(triggered) I(state) - Required. Short description of the problem that led to this trigger. This field (or a truncated version) will be used when generating phone calls, SMS messages and alert emails. It will also appear on the incidents tables in the PagerDuty UI. The maximum length is 1024 characters.
+	// For C(acknowledged) or C(resolved) I(state) - Text that will appear in the incident's log associated with this event.
+
+	desc?: string
+
+	// Identifies the incident to which this I(state) should be applied.
+	// For C(triggered) I(state) - If there's no open (i.e. unresolved) incident with this key, a new one will be created. If there's already an open incident with a matching key, this event will be appended to that incident's log. The event key provides an easy way to "de-dup" problem reports.
+	// For C(acknowledged) or C(resolved) I(state) - This should be the incident_key you received back when the incident was first opened by a trigger event. Acknowledge events referencing resolved or nonexistent incidents will be discarded.
+
+	incident_key?: string
+
+	// PagerDuty unique subdomain. Obsolete. It is not used with PagerDuty REST v2 API.
+
+	name?: string
+
+	// ID of PagerDuty service when incidents will be triggered, acknowledged or resolved.
+
+	service_id: string
+
+	// The GUID of one of your "Generic API" services. Obsolete. Please use I(integration_key).
+
+	service_key?: string
+
+	// Type of event to be sent.
+
+	state: string
+
+	// The pagerduty API key (readonly access), generated on the pagerduty site.
+
+	api_key: string
+}
+
+airbrake_deployment :: {
+
+	// The airbrake environment name, typically 'production', 'staging', etc.
+
+	environment: string
+
+	// URL of the project repository
+
+	repo?: string
+
+	// A hash, number, tag, or other identifier showing what revision was deployed
 
 	revision?: string
+
+	// API token.
+
+	token: string
+
+	// Optional URL to submit the notification to. Use to send notifications to Airbrake-compliant tools like Errbit.
+
+	url?: string
+
+	// The username of the person doing the deployment
+
+	user?: string
+
+	// If C(no), SSL certificates for the target url will not be validated. This should only be used on personally controlled sites using self-signed certificates.
+
+	validate_certs?: bool
+}
+
+bigpanda :: {
+
+	// The person responsible for the deployment.
+
+	owner?: string
+
+	// State of the deployment.
+
+	state: string
+
+	// Base URL of the API server.
+
+	url?: string
+
+	// If C(no), SSL certificates for the target url will not be validated. This should only be used on personally controlled sites using self-signed certificates.
+
+	validate_certs?: bool
+
+	// The deployment version.
+
+	version: string
+
+	// The name of the component being deployed. Ex: billing
+
+	component: string
+
+	// Free text description of the deployment.
+
+	description?: string
+
+	// The environment name, typically 'production', 'staging', etc.
+
+	env?: string
+
+	// Name of affected host name. Can be a list.
+
+	hosts?: string
+
+	// API token.
+
+	token: string
+}
+
+icinga2_feature :: {
+
+	// This is the feature name to enable or disable.
+
+	name: string
+
+	// If set to C(present) and feature is disabled, then feature is enabled.
+	// If set to C(present) and feature is already enabled, then nothing is changed.
+	// If set to C(absent) and feature is enabled, then feature is disabled.
+	// If set to C(absent) and feature is already disabled, then nothing is changed.
+
+	state?: string
+}
+
+pagerduty :: {
+
+	// Length of maintenance window in hours.
+
+	hours?: string
+
+	// PagerDuty unique subdomain. Obsolete. It is not used with PagerDuty REST v2 API.
+
+	name?: string
+
+	// PagerDuty user ID. Obsolete. Please, use I(token) for authorization.
+
+	user?: string
+
+	// If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
+
+	validate_certs?: bool
+
+	// ID of maintenance window. Only needed when absent a maintenance_window.
+
+	window_id?: string
+
+	// Short description of maintenance window.
+
+	desc?: string
+
+	// Maintenance window in minutes (this is added to the hours).
+
+	minutes?: string
+
+	// ID of user making the request. Only needed when creating a maintenance_window.
+
+	requester_id?: string
+
+	// A comma separated list of PagerDuty service IDs.
+
+	service?: string
+
+	// Create a maintenance window or get a list of ongoing windows.
+
+	state: string
+
+	// A pagerduty token, generated on the pagerduty site. It is used for authorization.
+
+	token: string
+}
+
+monit :: {
+
+	// The name of the I(monit) program/process to manage
+
+	name: string
+
+	// The state of service
+
+	state: string
+
+	// If there are pending actions for the service monitored by monit, then Ansible will check for up to this many seconds to verify the requested action has been performed. Ansible will sleep for five seconds between each check.
+
+	timeout?: string
+}
+
+nagios :: {
+
+	// Action to take.
+	// servicegroup options were added in 2.0.
+	// delete_downtime options were added in 2.2.
+
+	action: string
+
+	// Author to leave downtime comments as. Only usable with the C(downtime) action.
+
+	author?: string
+
+	// The raw command to send to nagios, which should not include the submitted time header or the line-feed B(Required) option when using the C(command) action.
+
+	command: string
+
+	// Comment for C(downtime) action.
+
+	comment?: string
+
+	// Host to operate on in Nagios.
+
+	host?: string
+
+	// Path to the nagios I(command file) (FIFO pipe). Only required if auto-detection fails.
+
+	cmdfile?: string
+
+	// Minutes to schedule downtime for.
+	// Only usable with the C(downtime) action.
+
+	minutes?: int
+
+	// The Servicegroup we want to set downtimes/alerts for. B(Required) option when using the C(servicegroup_service_downtime) amd C(servicegroup_host_downtime).
+
+	servicegroup?: string
+
+	// What to manage downtime/alerts for. Separate multiple services with commas. C(service) is an alias for C(services). B(Required) option when using the C(downtime), C(enable_alerts), and C(disable_alerts) actions.
+
+	services: string
+}
+
+pingdom :: {
+
+	// Pingdom user ID.
+
+	uid: string
+
+	// Pingdom ID of the check.
+
+	checkid: string
+
+	// Pingdom API key.
+
+	key: string
+
+	// Pingdom user password.
+
+	passwd: string
+
+	// Define whether or not the check should be running or paused.
+
+	state: string
 }
 
 rollbar_deployment :: {
+
+	// Rollbar username of the user who deployed.
+
+	rollbar_user?: string
 
 	// Your project access token.
 
@@ -242,87 +449,9 @@ rollbar_deployment :: {
 	// Revision number/sha being deployed.
 
 	revision: string
-
-	// Rollbar username of the user who deployed.
-
-	rollbar_user?: string
-}
-
-pingdom :: {
-
-	// Pingdom ID of the check.
-
-	checkid: string
-
-	// Pingdom API key.
-
-	key: string
-
-	// Pingdom user password.
-
-	passwd: string
-
-	// Define whether or not the check should be running or paused.
-
-	state: string
-
-	// Pingdom user ID.
-
-	uid: string
-}
-
-bigpanda :: {
-
-	// State of the deployment.
-
-	state: string
-
-	// API token.
-
-	token: string
-
-	// Base URL of the API server.
-
-	url?: string
-
-	// If C(no), SSL certificates for the target url will not be validated. This should only be used on personally controlled sites using self-signed certificates.
-
-	validate_certs?: bool
-
-	// The name of the component being deployed. Ex: billing
-
-	component: string
-
-	// Free text description of the deployment.
-
-	description?: string
-
-	// The environment name, typically 'production', 'staging', etc.
-
-	env?: string
-
-	// Name of affected host name. Can be a list.
-
-	hosts?: string
-
-	// The person responsible for the deployment.
-
-	owner?: string
-
-	// The deployment version.
-
-	version: string
 }
 
 circonus_annotation :: {
-
-	// Unix timestamp of event end
-
-	stop?: string
-
-	// Title of annotation
-
-	title: string
 
 	// Circonus API key
 
@@ -343,23 +472,92 @@ circonus_annotation :: {
 	// Unix timestamp of event start
 
 	start?: string
+
+	// Unix timestamp of event end
+
+	stop?: string
+
+	// Title of annotation
+
+	title: string
 }
 
-icinga2_feature :: {
+icinga2_host :: {
 
-	// This is the feature name to enable or disable.
+	// The name used to display the host.
+
+	display_name?: string
+
+	// Name used to create / delete the host. This does not need to be the FQDN, but does needs to be unique.
 
 	name: string
 
-	// If set to C(present) and feature is disabled, then feature is enabled.
-	// If set to C(present) and feature is already enabled, then nothing is changed.
-	// If set to C(absent) and feature is enabled, then feature is disabled.
-	// If set to C(absent) and feature is already disabled, then nothing is changed.
+	// HTTP, HTTPS, or FTP URL in the form (http|https|ftp)://[user[:pass]]@host.domain[:port]/path
+
+	url: string
+
+	// The password for use in HTTP basic authentication.
+	// If the C(url_username) parameter is not specified, the C(url_password) parameter will not be used.
+
+	url_password?: string
+
+	// If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
+
+	validate_certs?: bool
+
+	// PEM formatted certificate chain file to be used for SSL client authentication. This file can also include the key as well, and if the key is included, C(client_key) is not required.
+
+	client_cert?: string
+
+	// Apply feature state.
 
 	state?: string
+
+	// The username for use in HTTP basic authentication.
+	// This parameter can be used without C(url_password) for sites that allow empty passwords.
+
+	url_username?: string
+
+	// List of variables.
+
+	variables?: string
+
+	// The zone from where this host should be polled.
+
+	zone?: string
+
+	// PEM formatted file that contains your private key to be used for SSL client authentication. If C(client_cert) contains both the certificate and key, this option is not required.
+
+	client_key?: string
+
+	// httplib2, the library used by the uri module only sends authentication information when a webservice responds to an initial request with a 401 status. Since some basic auth services do not properly send a 401, logins will fail. This option forces the sending of the Basic authentication header upon initial request.
+
+	force_basic_auth?: bool
+
+	// The IP address of the host.
+
+	ip: string
+
+	// The template used to define the host.
+	// Template cannot be modified after object creation.
+
+	template?: string
+
+	// If C(no), it will not use a proxy, even if one is defined in an environment variable on the target hosts.
+
+	use_proxy?: bool
+
+	// The command used to check if the host is alive.
+
+	check_command?: string
 }
 
 librato_annotation :: {
+
+	// The unix timestamp indicating the time at which the event referenced by this annotation ended
+	// For events that have a duration, this is a useful way to annotate the duration of the event
+
+	end_time?: string
 
 	// The annotation stream name
 	// If the annotation stream does not exist, it will be created automatically
@@ -374,6 +572,14 @@ librato_annotation :: {
 
 	start_time?: string
 
+	// Librato account username
+
+	user: string
+
+	// Librato account api key
+
+	api_key: string
+
 	// The description contains extra metadata about a particular annotation
 	// The description should contain specifics on the individual annotation e.g. Deployed 9b562b2 shipped new feature foo!
 
@@ -387,38 +593,6 @@ librato_annotation :: {
 	// The title should be a short, high-level summary of the annotation e.g. v45 Deployment
 
 	title: string
-
-	// Librato account username
-
-	user: string
-
-	// Librato account api key
-
-	api_key: string
-
-	// The unix timestamp indicating the time at which the event referenced by this annotation ended
-	// For events that have a duration, this is a useful way to annotate the duration of the event
-
-	end_time?: string
-}
-
-logentries :: {
-
-	// following state of the log
-
-	state?: string
-
-	// type of the log
-
-	logtype?: string
-
-	// name of the log
-
-	name?: string
-
-	// path to a log file
-
-	path: string
 }
 
 logicmonitor_facts :: {
@@ -462,169 +636,81 @@ logicmonitor_facts :: {
 	company: string
 }
 
-pagerduty :: {
+spectrum_device :: {
 
-	// ID of maintenance window. Only needed when absent a maintenance_window.
+	// SNMP community used for device discovery.
+	// Required when C(state=present).
 
-	window_id?: string
+	community?: string
 
-	// Short description of maintenance window.
+	// Landscape handle of the SpectroServer to which add or remove the device.
 
-	desc?: string
+	landscape: string
 
-	// ID of user making the request. Only needed when creating a maintenance_window.
+	// Oneclick user name.
 
-	requester_id?: string
+	url_username: string
 
-	// A pagerduty token, generated on the pagerduty site. It is used for authorization.
+	// UDP port used for SNMP discovery.
 
-	token: string
+	agentport?: string
 
-	// PagerDuty user ID. Obsolete. Please, use I(token) for authorization.
+	// IP address of the device.
+	// If a hostname is given, it will be resolved to the IP address.
 
-	user?: string
+	device: string
 
-	// Create a maintenance window or get a list of ongoing windows.
+	// On C(present) creates the device when it does not exist.
+	// On C(absent) removes the device when it exists.
 
-	state: string
+	state?: string
+
+	// HTTP, HTTPS URL of the Oneclick server in the form (http|https)://host.domain[:port]
+
+	url: string
+
+	// Oneclick user password.
+
+	url_password: string
+
+	// if C(no), it will not use a proxy, even if one is defined in an environment variable on the target hosts.
+
+	use_proxy?: bool
 
 	// If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
 
 	validate_certs?: bool
-
-	// Length of maintenance window in hours.
-
-	hours?: string
-
-	// Maintenance window in minutes (this is added to the hours).
-
-	minutes?: string
-
-	// PagerDuty unique subdomain. Obsolete. It is not used with PagerDuty REST v2 API.
-
-	name?: string
-
-	// A comma separated list of PagerDuty service IDs.
-
-	service?: string
-}
-
-logicmonitor :: {
-
-	// The action you wish to perform on target.
-	// Add: Add an object to your LogicMonitor account.
-	// Remove: Remove an object from your LogicMonitor account.
-	// Update: Update properties, description, or groups (target=host) for an object in your LogicMonitor account.
-	// SDT: Schedule downtime for an object in your LogicMonitor account.
-
-	action: string
-
-	// The LogicMonitor account company name. If you would log in to your account at "superheroes.logicmonitor.com" you would use "superheroes."
-
-	company: string
-
-	// ID of the datasource to target.
-	// Required for management of LogicMonitor datasources (target=datasource).
-
-	id?: string
-
-	// A boolean flag to turn alerting on or off for an object.
-	// Optional for managing all hosts (action=add or action=update).
-
-	alertenable?: bool
-
-	// The long text description of the object in your LogicMonitor account.
-	// Optional for managing hosts and host groups (target=host or target=hostgroup; action=add or action=update).
-
-	description?: string
-
-	// The duration (minutes) of the Scheduled Down Time (SDT).
-	// Optional for putting an object into SDT (action=sdt).
-
-	duration?: string
-
-	// The fullpath of the host group object you would like to manage.
-	// Recommend running on a single Ansible host.
-	// Required for management of LogicMonitor host groups (target=hostgroup).
-
-	fullpath?: string
-
-	// The fully qualified domain name of a collector in your LogicMonitor account.
-	// This is required for the creation of a LogicMonitor host (target=host action=add).
-	// This is required for updating, removing or scheduling downtime for hosts if 'displayname' isn't specified (target=host action=update action=remove action=sdt).
-
-	collector?: string
-
-	// The time that the Scheduled Down Time (SDT) should begin.
-	// Optional for managing SDT (action=sdt).
-	// Y-m-d H:M
-
-	starttime?: string
-
-	// A LogicMonitor user name. The module will authenticate and perform actions on behalf of this user.
-
-	user: string
-
-	// A dictionary of properties to set on the LogicMonitor host or host group.
-	// Optional for managing hosts and host groups (target=host or target=hostgroup; action=add or action=update).
-	// This parameter will add or update existing properties in your LogicMonitor account.
-
-	properties?: string
-
-	// The type of LogicMonitor object you wish to manage.
-	// Collector: Perform actions on a LogicMonitor collector.
-	// NOTE You should use Ansible service modules such as M(service) or M(supervisorctl) for managing the Collector 'logicmonitor-agent' and 'logicmonitor-watchdog' services. Specifically, you'll probably want to start these services after a Collector add and stop these services before a Collector remove.
-	// Host: Perform actions on a host device.
-	// Hostgroup: Perform actions on a LogicMonitor host group.
-	// NOTE Host and Hostgroup tasks should always be performed via delegate_to: localhost. There are no benefits to running these tasks on the remote host and doing so will typically cause problems.
-
-
-	target: string
-
-	// The display name of a host in your LogicMonitor account or the desired display name of a device to manage.
-	// Optional for managing hosts (target=host).
-
-	displayname?: string
-
-	// A list of groups that the host should be a member of.
-	// Optional for managing hosts (target=host; action=add or action=update).
-
-	groups?: string
-
-	// The hostname of a host in your LogicMonitor account, or the desired hostname of a device to manage.
-	// Optional for managing hosts (target=host).
-
-	hostname?: string
-
-	// The password of the specified LogicMonitor user
-
-	password: string
-}
-
-monit :: {
-
-	// The name of the I(monit) program/process to manage
-
-	name: string
-
-	// The state of service
-
-	state: string
-
-	// If there are pending actions for the service monitored by monit, then Ansible will check for up to this many seconds to verify the requested action has been performed. Ansible will sleep for five seconds between each check.
-
-	timeout?: string
 }
 
 stackdriver :: {
 
-	// The revision of the code that was deployed. Required for deploy events
+	// The contents of the annotation message, in plain text.  Limited to 256 characters. Required for annotation.
 
-	revision_id?: string
+	msg?: string
+
+	// The repository (or project) deployed
+
+	repository?: string
 
 	// The person or robot who the annotation should be attributed to.
 
 	annotated_by?: string
+
+	// The person or robot responsible for deploying the code
+
+	deployed_by?: string
+
+	// The environment code was deployed to. (ie: development, staging, production)
+
+	deployed_to?: string
+
+	// API key.
+
+	key: string
+
+	// The revision of the code that was deployed. Required for deploy events
+
+	revision_id?: string
 
 	// The type of event to send, either annotation or deploy
 
@@ -641,26 +727,6 @@ stackdriver :: {
 	// one of INFO/WARN/ERROR, defaults to INFO if not supplied.  May affect display.
 
 	level?: string
-
-	// The repository (or project) deployed
-
-	repository?: string
-
-	// The person or robot responsible for deploying the code
-
-	deployed_by?: string
-
-	// The environment code was deployed to. (ie: development, staging, production)
-
-	deployed_to?: string
-
-	// API key.
-
-	key: string
-
-	// The contents of the annotation message, in plain text.  Limited to 256 characters. Required for annotation.
-
-	msg?: string
 }
 
 uptimerobot :: {
@@ -679,14 +745,6 @@ uptimerobot :: {
 }
 
 honeybadger_deployment :: {
-
-	// Optional URL to submit the notification to.
-
-	url?: string
-
-	// The username of the person doing the deployment
-
-	user?: string
 
 	// If C(no), SSL certificates for the target url will not be validated. This should only be used on personally controlled sites using self-signed certificates.
 
@@ -707,136 +765,82 @@ honeybadger_deployment :: {
 	// API token.
 
 	token: string
+
+	// Optional URL to submit the notification to.
+
+	url?: string
+
+	// The username of the person doing the deployment
+
+	user?: string
 }
 
-pagerduty_alert :: {
+logstash_plugin :: {
 
-	// The URL of the monitoring client that is triggering this event.
+	// Specify logstash-plugin to use for plugin management.
 
-	client_url?: string
+	plugin_bin?: string
 
-	// For C(triggered) I(state) - Required. Short description of the problem that led to this trigger. This field (or a truncated version) will be used when generating phone calls, SMS messages and alert emails. It will also appear on the incidents tables in the PagerDuty UI. The maximum length is 1024 characters.
-	// For C(acknowledged) or C(resolved) I(state) - Text that will appear in the incident's log associated with this event.
+	// Proxy host to use during plugin installation.
 
-	desc?: string
+	proxy_host?: string
 
-	// The GUID of one of your "Generic API" services.
-	// This is the "integration key" listed on a "Integrations" tab of PagerDuty service.
+	// Proxy port to use during plugin installation.
 
-	integration_key: string
+	proxy_port?: string
 
-	// ID of PagerDuty service when incidents will be triggered, acknowledged or resolved.
-
-	service_id: string
-
-	// The GUID of one of your "Generic API" services. Obsolete. Please use I(integration_key).
-
-	service_key?: string
-
-	// Type of event to be sent.
-
-	state: string
-
-	// The pagerduty API key (readonly access), generated on the pagerduty site.
-
-	api_key: string
-
-	// The name of the monitoring client that is triggering this event.
-
-	client?: string
-
-	// Identifies the incident to which this I(state) should be applied.
-	// For C(triggered) I(state) - If there's no open (i.e. unresolved) incident with this key, a new one will be created. If there's already an open incident with a matching key, this event will be appended to that incident's log. The event key provides an easy way to "de-dup" problem reports.
-	// For C(acknowledged) or C(resolved) I(state) - This should be the incident_key you received back when the incident was first opened by a trigger event. Acknowledge events referencing resolved or nonexistent incidents will be discarded.
-
-	incident_key?: string
-
-	// PagerDuty unique subdomain. Obsolete. It is not used with PagerDuty REST v2 API.
-
-	name?: string
-}
-
-spectrum_device :: {
-
-	// HTTP, HTTPS URL of the Oneclick server in the form (http|https)://host.domain[:port]
-
-	url: string
-
-	// Oneclick user password.
-
-	url_password: string
-
-	// if C(no), it will not use a proxy, even if one is defined in an environment variable on the target hosts.
-
-	use_proxy?: bool
-
-	// UDP port used for SNMP discovery.
-
-	agentport?: string
-
-	// IP address of the device.
-	// If a hostname is given, it will be resolved to the IP address.
-
-	device: string
-
-	// On C(present) creates the device when it does not exist.
-	// On C(absent) removes the device when it exists.
+	// Apply plugin state.
 
 	state?: string
 
-	// If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
+	// Specify plugin Version of the plugin to install. If plugin exists with previous version, it will NOT be updated.
 
-	validate_certs?: bool
+	version?: string
 
-	// SNMP community used for device discovery.
-	// Required when C(state=present).
+	// Install plugin with that name.
 
-	community?: string
-
-	// Landscape handle of the SpectroServer to which add or remove the device.
-
-	landscape: string
-
-	// Oneclick user name.
-
-	url_username: string
+	name: string
 }
 
 statusio_maintenance :: {
-
-	// Notify subscribers now
-
-	maintenance_notify_now?: bool
 
 	// Date maintenance is expected to start (Month/Day/Year) (UTC)
 	// End Date is worked out from start_date + minutes
 
 	start_date?: string
 
-	// Status.io API URL. A private apiary can be used instead.
+	// Time maintenance is expected to start (Hour:Minutes) (UTC)
+	// End Time is worked out from start_time + minutes
 
-	url?: string
+	start_time?: string
 
-	// The given name of your component (server name)
+	// If it affects all components and containers
 
-	components?: string
+	all_infrastructure_affected?: bool
 
-	// Automatically start and end the maintenance window
+	// The given name of your container (data center)
 
-	automation?: bool
+	containers?: string
 
 	// The maintenance id number when deleting a maintenance window
 
 	maintenance_id?: string
 
-	// The length of time in UTC that the maintenance will run             (starting from playbook runtime)
+	// Notify subscribers 72 hours before maintenance start time
 
-	minutes?: string
+	maintenance_notify_72_hr?: bool
 
-	// Time maintenance is expected to start (Hour:Minutes) (UTC)
-	// End Time is worked out from start_time + minutes
+	// A descriptive title for the maintenance window
 
-	start_time?: string
+	title?: string
+
+	// Your unique API ID from status.io
+
+	api_id: string
+
+	// Notify subscribers 1 hour before maintenance start time
+
+	maintenance_notify_1_hr?: bool
 
 	// Desired state of the package.
 
@@ -846,39 +850,35 @@ statusio_maintenance :: {
 
 	statuspage: string
 
+	// Status.io API URL. A private apiary can be used instead.
+
+	url?: string
+
 	// Your unique API Key from status.io
 
 	api_key: string
 
-	// The given name of your container (data center)
+	// Automatically start and end the maintenance window
 
-	containers?: string
-
-	// Message describing the maintenance window
-
-	desc?: string
-
-	// Notify subscribers 1 hour before maintenance start time
-
-	maintenance_notify_1_hr?: bool
+	automation?: bool
 
 	// Notify subscribers 24 hours before maintenance start time
 
 	maintenance_notify_24_hr?: bool
 
-	// Notify subscribers 72 hours before maintenance start time
+	// Notify subscribers now
 
-	maintenance_notify_72_hr?: bool
+	maintenance_notify_now?: bool
 
-	// Your unique API ID from status.io
+	// The given name of your component (server name)
 
-	api_id: string
+	components?: string
 
-	// A descriptive title for the maintenance window
+	// Message describing the maintenance window
 
-	title?: string
+	desc?: string
 
-	// If it affects all components and containers
+	// The length of time in UTC that the maintenance will run             (starting from playbook runtime)
 
-	all_infrastructure_affected?: bool
+	minutes?: string
 }

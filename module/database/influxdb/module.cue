@@ -1,16 +1,5 @@
 package influxdb
 
-influxdb_write :: {
-
-	// Data points as dict to write into the database.
-
-	data_points: string
-
-	// Name of the database.
-
-	database_name: string
-}
-
 influxdb_database :: {
 
 	// Name of the database.
@@ -35,10 +24,6 @@ influxdb_query :: {
 
 influxdb_retention_policy :: {
 
-	// Name of the database.
-
-	database_name: string
-
 	// Sets the retention policy as default retention policy
 
 	default: string
@@ -54,9 +39,21 @@ influxdb_retention_policy :: {
 	// Determines how many independent copies of each point are stored in the cluster
 
 	replication: string
+
+	// Name of the database.
+
+	database_name: string
 }
 
 influxdb_user :: {
+
+	// Name of the user.
+
+	user_name: string
+
+	// Password to be set for the user.
+
+	user_password?: string
 
 	// Whether the user should be in the admin role or not.
 	// Since version 2.8, the role will also be updated.
@@ -71,12 +68,15 @@ influxdb_user :: {
 	// State of the user.
 
 	state?: string
+}
 
-	// Name of the user.
+influxdb_write :: {
 
-	user_name: string
+	// Data points as dict to write into the database.
 
-	// Password to be set for the user.
+	data_points: string
 
-	user_password?: string
+	// Name of the database.
+
+	database_name: string
 }

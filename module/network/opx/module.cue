@@ -2,14 +2,6 @@ package opx
 
 opx_cps :: {
 
-	// Attempts to force the auto-commit event to the specified yang object.
-
-	commit_event?: bool
-
-	// Queries/Writes the specified yang path from/to the db.
-
-	db?: bool
-
 	// Yang path to be configured.
 
 	module_name?: string
@@ -29,4 +21,12 @@ opx_cps :: {
 	// Attribute Yang type.
 
 	attr_type?: string
+
+	// Attempts to force the auto-commit event to the specified yang object.
+
+	commit_event?: bool
+
+	// Queries/Writes the specified yang path from/to the db.
+
+	db?: bool
 }

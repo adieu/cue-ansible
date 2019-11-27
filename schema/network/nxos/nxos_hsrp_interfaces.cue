@@ -6,8 +6,8 @@ module: nxos_hsrp_interfaces: {
 	short_description: "Manages HSRP attributes of NXOS interfaces."
 	description:       "Manages Hot Standby Router Protocol (HSRP) interface attributes."
 	author:            "Chris Van Heuveln (@chrisvanheuveln)"
-	notes:
-		null, options: {
+	notes:             null
+	options: {
 		config: {
 			description: "The provided configuration"
 			type:        "list"

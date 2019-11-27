@@ -9,7 +9,7 @@ Option:: {
 	version_added?: float | string
 	choices?: [..._]
 	elements?: "string" | "str" | "path" | "raw" | "dict"
-	suboptions?: {
+	suboptions?: null | {
 		[string]: Option
 	}
 }
@@ -20,7 +20,7 @@ Module:: {
 	extends_documentation_fragment?: [...string] | string
 	requirements?: [...string]
 	description: *[] | string | [string, ...string]
-	notes?: [string, ...string]
+	notes?: null | [...string]
 	seealso?: [..._]
 	deprecated?: _
 	todo?: _

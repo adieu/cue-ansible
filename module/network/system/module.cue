@@ -17,10 +17,6 @@ net_banner :: {
 
 net_logging :: {
 
-	// If value of C(dest) is I(host) it indicates file-name the host name to be notified.
-
-	name?: string
-
 	// Purge logging not defined in the I(aggregate) parameter.
 
 	purge?: string
@@ -44,6 +40,10 @@ net_logging :: {
 	// Set logging severity levels.
 
 	level?: string
+
+	// If value of C(dest) is I(host) it indicates file-name the host name to be notified.
+
+	name?: string
 }
 
 net_ping :: {
@@ -71,14 +71,6 @@ net_ping :: {
 
 net_system :: {
 
-	// Configure the device hostname parameter. This option takes an ASCII string value.
-
-	hostname?: string
-
-	// Provides one or more source interfaces to use for performing DNS lookups.  The interface provided in C(lookup_source) must be a valid interface configured on the device.
-
-	lookup_source?: string
-
 	// List of DNS name servers by IP address to use to perform name resolution lookups.  This argument accepts either a list of DNS servers See examples.
 
 	name_servers?: string
@@ -94,6 +86,14 @@ net_system :: {
 	// Provides the list of domain suffixes to append to the hostname for the purpose of doing name resolution. This argument accepts a name or list of names and will be reconciled with the current active configuration on the running node.
 
 	domain_search?: string
+
+	// Configure the device hostname parameter. This option takes an ASCII string value.
+
+	hostname?: string
+
+	// Provides one or more source interfaces to use for performing DNS lookups.  The interface provided in C(lookup_source) must be a valid interface configured on the device.
+
+	lookup_source?: string
 }
 
 net_user :: {
@@ -102,13 +102,17 @@ net_user :: {
 
 	aggregate?: string
 
-	// The C(privilege) argument configures the privilege level of the user when logged into the system. This argument accepts integer values in the range of 1 to 15.
+	// The username to be configured on the remote network device. This argument accepts a string value and is mutually exclusive with the C(aggregate) argument. Please note that this option is not same as C(provider username).
 
-	privilege?: string
+	name?: string
 
-	// Configures the role for the username in the device running configuration. The argument accepts a string value defining the role name. This argument does not check if the role has been configured on the device.
+	// Instructs the module to consider the resource definition absolute. It will remove any previously configured usernames on the device with the exception of the `admin` user (the current defined set of users).
 
-	role?: string
+	purge?: bool
+
+	// Specifies the SSH public key to configure for the given username. This argument accepts a valid SSH key value.
+
+	sshkey?: string
 
 	// Configures the state of the username definition as it relates to the device operational configuration. When set to I(present), the username(s) should be configured in the device active configuration and when set to I(absent) the username(s) should not be in the device active configuration
 
@@ -122,19 +126,15 @@ net_user :: {
 
 	configured_password?: string
 
-	// The username to be configured on the remote network device. This argument accepts a string value and is mutually exclusive with the C(aggregate) argument. Please note that this option is not same as C(provider username).
-
-	name?: string
-
 	// Defines the username without assigning a password. This will allow the user to login to the system without being authenticated by a password.
 
 	nopassword?: bool
 
-	// Instructs the module to consider the resource definition absolute. It will remove any previously configured usernames on the device with the exception of the `admin` user (the current defined set of users).
+	// The C(privilege) argument configures the privilege level of the user when logged into the system. This argument accepts integer values in the range of 1 to 15.
 
-	purge?: bool
+	privilege?: string
 
-	// Specifies the SSH public key to configure for the given username. This argument accepts a valid SSH key value.
+	// Configures the role for the username in the device running configuration. The argument accepts a string value defining the role name. This argument does not check if the role has been configured on the device.
 
-	sshkey?: string
+	role?: string
 }

@@ -9,8 +9,8 @@ module: onyx_interface: {
 		"This module provides declarative management of Interfaces on Mellanox ONYX network devices.",
 	]
 
-	notes:
-		null, options: {
+	notes: null
+	options: {
 		name: {
 			description: [
 				"Name of the Interface.",

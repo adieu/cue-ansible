@@ -2,10 +2,6 @@ package restconf
 
 restconf_config :: {
 
-	// URI being used to execute API calls.
-
-	path: string
-
 	// The configuration data in format as specififed in C(format) option. Required unless C(method) is I(delete).
 
 	content?: string
@@ -17,6 +13,10 @@ restconf_config :: {
 	// The RESTCONF method to manage the configuration change on device. The value I(post) is used to create a data resource or invoke an operation resource, I(put) is used to replace the target data resource, I(patch) is used to modify the target resource, and I(delete) is used to delete the target resource.
 
 	method?: string
+
+	// URI being used to execute API calls.
+
+	path: string
 }
 
 restconf_get :: {

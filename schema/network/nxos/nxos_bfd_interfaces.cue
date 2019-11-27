@@ -6,8 +6,8 @@ module: nxos_bfd_interfaces: {
 	short_description: "Manages BFD attributes of nxos interfaces."
 	description:       "Manages attributes of Bidirectional Forwarding Detection (BFD) on the interface."
 	author:            "Chris Van Heuveln (@chrisvanheuveln)"
-	notes:
-		null, options: {
+	notes:             null
+	options: {
 		config: {
 			description: "The provided configuration"
 			type:        "list"

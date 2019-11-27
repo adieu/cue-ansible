@@ -2,6 +2,22 @@ package profitbricks
 
 profitbricks :: {
 
+	// Public SSH keys allowing access to the virtual machine.
+
+	ssh_keys?: string
+
+	// create or terminate instances
+
+	state?: string
+
+	// The size in GB of the boot volume.
+
+	volume_size?: string
+
+	// how long before wait gives up, in seconds
+
+	wait_timeout?: string
+
 	// The CPU family type to allocate to the virtual machine.
 
 	cpu_family?: string
@@ -9,6 +25,26 @@ profitbricks :: {
 	// The system image ID for creating the virtual machine, e.g. a3eae284-a2fe-11e4-b187-5f1f641608c8.
 
 	image: string
+
+	// Password set for the administrative user.
+
+	image_password?: string
+
+	// The ID of the LAN you wish to add the servers to.
+
+	lan?: string
+
+	// The name of the virtual machine.
+
+	name: string
+
+	// This will assign the machine to the public LAN. If no LAN exists with public Internet access it is created.
+
+	assign_public_ip?: bool
+
+	// Whether or not to increment a single number in the name for created virtual machines.
+
+	auto_increment?: bool
 
 	// list of instance ids, currently only used when state='absent' to remove instances.
 
@@ -22,45 +58,17 @@ profitbricks :: {
 
 	remove_boot_volume?: bool
 
-	// create or terminate instances
+	// THe ProfitBricks password. Overrides the PB_PASSWORD environment variable.
 
-	state?: string
+	subscription_password?: string
 
-	// Whether or not to increment a single number in the name for created virtual machines.
+	// wait for the instance to be in state 'running' before returning
 
-	auto_increment?: bool
-
-	// Password set for the administrative user.
-
-	image_password?: string
-
-	// Public SSH keys allowing access to the virtual machine.
-
-	ssh_keys?: string
-
-	// The size in GB of the boot volume.
-
-	volume_size?: string
-
-	// how long before wait gives up, in seconds
-
-	wait_timeout?: string
-
-	// This will assign the machine to the public LAN. If no LAN exists with public Internet access it is created.
-
-	assign_public_ip?: bool
+	wait?: bool
 
 	// The bus type for the volume.
 
 	bus?: string
-
-	// The datacenter to provision this virtual machine.
-
-	datacenter?: string
-
-	// The ProfitBricks username. Overrides the PB_SUBSCRIPTION_ID environment variable.
-
-	subscription_user?: string
 
 	// The number of CPU cores to allocate to the virtual machine.
 
@@ -70,28 +78,24 @@ profitbricks :: {
 
 	count?: string
 
-	// The ID of the LAN you wish to add the servers to.
+	// The datacenter to provision this virtual machine.
 
-	lan?: string
-
-	// The name of the virtual machine.
-
-	name: string
+	datacenter?: string
 
 	// The amount of memory to allocate to the virtual machine.
 
 	ram?: string
 
-	// THe ProfitBricks password. Overrides the PB_PASSWORD environment variable.
+	// The ProfitBricks username. Overrides the PB_SUBSCRIPTION_ID environment variable.
 
-	subscription_password?: string
-
-	// wait for the instance to be in state 'running' before returning
-
-	wait?: bool
+	subscription_user?: string
 }
 
 profitbricks_datacenter :: {
+
+	// wait for the datacenter to be created before returning
+
+	wait?: bool
 
 	// how long before wait gives up, in seconds
 
@@ -120,84 +124,64 @@ profitbricks_datacenter :: {
 	// The ProfitBricks username. Overrides the PB_SUBSCRIPTION_ID environment variable.
 
 	subscription_user?: string
-
-	// wait for the datacenter to be created before returning
-
-	wait?: bool
 }
 
 profitbricks_nic :: {
-
-	// The name or ID of the NIC. This is only required on deletes, but not on create.
-
-	name: string
-
-	// THe ProfitBricks password. Overrides the PB_PASSWORD environment variable.
-
-	subscription_password?: string
-
-	// The datacenter in which to operate.
-
-	datacenter: string
-
-	// The LAN to place the NIC on. You can pass a LAN that doesn't exist and it will be created. Required on create.
-
-	lan: string
-
-	// The server name or ID.
-
-	server: string
-
-	// Indicate desired state of the resource
-
-	state?: string
-
-	// The ProfitBricks username. Overrides the PB_SUBSCRIPTION_ID environment variable.
-
-	subscription_user?: string
 
 	// wait for the operation to complete before returning
 
 	wait?: bool
 
-	// how long before wait gives up, in seconds
+	// The datacenter in which to operate.
 
-	wait_timeout?: string
-}
+	datacenter: string
 
-profitbricks_volume :: {
+	// The server name or ID.
 
-	// The bus type.
-
-	bus?: string
-
-	// list of instance ids, currently only used when state='absent' to remove instances.
-
-	instance_ids?: string
-
-	// The size of the volume.
-
-	size?: string
-
-	// how long before wait gives up, in seconds
-
-	wait_timeout?: string
-
-	// Whether or not to increment a single number in the name for created virtual machines.
-
-	auto_increment?: bool
-
-	// The disk type of the volume.
-
-	disk_type?: string
+	server: string
 
 	// THe ProfitBricks password. Overrides the PB_PASSWORD environment variable.
 
 	subscription_password?: string
 
+	// The ProfitBricks username. Overrides the PB_SUBSCRIPTION_ID environment variable.
+
+	subscription_user?: string
+
+	// how long before wait gives up, in seconds
+
+	wait_timeout?: string
+
+	// The LAN to place the NIC on. You can pass a LAN that doesn't exist and it will be created. Required on create.
+
+	lan: string
+
+	// The name or ID of the NIC. This is only required on deletes, but not on create.
+
+	name: string
+
+	// Indicate desired state of the resource
+
+	state?: string
+}
+
+profitbricks_volume :: {
+
 	// The datacenter in which to create the volumes.
 
 	datacenter: string
+
+	// The disk type of the volume.
+
+	disk_type?: string
+
+	// The licence type for the volume. This is used when the image is non-standard.
+
+	licence_type?: string
+
+	// how long before wait gives up, in seconds
+
+	wait_timeout?: string
 
 	// The system image ID for the volume, e.g. a3eae284-a2fe-11e4-b187-5f1f641608c8. This can also be a snapshot image ID.
 
@@ -207,44 +191,52 @@ profitbricks_volume :: {
 
 	image_password?: string
 
-	// The licence type for the volume. This is used when the image is non-standard.
-
-	licence_type?: string
-
-	// wait for the datacenter to be created before returning
-
-	wait?: bool
-
-	// The number of volumes you wish to create.
-
-	count?: string
-
 	// The name of the volumes. You can enumerate the names using auto_increment.
 
 	name: string
-
-	// Public SSH keys allowing access to the virtual machine.
-
-	ssh_keys?: string
 
 	// create or terminate datacenters
 
 	state?: string
 
+	// wait for the datacenter to be created before returning
+
+	wait?: bool
+
+	// Whether or not to increment a single number in the name for created virtual machines.
+
+	auto_increment?: bool
+
+	// list of instance ids, currently only used when state='absent' to remove instances.
+
+	instance_ids?: string
+
 	// The ProfitBricks username. Overrides the PB_SUBSCRIPTION_ID environment variable.
 
 	subscription_user?: string
-}
 
-profitbricks_volume_attachments :: {
+	// The bus type.
 
-	// Indicate desired state of the resource
+	bus?: string
 
-	state?: string
+	// The number of volumes you wish to create.
+
+	count?: string
+
+	// The size of the volume.
+
+	size?: string
+
+	// Public SSH keys allowing access to the virtual machine.
+
+	ssh_keys?: string
 
 	// THe ProfitBricks password. Overrides the PB_PASSWORD environment variable.
 
 	subscription_password?: string
+}
+
+profitbricks_volume_attachments :: {
 
 	// The ProfitBricks username. Overrides the PB_SUBSCRIPTION_ID environment variable.
 
@@ -269,4 +261,12 @@ profitbricks_volume_attachments :: {
 	// The name of the server you wish to detach or attach the volume.
 
 	server: string
+
+	// Indicate desired state of the resource
+
+	state?: string
+
+	// THe ProfitBricks password. Overrides the PB_PASSWORD environment variable.
+
+	subscription_password?: string
 }

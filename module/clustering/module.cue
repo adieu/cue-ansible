@@ -7,14 +7,9 @@ etcd3 :: {
 
 	client_cert?: string
 
-	// The socket level timeout in seconds.
+	// the IP address of the cluster
 
-	timeout?: string
-
-	// the state of the value for the key.
-	// can be present or absent
-
-	state: string
+	host?: string
 
 	// The etcd user to authenticate with.
 
@@ -30,10 +25,6 @@ etcd3 :: {
 
 	client_key?: string
 
-	// the IP address of the cluster
-
-	host?: string
-
 	// the key where the information is stored in the cluster
 
 	key: string
@@ -47,16 +38,21 @@ etcd3 :: {
 
 	port?: string
 
+	// the state of the value for the key.
+	// can be present or absent
+
+	state: string
+
+	// The socket level timeout in seconds.
+
+	timeout?: string
+
 	// the information stored
 
 	value: string
 }
 
 pacemaker_cluster :: {
-
-	// Timeout when the module should considered that the action has failed
-
-	timeout?: string
 
 	// Force the change of the cluster state
 
@@ -69,21 +65,13 @@ pacemaker_cluster :: {
 	// Indicate desired state of the cluster
 
 	state: string
+
+	// Timeout when the module should considered that the action has failed
+
+	timeout?: string
 }
 
 znode :: {
-
-	// The value assigned to the znode.
-
-	value?: string
-
-	// A list of ZooKeeper servers (format '[server]:[port]').
-
-	hosts: string
-
-	// The path of the znode.
-
-	name: string
 
 	// An operation to perform. Mutually exclusive with state.
 
@@ -100,4 +88,16 @@ znode :: {
 	// The amount of time to wait for a node to appear.
 
 	timeout?: string
+
+	// The value assigned to the znode.
+
+	value?: string
+
+	// A list of ZooKeeper servers (format '[server]:[port]').
+
+	hosts: string
+
+	// The path of the znode.
+
+	name: string
 }

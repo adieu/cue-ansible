@@ -1,30 +1,5 @@
 package oneview
 
-oneview_fcoe_network_info :: {
-
-	// FCoE Network name.
-
-	name?: string
-}
-
-oneview_logical_interconnect_group_info :: {
-
-	// Logical Interconnect Group name.
-
-	name?: string
-}
-
-oneview_network_set_info :: {
-
-	// Network Set name.
-
-	name?: string
-
-	// List with options to gather information about Network Set. Option allowed: C(withoutEthernet). The option C(withoutEthernet) retrieves the list of network_sets excluding Ethernet networks.
-
-	options?: string
-}
-
 oneview_enclosure_info :: {
 
 	// Enclosure name.
@@ -36,37 +11,11 @@ oneview_enclosure_info :: {
 	options?: string
 }
 
-oneview_logical_interconnect_group :: {
+oneview_fc_network_info :: {
 
-	// List with the Logical Interconnect Group properties.
+	// Fibre Channel Network name.
 
-	data: string
-
-	// Indicates the desired state for the Logical Interconnect Group resource. C(absent) will remove the resource from OneView, if it exists. C(present) will ensure data properties are compliant with OneView.
-
-	state?: string
-}
-
-oneview_fcoe_network :: {
-
-	// List with FCoE Network properties.
-
-	data: string
-
-	// Indicates the desired state for the FCoE Network resource. C(present) will ensure data properties are compliant with OneView. C(absent) will remove the resource from OneView, if it exists.
-
-	state?: string
-}
-
-oneview_san_manager :: {
-
-	// List with SAN Manager properties.
-
-	data: string
-
-	// Indicates the desired state for the Uplink Set resource. - C(present) ensures data properties are compliant with OneView. - C(absent) removes the resource from OneView, if it exists. - C(connection_information_set) updates the connection information for the SAN Manager. This operation is non-idempotent.
-
-	state?: string
+	name?: string
 }
 
 oneview_san_manager_info :: {
@@ -79,32 +28,6 @@ oneview_san_manager_info :: {
 	// Provider Display Name.
 
 	provider_display_name?: string
-}
-
-wakeonlan :: {
-
-	// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
-
-	broadcast?: string
-
-	// MAC address to send Wake-on-LAN broadcast packet for.
-
-	mac: string
-
-	// UDP port to use for magic Wake-on-LAN packet.
-
-	port?: string
-}
-
-oneview_ethernet_network :: {
-
-	// List with Ethernet Network properties.
-
-	data: string
-
-	// Indicates the desired state for the Ethernet Network resource. - C(present) will ensure data properties are compliant with OneView. - C(absent) will remove the resource from OneView, if it exists. - C(default_bandwidth_reset) will reset the network connection template to the default.
-
-	state?: string
 }
 
 oneview_ethernet_network_info :: {
@@ -129,9 +52,86 @@ oneview_fc_network :: {
 	state?: string
 }
 
-oneview_fc_network_info :: {
+oneview_fcoe_network :: {
 
-	// Fibre Channel Network name.
+	// List with FCoE Network properties.
+
+	data: string
+
+	// Indicates the desired state for the FCoE Network resource. C(present) will ensure data properties are compliant with OneView. C(absent) will remove the resource from OneView, if it exists.
+
+	state?: string
+}
+
+oneview_network_set_info :: {
+
+	// Network Set name.
+
+	name?: string
+
+	// List with options to gather information about Network Set. Option allowed: C(withoutEthernet). The option C(withoutEthernet) retrieves the list of network_sets excluding Ethernet networks.
+
+	options?: string
+}
+
+oneview_datacenter_info :: {
+
+	// Data Center name.
+
+	name?: string
+
+	// Retrieve additional information. Options available: 'visualContent'.
+
+	options?: string
+}
+
+oneview_fcoe_network_info :: {
+
+	// FCoE Network name.
+
+	name?: string
+}
+
+wakeonlan :: {
+
+	// MAC address to send Wake-on-LAN broadcast packet for.
+
+	mac: string
+
+	// UDP port to use for magic Wake-on-LAN packet.
+
+	port?: string
+
+	// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
+
+	broadcast?: string
+}
+
+oneview_ethernet_network :: {
+
+	// List with Ethernet Network properties.
+
+	data: string
+
+	// Indicates the desired state for the Ethernet Network resource. - C(present) will ensure data properties are compliant with OneView. - C(absent) will remove the resource from OneView, if it exists. - C(default_bandwidth_reset) will reset the network connection template to the default.
+
+	state?: string
+}
+
+oneview_logical_interconnect_group :: {
+
+	// List with the Logical Interconnect Group properties.
+
+	data: string
+
+	// Indicates the desired state for the Logical Interconnect Group resource. C(absent) will remove the resource from OneView, if it exists. C(present) will ensure data properties are compliant with OneView.
+
+	state?: string
+}
+
+oneview_logical_interconnect_group_info :: {
+
+	// Logical Interconnect Group name.
 
 	name?: string
 }
@@ -147,13 +147,13 @@ oneview_network_set :: {
 	state?: string
 }
 
-oneview_datacenter_info :: {
+oneview_san_manager :: {
 
-	// Data Center name.
+	// List with SAN Manager properties.
 
-	name?: string
+	data: string
 
-	// Retrieve additional information. Options available: 'visualContent'.
+	// Indicates the desired state for the Uplink Set resource. - C(present) ensures data properties are compliant with OneView. - C(absent) removes the resource from OneView, if it exists. - C(connection_information_set) updates the connection information for the SAN Manager. This operation is non-idempotent.
 
-	options?: string
+	state?: string
 }

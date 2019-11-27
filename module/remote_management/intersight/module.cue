@@ -35,6 +35,10 @@ intersight_rest_api :: {
 
 wakeonlan :: {
 
+	// UDP port to use for magic Wake-on-LAN packet.
+
+	port?: string
+
 	// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
 
 	broadcast?: string
@@ -42,8 +46,4 @@ wakeonlan :: {
 	// MAC address to send Wake-on-LAN broadcast packet for.
 
 	mac: string
-
-	// UDP port to use for magic Wake-on-LAN packet.
-
-	port?: string
 }

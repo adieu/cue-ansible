@@ -2,14 +2,6 @@ package dimensiondata
 
 dimensiondata_network :: {
 
-	// Additional description of the network domain.
-
-	description?: string
-
-	// The name of the network domain to create.
-
-	name: string
-
 	// The service plan, either "ESSENTIALS" or "ADVANCED".
 	// MCP 2.0 Only.
 
@@ -18,9 +10,26 @@ dimensiondata_network :: {
 	// Should the resource be present or absent.
 
 	state?: string
+
+	// Additional description of the network domain.
+
+	description?: string
+
+	// The name of the network domain to create.
+
+	name: string
 }
 
 dimensiondata_vlan :: {
+
+	// A description of the VLAN.
+
+	description?: string
+
+	// The name of the target VLAN.
+	// Required if C(state) is C(present).
+
+	name?: string
 
 	// The Id or name of the target network domain.
 
@@ -45,13 +54,4 @@ dimensiondata_vlan :: {
 	// This is intended to prevent accidental expansion of a VLAN's network (since this operation is not reversible).
 
 	allow_expand?: bool
-
-	// A description of the VLAN.
-
-	description?: string
-
-	// The name of the target VLAN.
-	// Required if C(state) is C(present).
-
-	name?: string
 }

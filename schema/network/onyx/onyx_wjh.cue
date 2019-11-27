@@ -9,8 +9,8 @@ module: onyx_wjh: {
 		"This module provides declarative management of wjh on Mellanox ONYX network devices.",
 	]
 
-	notes:
-		null, options: {
+	notes: null
+	options: {
 		group: {
 			description: [
 				"Name of wjh group.",

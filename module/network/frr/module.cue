@@ -1,15 +1,5 @@
 package frr
 
-frr_facts :: {
-
-	// When supplied, this argument restricts the facts collected to a given subset.
-	// Possible values for this argument include C(all), C(hardware), C(config), and C(interfaces).
-	// Specify a list of values to include a larger subset.
-	// Use a value with an initial C(!) to collect all facts except that subset.
-
-	gather_subset?: string
-}
-
 frr_bgp :: {
 
 	// Specifies the BGP related configuration.
@@ -23,4 +13,14 @@ frr_bgp :: {
 	// In case of delete the existing BGP configuration will be removed from the device.
 
 	operation?: string
+}
+
+frr_facts :: {
+
+	// When supplied, this argument restricts the facts collected to a given subset.
+	// Possible values for this argument include C(all), C(hardware), C(config), and C(interfaces).
+	// Specify a list of values to include a larger subset.
+	// Use a value with an initial C(!) to collect all facts except that subset.
+
+	gather_subset?: string
 }

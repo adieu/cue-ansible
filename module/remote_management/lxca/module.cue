@@ -17,10 +17,6 @@ lxca_cmms :: {
 
 lxca_nodes :: {
 
-	// uuid of chassis, this is string with length greater than 16.
-
-	chassis?: string
-
 	// options to filter nodes information
 
 	command_options?: string
@@ -28,6 +24,10 @@ lxca_nodes :: {
 	// uuid of device, this is string with length greater than 16.
 
 	uuid?: string
+
+	// uuid of chassis, this is string with length greater than 16.
+
+	chassis?: string
 }
 
 wakeonlan :: {

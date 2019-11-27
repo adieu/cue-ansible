@@ -1,6 +1,57 @@
 package univention
 
+udm_dns_zone :: {
+
+	// Whether the dns zone is present or not.
+
+	state?: string
+
+	// Minimum TTL field that should be exported with any RR from this zone.
+
+	ttl?: string
+
+	// Contact person in the SOA record.
+
+	contact?: string
+
+	// Specifies the upper limit on the time interval that can elapse before the zone is no longer authoritative.
+
+	expire?: string
+
+	// List of MX servers. (Must declared as A or AAAA records).
+
+	mx?: string
+
+	// Interval that should elapse before a failed refresh should be retried.
+
+	retry?: string
+
+	// DNS zone name, e.g. C(example.com).
+
+	zone: string
+
+	// List of interface IP addresses, on which the server should response this zone. Required if C(state=present).
+
+	interfaces?: string
+
+	// List of appropriate name servers. Required if C(state=present).
+
+	nameserver?: string
+
+	// Interval before the zone should be refreshed.
+
+	refresh?: string
+
+	// Define if the zone is a forward or reverse DNS zone.
+
+	type: string
+}
+
 udm_group :: {
+
+	// Whether the group is present or not.
+
+	state?: string
 
 	// Subpath inside the OU, e.g. C(cn=classes,cn=students,cn=groups).
 
@@ -21,61 +72,61 @@ udm_group :: {
 	// define the whole ldap position of the group, e.g. C(cn=g123m-1A,cn=classes,cn=schueler,cn=groups,ou=schule,dc=example,dc=com).
 
 	position?: string
-
-	// Whether the group is present or not.
-
-	state?: string
 }
 
 udm_share :: {
-
-	// Fake oplocks.
-
-	samba_fake_oplocks?: string
-
-	// Security mode.
-
-	samba_security_mode?: string
-
-	// Create files/directories with the owner of the parent directory.
-
-	samba_inherit_owner?: string
-
-	// Postexec script.
-
-	samba_postexec?: string
-
-	// Force directory security mode.
-
-	samba_force_directory_security_mode?: string
-
-	// MSDFS root.
-
-	samba_msdfs_root?: string
-
-	// Permissions for the share's root directory.
-
-	directorymode?: string
 
 	// Create files/directories with permissions of the parent directory.
 
 	samba_inherit_permissions?: string
 
-	// NFS synchronisation.
+	// Whether the share is present or not.
 
-	sync?: string
-
-	// Directory owner group of the share's root directory.
-
-	group?: string
-
-	// Invalid users or groups.
-
-	samba_invalid_users?: string
+	state?: string
 
 	// Option name in exports file.
 
 	nfs_custom_settings?: string
+
+	// Force security mode.
+
+	samba_force_security_mode?: string
+
+	// Subtree checking.
+
+	subtree_checking?: string
+
+	// Create files/directories with the owner of the parent directory.
+
+	samba_inherit_owner?: string
+
+	// Oplocks.
+
+	samba_oplocks?: string
+
+	// Postexec script.
+
+	samba_postexec?: string
+
+	// Blocking size.
+
+	samba_block_size?: string
+
+	// Force group.
+
+	samba_force_group?: string
+
+	// Organisational unit, inside the LDAP Base DN.
+
+	ou: string
+
+	// MSDFS root.
+
+	samba_msdfs_root?: string
+
+	// Strict locking.
+
+	samba_strict_locking?: string
 
 	// Directory mode.
 
@@ -85,109 +136,41 @@ udm_share :: {
 
 	samba_force_create_mode?: string
 
-	// NT ACL support.
+	// VFS objects.
 
-	samba_nt_acl_support?: string
+	samba_vfs_objects?: string
 
-	// File mode.
+	// Directory owner group of the share's root directory.
 
-	samba_create_mode?: string
+	group?: string
 
-	// Locking.
+	// Host FQDN (server which provides the share), e.g. C({{ ansible_fqdn }}). Required if C(state=present).
 
-	samba_locking?: string
-
-	// NFS write access.
-
-	writeable?: string
-
-	// Modify user ID for root user (root squashing).
-
-	root_squash?: string
-
-	// Level 2 oplocks.
-
-	samba_level_2_oplocks?: string
-
-	// Subtree checking.
-
-	subtree_checking?: string
-
-	// Name
-
-	name: string
-
-	// Force group.
-
-	samba_force_group?: string
-
-	// Force security mode.
-
-	samba_force_security_mode?: string
-
-	// Windows name. Required if C(state=present).
-
-	samba_name?: string
-
-	// Blocking size.
-
-	samba_block_size?: string
+	host?: string
 
 	// Client-side caching policy.
 
 	samba_csc_policy?: string
 
-	// Whether the share is present or not.
-
-	state?: string
-
 	// Directory security mode.
 
 	samba_directory_security_mode?: string
 
-	// Force user.
+	// Invalid users or groups.
 
-	samba_force_user?: string
+	samba_invalid_users?: string
 
-	// Valid users or groups.
+	// Windows name. Required if C(state=present).
 
-	samba_valid_users?: string
+	samba_name?: string
 
-	// Only allow access for this host, IP address or network.
+	// NFS synchronisation.
 
-	nfs_hosts?: string
+	sync?: string
 
 	// Blocking locks.
 
 	samba_blocking_locks?: string
-
-	// Inherit ACLs.
-
-	samba_inherit_acls?: string
-
-	// Samba write access.
-
-	samba_writeable?: string
-
-	// Option name in smb.conf and its value.
-
-	samba_custom_settings?: string
-
-	// Allowed host/network.
-
-	samba_hosts_allow?: string
-
-	// Strict locking.
-
-	samba_strict_locking?: string
-
-	// VFS objects.
-
-	samba_vfs_objects?: string
-
-	// Restrict write access to these users/groups.
-
-	samba_write_list?: string
 
 	// Force directory mode.
 
@@ -197,204 +180,120 @@ udm_share :: {
 
 	samba_hosts_deny?: string
 
-	// Directory on the providing server, e.g. C(/home). Required if C(state=present).
+	// Inherit ACLs.
 
-	path?: string
+	samba_inherit_acls?: string
 
-	// Users with write access may modify permissions.
+	// Force user.
 
-	samba_dos_filemode?: string
+	samba_force_user?: string
 
-	// Allow anonymous read-only access with a guest user.
+	// Name
 
-	samba_public?: string
+	name: string
 
-	// Host FQDN (server which provides the share), e.g. C({{ ansible_fqdn }}). Required if C(state=present).
+	// Only allow access for this host, IP address or network.
 
-	host?: string
+	nfs_hosts?: string
 
-	// Hide files.
+	// Modify user ID for root user (root squashing).
 
-	samba_hide_files?: string
+	root_squash?: string
 
-	// Oplocks.
+	// File mode.
 
-	samba_oplocks?: string
+	samba_create_mode?: string
+
+	// Security mode.
+
+	samba_security_mode?: string
 
 	// Hide unreadable files/directories.
 
 	samba_hide_unreadable?: string
 
+	// Allowed host/network.
+
+	samba_hosts_allow?: string
+
+	// Restrict write access to these users/groups.
+
+	samba_write_list?: string
+
+	// Permissions for the share's root directory.
+
+	directorymode?: string
+
+	// Option name in smb.conf and its value.
+
+	samba_custom_settings?: string
+
+	// Valid users or groups.
+
+	samba_valid_users?: string
+
+	// Locking.
+
+	samba_locking?: string
+
 	// Preexec script.
 
 	samba_preexec?: string
 
-	// Organisational unit, inside the LDAP Base DN.
+	// Users with write access may modify permissions.
 
-	ou: string
+	samba_dos_filemode?: string
+
+	// Level 2 oplocks.
+
+	samba_level_2_oplocks?: string
+
+	// Samba write access.
+
+	samba_writeable?: string
+
+	// Directory on the providing server, e.g. C(/home). Required if C(state=present).
+
+	path?: string
+
+	// Hide files.
+
+	samba_hide_files?: string
+
+	// Force directory security mode.
+
+	samba_force_directory_security_mode?: string
+
+	// Show in Windows network environment.
+
+	samba_browseable?: string
+
+	// Fake oplocks.
+
+	samba_fake_oplocks?: string
+
+	// NT ACL support.
+
+	samba_nt_acl_support?: string
 
 	// Directory owner of the share's root directory.
 
 	owner?: string
 
-	// Show in Windows network environment.
+	// Allow anonymous read-only access with a guest user.
 
-	samba_browseable?: string
+	samba_public?: string
+
+	// NFS write access.
+
+	writeable?: string
 }
 
 udm_user :: {
 
-	// Samba privilege, like allow printer administration, do domain join.
-
-	samba_privileges?: string
-
-	// Allow the authentication only on this Microsoft Windows host.
-
-	samba_user_workstations?: string
-
-	// Birthday
-
-	birthday?: string
-
-	// GECOS
-
-	gecos?: string
-
-	// List of alternative e-mail addresses.
-
-	mail_alternative_address?: string
-
-	// List of pager telephone numbers.
-
-	pager_telephonenumber?: string
-
-	// Postal code of users business address.
-
-	postcode?: string
-
-	// Login shell
-
-	shell?: string
-
-	// LDAP subpath inside the organizational unit, e.g. C(cn=teachers,cn=users) for LDAP container C(cn=teachers,cn=users,dc=example,dc=com).
-
-	subpath?: string
-
-	// C(always) will update passwords if they differ. C(on_create) will only set the password for newly created users.
-
-	update_password?: string
-
-	// Description (not gecos)
-
-	description?: string
-
-	// List of private telephone numbers.
-
-	home_telephone_number?: string
-
-	// Last name. Required if C(state=present).
-
-	lastname?: string
-
-	// Mobile phone number
-
-	mobile_telephone_number?: string
-
-	// Path to home NFS share, inside the homeShare.
-
-	home_share_path?: string
-
-	// Windows logon script.
-
-	scriptpath?: string
-
-	// A list of superiors as LDAP DNs.
-
-	secretary?: string
-
-	// Windows home drive, e.g. C("H:").
-
-	homedrive?: string
-
-	// Override password check
-
-	override_pw_length?: bool
-
-	// Street of users business address.
-
-	street?: string
-
-	// Account expiry date, e.g. C(1999-12-31).
-
-	userexpiry?: string
-
-	// Display name (not gecos)
-
-	display_name?: string
-
-	// Employee type
-
-	employee_type?: string
-
-	// First name. Required if C(state=present).
-
-	firstname?: string
-
-	// Home NFS share. Must be a LDAP DN, e.g. C(cn=home,cn=shares,ou=school,dc=example,dc=com).
-
-	home_share?: string
-
-	// Department number of users business address.
-
-	department_number?: string
-
-	// Primary group. This must be the group LDAP DN.
-
-	primary_group?: string
-
-	// Title, e.g. C(Prof.).
-
-	title?: string
-
-	// Unix home directory
-
-	unixhome?: string
-
-	// Password. Required if C(state=present).
-
-	password?: string
-
-	// Windows profile directory
-
-	profilepath?: string
-
-	// Enable user for the following service providers.
-
-	serviceprovider?: string
-
-	// City of users business address.
-
-	city?: string
-
-	// A list of e-mail addresses.
-
-	email?: string
-
-	// Primary e-mail address
-
-	mail_primary_address?: string
-
 	// Organizational Unit inside the LDAP Base DN, e.g. C(school) for LDAP OU C(ou=school,dc=example,dc=com).
 
 	ou?: string
-
-	// Country of users business address.
-
-	country?: string
-
-	// POSIX groups, the LDAP DNs of the groups will be found with the LDAP filter for each group as $GROUP: C((&(objectClass=posixGroup)(cn=$GROUP))).
-
-	groups?: string
 
 	// Change password on next login.
 
@@ -404,29 +303,173 @@ udm_user :: {
 
 	room_number?: string
 
+	// Samba privilege, like allow printer administration, do domain join.
+
+	samba_privileges?: string
+
+	// Allow the authentication only on this Microsoft Windows host.
+
+	samba_user_workstations?: string
+
+	// Unix home directory
+
+	unixhome?: string
+
+	// Account expiry date, e.g. C(1999-12-31).
+
+	userexpiry?: string
+
+	// First name. Required if C(state=present).
+
+	firstname?: string
+
+	// GECOS
+
+	gecos?: string
+
+	// Path to home NFS share, inside the homeShare.
+
+	home_share_path?: string
+
+	// Postal code of users business address.
+
+	postcode?: string
+
+	// Primary group. This must be the group LDAP DN.
+
+	primary_group?: string
+
+	// Title, e.g. C(Prof.).
+
+	title?: string
+
+	// User name
+
+	username: string
+
+	// Birthday
+
+	birthday?: string
+
+	// Display name (not gecos)
+
+	display_name?: string
+
+	// Windows profile directory
+
+	profilepath?: string
+
+	// A list of superiors as LDAP DNs.
+
+	secretary?: string
+
+	// Login shell
+
+	shell?: string
+
+	// Street of users business address.
+
+	street?: string
+
+	// Department number of users business address.
+
+	department_number?: string
+
+	// Home NFS share. Must be a LDAP DN, e.g. C(cn=home,cn=shares,ou=school,dc=example,dc=com).
+
+	home_share?: string
+
+	// Windows home drive, e.g. C("H:").
+
+	homedrive?: string
+
+	// List of alternative e-mail addresses.
+
+	mail_alternative_address?: string
+
+	// Override password check
+
+	override_pw_length?: bool
+
+	// POSIX groups, the LDAP DNs of the groups will be found with the LDAP filter for each group as $GROUP: C((&(objectClass=posixGroup)(cn=$GROUP))).
+
+	groups?: string
+
+	// Employee type
+
+	employee_type?: string
+
+	// Primary e-mail address
+
+	mail_primary_address?: string
+
+	// List of pager telephone numbers.
+
+	pager_telephonenumber?: string
+
 	// List of telephone numbers.
 
 	phone?: string
 
-	// Define the whole position of users object inside the LDAP tree, e.g. C(cn=employee,cn=users,ou=school,dc=example,dc=com).
+	// Description (not gecos)
 
-	position?: string
+	description?: string
 
 	// Windows home path, e.g. C('\\$FQDN\$USERNAME').
 
 	sambahome?: string
 
-	// Whether the user is present or not.
+	// Enable user for the following service providers.
 
-	state?: string
+	serviceprovider?: string
+
+	// C(always) will update passwords if they differ. C(on_create) will only set the password for newly created users.
+
+	update_password?: string
+
+	// Define the whole position of users object inside the LDAP tree, e.g. C(cn=employee,cn=users,ou=school,dc=example,dc=com).
+
+	position?: string
 
 	// Employee number
 
 	employee_number?: string
 
+	// List of private telephone numbers.
+
+	home_telephone_number?: string
+
+	// Windows logon script.
+
+	scriptpath?: string
+
+	// Whether the user is present or not.
+
+	state?: string
+
+	// LDAP subpath inside the organizational unit, e.g. C(cn=teachers,cn=users) for LDAP container C(cn=teachers,cn=users,dc=example,dc=com).
+
+	subpath?: string
+
+	// A list of e-mail addresses.
+
+	email?: string
+
+	// Country of users business address.
+
+	country?: string
+
+	// Last name. Required if C(state=present).
+
+	lastname?: string
+
 	// FQDN of mail server
 
 	mail_home_server?: string
+
+	// Mobile phone number
+
+	mobile_telephone_number?: string
 
 	// Organisation
 
@@ -436,9 +479,13 @@ udm_user :: {
 
 	override_pw_history?: bool
 
-	// User name
+	// Password. Required if C(state=present).
 
-	username: string
+	password?: string
+
+	// City of users business address.
+
+	city?: string
 }
 
 udm_dns_record :: {
@@ -462,51 +509,4 @@ udm_dns_record :: {
 	// Corresponding DNS zone for this record, e.g. example.com.
 
 	zone: string
-}
-
-udm_dns_zone :: {
-
-	// List of interface IP addresses, on which the server should response this zone. Required if C(state=present).
-
-	interfaces?: string
-
-	// List of MX servers. (Must declared as A or AAAA records).
-
-	mx?: string
-
-	// List of appropriate name servers. Required if C(state=present).
-
-	nameserver?: string
-
-	// Interval before the zone should be refreshed.
-
-	refresh?: string
-
-	// Whether the dns zone is present or not.
-
-	state?: string
-
-	// Contact person in the SOA record.
-
-	contact?: string
-
-	// Interval that should elapse before a failed refresh should be retried.
-
-	retry?: string
-
-	// Minimum TTL field that should be exported with any RR from this zone.
-
-	ttl?: string
-
-	// Define if the zone is a forward or reverse DNS zone.
-
-	type: string
-
-	// DNS zone name, e.g. C(example.com).
-
-	zone: string
-
-	// Specifies the upper limit on the time interval that can elapse before the zone is no longer authoritative.
-
-	expire?: string
 }

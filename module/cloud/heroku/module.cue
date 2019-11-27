@@ -2,14 +2,6 @@ package heroku
 
 heroku_collaborator :: {
 
-	// Heroku API key
-
-	api_key?: string
-
-	// List of Heroku App names
-
-	apps: string
-
 	// Create or remove the heroku collaborator
 
 	state?: string
@@ -21,4 +13,12 @@ heroku_collaborator :: {
 	// User ID or e-mail
 
 	user: string
+
+	// Heroku API key
+
+	api_key?: string
+
+	// List of Heroku App names
+
+	apps: string
 }
