@@ -4,7 +4,9 @@ wakeonlan :: {
 	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	wakeonlan: {
 
 		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.

@@ -1,10 +1,12 @@
 package dimensiondata
 
 dimensiondata_network :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
 	dimensiondata_network: {
 
 		// Additional description of the network domain.
@@ -27,10 +29,12 @@ dimensiondata_network :: {
 }
 
 dimensiondata_vlan :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
 	dimensiondata_vlan: {
 
 		// The Id or name of the target network domain.

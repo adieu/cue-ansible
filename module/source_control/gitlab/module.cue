@@ -1,15 +1,261 @@
 package gitlab
 
-subversion :: {
+bzr :: {
+	register?: string
+	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
-	vars?: {...}
-	subversion: {
+	name?:   string
+	bzr: {
 
-		// Absolute path where the repository should be deployed.
+		// Absolute path of where the branch should be cloned to.
 
 		dest: string
+
+		// Path to bzr executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
+
+		executable?: string
+
+		// If C(yes), any modified files in the working tree will be discarded.  Before 1.9 the default value was C(yes).
+
+		force?: bool
+
+		// SSH or HTTP protocol address of the parent branch.
+
+		name: string
+
+		// What version of the branch to clone.  This can be the bzr revno or revid.
+
+		version?: string
+	}
+}
+
+git :: {
+	register?: string
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	name?:   string
+	git: {
+
+		// If C(yes), any modified files in the working repository will be discarded.  Prior to 0.7, this was always 'yes' and could not be disabled.  Prior to 1.9, the default was `yes`
+
+		force?: bool
+
+		// A list of trusted GPG fingerprints to compare to the fingerprint of the GPG-signed commit.
+		// Only used when I(verify_commit=yes).
+
+		gpg_whitelist?: [...]
+
+		// if C(no), repository will be cloned without the --recursive option, skipping sub-modules.
+
+		recursive?: bool
+
+		// The path to place the cloned repository. If specified, Git repository can be separated from working tree.
+
+		separate_git_dir?: string
+
+		// What version of the repository to check out.  This can be the literal string C(HEAD), a branch name, a tag name. It can also be a I(SHA-1) hash, in which case C(refspec) needs to be specified if the given revision is not already available.
+
+		version?: string
+
+		// if C(yes), ensure that "-o StrictHostKeyChecking=no" is present as an ssh option.
+
+		accept_hostkey?: bool
+
+		// Path to git executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
+
+		executable?: string
+
+		// Specify an optional private key file path, on the target host, to use for the checkout.
+
+		key_file?: string
+
+		// Reference repository (see "git clone --reference ...")
+
+		reference?: string
+
+		// Name of the remote.
+
+		remote?: string
+
+		// if C(yes), when cloning or checking out a C(version) verify the signature of a GPG signed commit. This requires C(git) version>=2.1.0 to be installed. The commit MUST be signed and the public key MUST be present in the GPG keyring.
+
+		verify_commit?: bool
+
+		// If C(no), do not retrieve new revisions from the origin repository
+		// Operations like archive will work on the existing (old) repository and might not respond to changes to the options version or remote.
+
+		update?: bool
+
+		// if C(yes), repository will be created as a bare repo, otherwise it will be a standard repo with a workspace.
+
+		bare?: bool
+
+		// If C(no), do not clone the repository even if it does not exist locally
+
+		clone?: bool
+
+		// Create a shallow clone with a history truncated to the specified number or revisions. The minimum possible value is C(1), otherwise ignored. Needs I(git>=1.9.1) to work correctly.
+
+		depth?: string
+
+		// Add an additional refspec to be fetched. If version is set to a I(SHA-1) not reachable from any branch or tag, this option may be necessary to specify the ref containing the I(SHA-1). Uses the same syntax as the 'git fetch' command. An example value could be "refs/meta/config".
+
+		refspec?: string
+
+		// git, SSH, or HTTP(S) protocol address of the git repository.
+
+		repo: string
+
+		// if C(yes), submodules will track the latest commit on their master branch (or other branch specified in .gitmodules).  If C(no), submodules will be kept at the revision specified by the main project. This is equivalent to specifying the --remote flag to git submodule update.
+
+		track_submodules?: bool
+
+		// The umask to set before doing any checkouts, or any other repository maintenance.
+
+		umask?: string
+
+		// Specify archive file path with extension. If specified, creates an archive file of the specified format containing the tree structure for the source tree. Allowed archive formats ["zip", "tar.gz", "tar", "tgz"]
+		// This will clone and perform git archive from local directory as not all git servers support git archive.
+
+		archive?: string
+
+		// The path of where the repository should be checked out. This parameter is required, unless C(clone) is set to C(no).
+
+		dest: string
+
+		// Creates a wrapper script and exports the path as GIT_SSH which git then automatically uses to override ssh arguments. An example value could be "-o StrictHostKeyChecking=no" (although this particular option is better set via C(accept_hostkey)).
+
+		ssh_opts?: string
+	}
+}
+
+gitlab_deploy_key :: {
+	register?: string
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	name?:   string
+	gitlab_deploy_key: {
+
+		// Whether this key can push to the project.
+
+		can_push?: bool
+
+		// Deploy key
+
+		key: string
+
+		// Id or Full path of project in the form of group/name.
+
+		project: string
+
+		// When C(present) the deploy key added to the project if it doesn't exist.
+		// When C(absent) it will be removed from the project if it exists.
+
+		state: string
+
+		// Deploy key's title.
+
+		title: string
+
+		// GitLab token for logging in.
+
+		api_token?: string
+	}
+}
+
+gitlab_user :: {
+	register?: string
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	name?:   string
+	gitlab_user: {
+
+		// Id or Full path of parent group in the form of group/name.
+		// Add user as an member to this group.
+
+		group?: string
+
+		// Grant admin privileges to the user.
+
+		isadmin?: bool
+
+		// Name of the user you want to create.
+		// Required only if C(state) is set to C(present).
+
+		name?: string
+
+		// The password of the user.
+		// GitLab server enforces minimum password length to 8, set this value with 8 or more characters.
+		// Required only if C(state) is set to C(present).
+
+		password?: string
+
+		// The ssh key itself.
+
+		sshkey_file?: string
+
+		// The name of the sshkey
+
+		sshkey_name?: string
+
+		// create or delete group.
+		// Possible values are present and absent.
+
+		state?: string
+
+		// The access level to the group. One of the following can be used.
+		// guest
+		// reporter
+		// developer
+		// master (alias for maintainer)
+		// maintainer
+		// owner
+
+		access_level?: string
+
+		// GitLab token for logging in.
+
+		api_token?: string
+
+		// Require confirmation.
+
+		confirm?: bool
+
+		// The email that belongs to the user.
+		// Required only if C(state) is set to C(present).
+
+		email?: string
+
+		// Define external parameter for this user.
+
+		external?: bool
+
+		// The username of the user.
+
+		username: string
+	}
+}
+
+subversion :: {
+	register?: string
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	name?:   string
+	subversion: {
+
+		// C(--username) parameter passed to svn.
+
+		username?: string
 
 		// Path to svn executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
 
@@ -18,30 +264,6 @@ subversion :: {
 		// If C(yes), do export instead of checkout/update.
 
 		export?: bool
-
-		// If C(no), do not retrieve new revisions from the origin repository.
-
-		update?: bool
-
-		// C(--username) parameter passed to svn.
-
-		username?: string
-
-		// If C(no), do not check out the repository if it does not exist locally.
-
-		checkout?: bool
-
-		// If C(yes), modified files will be discarded. If C(no), module will fail if it encounters modified files. Prior to 1.9 the default was C(yes).
-
-		force?: bool
-
-		// If the directory exists, then the working copy will be checked-out over-the-top using svn checkout --force; if force is specified then existing files with different content are reverted
-
-		in_place?: bool
-
-		// C(--password) parameter passed to svn.
-
-		password?: string
 
 		// The subversion URL to the repository.
 
@@ -54,15 +276,45 @@ subversion :: {
 		// If C(no), do not call svn switch before update.
 
 		switch?: bool
+
+		// If C(no), do not retrieve new revisions from the origin repository.
+
+		update?: bool
+
+		// If C(no), do not check out the repository if it does not exist locally.
+
+		checkout?: bool
+
+		// Absolute path where the repository should be deployed.
+
+		dest: string
+
+		// If C(yes), modified files will be discarded. If C(no), module will fail if it encounters modified files. Prior to 1.9 the default was C(yes).
+
+		force?: bool
+
+		// If the directory exists, then the working copy will be checked-out over-the-top using svn checkout --force; if force is specified then existing files with different content are reverted
+
+		in_place?: bool
+
+		// C(--password) parameter passed to svn.
+
+		password?: string
 	}
 }
 
 git_config :: {
+	register?: string
+	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
-	vars?: {...}
+	name?:   string
 	git_config: {
+
+		// List all settings (optionally limited to a given I(scope))
+
+		list_all?: bool
 
 		// The name of the setting. If no value is supplied, the value will be read from the config if it has been set.
 
@@ -83,18 +335,16 @@ git_config :: {
 		// When specifying the name of a single setting, supply a value to set that setting to the given value.
 
 		value?: string
-
-		// List all settings (optionally limited to a given I(scope))
-
-		list_all?: bool
 	}
 }
 
 gitlab_group :: {
+	register?: string
+	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
-	vars?: {...}
+	name?:   string
 	gitlab_group: {
 
 		// A description for the group.
@@ -130,11 +380,151 @@ gitlab_group :: {
 	}
 }
 
-gitlab_project_variable :: {
+gitlab_hook :: {
+	register?: string
+	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
+	name?:   string
+	gitlab_hook: {
+
+		// Trigger hook on tag push events.
+
+		tag_push_events?: bool
+
+		// The url that you want GitLab to post to, this is used as the primary key for updates and deletion.
+
+		hook_url: string
+
+		// Trigger hook on pipeline events.
+
+		pipeline_events?: bool
+
+		// Trigger hook on merge requests events.
+
+		merge_requests_events?: bool
+
+		// Trigger hook on note events or when someone adds a comment.
+
+		note_events?: bool
+
+		// When C(present) the hook will be updated to match the input or created if it doesn't exist.
+		// When C(absent) hook will be deleted if it exists.
+
+		state: string
+
+		// Trigger hook on wiki events.
+
+		wiki_page_events?: bool
+
+		// Whether GitLab will do SSL verification when triggering the hook.
+
+		hook_validate_certs?: bool
+
+		// Trigger hook on issues events.
+
+		issues_events?: bool
+
+		// Trigger hook on job events.
+
+		job_events?: bool
+
+		// Trigger hook on push events.
+
+		push_events?: bool
+
+		// Secret token to validate hook messages at the receiver.
+		// If this is present it will always result in a change as it cannot be retrieved from GitLab.
+		// Will show up in the X-GitLab-Token HTTP request header.
+
+		token?: string
+
+		// GitLab token for logging in.
+
+		api_token?: string
+
+		// Id or Full path of the project in the form of group/name.
+
+		project: string
+	}
+}
+
+gitlab_project :: {
+	register?: string
 	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	name?:   string
+	gitlab_project: {
+
+		// If an wiki for this project should be available or not.
+		// Possible values are true and false.
+
+		wiki_enabled?: bool
+
+		// An description for the project.
+
+		description?: string
+
+		// Id or The full path of the group of which this projects belongs to.
+
+		group?: string
+
+		// Git repository which will be imported into gitlab.
+		// GitLab server needs read access to this git repository.
+
+		import_url?: string
+
+		// The name of the project
+
+		name: string
+
+		// If creating snippets should be available or not.
+		// Possible values are true and false.
+
+		snippets_enabled?: bool
+
+		// create or delete project.
+		// Possible values are present and absent.
+
+		state?: string
+
+		// GitLab token for logging in.
+
+		api_token?: string
+
+		// Whether you want to create issues or not.
+		// Possible values are true and false.
+
+		issues_enabled?: bool
+
+		// If merge requests can be made or not.
+		// Possible values are true and false.
+
+		merge_requests_enabled?: bool
+
+		// The path of the project you want to create, this will be server_url/<group>/path.
+		// If not supplied, name will be used.
+
+		path?: string
+
+		// Private. Project access must be granted explicitly for each user.
+		// Internal. The project can be cloned by any logged in user.
+		// Public. The project can be cloned without any authentication.
+
+		visibility?: string
+	}
+}
+
+gitlab_project_variable :: {
+	register?: string
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	name?:   string
 	gitlab_project_variable: {
 
 		// Create or delete project variable.
@@ -160,101 +550,65 @@ gitlab_project_variable :: {
 	}
 }
 
-gitlab_user :: {
+gitlab_runner :: {
+	register?: string
+	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
-	vars?: {...}
-	gitlab_user: {
+	name?:   string
+	gitlab_runner: {
 
-		// create or delete group.
-		// Possible values are present and absent.
-
-		state?: string
-
-		// The username of the user.
-
-		username: string
-
-		// The access level to the group. One of the following can be used.
-		// guest
-		// reporter
-		// developer
-		// master (alias for maintainer)
-		// maintainer
-		// owner
+		// Determines if a runner can pick up jobs from protected branches.
 
 		access_level?: string
 
-		// Require confirmation.
+		// Define if the runners is immediately active after creation.
 
-		confirm?: bool
+		active?: bool
 
-		// The email that belongs to the user.
-		// Required only if C(state) is set to C(present).
+		// The unique name of the runner.
 
-		email?: string
+		description: string
 
-		// Name of the user you want to create.
-		// Required only if C(state) is set to C(present).
+		// Determines if the runner is locked or not.
 
-		name?: string
+		locked?: bool
 
-		// The ssh key itself.
+		// Run untagged jobs or not.
 
-		sshkey_file?: string
+		run_untagged?: bool
 
-		// The name of the sshkey
+		// Your private token to interact with the GitLab API.
 
-		sshkey_name?: string
+		api_token: string
 
-		// GitLab token for logging in.
+		// The maximum timeout that a runner has to pick up a specific job.
 
-		api_token?: string
+		maximum_timeout?: int
 
-		// Define external parameter for this user.
+		// The registration token is used to register new runners.
 
-		external?: bool
+		registration_token: string
 
-		// Id or Full path of parent group in the form of group/name.
-		// Add user as an member to this group.
+		// Make sure that the runner with the same name exists with the same configuration or delete the runner with the same name.
 
-		group?: string
+		state?: string
 
-		// Grant admin privileges to the user.
+		// The tags that apply to the runner.
 
-		isadmin?: bool
-
-		// The password of the user.
-		// GitLab server enforces minimum password length to 8, set this value with 8 or more characters.
-		// Required only if C(state) is set to C(present).
-
-		password?: string
+		tag_list?: [...]
 	}
 }
 
 hg :: {
+	register?: string
+	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
-	vars?: {...}
+	name?:   string
 	hg: {
-
-		// If C(no), do not clone the repository if it does not exist locally.
-
-		clone?: bool
-
-		// Absolute path of where the repository should be cloned to. This parameter is required, unless clone and update are set to no
-
-		dest: string
-
-		// Path to hg executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
-
-		executable?: string
-
-		// Discards uncommitted changes. Runs C(hg update -C).  Prior to 1.9, the default was `yes`.
-
-		force?: bool
 
 		// Deletes untracked files. Runs C(hg purge).
 
@@ -271,351 +625,21 @@ hg :: {
 		// If C(no), do not retrieve new revisions from the origin repository
 
 		update?: bool
-	}
-}
 
-gitlab_runner :: {
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	gitlab_runner: {
-
-		// The tags that apply to the runner.
-
-		tag_list?: [...]
-
-		// Determines if a runner can pick up jobs from protected branches.
-
-		access_level?: string
-
-		// The unique name of the runner.
-
-		description: string
-
-		// Determines if the runner is locked or not.
-
-		locked?: bool
-
-		// The maximum timeout that a runner has to pick up a specific job.
-
-		maximum_timeout?: int
-
-		// The registration token is used to register new runners.
-
-		registration_token: string
-
-		// Make sure that the runner with the same name exists with the same configuration or delete the runner with the same name.
-
-		state?: string
-
-		// Define if the runners is immediately active after creation.
-
-		active?: bool
-
-		// Your private token to interact with the GitLab API.
-
-		api_token: string
-
-		// Run untagged jobs or not.
-
-		run_untagged?: bool
-	}
-}
-
-bzr :: {
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	bzr: {
-
-		// Absolute path of where the branch should be cloned to.
-
-		dest: string
-
-		// Path to bzr executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
-
-		executable?: string
-
-		// If C(yes), any modified files in the working tree will be discarded.  Before 1.9 the default value was C(yes).
-
-		force?: bool
-
-		// SSH or HTTP protocol address of the parent branch.
-
-		name: string
-
-		// What version of the branch to clone.  This can be the bzr revno or revid.
-
-		version?: string
-	}
-}
-
-git :: {
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	git: {
-
-		// Path to git executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
-
-		executable?: string
-
-		// A list of trusted GPG fingerprints to compare to the fingerprint of the GPG-signed commit.
-		// Only used when I(verify_commit=yes).
-
-		gpg_whitelist?: [...]
-
-		// Specify an optional private key file path, on the target host, to use for the checkout.
-
-		key_file?: string
-
-		// Name of the remote.
-
-		remote?: string
-
-		// if C(yes), repository will be created as a bare repo, otherwise it will be a standard repo with a workspace.
-
-		bare?: bool
-
-		// The path of where the repository should be checked out. This parameter is required, unless C(clone) is set to C(no).
-
-		dest: string
-
-		// The umask to set before doing any checkouts, or any other repository maintenance.
-
-		umask?: string
-
-		// if C(yes), ensure that "-o StrictHostKeyChecking=no" is present as an ssh option.
-
-		accept_hostkey?: bool
-
-		// The path to place the cloned repository. If specified, Git repository can be separated from working tree.
-
-		separate_git_dir?: string
-
-		// Reference repository (see "git clone --reference ...")
-
-		reference?: string
-
-		// Add an additional refspec to be fetched. If version is set to a I(SHA-1) not reachable from any branch or tag, this option may be necessary to specify the ref containing the I(SHA-1). Uses the same syntax as the 'git fetch' command. An example value could be "refs/meta/config".
-
-		refspec?: string
-
-		// Creates a wrapper script and exports the path as GIT_SSH which git then automatically uses to override ssh arguments. An example value could be "-o StrictHostKeyChecking=no" (although this particular option is better set via C(accept_hostkey)).
-
-		ssh_opts?: string
-
-		// If C(no), do not retrieve new revisions from the origin repository
-		// Operations like archive will work on the existing (old) repository and might not respond to changes to the options version or remote.
-
-		update?: bool
-
-		// if C(yes), when cloning or checking out a C(version) verify the signature of a GPG signed commit. This requires C(git) version>=2.1.0 to be installed. The commit MUST be signed and the public key MUST be present in the GPG keyring.
-
-		verify_commit?: bool
-
-		// If C(no), do not clone the repository even if it does not exist locally
+		// If C(no), do not clone the repository if it does not exist locally.
 
 		clone?: bool
 
-		// Create a shallow clone with a history truncated to the specified number or revisions. The minimum possible value is C(1), otherwise ignored. Needs I(git>=1.9.1) to work correctly.
+		// Absolute path of where the repository should be cloned to. This parameter is required, unless clone and update are set to no
 
-		depth?: string
+		dest: string
 
-		// if C(no), repository will be cloned without the --recursive option, skipping sub-modules.
+		// Path to hg executable to use. If not supplied, the normal mechanism for resolving binary paths will be used.
 
-		recursive?: bool
+		executable?: string
 
-		// git, SSH, or HTTP(S) protocol address of the git repository.
-
-		repo: string
-
-		// if C(yes), submodules will track the latest commit on their master branch (or other branch specified in .gitmodules).  If C(no), submodules will be kept at the revision specified by the main project. This is equivalent to specifying the --remote flag to git submodule update.
-
-		track_submodules?: bool
-
-		// What version of the repository to check out.  This can be the literal string C(HEAD), a branch name, a tag name. It can also be a I(SHA-1) hash, in which case C(refspec) needs to be specified if the given revision is not already available.
-
-		version?: string
-
-		// Specify archive file path with extension. If specified, creates an archive file of the specified format containing the tree structure for the source tree. Allowed archive formats ["zip", "tar.gz", "tar", "tgz"]
-		// This will clone and perform git archive from local directory as not all git servers support git archive.
-
-		archive?: string
-
-		// If C(yes), any modified files in the working repository will be discarded.  Prior to 0.7, this was always 'yes' and could not be disabled.  Prior to 1.9, the default was `yes`
+		// Discards uncommitted changes. Runs C(hg update -C).  Prior to 1.9, the default was `yes`.
 
 		force?: bool
-	}
-}
-
-gitlab_deploy_key :: {
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	gitlab_deploy_key: {
-
-		// When C(present) the deploy key added to the project if it doesn't exist.
-		// When C(absent) it will be removed from the project if it exists.
-
-		state: string
-
-		// Deploy key's title.
-
-		title: string
-
-		// GitLab token for logging in.
-
-		api_token?: string
-
-		// Whether this key can push to the project.
-
-		can_push?: bool
-
-		// Deploy key
-
-		key: string
-
-		// Id or Full path of project in the form of group/name.
-
-		project: string
-	}
-}
-
-gitlab_hook :: {
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	gitlab_hook: {
-
-		// Trigger hook on issues events.
-
-		issues_events?: bool
-
-		// Trigger hook on tag push events.
-
-		tag_push_events?: bool
-
-		// Secret token to validate hook messages at the receiver.
-		// If this is present it will always result in a change as it cannot be retrieved from GitLab.
-		// Will show up in the X-GitLab-Token HTTP request header.
-
-		token?: string
-
-		// GitLab token for logging in.
-
-		api_token?: string
-
-		// The url that you want GitLab to post to, this is used as the primary key for updates and deletion.
-
-		hook_url: string
-
-		// Trigger hook on merge requests events.
-
-		merge_requests_events?: bool
-
-		// Whether GitLab will do SSL verification when triggering the hook.
-
-		hook_validate_certs?: bool
-
-		// Trigger hook on job events.
-
-		job_events?: bool
-
-		// Id or Full path of the project in the form of group/name.
-
-		project: string
-
-		// Trigger hook on push events.
-
-		push_events?: bool
-
-		// Trigger hook on note events or when someone adds a comment.
-
-		note_events?: bool
-
-		// Trigger hook on pipeline events.
-
-		pipeline_events?: bool
-
-		// When C(present) the hook will be updated to match the input or created if it doesn't exist.
-		// When C(absent) hook will be deleted if it exists.
-
-		state: string
-
-		// Trigger hook on wiki events.
-
-		wiki_page_events?: bool
-	}
-}
-
-gitlab_project :: {
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	gitlab_project: {
-
-		// If merge requests can be made or not.
-		// Possible values are true and false.
-
-		merge_requests_enabled?: bool
-
-		// create or delete project.
-		// Possible values are present and absent.
-
-		state?: string
-
-		// Git repository which will be imported into gitlab.
-		// GitLab server needs read access to this git repository.
-
-		import_url?: string
-
-		// An description for the project.
-
-		description?: string
-
-		// Id or The full path of the group of which this projects belongs to.
-
-		group?: string
-
-		// Whether you want to create issues or not.
-		// Possible values are true and false.
-
-		issues_enabled?: bool
-
-		// The name of the project
-
-		name: string
-
-		// The path of the project you want to create, this will be server_url/<group>/path.
-		// If not supplied, name will be used.
-
-		path?: string
-
-		// If creating snippets should be available or not.
-		// Possible values are true and false.
-
-		snippets_enabled?: bool
-
-		// Private. Project access must be granted explicitly for each user.
-		// Internal. The project can be cloned by any logged in user.
-		// Public. The project can be cloned without any authentication.
-
-		visibility?: string
-
-		// GitLab token for logging in.
-
-		api_token?: string
-
-		// If an wiki for this project should be available or not.
-		// Possible values are true and false.
-
-		wiki_enabled?: bool
 	}
 }

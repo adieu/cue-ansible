@@ -1,10 +1,12 @@
 package intersight
 
 intersight_info :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
 	intersight_info: {
 
 		server_names: [...]
@@ -15,10 +17,12 @@ intersight_info :: {
 }
 
 intersight_rest_api :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
 	intersight_rest_api: {
 
 		// The payload for API requests used to modify resources.
@@ -46,10 +50,12 @@ intersight_rest_api :: {
 }
 
 wakeonlan :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
 	wakeonlan: {
 
 		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.

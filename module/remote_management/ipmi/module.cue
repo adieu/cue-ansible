@@ -1,10 +1,47 @@
 package ipmi
 
-wakeonlan :: {
+ipmi_power :: {
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	ipmi_power: {
+
+		// Username to use to connect to the BMC.
+
+		user: string
+
+		// Hostname or ip address of the BMC.
+
+		name: string
+
+		// Password to connect to the BMC.
+
+		password: string
+
+		// Remote RMCP port.
+
+		port?: string
+
+		// Whether to ensure that the machine in desired state.
+
+		state: string
+
+		// Maximum number of seconds before interrupt request.
+
+		timeout?: string
+	}
+}
+
+wakeonlan :: {
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	tags?: [...string]
 	wakeonlan: {
 
 		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
@@ -22,23 +59,13 @@ wakeonlan :: {
 }
 
 ipmi_boot :: {
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
 	ipmi_boot: {
-
-		// Password to connect to the BMC.
-
-		password: string
-
-		// If set, ask that system firmware uses this device beyond next boot. Be aware many systems do not honor this.
-
-		persistent?: bool
-
-		// Remote RMCP port.
-
-		port?: string
 
 		// Whether to ensure that boot devices is desired.
 
@@ -59,38 +86,17 @@ ipmi_boot :: {
 		// Hostname or ip address of the BMC.
 
 		name: string
-	}
-}
-
-ipmi_power :: {
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	ipmi_power: {
-
-		// Remote RMCP port.
-
-		port?: string
-
-		// Whether to ensure that the machine in desired state.
-
-		state: string
-
-		// Maximum number of seconds before interrupt request.
-
-		timeout?: string
-
-		// Username to use to connect to the BMC.
-
-		user: string
-
-		// Hostname or ip address of the BMC.
-
-		name: string
 
 		// Password to connect to the BMC.
 
 		password: string
+
+		// If set, ask that system firmware uses this device beyond next boot. Be aware many systems do not honor this.
+
+		persistent?: bool
+
+		// Remote RMCP port.
+
+		port?: string
 	}
 }

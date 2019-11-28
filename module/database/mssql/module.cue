@@ -1,11 +1,21 @@
 package mssql
 
 mssql_db :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
 	mssql_db: {
+
+		// The username used to authenticate with
+
+		login_user?: string
+
+		// name of the database to add or remove
+
+		name: string
 
 		// The database state
 
@@ -30,13 +40,5 @@ mssql_db :: {
 		// Port of the MSSQL server. Requires login_host be defined as other than localhost if login_port is used
 
 		login_port?: string
-
-		// The username used to authenticate with
-
-		login_user?: string
-
-		// name of the database to add or remove
-
-		name: string
 	}
 }

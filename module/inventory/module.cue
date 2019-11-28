@@ -3,7 +3,9 @@ package inventory
 add_host :: {
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	add_host: {
 
@@ -20,7 +22,9 @@ add_host :: {
 group_by :: {
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	group_by: {
 

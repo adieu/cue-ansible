@@ -1,10 +1,35 @@
 package stacki
 
-stacki_host :: {
+wakeonlan :: {
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
+	name?:   string
+	wakeonlan: {
+
+		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
+
+		broadcast?: string
+
+		// MAC address to send Wake-on-LAN broadcast packet for.
+
+		mac: string
+
+		// UDP port to use for magic Wake-on-LAN packet.
+
+		port?: string
+	}
+}
+
+stacki_host :: {
+	register?: string
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	name?:   string
 	stacki_host: {
 
 		// Username for authenticating with Stacki API, but if not specified, the environment variable C(stacki_user) is used instead.
@@ -38,26 +63,5 @@ stacki_host :: {
 		// Password for authenticating with Stacki API, but if not specified, the environment variable C(stacki_password) is used instead.
 
 		stacki_password: string
-	}
-}
-
-wakeonlan :: {
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	wakeonlan: {
-
-		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
-
-		broadcast?: string
-
-		// MAC address to send Wake-on-LAN broadcast packet for.
-
-		mac: string
-
-		// UDP port to use for magic Wake-on-LAN packet.
-
-		port?: string
 	}
 }

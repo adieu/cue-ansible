@@ -1,27 +1,29 @@
 package cyberark
 
 cyberark_user :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
 	cyberark_user: {
-
-		// Dictionary set by a CyberArk authentication containing the different values to perform actions on a logged-on CyberArk session, please see M(cyberark_authentication) module for an example of cyberark_session.
-
-		cyberark_session: {...}
 
 		// Whether or not the user will be disabled.
 
 		disabled?: bool
 
-		// The date and time when the user account will expire and become disabled.
+		// The user email address.
 
-		expiry_date?: string
+		email?: string
 
-		// The user updated password. Make sure that this password meets the password policy requirements.
+		// The user last name.
 
-		new_password?: string
+		last_name?: string
+
+		// Dictionary set by a CyberArk authentication containing the different values to perform actions on a logged-on CyberArk session, please see M(cyberark_authentication) module for an example of cyberark_session.
+
+		cyberark_session: {...}
 
 		// Specifies the state needed for the user present for create user, absent for delete user.
 
@@ -32,25 +34,9 @@ cyberark_user :: {
 
 		user_type_name?: string
 
-		// The name of the user who will be queried (for details), added, updated or deleted.
-
-		username: string
-
-		// The user email address.
-
-		email?: string
-
 		// The name of the group the user will be added to.
 
 		group_name?: string
-
-		// Whether or not the user must change their password in their next logon.
-
-		change_password_on_the_next_logon?: bool
-
-		// The user first name.
-
-		first_name?: string
 
 		// The password that the new user will use to log on the first time.
 		// This password must meet the password policy requirements.
@@ -58,21 +44,39 @@ cyberark_user :: {
 
 		initial_password?: string
 
-		// The user last name.
-
-		last_name?: string
-
 		// The Vault Location for the user.
 
 		location?: string
+
+		// The name of the user who will be queried (for details), added, updated or deleted.
+
+		username: string
+
+		// Whether or not the user must change their password in their next logon.
+
+		change_password_on_the_next_logon?: bool
+
+		// The date and time when the user account will expire and become disabled.
+
+		expiry_date?: string
+
+		// The user first name.
+
+		first_name?: string
+
+		// The user updated password. Make sure that this password meets the password policy requirements.
+
+		new_password?: string
 	}
 }
 
 onepassword_info :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
 	onepassword_info: {
 
 		// A dictionary containing authentication details. If this is set, M(onepassword_info) will attempt to sign in to 1Password automatically.
@@ -95,11 +99,21 @@ onepassword_info :: {
 }
 
 cyberark_authentication :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
 	cyberark_authentication: {
+
+		// Whether or not Shared Logon Authentication will be used.
+
+		use_shared_logon_authentication?: bool
+
+		// The name of the user who will logon to the Vault.
+
+		username?: string
 
 		// A string containing the base URL of the server hosting CyberArk's Privileged Account Security Web Services SDK.
 
@@ -109,32 +123,24 @@ cyberark_authentication :: {
 
 		cyberark_session?: string
 
-		// The new password of the user. This parameter is optional, and enables you to change a password.
+		// Specifies if an authentication logon/logoff and a cyberark_session should be added/removed.
 
-		new_password?: string
+		state?: string
 
 		// Whether or not users will be authenticated via a RADIUS server. Valid values are true/false.
 
 		use_radius_authentication?: bool
 
-		// The name of the user who will logon to the Vault.
+		// If C(false), SSL certificates will not be validated.  This should only set to C(false) used on personally controlled sites using self-signed certificates.
 
-		username?: string
+		validate_certs?: bool
+
+		// The new password of the user. This parameter is optional, and enables you to change a password.
+
+		new_password?: string
 
 		// The password of the user.
 
 		password?: string
-
-		// Specifies if an authentication logon/logoff and a cyberark_session should be added/removed.
-
-		state?: string
-
-		// Whether or not Shared Logon Authentication will be used.
-
-		use_shared_logon_authentication?: bool
-
-		// If C(false), SSL certificates will not be validated.  This should only set to C(false) used on personally controlled sites using self-signed certificates.
-
-		validate_certs?: bool
 	}
 }

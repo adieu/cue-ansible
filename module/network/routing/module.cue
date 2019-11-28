@@ -1,11 +1,17 @@
 package routing
 
 net_static_route :: {
+	name?:     string
+	register?: string
+	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
-	vars?: {...}
 	net_static_route: {
+
+		// Next hop IP of the static route.
+
+		next_hop: string
 
 		// Network prefix of the static route.
 
@@ -30,9 +36,5 @@ net_static_route :: {
 		// Network prefix mask of the static route.
 
 		mask: string
-
-		// Next hop IP of the static route.
-
-		next_hop: string
 	}
 }

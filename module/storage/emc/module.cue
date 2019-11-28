@@ -1,10 +1,12 @@
 package emc
 
 emc_vnx_sg_member :: {
-	notify?: string | [...string]
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
-	tags?: [...string]
 	emc_vnx_sg_member: {
 
 		// Lun id to be added.

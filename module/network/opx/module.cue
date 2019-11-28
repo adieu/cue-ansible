@@ -4,12 +4,10 @@ opx_cps :: {
 	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	opx_cps: {
-
-		// Attribute Yang path and their corresponding data.
-
-		attr_data?: string
 
 		// Attribute Yang type.
 
@@ -34,5 +32,9 @@ opx_cps :: {
 		// A qualifier provides the type of object data to retrieve or act on.
 
 		qualifier?: string
+
+		// Attribute Yang path and their corresponding data.
+
+		attr_data?: string
 	}
 }

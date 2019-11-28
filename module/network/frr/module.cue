@@ -1,10 +1,12 @@
 package frr
 
 frr_bgp :: {
-	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
 	frr_bgp: {
 
 		// Specifies the BGP related configuration.
@@ -22,10 +24,12 @@ frr_bgp :: {
 }
 
 frr_facts :: {
-	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
 	frr_facts: {
 
 		gather_subset?: string

@@ -1,6 +1,8 @@
 package protocol
 
 net_lldp :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]

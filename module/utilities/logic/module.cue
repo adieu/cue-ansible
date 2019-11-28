@@ -1,25 +1,74 @@
 package logic
 
-fail :: {
-	vars?:   {...}
-	when?:   string
-	tags?:   [...string]
-	notify?: string | [...string]
-	fail: {
+assert :: {
+	register?: string
+	vars?:     {...}
+	when?:     string
+	tags?:     [...string]
+	notify?:   string | [...string]
+	name?:     string
+	assert: {
 
-		// The customized message used for failing execution.
-		// If omitted, fail will simply bail out with a generic message.
+		// The customized message used for a failing assertion.
+		// This argument was called 'msg' before Ansible 2.7, now it is renamed to 'fail_msg' with alias 'msg'.
+
+		fail_msg?: string
+
+		// Set this to C(yes) to avoid verbose output.
+
+		quiet?: bool
+
+		// The customized message used for a successful assertion.
+
+		success_msg?: string
+
+		// A list of string expressions of the same form that can be passed to the 'when' statement.
+
+		that: [..._]
+	}
+}
+
+debug :: {
+	register?: string
+	vars?:     {...}
+	when?:     string
+	tags?:     [...string]
+	notify?:   string | [...string]
+	name?:     string
+	debug: {
+
+		// The customized message that is printed. If omitted, prints a generic message.
 
 		msg?: string
+
+		// A variable name to debug.
+		// Mutually exclusive with the C(msg) option.
+		// Be aware that this option already runs in Jinja2 context and has an implicit C({{ }}) wrapping, so you should not be using Jinja2 delimiters unless you are looking for double interpolation.
+
+		var?: string
+
+		// A number that controls when the debug is run, if you set to 3 it will only run debug when -vvv or above
+
+		verbosity?: int
 	}
 }
 
 import_role :: {
-	vars?:   {...}
-	when?:   string
-	tags?:   [...string]
-	notify?: string | [...string]
+	register?: string
+	vars?:     {...}
+	when?:     string
+	tags?:     [...string]
+	notify?:   string | [...string]
+	name?:     string
 	import_role: {
+
+		// Overrides the role's metadata setting to allow using a role more than once with the same parameters.
+
+		allow_duplicates?: bool
+
+		// File to load from a role's C(defaults/) directory.
+
+		defaults_from?: string
 
 		// File to load from a role's C(handlers/) directory.
 
@@ -36,22 +85,74 @@ import_role :: {
 		// File to load from a role's C(vars/) directory.
 
 		vars_from?: string
+	}
+}
 
-		// Overrides the role's metadata setting to allow using a role more than once with the same parameters.
+include :: {
+	register?: string
+	vars?:     {...}
+	when?:     string
+	tags?:     [...string]
+	notify?:   string | [...string]
+	name?:     string
+	include: {
 
-		allow_duplicates?: bool
+		// This module allows you to specify the name of the file directly without any other options.
 
-		// File to load from a role's C(defaults/) directory.
+		`free-form`?: string
+	}
+}
 
-		defaults_from?: string
+pause :: {
+	register?: string
+	vars?:     {...}
+	when?:     string
+	tags?:     [...string]
+	notify?:   string | [...string]
+	name?:     string
+	pause: {
+
+		// Controls whether or not keyboard input is shown when typing.
+		// Has no effect if 'seconds' or 'minutes' is set.
+
+		echo?: bool
+
+		// A positive number of minutes to pause for.
+
+		minutes?: string
+
+		// Optional text to use for the prompt message.
+
+		prompt?: string
+
+		// A positive number of seconds to pause for.
+
+		seconds?: string
+	}
+}
+
+import_playbook :: {
+	register?: string
+	vars?:     {...}
+	when?:     string
+	tags?:     [...string]
+	notify?:   string | [...string]
+	name?:     string
+	import_playbook: {
+
+		// The name of the imported playbook is specified directly without any other option.
+
+		`free-form`?: string
 	}
 }
 
 import_tasks :: {
-	vars?:   {...}
-	when?:   string
-	tags?:   [...string]
-	notify?: string | [...string]
+	register?: string
+	vars?:     {...}
+	when?:     string
+	tags?:     [...string]
+	notify?:   string | [...string]
+	name?:     string
 	import_tasks: {
 
 		// The name of the imported file is specified directly without any other option.
@@ -63,19 +164,13 @@ import_tasks :: {
 }
 
 include_role :: {
-	vars?:   {...}
-	when?:   string
-	tags?:   [...string]
-	notify?: string | [...string]
+	register?: string
+	vars?:     {...}
+	when?:     string
+	tags?:     [...string]
+	notify?:   string | [...string]
+	name?:     string
 	include_role: {
-
-		// The name of the role to be executed.
-
-		name: string
-
-		// This option dictates whether the role's C(vars) and C(defaults) are exposed to the playbook. If set to C(yes) the variables will be available to tasks following the C(include_role) task. This functionality differs from standard variable exposure for roles listed under the C(roles) header or C(import_role) as they are exposed at playbook parsing time, and available to earlier roles and tasks as well.
-
-		public?: bool
 
 		// File to load from a role's C(tasks/) directory.
 
@@ -100,272 +195,25 @@ include_role :: {
 		// File to load from a role's C(handlers/) directory.
 
 		handlers_from?: string
-	}
-}
 
-set_fact :: {
-	vars?:   {...}
-	when?:   string
-	tags?:   [...string]
-	notify?: string | [...string]
-	set_fact: {
+		// The name of the role to be executed.
 
-		// This boolean converts the variable into an actual 'fact' which will also be added to the fact cache, if fact caching is enabled.
-		// Normally this module creates 'host level variables' and has much higher precedence, this option changes the nature and precedence (by 7 steps) of the variable created. https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable
-		// This actually creates 2 copies of the variable, a normal 'set_fact' host variable with high precedence and a lower 'ansible_fact' one that is available for persistance via the facts cache plugin. This creates a possibly confusing interaction with C(meta: clear_facts) as it will remove the 'ansible_fact' but not the host variable.
+		name: string
 
-		cacheable?: bool
+		// This option dictates whether the role's C(vars) and C(defaults) are exposed to the playbook. If set to C(yes) the variables will be available to tasks following the C(include_role) task. This functionality differs from standard variable exposure for roles listed under the C(roles) header or C(import_role) as they are exposed at playbook parsing time, and available to earlier roles and tasks as well.
 
-		// The C(set_fact) module takes key=value pairs as variables to set in the playbook scope. Or alternatively, accepts complex arguments using the C(args:) statement.
-
-		key_value: string
-	}
-}
-
-assert :: {
-	vars?:   {...}
-	when?:   string
-	tags?:   [...string]
-	notify?: string | [...string]
-	assert: {
-
-		// The customized message used for a failing assertion.
-		// This argument was called 'msg' before Ansible 2.7, now it is renamed to 'fail_msg' with alias 'msg'.
-
-		fail_msg?: string
-
-		// Set this to C(yes) to avoid verbose output.
-
-		quiet?: bool
-
-		// The customized message used for a successful assertion.
-
-		success_msg?: string
-
-		// A list of string expressions of the same form that can be passed to the 'when' statement.
-
-		that: [..._]
-	}
-}
-
-wait_for_connection :: {
-	vars?:   {...}
-	when?:   string
-	tags?:   [...string]
-	notify?: string | [...string]
-	wait_for_connection: {
-
-		// Maximum number of seconds to wait for.
-
-		timeout?: int
-
-		// Maximum number of seconds to wait for a connection to happen before closing and retrying.
-
-		connect_timeout?: int
-
-		// Number of seconds to wait before starting to poll.
-
-		delay?: int
-
-		// Number of seconds to sleep between checks.
-
-		sleep?: int
-	}
-}
-
-include_vars :: {
-	vars?:   {...}
-	when?:   string
-	tags?:   [...string]
-	notify?: string | [...string]
-	include_vars: {
-
-		// The directory name from which the variables should be loaded.
-		// If the path is relative and the task is inside a role, it will look inside the role's vars/ subdirectory.
-		// If the path is relative and not inside a role, it will be parsed relative to the playbook.
-
-		dir?: string
-
-		// List of file extensions to read when using C(dir).
-
-		extensions?: [..._]
-
-		// Limit the files that are loaded within any directory to this regular expression.
-
-		files_matching?: string
-
-		// This module allows you to specify the 'file' option directly without any other options.
-		// There is no 'free-form' option, this is just an indicator, see example below.
-
-		`free-form`?: string
-
-		// When using C(dir), this module will, by default, recursively go through each sub directory and load up the variables. By explicitly setting the depth, this module will only go as deep as the depth.
-
-		depth?: int
-
-		// The file name from which variables should be loaded.
-		// If the path is relative, it will look for the file in vars/ subdirectory of a role or relative to playbook.
-
-		file?: string
-
-		// List of file names to ignore.
-
-		ignore_files?: [..._]
-
-		// Ignore unknown file extensions within the directory.
-		// This allows users to specify a directory containing vars files that are intermingled with non-vars files extension types (e.g. a directory with a README in it and vars files).
-
-		ignore_unknown_extensions?: bool
-
-		// The name of a variable into which assign the included vars.
-		// If omitted (null) they will be made top level vars.
-
-		name?: string
-	}
-}
-
-import_playbook :: {
-	vars?:   {...}
-	when?:   string
-	tags?:   [...string]
-	notify?: string | [...string]
-	import_playbook: {
-
-		// The name of the imported playbook is specified directly without any other option.
-
-		`free-form`?: string
-	}
-}
-
-include_tasks :: {
-	vars?:   {...}
-	when?:   string
-	tags?:   [...string]
-	notify?: string | [...string]
-	include_tasks: {
-
-		// Accepts a hash of task keywords (e.g. C(tags), C(become)) that will be applied to the tasks within the include.
-
-		apply?: string
-
-		// The name of the imported file is specified directly without any other option.
-		// Unlike M(import_tasks), most keywords, including loop, with_items, and conditionals, apply to this statement.
-		// The do until loop is not supported on M(include_tasks).
-
-		file?: string
-
-		// Supplying a file name via free-form C(- include_tasks: file.yml) of a file to be included is the equivalent
-of specifying an argument of I(file).
-
-
-		`free-form`?: string
-	}
-}
-
-pause :: {
-	vars?:   {...}
-	when?:   string
-	tags?:   [...string]
-	notify?: string | [...string]
-	pause: {
-
-		// Controls whether or not keyboard input is shown when typing.
-		// Has no effect if 'seconds' or 'minutes' is set.
-
-		echo?: bool
-
-		// A positive number of minutes to pause for.
-
-		minutes?: string
-
-		// Optional text to use for the prompt message.
-
-		prompt?: string
-
-		// A positive number of seconds to pause for.
-
-		seconds?: string
-	}
-}
-
-async_status :: {
-	vars?:   {...}
-	when?:   string
-	tags?:   [...string]
-	notify?: string | [...string]
-	async_status: {
-
-		// Job or task identifier
-
-		jid: string
-
-		// If C(status), obtain the status.
-		// If C(cleanup), clean up the async job cache (by default in C(~/.ansible_async/)) for the specified job I(jid).
-
-		mode?: string
-	}
-}
-
-include :: {
-	vars?:   {...}
-	when?:   string
-	tags?:   [...string]
-	notify?: string | [...string]
-	include: {
-
-		// This module allows you to specify the name of the file directly without any other options.
-
-		`free-form`?: string
-	}
-}
-
-set_stats :: {
-	vars?:   {...}
-	when?:   string
-	tags?:   [...string]
-	notify?: string | [...string]
-	set_stats: {
-
-		// Whether the provided value is aggregated to the existing stat C(yes) or will replace it C(no).
-
-		aggregate?: bool
-
-		// A dictionary of which each key represents a stat (or variable) you want to keep track of.
-
-		data: {...}
-
-		// whether the stats are per host or for all hosts in the run.
-
-		per_host?: bool
+		public?: bool
 	}
 }
 
 wait_for :: {
-	vars?:   {...}
-	when?:   string
-	tags?:   [...string]
-	notify?: string | [...string]
+	register?: string
+	vars?:     {...}
+	when?:     string
+	tags?:     [...string]
+	notify?:   string | [...string]
+	name?:     string
 	wait_for: {
-
-		// Number of seconds to wait before starting to poll.
-
-		delay?: int
-
-		// List of hosts or IPs to ignore when looking for active TCP connections for C(drained) state.
-
-		exclude_hosts?: [..._]
-
-		// A resolvable hostname or IP address to wait for.
-
-		host?: string
-
-		// This overrides the normal error message from a failure to meet the required conditions.
-
-		msg?: string
-
-		// The list of TCP connection states which are counted as active connections.
-
-		active_connection_states?: [..._]
 
 		// Maximum number of seconds to wait for a connection to happen before closing and retrying.
 
@@ -386,6 +234,10 @@ wait_for :: {
 
 		search_regex?: string
 
+		// This overrides the normal error message from a failure to meet the required conditions.
+
+		msg?: string
+
 		// Number of seconds to sleep between checks.
 		// Before Ansible 2.3 this was hardcoded to 1 second.
 
@@ -401,28 +253,208 @@ wait_for :: {
 		// When used without other conditions it is equivalent of just sleeping.
 
 		timeout?: int
+
+		// The list of TCP connection states which are counted as active connections.
+
+		active_connection_states?: [..._]
+
+		// Number of seconds to wait before starting to poll.
+
+		delay?: int
+
+		// List of hosts or IPs to ignore when looking for active TCP connections for C(drained) state.
+
+		exclude_hosts?: [..._]
+
+		// A resolvable hostname or IP address to wait for.
+
+		host?: string
 	}
 }
 
-debug :: {
-	vars?:   {...}
-	when?:   string
-	tags?:   [...string]
-	notify?: string | [...string]
-	debug: {
+async_status :: {
+	register?: string
+	vars?:     {...}
+	when?:     string
+	tags?:     [...string]
+	notify?:   string | [...string]
+	name?:     string
+	async_status: {
 
-		// The customized message that is printed. If omitted, prints a generic message.
+		// Job or task identifier
+
+		jid: string
+
+		// If C(status), obtain the status.
+		// If C(cleanup), clean up the async job cache (by default in C(~/.ansible_async/)) for the specified job I(jid).
+
+		mode?: string
+	}
+}
+
+fail :: {
+	register?: string
+	vars?:     {...}
+	when?:     string
+	tags?:     [...string]
+	notify?:   string | [...string]
+	name?:     string
+	fail: {
+
+		// The customized message used for failing execution.
+		// If omitted, fail will simply bail out with a generic message.
 
 		msg?: string
+	}
+}
 
-		// A variable name to debug.
-		// Mutually exclusive with the C(msg) option.
-		// Be aware that this option already runs in Jinja2 context and has an implicit C({{ }}) wrapping, so you should not be using Jinja2 delimiters unless you are looking for double interpolation.
+include_tasks :: {
+	register?: string
+	vars?:     {...}
+	when?:     string
+	tags?:     [...string]
+	notify?:   string | [...string]
+	name?:     string
+	include_tasks: {
 
-		var?: string
+		// Accepts a hash of task keywords (e.g. C(tags), C(become)) that will be applied to the tasks within the include.
 
-		// A number that controls when the debug is run, if you set to 3 it will only run debug when -vvv or above
+		apply?: string
 
-		verbosity?: int
+		// The name of the imported file is specified directly without any other option.
+		// Unlike M(import_tasks), most keywords, including loop, with_items, and conditionals, apply to this statement.
+		// The do until loop is not supported on M(include_tasks).
+
+		file?: string
+
+		// Supplying a file name via free-form C(- include_tasks: file.yml) of a file to be included is the equivalent
+of specifying an argument of I(file).
+
+
+		`free-form`?: string
+	}
+}
+
+include_vars :: {
+	register?: string
+	vars?:     {...}
+	when?:     string
+	tags?:     [...string]
+	notify?:   string | [...string]
+	name?:     string
+	include_vars: {
+
+		// This module allows you to specify the 'file' option directly without any other options.
+		// There is no 'free-form' option, this is just an indicator, see example below.
+
+		`free-form`?: string
+
+		// List of file names to ignore.
+
+		ignore_files?: [..._]
+
+		// Ignore unknown file extensions within the directory.
+		// This allows users to specify a directory containing vars files that are intermingled with non-vars files extension types (e.g. a directory with a README in it and vars files).
+
+		ignore_unknown_extensions?: bool
+
+		// When using C(dir), this module will, by default, recursively go through each sub directory and load up the variables. By explicitly setting the depth, this module will only go as deep as the depth.
+
+		depth?: int
+
+		// The directory name from which the variables should be loaded.
+		// If the path is relative and the task is inside a role, it will look inside the role's vars/ subdirectory.
+		// If the path is relative and not inside a role, it will be parsed relative to the playbook.
+
+		dir?: string
+
+		// List of file extensions to read when using C(dir).
+
+		extensions?: [..._]
+
+		// The file name from which variables should be loaded.
+		// If the path is relative, it will look for the file in vars/ subdirectory of a role or relative to playbook.
+
+		file?: string
+
+		// Limit the files that are loaded within any directory to this regular expression.
+
+		files_matching?: string
+
+		// The name of a variable into which assign the included vars.
+		// If omitted (null) they will be made top level vars.
+
+		name?: string
+	}
+}
+
+set_fact :: {
+	register?: string
+	vars?:     {...}
+	when?:     string
+	tags?:     [...string]
+	notify?:   string | [...string]
+	name?:     string
+	set_fact: {
+
+		// This boolean converts the variable into an actual 'fact' which will also be added to the fact cache, if fact caching is enabled.
+		// Normally this module creates 'host level variables' and has much higher precedence, this option changes the nature and precedence (by 7 steps) of the variable created. https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable
+		// This actually creates 2 copies of the variable, a normal 'set_fact' host variable with high precedence and a lower 'ansible_fact' one that is available for persistance via the facts cache plugin. This creates a possibly confusing interaction with C(meta: clear_facts) as it will remove the 'ansible_fact' but not the host variable.
+
+		cacheable?: bool
+
+		// The C(set_fact) module takes key=value pairs as variables to set in the playbook scope. Or alternatively, accepts complex arguments using the C(args:) statement.
+
+		key_value: string
+	}
+}
+
+set_stats :: {
+	register?: string
+	vars?:     {...}
+	when?:     string
+	tags?:     [...string]
+	notify?:   string | [...string]
+	name?:     string
+	set_stats: {
+
+		// whether the stats are per host or for all hosts in the run.
+
+		per_host?: bool
+
+		// Whether the provided value is aggregated to the existing stat C(yes) or will replace it C(no).
+
+		aggregate?: bool
+
+		// A dictionary of which each key represents a stat (or variable) you want to keep track of.
+
+		data: {...}
+	}
+}
+
+wait_for_connection :: {
+	register?: string
+	vars?:     {...}
+	when?:     string
+	tags?:     [...string]
+	notify?:   string | [...string]
+	name?:     string
+	wait_for_connection: {
+
+		// Maximum number of seconds to wait for a connection to happen before closing and retrying.
+
+		connect_timeout?: int
+
+		// Number of seconds to wait before starting to poll.
+
+		delay?: int
+
+		// Number of seconds to sleep between checks.
+
+		sleep?: int
+
+		// Maximum number of seconds to wait for.
+
+		timeout?: int
 	}
 }

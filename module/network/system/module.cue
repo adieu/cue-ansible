@@ -1,68 +1,12 @@
 package system
 
-net_banner :: {
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	net_banner: {
-
-		// Specifies which banner that should be configured on the remote device.
-
-		banner: string
-
-		// Specifies whether or not the configuration is present in the current devices active running configuration.
-
-		state?: string
-
-		// The banner text that should be present in the remote device running configuration.  This argument accepts a multiline string, with no empty lines. Requires I(state=present).
-
-		text?: string
-	}
-}
-
-net_logging :: {
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	net_logging: {
-
-		// State of the logging configuration.
-
-		state?: string
-
-		// List of logging definitions.
-
-		aggregate?: string
-
-		// Destination of the logs.
-
-		dest?: string
-
-		// Set logging facility.
-
-		facility?: string
-
-		// Set logging severity levels.
-
-		level?: string
-
-		// If value of C(dest) is I(host) it indicates file-name the host name to be notified.
-
-		name?: string
-
-		// Purge logging not defined in the I(aggregate) parameter.
-
-		purge?: string
-	}
-}
-
 net_ping :: {
-	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
+	when?: string
 	net_ping: {
 
 		// The VRF to use for forwarding.
@@ -88,19 +32,13 @@ net_ping :: {
 }
 
 net_system :: {
-	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
+	when?: string
 	net_system: {
-
-		// List of DNS name servers by IP address to use to perform name resolution lookups.  This argument accepts either a list of DNS servers See examples.
-
-		name_servers?: string
-
-		// State of the configuration values in the device's current active configuration.  When set to I(present), the values should be configured in the device active configuration and when set to I(absent) the values should not be in the device active configuration
-
-		state?: string
 
 		// Configure the IP domain name on the remote device to the provided value. Value should be in the dotted name form and will be appended to the C(hostname) to create a fully-qualified domain name.
 
@@ -117,39 +55,37 @@ net_system :: {
 		// Provides one or more source interfaces to use for performing DNS lookups.  The interface provided in C(lookup_source) must be a valid interface configured on the device.
 
 		lookup_source?: string
+
+		// List of DNS name servers by IP address to use to perform name resolution lookups.  This argument accepts either a list of DNS servers See examples.
+
+		name_servers?: string
+
+		// State of the configuration values in the device's current active configuration.  When set to I(present), the values should be configured in the device active configuration and when set to I(absent) the values should not be in the device active configuration
+
+		state?: string
 	}
 }
 
 net_user :: {
-	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
+	when?: string
 	net_user: {
-
-		// Instructs the module to consider the resource definition absolute. It will remove any previously configured usernames on the device with the exception of the `admin` user (the current defined set of users).
-
-		purge?: bool
-
-		// Specifies the SSH public key to configure for the given username. This argument accepts a valid SSH key value.
-
-		sshkey?: string
 
 		// The username to be configured on the remote network device. This argument accepts a string value and is mutually exclusive with the C(aggregate) argument. Please note that this option is not same as C(provider username).
 
 		name?: string
 
-		// The password to be configured on the remote network device. The password needs to be provided in clear and it will be encrypted on the device. Please note that this option is not same as C(provider password).
-
-		configured_password?: string
-
-		// Defines the username without assigning a password. This will allow the user to login to the system without being authenticated by a password.
-
-		nopassword?: bool
-
 		// The C(privilege) argument configures the privilege level of the user when logged into the system. This argument accepts integer values in the range of 1 to 15.
 
 		privilege?: string
+
+		// Instructs the module to consider the resource definition absolute. It will remove any previously configured usernames on the device with the exception of the `admin` user (the current defined set of users).
+
+		purge?: bool
 
 		// Configures the role for the username in the device running configuration. The argument accepts a string value defining the role name. This argument does not check if the role has been configured on the device.
 
@@ -166,5 +102,79 @@ net_user :: {
 		// The set of username objects to be configured on the remote network device. The list entries can either be the username or a hash of username and properties. This argument is mutually exclusive with the C(name) argument.
 
 		aggregate?: string
+
+		// The password to be configured on the remote network device. The password needs to be provided in clear and it will be encrypted on the device. Please note that this option is not same as C(provider password).
+
+		configured_password?: string
+
+		// Defines the username without assigning a password. This will allow the user to login to the system without being authenticated by a password.
+
+		nopassword?: bool
+
+		// Specifies the SSH public key to configure for the given username. This argument accepts a valid SSH key value.
+
+		sshkey?: string
+	}
+}
+
+net_banner :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	net_banner: {
+
+		// Specifies which banner that should be configured on the remote device.
+
+		banner: string
+
+		// Specifies whether or not the configuration is present in the current devices active running configuration.
+
+		state?: string
+
+		// The banner text that should be present in the remote device running configuration.  This argument accepts a multiline string, with no empty lines. Requires I(state=present).
+
+		text?: string
+	}
+}
+
+net_logging :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	net_logging: {
+
+		// List of logging definitions.
+
+		aggregate?: string
+
+		// Destination of the logs.
+
+		dest?: string
+
+		// Set logging facility.
+
+		facility?: string
+
+		// Set logging severity levels.
+
+		level?: string
+
+		// If value of C(dest) is I(host) it indicates file-name the host name to be notified.
+
+		name?: string
+
+		// Purge logging not defined in the I(aggregate) parameter.
+
+		purge?: string
+
+		// State of the logging configuration.
+
+		state?: string
 	}
 }

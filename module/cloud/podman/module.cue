@@ -1,53 +1,13 @@
 package podman
 
-podman_image_info :: {
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	when?: string
-	podman_image_info: {
-
-		// Path to C(podman) executable if it is not in the C($PATH) on the machine running C(podman)
-
-		executable?: string
-
-		// List of tags or UID to gather info about. If no name is given return info about all images.
-
-		name?: string
-	}
-}
-
-podman_volume_info :: {
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	when?: string
-	podman_volume_info: {
-
-		// Path to C(podman) executable if it is not in the C($PATH) on the machine running C(podman)
-
-		executable?: string
-
-		// Name of the volume
-
-		name?: string
-	}
-}
-
 podman_image :: {
-	tags?: [...string]
-	notify?: string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
 	podman_image: {
-
-		// Path to file containing authorization credentials to the remote registry
-
-		auth_file?: string
-
-		// Arguments that control pushing images.
-
-		push_args?: string
 
 		// Arguments that control image build.
 
@@ -56,6 +16,26 @@ podman_image :: {
 		// Whether or not to force push or pull an image. When building, force the build even if the image already exists.
 
 		force?: string
+
+		// Whether an image should be present, absent, or built.
+
+		state?: string
+
+		// Path to file containing authorization credentials to the remote registry
+
+		auth_file?: string
+
+		// Path to directory containing TLS certificates and keys to use
+
+		ca_cert_dir?: string
+
+		// Whether or not to push an image.
+
+		push?: string
+
+		// Whether or not to pull the image.
+
+		pull?: string
 
 		// Name of the image to pull, push, or delete. It may contain a tag using the format C(image:tag).
 
@@ -69,9 +49,9 @@ podman_image :: {
 
 		path?: string
 
-		// Tag of the image to pull, push, or delete.
+		// username to use when authenticating to remote registries.
 
-		tag?: string
+		username?: string
 
 		// Require HTTPS and validate certificates when pulling or pushing. Also used during build if a pull or push is necessary.
 
@@ -81,24 +61,50 @@ podman_image :: {
 
 		executable?: string
 
-		// Path to directory containing TLS certificates and keys to use
+		// Arguments that control pushing images.
 
-		ca_cert_dir?: string
+		push_args?: string
 
-		// Whether or not to pull the image.
+		// Tag of the image to pull, push, or delete.
 
-		pull?: string
+		tag?: string
+	}
+}
 
-		// Whether or not to push an image.
+podman_image_info :: {
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	podman_image_info: {
 
-		push?: string
+		// Path to C(podman) executable if it is not in the C($PATH) on the machine running C(podman)
 
-		// Whether an image should be present, absent, or built.
+		executable?: string
 
-		state?: string
+		// List of tags or UID to gather info about. If no name is given return info about all images.
 
-		// username to use when authenticating to remote registries.
+		name?: string
+	}
+}
 
-		username?: string
+podman_volume_info :: {
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	podman_volume_info: {
+
+		// Name of the volume
+
+		name?: string
+
+		// Path to C(podman) executable if it is not in the C($PATH) on the machine running C(podman)
+
+		executable?: string
 	}
 }

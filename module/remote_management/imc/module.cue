@@ -1,23 +1,36 @@
 package imc
 
-imc_rest :: {
-	vars?: {...}
+wakeonlan :: {
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	wakeonlan: {
+
+		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
+
+		broadcast?: string
+
+		// MAC address to send Wake-on-LAN broadcast packet for.
+
+		mac: string
+
+		// UDP port to use for magic Wake-on-LAN packet.
+
+		port?: string
+	}
+}
+
+imc_rest :: {
+	when?: string
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
 	imc_rest: {
-
-		// If C(no), SSL certificates will not be validated.
-		// This should only set to C(no) used on personally controlled sites using self-signed certificates.
-
-		validate_certs?: bool
-
-		// When used instead of C(path), sets the content of the API requests directly.
-		// This may be convenient to template simple requests, for anything complex use the M(template) module.
-		// You can collate multiple IMC XML fragments and they will be processed sequentially in a single stream, the Cisco IMC output is subsequently merged.
-		// Parameter C(content) is mutual exclusive with parameter C(path).
-
-		content?: string
 
 		// IP Address or hostname of Cisco IMC, resolvable by Ansible control host.
 
@@ -44,26 +57,17 @@ imc_rest :: {
 		// Username used to login to the switch.
 
 		username?: string
-	}
-}
 
-wakeonlan :: {
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	wakeonlan: {
+		// If C(no), SSL certificates will not be validated.
+		// This should only set to C(no) used on personally controlled sites using self-signed certificates.
 
-		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
+		validate_certs?: bool
 
-		broadcast?: string
+		// When used instead of C(path), sets the content of the API requests directly.
+		// This may be convenient to template simple requests, for anything complex use the M(template) module.
+		// You can collate multiple IMC XML fragments and they will be processed sequentially in a single stream, the Cisco IMC output is subsequently merged.
+		// Parameter C(content) is mutual exclusive with parameter C(path).
 
-		// MAC address to send Wake-on-LAN broadcast packet for.
-
-		mac: string
-
-		// UDP port to use for magic Wake-on-LAN packet.
-
-		port?: string
+		content?: string
 	}
 }

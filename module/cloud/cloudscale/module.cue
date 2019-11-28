@@ -1,6 +1,8 @@
 package cloudscale
 
 cloudscale_floating_ip :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
@@ -38,11 +40,44 @@ cloudscale_floating_ip :: {
 }
 
 cloudscale_server :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
 	cloudscale_server: {
+
+		// Size of the root volume in GB.
+
+		volume_size_gb?: int
+
+		// Password for the server.
+
+		password?: string
+
+		// Tags assosiated with the servers. Set this to C({}) to clear any tags.
+
+		tags?: {...}
+
+		// Cloud-init configuration (cloud-config) data to use for the server.
+
+		user_data?: string
+
+		// UUID of the server.
+		// Either I(name) or I(uuid) are required.
+
+		uuid?:        string
+		api_timeout?: string
+
+		// Size of the bulk storage volume in GB.
+		// No bulk storage volume if not set.
+
+		bulk_volume_size_gb?: int
+
+		// State of the server.
+
+		state?: string
 
 		// Attach a private network interface to the server.
 
@@ -58,24 +93,6 @@ cloudscale_server :: {
 
 		anti_affinity_with?: string
 
-		// State of the server.
-
-		state?: string
-
-		// Cloud-init configuration (cloud-config) data to use for the server.
-
-		user_data?: string
-
-		// UUID of the server.
-		// Either I(name) or I(uuid) are required.
-
-		uuid?:        string
-		api_timeout?: string
-
-		// Flavor of the server.
-
-		flavor?: string
-
 		// List of UUID or names of server groups.
 		// Mutually exclusive with I(anti_affinity_with).
 
@@ -90,27 +107,9 @@ cloudscale_server :: {
 
 		use_ipv6?: bool
 
-		// Size of the bulk storage volume in GB.
-		// No bulk storage volume if not set.
+		// Flavor of the server.
 
-		bulk_volume_size_gb?: int
-
-		// Name of the Server.
-		// Either I(name) or I(uuid) are required.
-
-		name?: string
-
-		// Password for the server.
-
-		password?: string
-
-		// Tags assosiated with the servers. Set this to C({}) to clear any tags.
-
-		tags?: {...}
-
-		// Size of the root volume in GB.
-
-		volume_size_gb?: int
+		flavor?: string
 
 		// Allow to stop the running server for updating if necessary.
 
@@ -119,24 +118,22 @@ cloudscale_server :: {
 		// Image used to create the server.
 
 		image?: string
+
+		// Name of the Server.
+		// Either I(name) or I(uuid) are required.
+
+		name?: string
 	}
 }
 
 cloudscale_server_group :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
 	cloudscale_server_group: {
-
-		// Type of the server group.
-
-		type?: string
-
-		// UUID of the server group.
-		// Either I(name) or I(uuid) is required. These options are mutually exclusive.
-
-		uuid?: string
 
 		// Name of the server group.
 		// Either I(name) or I(uuid) is required. These options are mutually exclusive.
@@ -150,15 +147,34 @@ cloudscale_server_group :: {
 		// Tags assosiated with the server groups. Set this to C({}) to clear any tags.
 
 		tags?: {...}
+
+		// Type of the server group.
+
+		type?: string
+
+		// UUID of the server group.
+		// Either I(name) or I(uuid) is required. These options are mutually exclusive.
+
+		uuid?: string
 	}
 }
 
 cloudscale_volume :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
 	cloudscale_volume: {
+
+		// UUIDs of the servers this volume is attached to. Set this to C([]) to detach the volume. Currently a volume can only be attached to a single server.
+
+		server_uuids?: [...]
+
+		// Size of the volume in GB.
+
+		size_gb?: int
 
 		// State of the volume.
 
@@ -179,13 +195,5 @@ cloudscale_volume :: {
 		// Name of the volume. Either name or UUID must be present to change an existing volume.
 
 		name?: string
-
-		// UUIDs of the servers this volume is attached to. Set this to C([]) to detach the volume. Currently a volume can only be attached to a single server.
-
-		server_uuids?: [...]
-
-		// Size of the volume in GB.
-
-		size_gb?: int
 	}
 }

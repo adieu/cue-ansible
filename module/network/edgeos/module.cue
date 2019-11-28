@@ -1,11 +1,17 @@
 package edgeos
 
 edgeos_command :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
 	edgeos_command: {
+
+		// Used in conjunction with C(wait_for) to create match policy. If set to C(all), then all conditions in C(wait_for) must be met. If set to C(any), then only one condition must match.
+
+		match?: string
 
 		// Number of times a command should be tried before it is considered failed. The command is run on the target device and evaluated against the C(wait_for) conditionals.
 
@@ -22,27 +28,17 @@ edgeos_command :: {
 		// The number of seconds to wait between C(retries) of the command.
 
 		interval?: string
-
-		// Used in conjunction with C(wait_for) to create match policy. If set to C(all), then all conditions in C(wait_for) must be met. If set to C(any), then only one condition must match.
-
-		match?: string
 	}
 }
 
 edgeos_config :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
 	edgeos_config: {
-
-		// The ordered set of configuration lines to be managed and compared with the existing configuration on the remote device.
-
-		lines?: string
-
-		// The C(match) argument controls the method used to match against the current active configuration. By default, the desired config is matched against the active config and the deltas are loaded. If the C(match) argument is set to C(none) the active configuration is ignored and the configuration is always loaded.
-
-		match?: string
 
 		// The C(save) argument controls whether or not changes made to the active configuration are saved to disk. This is independent of committing the config. When set to C(True), the active configuration is saved.
 
@@ -67,10 +63,20 @@ edgeos_config :: {
 		// The C(config) argument specifies the base configuration to use to compare against the desired configuration. If this value is not specified, the module will automatically retrieve the current active configuration from the remote device.
 
 		config?: string
+
+		// The ordered set of configuration lines to be managed and compared with the existing configuration on the remote device.
+
+		lines?: string
+
+		// The C(match) argument controls the method used to match against the current active configuration. By default, the desired config is matched against the active config and the deltas are loaded. If the C(match) argument is set to C(none) the active configuration is ignored and the configuration is always loaded.
+
+		match?: string
 	}
 }
 
 edgeos_facts :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]

@@ -1,27 +1,31 @@
 package influxdb
 
 influxdb_database :: {
-	notify?: string | [...string]
-	vars?: {...}
 	when?: string
 	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
 	influxdb_database: {
-
-		// Determines if the database should be created or destroyed.
-
-		state?: string
 
 		// Name of the database.
 
 		database_name: string
+
+		// Determines if the database should be created or destroyed.
+
+		state?: string
 	}
 }
 
 influxdb_query :: {
-	notify?: string | [...string]
-	vars?: {...}
 	when?: string
 	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
 	influxdb_query: {
 
 		// Name of the database.
@@ -35,15 +39,13 @@ influxdb_query :: {
 }
 
 influxdb_retention_policy :: {
-	notify?: string | [...string]
-	vars?: {...}
 	when?: string
 	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
 	influxdb_retention_policy: {
-
-		// Determines how long InfluxDB should keep the data
-
-		duration: string
 
 		// Name of the retention policy
 
@@ -60,19 +62,21 @@ influxdb_retention_policy :: {
 		// Sets the retention policy as default retention policy
 
 		default: string
+
+		// Determines how long InfluxDB should keep the data
+
+		duration: string
 	}
 }
 
 influxdb_user :: {
-	notify?: string | [...string]
-	vars?: {...}
 	when?: string
 	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
 	influxdb_user: {
-
-		// State of the user.
-
-		state?: string
 
 		// Name of the user.
 
@@ -91,14 +95,20 @@ influxdb_user :: {
 		// If this argument is not provided, the current grants will be left alone. If an empty list is provided, all grants for the user will be removed.
 
 		grants?: string
+
+		// State of the user.
+
+		state?: string
 	}
 }
 
 influxdb_write :: {
-	notify?: string | [...string]
-	vars?: {...}
 	when?: string
 	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
 	influxdb_write: {
 
 		// Data points as dict to write into the database.

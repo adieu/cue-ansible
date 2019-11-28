@@ -1,19 +1,13 @@
 package packet
 
 packet_sshkey :: {
+	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	packet_sshkey: {
-
-		// UUID of the key which you want to remove.
-
-		id?: string
-
-		// Public Key string ({type} {base64 encoded key} {description}).
-
-		key?: string
 
 		// File with the public key.
 
@@ -34,19 +28,38 @@ packet_sshkey :: {
 		// Fingerprint of the key which you want to remove.
 
 		fingerprint?: string
+
+		// UUID of the key which you want to remove.
+
+		id?: string
+
+		// Public Key string ({type} {base64 encoded key} {description}).
+
+		key?: string
 	}
 }
 
 packet_volume :: {
+	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	packet_volume: {
 
-		// Selector for API-generated name of the volume
+		// ID of project of the device.
 
-		name?: string
+		project_id: string
+
+		// Size of the volume in gigabytes.
+
+		size?: int
+
+		// User-defined description attribute for Packet volume.
+		// It is used used as idempotent identifier - if volume with given description exists, new one is not created.
+
+		description?: string
 
 		// Location of the volume.
 		// Volumes can only be attached to device in the same location.
@@ -57,31 +70,26 @@ packet_volume :: {
 
 		id?: string
 
-		// User-defined description attribute for Packet volume.
-		// It is used used as idempotent identifier - if volume with given description exists, new one is not created.
-
-		description?: string
-
 		// Create new volume locked.
 
 		locked?: bool
+
+		// Selector for API-generated name of the volume
+
+		name?: string
 
 		// storage_1 for standard tier, storage_2 for premium (performance) tier.
 		// Tiers are described at U(https://www.packet.com/cloud/storage/).
 
 		plan?: string
 
-		// ID of project of the device.
-
-		project_id: string
-
-		// Size of the volume in gigabytes.
-
-		size?: int
-
 		// Snapshot policy for new volume.
 
 		snapshot_policy?: {...}
+
+		// Desired state of the volume.
+
+		state?: string
 
 		// Packet api token. You can also supply it in env var C(PACKET_API_TOKEN).
 
@@ -90,23 +98,17 @@ packet_volume :: {
 		// Billing cycle for new volume.
 
 		billing_cycle?: string
-
-		// Desired state of the volume.
-
-		state?: string
 	}
 }
 
 packet_volume_attachment :: {
+	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	packet_volume_attachment: {
-
-		// Packet api token. You can also supply it in env var C(PACKET_API_TOKEN).
-
-		auth_token?: string
 
 		// Selector for the device.
 		// It can be a UUID of the device, or a hostname.
@@ -127,77 +129,37 @@ packet_volume_attachment :: {
 		// Example values: 4a347482-b546-4f67-8300-fb5018ef0c5, volume-4a347482, "my volume"
 
 		volume?: string
-	}
-}
-
-packet_device :: {
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	packet_device: {
-
-		// Facility slug for device creation. See Packet API for current list - U(https://www.packet.net/developers/api/facilities/).
-
-		facility?: string
-
-		// Dict with "features" for device creation. See Packet API docs for details.
-
-		features?: string
-
-		// Whether to lock a created device.
-
-		locked?: bool
-
-		// Whether to wait for the instance to be assigned a public IPv4/IPv6 address.
-		// If set to 4, it will wait until IPv4 is assigned to the instance.
-		// If set to 6, wait until public IPv6 is assigned to the instance.
-
-		wait_for_public_IPv?: string
-
-		// From which number to start the count.
-
-		count_offset?: string
-
-		// A hostname of a device, or a list of hostnames.
-		// If given string or one-item list, you can use the C("%d") Python string format to expand numbers from I(count).
-		// If only one hostname, it might be expanded to list if I(count)>1.
-
-		hostnames?: string
-
-		// OS slug for device creation. See Packet API for current list - U(https://www.packet.net/developers/api/operatingsystems/).
-
-		operating_system?: string
-
-		// Plan slug for device creation. See Packet API for current list - U(https://www.packet.net/developers/api/plans/).
-
-		plan?: string
 
 		// Packet api token. You can also supply it in env var C(PACKET_API_TOKEN).
 
 		auth_token?: string
+	}
+}
+
+packet_device :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	packet_device: {
 
 		// The number of devices to create. Count number can be included in hostname via the %d string formatter.
 
 		count?: string
 
-		// ID of project of the device.
+		// From which number to start the count.
 
-		project_id: string
+		count_offset?: string
 
-		// Userdata blob made available to the machine
+		// Whether to lock a created device.
 
-		user_data?: string
+		locked?: bool
 
-		// Persist PXE as the first boot option.
-		// Normally, the PXE process happens only on the first boot. Set this arg to have your device continuously boot to iPXE.
+		// Facility slug for device creation. See Packet API for current list - U(https://www.packet.net/developers/api/facilities/).
 
-		always_pxe?: bool
-
-		// URL of custom iPXE script for provisioning.
-		// More about custom iPXE for Packet devices at U(https://help.packet.net/technical/infrastructure/custom-ipxe).
-
-		ipxe_script_url?: string
+		facility?: string
 
 		// Desired state of the device.
 		// If set to C(present) (the default), the module call will return immediately after the device-creating HTTP request successfully returns.
@@ -205,23 +167,86 @@ packet_device :: {
 
 		state?: string
 
-		// How long (seconds) to wait either for automatic IP address assignment, or for the device to reach the C(active) I(state).
-		// If I(wait_for_public_IPv) is set and I(state) is C(active), the module will wait for both events consequently, applying the timeout twice.
+		// Userdata blob made available to the machine
 
-		wait_timeout?: string
+		user_data?: string
+
+		// Plan slug for device creation. See Packet API for current list - U(https://www.packet.net/developers/api/plans/).
+
+		plan?: string
+
+		// ID of project of the device.
+
+		project_id: string
+
+		// Whether to wait for the instance to be assigned a public IPv4/IPv6 address.
+		// If set to 4, it will wait until IPv4 is assigned to the instance.
+		// If set to 6, wait until public IPv6 is assigned to the instance.
+
+		wait_for_public_IPv?: string
+
+		// Packet api token. You can also supply it in env var C(PACKET_API_TOKEN).
+
+		auth_token?: string
 
 		// List of device IDs on which to operate.
 
 		device_ids?: string
+
+		// URL of custom iPXE script for provisioning.
+		// More about custom iPXE for Packet devices at U(https://help.packet.net/technical/infrastructure/custom-ipxe).
+
+		ipxe_script_url?: string
+
+		// OS slug for device creation. See Packet API for current list - U(https://www.packet.net/developers/api/operatingsystems/).
+
+		operating_system?: string
+
+		// Persist PXE as the first boot option.
+		// Normally, the PXE process happens only on the first boot. Set this arg to have your device continuously boot to iPXE.
+
+		always_pxe?: bool
+
+		// Dict with "features" for device creation. See Packet API docs for details.
+
+		features?: string
+
+		// A hostname of a device, or a list of hostnames.
+		// If given string or one-item list, you can use the C("%d") Python string format to expand numbers from I(count).
+		// If only one hostname, it might be expanded to list if I(count)>1.
+
+		hostnames?: string
+
+		// How long (seconds) to wait either for automatic IP address assignment, or for the device to reach the C(active) I(state).
+		// If I(wait_for_public_IPv) is set and I(state) is C(active), the module will wait for both events consequently, applying the timeout twice.
+
+		wait_timeout?: string
 	}
 }
 
 packet_ip_subnet :: {
+	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	packet_ip_subnet: {
+
+		// A hostname of a device to/from which to assign/remove a subnet.
+
+		hostname?: string
+
+		// UUID of a project of the device to/from which to assign/remove a subnet.
+
+		project_id: string
+
+		// Desired state of the IP subnet on the specified device.
+		// With state == C(present), you must specify either hostname or device_id. Subnet with given CIDR will then be assigned to the specified device.
+		// With state == C(absent), you can specify either hostname or device_id. The subnet will be removed from specified devices.
+		// If you leave both hostname and device_id empty, the subnet will be removed from any device it's assigned to.
+
+		state?: string
 
 		// Packet api token. You can also supply it in env var C(PACKET_API_TOKEN).
 
@@ -239,30 +264,25 @@ packet_ip_subnet :: {
 		// UUID of a device to/from which to assign/remove a subnet.
 
 		device_id?: string
-
-		// A hostname of a device to/from which to assign/remove a subnet.
-
-		hostname?: string
-
-		// UUID of a project of the device to/from which to assign/remove a subnet.
-
-		project_id: string
-
-		// Desired state of the IP subnet on the specified device.
-		// With state == C(present), you must specify either hostname or device_id. Subnet with given CIDR will then be assigned to the specified device.
-		// With state == C(absent), you can specify either hostname or device_id. The subnet will be removed from specified devices.
-		// If you leave both hostname and device_id empty, the subnet will be removed from any device it's assigned to.
-
-		state?: string
 	}
 }
 
 packet_project :: {
+	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	packet_project: {
+
+		// Custom data about the project to create.
+
+		custom_data?: string
+
+		// UUID of the project which you want to remove.
+
+		id?: string
 
 		// Name for/of the project.
 
@@ -285,13 +305,5 @@ packet_project :: {
 		// Packet api token. You can also supply it in env var C(PACKET_API_TOKEN).
 
 		auth_token?: string
-
-		// Custom data about the project to create.
-
-		custom_data?: string
-
-		// UUID of the project which you want to remove.
-
-		id?: string
 	}
 }

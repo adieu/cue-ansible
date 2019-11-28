@@ -1,35 +1,38 @@
 package aerospike
 
 aerospike_migrations :: {
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
 	aerospike_migrations: {
-
-		// How long to try to connect before giving up (milliseconds)
-
-		connect_timeout?: int
-
-		// Do you wish to only check for migrations on the local node before returning, or do you want all nodes in the cluster to finish before returning?
-
-		local_only: bool
 
 		// Check will return bad until cluster size is met or until tries is exhausted
 
 		min_cluster_size?: int
 
+		// Which port to connect to Aerospike on (service port)
+
+		port?: int
+
 		// How long to sleep between each check (seconds).
 
 		sleep_between_checks?: int
 
+		// When all aerospike builds in the cluster are greater than version 4.3, then the C(cluster-stable) info command will be used. Inside this command, you can optionally specify what the target cluster size is - but it is not necessary. You can still rely on min_cluster_size if you don't want to use this option.
+		// If this option is specified on a cluster that has at least 1 host <4.3 then it will be ignored until the min version reaches 4.3.
+
+		target_cluster_size?: int
+
+		// How many times do we poll before giving up and failing?
+
+		tries_limit?: int
+
 		// How many times should the cluster report "no migrations" consecutively before returning OK back to ansible?
 
 		consecutive_good_checks?: int
-
-		// Fail if the cluster key changes if something else is changing the cluster, we may want to fail
-
-		fail_on_cluster_change?: bool
 
 		// Which host do we use as seed for info connection
 
@@ -43,17 +46,16 @@ aerospike_migrations :: {
 
 		migrate_tx_key?: string
 
-		// Which port to connect to Aerospike on (service port)
+		// How long to try to connect before giving up (milliseconds)
 
-		port?: int
+		connect_timeout?: int
 
-		// When all aerospike builds in the cluster are greater than version 4.3, then the C(cluster-stable) info command will be used. Inside this command, you can optionally specify what the target cluster size is - but it is not necessary. You can still rely on min_cluster_size if you don't want to use this option.
-		// If this option is specified on a cluster that has at least 1 host <4.3 then it will be ignored until the min version reaches 4.3.
+		// Fail if the cluster key changes if something else is changing the cluster, we may want to fail
 
-		target_cluster_size?: int
+		fail_on_cluster_change?: bool
 
-		// How many times do we poll before giving up and failing?
+		// Do you wish to only check for migrations on the local node before returning, or do you want all nodes in the cluster to finish before returning?
 
-		tries_limit?: int
+		local_only: bool
 	}
 }

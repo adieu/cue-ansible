@@ -1,48 +1,13 @@
 package infinidat
 
-infini_export :: {
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	infini_export: {
-
-		// List of dictionaries with client entries. See examples. Check infini_export_client module to modify individual NFS client entries for export.
-
-		client_list?: string
-
-		// Name of exported file system.
-
-		filesystem: string
-
-		// Internal path of the export.
-
-		inner_path?: string
-
-		// Export name. Should always start with C(/). (ex. name=/data)
-
-		name: string
-
-		// Creates/Modifies export when present and removes when absent.
-
-		state?: string
-	}
-}
-
 infini_export_client :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
 	infini_export_client: {
-
-		// Read Write or Read Only Access.
-
-		access_mode?: string
-
-		// Client IP or Range. Ranges can be defined as follows 192.168.0.1-192.168.0.254.
-
-		client: string
 
 		// Name of the export.
 
@@ -55,23 +20,25 @@ infini_export_client :: {
 		// Creates/Modifies client when present and removes when absent.
 
 		state?: string
+
+		// Read Write or Read Only Access.
+
+		access_mode?: string
+
+		// Client IP or Range. Ranges can be defined as follows 192.168.0.1-192.168.0.254.
+
+		client: string
 	}
 }
 
 infini_fs :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
 	infini_fs: {
-
-		// File system size in MB, GB or TB units. See examples.
-
-		size?: string
-
-		// Creates/Modifies file system when present or removes when absent.
-
-		state?: string
 
 		// File system name.
 
@@ -80,10 +47,20 @@ infini_fs :: {
 		// Pool that will host file system.
 
 		pool: string
+
+		// File system size in MB, GB or TB units. See examples.
+
+		size?: string
+
+		// Creates/Modifies file system when present or removes when absent.
+
+		state?: string
 	}
 }
 
 infini_host :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
@@ -109,19 +86,13 @@ infini_host :: {
 }
 
 infini_pool :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
 	infini_pool: {
-
-		// Pool Name
-
-		name: string
-
-		// Pool Physical Capacity in MB, GB or TB units. If pool size is not set on pool creation, size will be equal to 1TB. See examples.
-
-		size?: string
 
 		// Enable/Disable SSD Cache on Pool
 
@@ -134,19 +105,25 @@ infini_pool :: {
 		// Pool Virtual Capacity in MB, GB or TB units. If pool vsize is not set on pool creation, Virtual Capacity will be equal to Physical Capacity. See examples.
 
 		vsize?: string
+
+		// Pool Name
+
+		name: string
+
+		// Pool Physical Capacity in MB, GB or TB units. If pool size is not set on pool creation, size will be equal to 1TB. See examples.
+
+		size?: string
 	}
 }
 
 infini_vol :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
 	infini_vol: {
-
-		// Volume Name
-
-		name: string
 
 		// Pool that volume will reside on
 
@@ -159,5 +136,40 @@ infini_vol :: {
 		// Creates/Modifies volume when present or removes when absent
 
 		state?: string
+
+		// Volume Name
+
+		name: string
+	}
+}
+
+infini_export :: {
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	infini_export: {
+
+		// Internal path of the export.
+
+		inner_path?: string
+
+		// Export name. Should always start with C(/). (ex. name=/data)
+
+		name: string
+
+		// Creates/Modifies export when present and removes when absent.
+
+		state?: string
+
+		// List of dictionaries with client entries. See examples. Check infini_export_client module to modify individual NFS client entries for export.
+
+		client_list?: string
+
+		// Name of exported file system.
+
+		filesystem: string
 	}
 }

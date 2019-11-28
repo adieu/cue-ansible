@@ -1,42 +1,13 @@
 package hpilo
 
-wakeonlan :: {
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	wakeonlan: {
-
-		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
-
-		broadcast?: string
-
-		// MAC address to send Wake-on-LAN broadcast packet for.
-
-		mac: string
-
-		// UDP port to use for magic Wake-on-LAN packet.
-
-		port?: string
-	}
-}
-
 hpilo_boot :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
 	hpilo_boot: {
-
-		// The state of the boot media.
-		// no_boot: Do not boot from the device
-		// boot_once: Boot from the device once and then notthereafter
-		// boot_always: Boot from the device each time the server is rebooted
-		// connect: Connect the virtual media device and set to boot_always
-		// disconnect: Disconnects the virtual media device and set to no_boot
-		// poweroff: Power off the server
-
-		state?: string
 
 		// Whether to force a reboot (even when the system is already booted).
 		// As a safeguard, without force, hpilo_boot will refuse to reboot a server that is already running.
@@ -69,19 +40,27 @@ hpilo_boot :: {
 		// Change the ssl_version used.
 
 		ssl_version?: string
+
+		// The state of the boot media.
+		// no_boot: Do not boot from the device
+		// boot_once: Boot from the device once and then notthereafter
+		// boot_always: Boot from the device each time the server is rebooted
+		// connect: Connect the virtual media device and set to boot_always
+		// disconnect: Disconnects the virtual media device and set to no_boot
+		// poweroff: Power off the server
+
+		state?: string
 	}
 }
 
 hpilo_info :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
 	hpilo_info: {
-
-		// The login name to authenticate to the HP iLO interface.
-
-		login?: string
 
 		// The password to authenticate to the HP iLO interface.
 
@@ -94,15 +73,25 @@ hpilo_info :: {
 		// The HP iLO hostname/address that is linked to the physical system.
 
 		host: string
+
+		// The login name to authenticate to the HP iLO interface.
+
+		login?: string
 	}
 }
 
 hponcfg :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
 	hponcfg: {
+
+		// Path to the hponcfg executable (`hponcfg` which uses $PATH).
+
+		executable?: string
 
 		// The minimum firmware level needed.
 
@@ -115,9 +104,28 @@ hponcfg :: {
 		// Run hponcfg in verbose mode (-v).
 
 		verbose?: bool
+	}
+}
 
-		// Path to the hponcfg executable (`hponcfg` which uses $PATH).
+wakeonlan :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	wakeonlan: {
 
-		executable?: string
+		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
+
+		broadcast?: string
+
+		// MAC address to send Wake-on-LAN broadcast packet for.
+
+		mac: string
+
+		// UDP port to use for magic Wake-on-LAN packet.
+
+		port?: string
 	}
 }

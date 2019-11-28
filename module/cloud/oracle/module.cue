@@ -1,11 +1,21 @@
 package oracle
 
 oci_vcn :: {
-	tags?: [...string]
-	notify?: string | [...string]
+	register?: string
 	vars?: {...}
 	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	name?:   string
 	oci_vcn: {
+
+		// The OCID of the VCN. Required when deleting a VCN with I(state=absent) or updating a VCN with I(state=present). This option is mutually exclusive with I(compartment_id).
+
+		vcn_id?: string
+
+		// The CIDR IP address block of the VCN. Required when creating a VCN with I(state=present).
+
+		cidr_block?: string
 
 		// The OCID of the compartment to contain the VCN. Required when creating a VCN with I(state=present). This option is mutually exclusive with I(vcn_id).
 
@@ -22,13 +32,5 @@ oci_vcn :: {
 		// Create or update a VCN with I(state=present). Use I(state=absent) to delete a VCN.
 
 		state?: string
-
-		// The OCID of the VCN. Required when deleting a VCN with I(state=absent) or updating a VCN with I(state=present). This option is mutually exclusive with I(compartment_id).
-
-		vcn_id?: string
-
-		// The CIDR IP address block of the VCN. Required when creating a VCN with I(state=present).
-
-		cidr_block?: string
 	}
 }

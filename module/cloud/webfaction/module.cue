@@ -1,11 +1,64 @@
 package webfaction
 
+webfaction_app :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	webfaction_app: {
+
+		// Whether the app should restart with an C(autostart.cgi) script
+
+		autostart?: bool
+
+		// Any extra parameters required by the app
+
+		extra_info?: string
+
+		// The webfaction password to use
+
+		login_password: string
+
+		// The name of the application
+
+		name: string
+
+		// IF the port should be opened
+
+		port_open?: bool
+
+		// The webfaction account to use
+
+		login_name: string
+
+		// The machine name to use (optional for accounts with only one machine)
+
+		machine?: string
+
+		// Whether the application should exist
+
+		state?: string
+
+		// The type of application to create. See the Webfaction docs at U(https://docs.webfaction.com/xmlrpc-api/apps.html) for a list.
+
+		type: string
+	}
+}
+
 webfaction_db :: {
 	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	webfaction_db: {
+
+		// The password for the new database user.
+
+		password?: string
 
 		// Whether the database should exist
 
@@ -30,10 +83,6 @@ webfaction_db :: {
 		// The name of the database
 
 		name: string
-
-		// The password for the new database user.
-
-		password?: string
 	}
 }
 
@@ -41,8 +90,18 @@ webfaction_domain :: {
 	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	webfaction_domain: {
+
+		// Whether the domain should exist
+
+		state?: string
+
+		// Any subdomains to create.
+
+		subdomains?: string
 
 		// The webfaction account to use
 
@@ -55,14 +114,6 @@ webfaction_domain :: {
 		// The name of the domain
 
 		name: string
-
-		// Whether the domain should exist
-
-		state?: string
-
-		// Any subdomains to create.
-
-		subdomains?: string
 	}
 }
 
@@ -70,8 +121,18 @@ webfaction_mailbox :: {
 	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	webfaction_mailbox: {
+
+		// The webfaction account to use
+
+		login_name: string
+
+		// The webfaction password to use
+
+		login_password: string
 
 		// The name of the mailbox
 
@@ -84,14 +145,6 @@ webfaction_mailbox :: {
 		// Whether the mailbox should exist
 
 		state?: string
-
-		// The webfaction account to use
-
-		login_name: string
-
-		// The webfaction password to use
-
-		login_password: string
 	}
 }
 
@@ -99,20 +152,10 @@ webfaction_site :: {
 	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	webfaction_site: {
-
-		// A mapping of URLs to apps
-
-		site_apps?: string
-
-		// Whether the website should exist
-
-		state?: string
-
-		// A list of subdomains associated with this site.
-
-		subdomains?: string
 
 		// The webfaction host on which the site should be created.
 
@@ -133,50 +176,17 @@ webfaction_site :: {
 		// The name of the website
 
 		name: string
-	}
-}
 
-webfaction_app :: {
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	webfaction_app: {
+		// A mapping of URLs to apps
 
-		// The webfaction account to use
+		site_apps?: string
 
-		login_name: string
-
-		// The webfaction password to use
-
-		login_password: string
-
-		// IF the port should be opened
-
-		port_open?: bool
-
-		// Whether the application should exist
+		// Whether the website should exist
 
 		state?: string
 
-		// Whether the app should restart with an C(autostart.cgi) script
+		// A list of subdomains associated with this site.
 
-		autostart?: bool
-
-		// Any extra parameters required by the app
-
-		extra_info?: string
-
-		// The machine name to use (optional for accounts with only one machine)
-
-		machine?: string
-
-		// The name of the application
-
-		name: string
-
-		// The type of application to create. See the Webfaction docs at U(https://docs.webfaction.com/xmlrpc-api/apps.html) for a list.
-
-		type: string
+		subdomains?: string
 	}
 }

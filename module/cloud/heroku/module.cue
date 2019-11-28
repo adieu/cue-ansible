@@ -1,11 +1,17 @@
 package heroku
 
 heroku_collaborator :: {
-	notify?: string | [...string]
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
+	notify?: string | [...string]
+	name?:   string
 	heroku_collaborator: {
+
+		// Heroku API key
+
+		api_key?: string
 
 		// List of Heroku App names
 
@@ -22,9 +28,5 @@ heroku_collaborator :: {
 		// User ID or e-mail
 
 		user: string
-
-		// Heroku API key
-
-		api_key?: string
 	}
 }

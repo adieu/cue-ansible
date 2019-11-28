@@ -1,27 +1,21 @@
 package dellemc
 
 idrac_firmware :: {
+	name?:     string
+	register?: string
+	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
-	vars?: {...}
 	idrac_firmware: {
-
-		// iDRAC username.
-
-		idrac_user: string
-
-		// Whether to wait for job completion or not.
-
-		job_wait?: bool
-
-		// Whether to reboots after applying the updates or not.
-
-		reboot?: bool
 
 		// Local mount path of the network share with read-write permission for ansible user. This option is mandatory for Network Share.
 
 		share_mnt: string
+
+		// CIFS or NFS Network share.
+
+		share_name: string
 
 		// Catalog file name relative to the I(share_name).
 
@@ -31,9 +25,13 @@ idrac_firmware :: {
 
 		idrac_ip: string
 
-		// CIFS or NFS Network share.
+		// Whether to reboots after applying the updates or not.
 
-		share_name: string
+		reboot?: bool
+
+		// Whether to wait for job completion or not.
+
+		job_wait?: bool
 
 		// Network share user password. This option is mandatory for CIFS Network Share.
 
@@ -50,15 +48,43 @@ idrac_firmware :: {
 		// iDRAC port.
 
 		idrac_port?: int
+
+		// iDRAC username.
+
+		idrac_user: string
 	}
 }
 
 idrac_server_config_profile :: {
+	name?:     string
+	register?: string
+	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
-	vars?: {...}
 	idrac_server_config_profile: {
+
+		// This option is applicable for C(import) command.
+		// If C(On), End host power state is on.
+		// If C(Off), End host power state is off.
+
+		end_host_power_state?: string
+
+		// Specify the type of server configuration profile (SCP) to be exported. This option is applicable for C(export) command.
+
+		export_use?: string
+
+		// iDRAC port.
+
+		idrac_port?: int
+
+		// Network share user password. This option is mandatory for CIFS Network Share.
+
+		share_password?: string
+
+		// Specify the output file format. This option is applicable for C(export) command.
+
+		export_format?: string
 
 		// iDRAC user password.
 
@@ -72,50 +98,22 @@ idrac_server_config_profile :: {
 
 		scp_components?: string
 
-		// Network share user in the format 'user@domain' or 'domain\\user' if user is part of a domain else 'user'. This option is mandatory for CIFS Network Share.
+		// CIFS or NFS Network Share or a local path.
 
-		share_user?: string
+		share_name: string
 
 		// If C(import), will perform SCP import operations.
 		// If C(export), will perform SCP export operations.
 
 		command?: string
 
-		// Specify the type of server configuration profile (SCP) to be exported. This option is applicable for C(export) command.
-
-		export_use?: string
-
 		// iDRAC IP Address.
 
 		idrac_ip: string
 
-		// iDRAC username.
-
-		idrac_user: string
-
-		// Specify the output file format. This option is applicable for C(export) command.
-
-		export_format?: string
-
-		// iDRAC port.
-
-		idrac_port?: int
-
-		// Whether to wait for job completion or not.
-
-		job_wait: bool
-
 		// Server Configuration Profile file name. This option is mandatory for C(import) command.
 
 		scp_file?: string
-
-		// CIFS or NFS Network Share or a local path.
-
-		share_name: string
-
-		// Network share user password. This option is mandatory for CIFS Network Share.
-
-		share_password?: string
 
 		// This option is applicable for C(import) command.
 		// If C(Graceful), it gracefully shuts down the server.
@@ -124,26 +122,28 @@ idrac_server_config_profile :: {
 
 		shutdown_type?: string
 
-		// This option is applicable for C(import) command.
-		// If C(On), End host power state is on.
-		// If C(Off), End host power state is off.
+		// iDRAC username.
 
-		end_host_power_state?: string
+		idrac_user: string
+
+		// Whether to wait for job completion or not.
+
+		job_wait: bool
+
+		// Network share user in the format 'user@domain' or 'domain\\user' if user is part of a domain else 'user'. This option is mandatory for CIFS Network Share.
+
+		share_user?: string
 	}
 }
 
 ome_device_info :: {
+	name?:     string
+	register?: string
+	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
-	vars?: {...}
 	ome_device_info: {
-
-		// C(basic_inventory) returns the list of the devices.
-		// C(detailed_inventory) returns the inventory details of specified devices.
-		// C(subsystem_health) returns the health status of specified devices.
-
-		fact_subset?: string
 
 		// Target IP Address or hostname.
 
@@ -164,14 +164,22 @@ ome_device_info :: {
 		// Target username.
 
 		username: string
+
+		// C(basic_inventory) returns the list of the devices.
+		// C(detailed_inventory) returns the inventory details of specified devices.
+		// C(subsystem_health) returns the health status of specified devices.
+
+		fact_subset?: string
 	}
 }
 
 wakeonlan :: {
+	name?:     string
+	register?: string
+	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
-	vars?: {...}
 	wakeonlan: {
 
 		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.

@@ -1,10 +1,12 @@
 package eric_eccli
 
 eric_eccli_command :: {
+	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	eric_eccli_command: {
 
 		// List of commands to send to the remote ECCLI device over the configured provider. The resulting output from the command is returned. If the I(wait_for) argument is provided, the module is not returned until the condition is satisfied or the number of retries has expired. If a command sent to the device requires answering a prompt, it is possible to pass a dict containing I(command), I(answer) and I(prompt). Common answers are 'y' or "\r" (carriage return, must be double quotes). See examples.

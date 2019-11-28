@@ -1,128 +1,208 @@
 package grafana
 
-logicmonitor :: {
+pingdom :: {
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
-	logicmonitor: {
+	pingdom: {
+
+		// Define whether or not the check should be running or paused.
+
+		state: string
+
+		// Pingdom user ID.
+
+		uid: string
+
+		// Pingdom ID of the check.
+
+		checkid: string
+
+		// Pingdom API key.
+
+		key: string
+
+		// Pingdom user password.
+
+		passwd: string
+	}
+}
+
+spectrum_device :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	spectrum_device: {
+
+		// Oneclick user password.
+
+		url_password: string
+
+		// Oneclick user name.
+
+		url_username: string
+
+		// If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
+
+		validate_certs?: bool
+
+		// UDP port used for SNMP discovery.
+
+		agentport?: string
+
+		// SNMP community used for device discovery.
+		// Required when C(state=present).
+
+		community?: string
+
+		// IP address of the device.
+		// If a hostname is given, it will be resolved to the IP address.
+
+		device: string
+
+		// On C(present) creates the device when it does not exist.
+		// On C(absent) removes the device when it exists.
+
+		state?: string
+
+		// HTTP, HTTPS URL of the Oneclick server in the form (http|https)://host.domain[:port]
+
+		url: string
+
+		// Landscape handle of the SpectroServer to which add or remove the device.
+
+		landscape: string
+
+		// if C(no), it will not use a proxy, even if one is defined in an environment variable on the target hosts.
+
+		use_proxy?: bool
+	}
+}
+
+circonus_annotation :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	circonus_annotation: {
+
+		// Unix timestamp of event end
+
+		stop?: string
+
+		// Title of annotation
+
+		title: string
+
+		// Circonus API key
+
+		api_key: string
+
+		// Annotation Category
+
+		category: string
+
+		// Description of annotation
+
+		description: string
+
+		// Duration in seconds of annotation
+
+		duration?: string
+
+		// Unix timestamp of event start
+
+		start?: string
+	}
+}
+
+icinga2_feature :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	icinga2_feature: {
+
+		// This is the feature name to enable or disable.
+
+		name: string
+
+		// If set to C(present) and feature is disabled, then feature is enabled.
+		// If set to C(present) and feature is already enabled, then nothing is changed.
+		// If set to C(absent) and feature is enabled, then feature is disabled.
+		// If set to C(absent) and feature is already disabled, then nothing is changed.
+
+		state?: string
+	}
+}
+
+logicmonitor_facts :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	logicmonitor_facts: {
+
+		// The password for the chosen LogicMonitor User.
+		// If an md5 hash is used, the digest flag must be set to true.
+
+		password: string
+
+		// The LogicMonitor object you wish to manage.
+
+		target: string
 
 		// A LogicMonitor user name. The module will authenticate and perform actions on behalf of this user.
 
 		user: string
 
-		// The display name of a host in your LogicMonitor account or the desired display name of a device to manage.
-		// Optional for managing hosts (target=host).
+		// The fully qualified domain name of a collector in your LogicMonitor account.
+		// This is optional for querying a LogicMonitor host when a displayname is specified.
+		// This is required for querying a LogicMonitor host when a displayname is not specified.
+
+		collector?: string
+
+		// The LogicMonitor account company name. If you would log in to your account at "superheroes.logicmonitor.com" you would use "superheroes".
+
+		company: string
+
+		// The display name of a host in your LogicMonitor account or the desired display name of a device to add into monitoring.
 
 		displayname?: string
 
-		// The password of the specified LogicMonitor user
-
-		password: string
-
-		// The fullpath of the host group object you would like to manage.
-		// Recommend running on a single Ansible host.
+		// The fullpath of the hostgroup object you would like to manage.
+		// Recommend running on a single ansible host.
 		// Required for management of LogicMonitor host groups (target=hostgroup).
 
 		fullpath?: string
 
-		// ID of the datasource to target.
-		// Required for management of LogicMonitor datasources (target=datasource).
-
-		id?: string
-
-		// The time that the Scheduled Down Time (SDT) should begin.
-		// Optional for managing SDT (action=sdt).
-		// Y-m-d H:M
-
-		starttime?: string
-
-		// The fully qualified domain name of a collector in your LogicMonitor account.
-		// This is required for the creation of a LogicMonitor host (target=host action=add).
-		// This is required for updating, removing or scheduling downtime for hosts if 'displayname' isn't specified (target=host action=update action=remove action=sdt).
-
-		collector?: string
-
-		// The long text description of the object in your LogicMonitor account.
-		// Optional for managing hosts and host groups (target=host or target=hostgroup; action=add or action=update).
-
-		description?: string
-
-		// A list of groups that the host should be a member of.
-		// Optional for managing hosts (target=host; action=add or action=update).
-
-		groups?: string
-
-		// The hostname of a host in your LogicMonitor account, or the desired hostname of a device to manage.
-		// Optional for managing hosts (target=host).
+		// The hostname of a host in your LogicMonitor account, or the desired hostname of a device to add into monitoring.
+		// Required for managing hosts (target=host).
 
 		hostname?: string
-
-		// The type of LogicMonitor object you wish to manage.
-		// Collector: Perform actions on a LogicMonitor collector.
-		// NOTE You should use Ansible service modules such as M(service) or M(supervisorctl) for managing the Collector 'logicmonitor-agent' and 'logicmonitor-watchdog' services. Specifically, you'll probably want to start these services after a Collector add and stop these services before a Collector remove.
-		// Host: Perform actions on a host device.
-		// Hostgroup: Perform actions on a LogicMonitor host group.
-		// NOTE Host and Hostgroup tasks should always be performed via delegate_to: localhost. There are no benefits to running these tasks on the remote host and doing so will typically cause problems.
-
-		target: string
-
-		// A boolean flag to turn alerting on or off for an object.
-		// Optional for managing all hosts (action=add or action=update).
-
-		alertenable?: bool
-
-		// The duration (minutes) of the Scheduled Down Time (SDT).
-		// Optional for putting an object into SDT (action=sdt).
-
-		duration?: string
-
-		// A dictionary of properties to set on the LogicMonitor host or host group.
-		// Optional for managing hosts and host groups (target=host or target=hostgroup; action=add or action=update).
-		// This parameter will add or update existing properties in your LogicMonitor account.
-
-		properties?: string
-
-		// The action you wish to perform on target.
-		// Add: Add an object to your LogicMonitor account.
-		// Remove: Remove an object from your LogicMonitor account.
-		// Update: Update properties, description, or groups (target=host) for an object in your LogicMonitor account.
-		// SDT: Schedule downtime for an object in your LogicMonitor account.
-
-		action: string
-
-		// The LogicMonitor account company name. If you would log in to your account at "superheroes.logicmonitor.com" you would use "superheroes."
-
-		company: string
 	}
 }
 
 newrelic_deployment :: {
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	newrelic_deployment: {
-
-		// Name of the application
-
-		appname?: string
-
-		// A list of changes for this deployment
-
-		changelog?: string
-
-		// The environment for this deployment
-
-		environment?: string
-
-		// API token, to place in the x-api-key header.
-
-		token: string
-
-		// The name of the user/process that triggered this deployment
-
-		user?: string
 
 		// (one of app_name or application_id are required) The value of app_name in the newrelic.yml file used by the application
 
@@ -132,23 +212,45 @@ newrelic_deployment :: {
 
 		application_id?: string
 
-		// Text annotation for the deployment - notes for you
+		// Name of the application
 
-		description?: string
+		appname?: string
 
 		// A revision number (e.g., git commit SHA)
 
 		revision?: string
 
+		// API token, to place in the x-api-key header.
+
+		token: string
+
 		// If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
 
 		validate_certs?: bool
+
+		// A list of changes for this deployment
+
+		changelog?: string
+
+		// Text annotation for the deployment - notes for you
+
+		description?: string
+
+		// The environment for this deployment
+
+		environment?: string
+
+		// The name of the user/process that triggered this deployment
+
+		user?: string
 	}
 }
 
 pagerduty :: {
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	pagerduty: {
@@ -157,21 +259,9 @@ pagerduty :: {
 
 		hours?: string
 
-		// ID of user making the request. Only needed when creating a maintenance_window.
+		// A comma separated list of PagerDuty service IDs.
 
-		requester_id?: string
-
-		// A pagerduty token, generated on the pagerduty site. It is used for authorization.
-
-		token: string
-
-		// ID of maintenance window. Only needed when absent a maintenance_window.
-
-		window_id?: string
-
-		// Create a maintenance window or get a list of ongoing windows.
-
-		state: string
+		service?: string
 
 		// PagerDuty user ID. Obsolete. Please, use I(token) for authorization.
 
@@ -193,18 +283,36 @@ pagerduty :: {
 
 		name?: string
 
-		// A comma separated list of PagerDuty service IDs.
+		// ID of user making the request. Only needed when creating a maintenance_window.
 
-		service?: string
+		requester_id?: string
+
+		// Create a maintenance window or get a list of ongoing windows.
+
+		state: string
+
+		// A pagerduty token, generated on the pagerduty site. It is used for authorization.
+
+		token: string
+
+		// ID of maintenance window. Only needed when absent a maintenance_window.
+
+		window_id?: string
 	}
 }
 
 rollbar_deployment :: {
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	rollbar_deployment: {
+
+		// Optional URL to submit the notification to.
+
+		url?: string
 
 		// User who deployed.
 
@@ -233,23 +341,247 @@ rollbar_deployment :: {
 		// Your project access token.
 
 		token: string
+	}
+}
+
+stackdriver :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	stackdriver: {
+
+		// The person or robot responsible for deploying the code
+
+		deployed_by?: string
+
+		// The environment code was deployed to. (ie: development, staging, production)
+
+		deployed_to?: string
+
+		// id of an EC2 instance that this event should be attached to, which will limit the contexts where this event is shown
+
+		instance_id?: string
+
+		// one of INFO/WARN/ERROR, defaults to INFO if not supplied.  May affect display.
+
+		level?: string
+
+		// The contents of the annotation message, in plain text.  Limited to 256 characters. Required for annotation.
+
+		msg?: string
+
+		// The repository (or project) deployed
+
+		repository?: string
+
+		// The person or robot who the annotation should be attributed to.
+
+		annotated_by?: string
+
+		// The type of event to send, either annotation or deploy
+
+		event?: string
+
+		// Unix timestamp of where the event should appear in the timeline, defaults to now. Be careful with this.
+
+		event_epoch?: string
+
+		// API key.
+
+		key: string
+
+		// The revision of the code that was deployed. Required for deploy events
+
+		revision_id?: string
+	}
+}
+
+honeybadger_deployment :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	honeybadger_deployment: {
 
 		// Optional URL to submit the notification to.
 
 		url?: string
+
+		// The username of the person doing the deployment
+
+		user?: string
+
+		// If C(no), SSL certificates for the target url will not be validated. This should only be used on personally controlled sites using self-signed certificates.
+
+		validate_certs?: bool
+
+		// The environment name, typically 'production', 'staging', etc.
+
+		environment: string
+
+		// URL of the project repository
+
+		repo?: string
+
+		// A hash, number, tag, or other identifier showing what revision was deployed
+
+		revision?: string
+
+		// API token.
+
+		token: string
+	}
+}
+
+icinga2_host :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	icinga2_host: {
+
+		// PEM formatted file that contains your private key to be used for SSL client authentication. If C(client_cert) contains both the certificate and key, this option is not required.
+
+		client_key?: string
+
+		// The name used to display the host.
+
+		display_name?: string
+
+		// httplib2, the library used by the uri module only sends authentication information when a webservice responds to an initial request with a 401 status. Since some basic auth services do not properly send a 401, logins will fail. This option forces the sending of the Basic authentication header upon initial request.
+
+		force_basic_auth?: bool
+
+		// The username for use in HTTP basic authentication.
+		// This parameter can be used without C(url_password) for sites that allow empty passwords.
+
+		url_username?: string
+
+		// List of variables.
+
+		variables?: string
+
+		// The zone from where this host should be polled.
+
+		zone?: string
+
+		// The IP address of the host.
+
+		ip: string
+
+		// Name used to create / delete the host. This does not need to be the FQDN, but does needs to be unique.
+
+		name: string
+
+		// Apply feature state.
+
+		state?: string
+
+		// The password for use in HTTP basic authentication.
+		// If the C(url_username) parameter is not specified, the C(url_password) parameter will not be used.
+
+		url_password?: string
+
+		// If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
+
+		validate_certs?: bool
+
+		// The command used to check if the host is alive.
+
+		check_command?: string
+
+		// PEM formatted certificate chain file to be used for SSL client authentication. This file can also include the key as well, and if the key is included, C(client_key) is not required.
+
+		client_cert?: string
+
+		// The template used to define the host.
+		// Template cannot be modified after object creation.
+
+		template?: string
+
+		// If C(no), it will not use a proxy, even if one is defined in an environment variable on the target hosts.
+
+		use_proxy?: bool
+
+		// HTTP, HTTPS, or FTP URL in the form (http|https|ftp)://[user[:pass]]@host.domain[:port]/path
+
+		url: string
+	}
+}
+
+logstash_plugin :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	logstash_plugin: {
+
+		// Install plugin with that name.
+
+		name: string
+
+		// Specify logstash-plugin to use for plugin management.
+
+		plugin_bin?: string
+
+		// Proxy host to use during plugin installation.
+
+		proxy_host?: string
+
+		// Proxy port to use during plugin installation.
+
+		proxy_port?: string
+
+		// Apply plugin state.
+
+		state?: string
+
+		// Specify plugin Version of the plugin to install. If plugin exists with previous version, it will NOT be updated.
+
+		version?: string
+	}
+}
+
+monit :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	monit: {
+
+		// The name of the I(monit) program/process to manage
+
+		name: string
+
+		// The state of service
+
+		state: string
+
+		// If there are pending actions for the service monitored by monit, then Ansible will check for up to this many seconds to verify the requested action has been performed. Ansible will sleep for five seconds between each check.
+
+		timeout?: string
 	}
 }
 
 uptimerobot :: {
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	uptimerobot: {
-
-		// Uptime Robot API key.
-
-		apikey: string
 
 		// ID of the monitor to check.
 
@@ -258,94 +590,69 @@ uptimerobot :: {
 		// Define whether or not the monitor should be running or paused.
 
 		state: string
+
+		// Uptime Robot API key.
+
+		apikey: string
 	}
 }
 
-grafana_dashboard :: {
+bigpanda :: {
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
-	grafana_dashboard: {
+	bigpanda: {
 
-		// The Grafana Organisation ID where the dashboard will be imported / exported.
-		// Not used when I(grafana_api_key) is set, because the grafana_api_key only belongs to one organisation..
+		// Free text description of the deployment.
 
-		org_id?: string
+		description?: string
 
-		// Override existing dashboard when state is present.
+		// Name of affected host name. Can be a list.
 
-		overwrite?: bool
+		hosts?: string
 
-		// The Grafana API key.
-		// If set, I(grafana_user) and I(grafana_password) will be ignored.
+		// The person responsible for the deployment.
 
-		grafana_api_key?: string
+		owner?: string
 
-		// Set a commit message for the version history.
-		// Only used when C(state) is C(present).
-
-		message?: string
-
-		// Deprecated since Grafana 5. Use grafana dashboard uid instead.
-		// slug of the dashboard. It's the friendly url name of the dashboard.
-		// When C(state) is C(present), this parameter can override the slug in the meta section of the json file.
-		// If you want to import a json dashboard exported directly from the interface (not from the api), you have to specify the slug parameter because there is no meta section in the exported json.
-
-		slug?: string
-
-		// uid of the dashboard to export when C(state) is C(export) or C(absent).
-
-		uid?: string
-
-		// The Grafana folder where this dashboard will be imported to.
-
-		folder?: string
-
-		// State of the dashboard.
-
-		state: string
-
-		// The Grafana URL.
-
-		url: string
-
-		// If C(no), SSL certificates will not be validated.
-		// This should only be used on personally controlled sites using self-signed certificates.
+		// If C(no), SSL certificates for the target url will not be validated. This should only be used on personally controlled sites using self-signed certificates.
 
 		validate_certs?: bool
 
-		// The Grafana API user.
+		// The deployment version.
 
-		url_username?: string
+		version: string
 
-		// Boolean of whether or not to use proxy.
+		// The name of the component being deployed. Ex: billing
 
-		use_proxy?: bool
+		component: string
 
-		// PEM formatted certificate chain file to be used for SSL client authentication.
-		// This file can also include the key as well, and if the key is included, client_key is not required
+		// The environment name, typically 'production', 'staging', etc.
 
-		client_cert?: string
+		env?: string
 
-		// PEM formatted file that contains your private key to be used for SSL client
-		// authentication. If client_cert contains both the certificate and key, this option is not required
+		// State of the deployment.
 
-		client_key?: string
+		state: string
 
-		// The path to the json file containing the Grafana dashboard to import or export.
+		// API token.
 
-		path?: string
+		token: string
 
-		// The Grafana API password.
+		// Base URL of the API server.
 
-		url_password?: string
+		url?: string
 	}
 }
 
 librato_annotation :: {
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	librato_annotation: {
@@ -353,6 +660,15 @@ librato_annotation :: {
 		// Librato account api key
 
 		api_key: string
+
+		// The description contains extra metadata about a particular annotation
+		// The description should contain specifics on the individual annotation e.g. Deployed 9b562b2 shipped new feature foo!
+
+		description?: string
+
+		// The unix timestamp indicating the time at which the event referenced by this annotation started
+
+		start_time?: string
 
 		// The unix timestamp indicating the time at which the event referenced by this annotation ended
 		// For events that have a duration, this is a useful way to annotate the duration of the event
@@ -372,410 +688,129 @@ librato_annotation :: {
 
 		source?: string
 
-		// Librato account username
-
-		user: string
-
-		// The description contains extra metadata about a particular annotation
-		// The description should contain specifics on the individual annotation e.g. Deployed 9b562b2 shipped new feature foo!
-
-		description?: string
-
-		// The unix timestamp indicating the time at which the event referenced by this annotation started
-
-		start_time?: string
-
 		// The title of an annotation is a string and may contain spaces
 		// The title should be a short, high-level summary of the annotation e.g. v45 Deployment
 
 		title: string
+
+		// Librato account username
+
+		user: string
 	}
 }
 
-logicmonitor_facts :: {
+logicmonitor :: {
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
-	logicmonitor_facts: {
+	logicmonitor: {
 
-		// The LogicMonitor account company name. If you would log in to your account at "superheroes.logicmonitor.com" you would use "superheroes".
-
-		company: string
-
-		// The display name of a host in your LogicMonitor account or the desired display name of a device to add into monitoring.
+		// The display name of a host in your LogicMonitor account or the desired display name of a device to manage.
+		// Optional for managing hosts (target=host).
 
 		displayname?: string
 
-		// The fullpath of the hostgroup object you would like to manage.
-		// Recommend running on a single ansible host.
+		// The duration (minutes) of the Scheduled Down Time (SDT).
+		// Optional for putting an object into SDT (action=sdt).
+
+		duration?: string
+
+		// The hostname of a host in your LogicMonitor account, or the desired hostname of a device to manage.
+		// Optional for managing hosts (target=host).
+
+		hostname?: string
+
+		// The fully qualified domain name of a collector in your LogicMonitor account.
+		// This is required for the creation of a LogicMonitor host (target=host action=add).
+		// This is required for updating, removing or scheduling downtime for hosts if 'displayname' isn't specified (target=host action=update action=remove action=sdt).
+
+		collector?: string
+
+		// A list of groups that the host should be a member of.
+		// Optional for managing hosts (target=host; action=add or action=update).
+
+		groups?: string
+
+		// The type of LogicMonitor object you wish to manage.
+		// Collector: Perform actions on a LogicMonitor collector.
+		// NOTE You should use Ansible service modules such as M(service) or M(supervisorctl) for managing the Collector 'logicmonitor-agent' and 'logicmonitor-watchdog' services. Specifically, you'll probably want to start these services after a Collector add and stop these services before a Collector remove.
+		// Host: Perform actions on a host device.
+		// Hostgroup: Perform actions on a LogicMonitor host group.
+		// NOTE Host and Hostgroup tasks should always be performed via delegate_to: localhost. There are no benefits to running these tasks on the remote host and doing so will typically cause problems.
+
+		target: string
+
+		// The password of the specified LogicMonitor user
+
+		password: string
+
+		// The LogicMonitor account company name. If you would log in to your account at "superheroes.logicmonitor.com" you would use "superheroes."
+
+		company: string
+
+		// The long text description of the object in your LogicMonitor account.
+		// Optional for managing hosts and host groups (target=host or target=hostgroup; action=add or action=update).
+
+		description?: string
+
+		// The fullpath of the host group object you would like to manage.
+		// Recommend running on a single Ansible host.
 		// Required for management of LogicMonitor host groups (target=hostgroup).
 
 		fullpath?: string
 
-		// The hostname of a host in your LogicMonitor account, or the desired hostname of a device to add into monitoring.
-		// Required for managing hosts (target=host).
+		// ID of the datasource to target.
+		// Required for management of LogicMonitor datasources (target=datasource).
 
-		hostname?: string
-
-		// The password for the chosen LogicMonitor User.
-		// If an md5 hash is used, the digest flag must be set to true.
-
-		password: string
-
-		// The LogicMonitor object you wish to manage.
-
-		target: string
+		id?: string
 
 		// A LogicMonitor user name. The module will authenticate and perform actions on behalf of this user.
 
 		user: string
 
-		// The fully qualified domain name of a collector in your LogicMonitor account.
-		// This is optional for querying a LogicMonitor host when a displayname is specified.
-		// This is required for querying a LogicMonitor host when a displayname is not specified.
+		// The action you wish to perform on target.
+		// Add: Add an object to your LogicMonitor account.
+		// Remove: Remove an object from your LogicMonitor account.
+		// Update: Update properties, description, or groups (target=host) for an object in your LogicMonitor account.
+		// SDT: Schedule downtime for an object in your LogicMonitor account.
 
-		collector?: string
-	}
-}
+		action: string
 
-stackdriver :: {
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	when?: string
-	stackdriver: {
+		// A boolean flag to turn alerting on or off for an object.
+		// Optional for managing all hosts (action=add or action=update).
 
-		// The person or robot who the annotation should be attributed to.
+		alertenable?: bool
 
-		annotated_by?: string
+		// A dictionary of properties to set on the LogicMonitor host or host group.
+		// Optional for managing hosts and host groups (target=host or target=hostgroup; action=add or action=update).
+		// This parameter will add or update existing properties in your LogicMonitor account.
 
-		// The type of event to send, either annotation or deploy
+		properties?: string
 
-		event?: string
+		// The time that the Scheduled Down Time (SDT) should begin.
+		// Optional for managing SDT (action=sdt).
+		// Y-m-d H:M
 
-		// one of INFO/WARN/ERROR, defaults to INFO if not supplied.  May affect display.
-
-		level?: string
-
-		// The repository (or project) deployed
-
-		repository?: string
-
-		// The contents of the annotation message, in plain text.  Limited to 256 characters. Required for annotation.
-
-		msg?: string
-
-		// The revision of the code that was deployed. Required for deploy events
-
-		revision_id?: string
-
-		// The person or robot responsible for deploying the code
-
-		deployed_by?: string
-
-		// The environment code was deployed to. (ie: development, staging, production)
-
-		deployed_to?: string
-
-		// Unix timestamp of where the event should appear in the timeline, defaults to now. Be careful with this.
-
-		event_epoch?: string
-
-		// id of an EC2 instance that this event should be attached to, which will limit the contexts where this event is shown
-
-		instance_id?: string
-
-		// API key.
-
-		key: string
-	}
-}
-
-bigpanda :: {
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	when?: string
-	bigpanda: {
-
-		// The environment name, typically 'production', 'staging', etc.
-
-		env?: string
-
-		// State of the deployment.
-
-		state: string
-
-		// Base URL of the API server.
-
-		url?: string
-
-		// The deployment version.
-
-		version: string
-
-		// The name of the component being deployed. Ex: billing
-
-		component: string
-
-		// Free text description of the deployment.
-
-		description?: string
-
-		// Name of affected host name. Can be a list.
-
-		hosts?: string
-
-		// The person responsible for the deployment.
-
-		owner?: string
-
-		// API token.
-
-		token: string
-
-		// If C(no), SSL certificates for the target url will not be validated. This should only be used on personally controlled sites using self-signed certificates.
-
-		validate_certs?: bool
-	}
-}
-
-grafana_datasource :: {
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	when?: string
-	grafana_datasource: {
-
-		// TLS private key path used by ansible to query grafana api
-
-		client_key?: string
-
-		// The Grafana API key.
-		// If set, C(grafana_user) and C(grafana_password) will be ignored.
-
-		grafana_api_key?: string
-
-		// SSL mode for C(postgres) datasource type.
-
-		sslmode?: string
-
-		// The client TLS private key
-		// Starts with ----- BEGIN RSA PRIVATE KEY -----
-
-		tls_client_key?: string
-
-		// Use trends or not for zabbix datasource type
-
-		trends?: bool
-
-		// Type for AWS authentication for CloudWatch datasource type (authType of grafana api)
-
-		aws_auth_type?: string
-
-		// Namespaces of Custom Metrics for CloudWatch datasource type
-
-		aws_custom_metrics_namespaces?: string
-
-		// The datasource basic auth password, when C(basic auth) is C(yes).
-
-		basic_auth_password?: string
-
-		// The name of the datasource.
-
-		name: string
-
-		// Status of the datasource
-
-		state?: string
-
-		// Name of the time field in elasticsearch ds.
-		// For example C(@timestamp)
-
-		time_field?: string
-
-		// The client TLS certificate.
-		// If C(tls_client_cert) and C(tls_client_key) are set, this will enable TLS authentication.
-		// Starts with ----- BEGIN CERTIFICATE -----
-
-		tls_client_cert?: string
-
-		// The Grafana API user.
-
-		url_username?: string
-
-		// AWS IAM role arn to assume for CloudWatch datasource type when C(aws_auth_type) is C(arn)
-
-		aws_assume_role_arn?: string
-
-		// Name of the database for the datasource.
-		// This options is required when the C(ds_type) is C(influxdb), C(elasticsearch) (index name), C(mysql) or C(postgres).
-
-		database?: string
-
-		// The opentsdb version.
-		// Use C(1) for <=2.1, C(2) for ==2.2, C(3) for ==2.3.
-
-		tsdb_version?: string
-
-		// Minimum group by interval for C(influxdb) or C(elasticsearch) datasources.
-		// for example C(>10s)
-
-		time_interval?: string
-
-		// The TLS CA certificate for self signed certificates.
-		// Only used when C(tls_client_cert) and C(tls_client_key) are set.
-
-		tls_ca_cert?: string
-
-		// Skip the TLS datasource certificate verification.
-
-		tls_skip_verify?: bool
-
-		// AWS access key for CloudWatch datasource type when C(aws_auth_type) is C(keys)
-
-		aws_access_key?: string
-
-		// The Grafana URL.
-
-		grafana_url: string
-
-		// Make this datasource the default one.
-
-		is_default?: bool
-
-		// AWS default region for CloudWatch datasource type
-
-		aws_default_region?: string
-
-		// Grafana Organisation ID in which the datasource should be created.
-		// Not used when C(grafana_api_key) is set, because the C(grafana_api_key) only belong to one organisation.
-
-		org_id?: string
-
-		// The datasource password
-
-		password?: string
-
-		// The opentsdb time resolution.
-
-		tsdb_resolution?: string
-
-		// Whether credentials such as cookies or auth headers should be sent with cross-site requests.
-
-		with_credentials?: bool
-
-		// The access mode for this datasource.
-
-		access?: string
-
-		// Profile for AWS credentials for CloudWatch datasource type when C(aws_auth_type) is C(credentials)
-
-		aws_credentials_profile?: string
-
-		// AWS secret key for CloudWatch datasource type when C(aws_auth_type) is C(keys)
-
-		aws_secret_key?: string
-
-		// The datasource basic auth user.
-		// Setting this option with basic_auth_password will enable basic auth.
-
-		basic_auth_user?: string
-
-		// The type of the datasource.
-
-		ds_type: string
-
-		// Elasticsearch version (for C(ds_type = elasticsearch) only)
-		// Version 56 is for elasticsearch 5.6+ where you can specify the C(max_concurrent_shard_requests) option.
-
-		es_version?: string
-
-		// Boolean of whether or not to use proxy.
-
-		use_proxy?: bool
-
-		// TLS certificate path used by ansible to query grafana api
-
-		client_cert?: string
-
-		// For elasticsearch C(ds_type), this is the index pattern used.
-
-		interval?: string
-
-		// Starting with elasticsearch 5.6, you can specify the max concurrent shard per requests.
-
-		max_concurrent_shard_requests?: string
-
-		// The URL of the datasource.
-
-		url: string
-
-		// The Grafana API password.
-
-		url_password?: string
-
-		// The datasource login user for influxdb datasources.
-
-		user?: string
-
-		// Whether to validate the Grafana certificate.
-
-		validate_certs?: bool
-	}
-}
-
-monit :: {
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	when?: string
-	monit: {
-
-		// The name of the I(monit) program/process to manage
-
-		name: string
-
-		// The state of service
-
-		state: string
-
-		// If there are pending actions for the service monitored by monit, then Ansible will check for up to this many seconds to verify the requested action has been performed. Ansible will sleep for five seconds between each check.
-
-		timeout?: string
+		starttime?: string
 	}
 }
 
 pagerduty_alert :: {
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	pagerduty_alert: {
-
-		// The name of the monitoring client that is triggering this event.
-
-		client?: string
-
-		// The URL of the monitoring client that is triggering this event.
-
-		client_url?: string
-
-		// Identifies the incident to which this I(state) should be applied.
-		// For C(triggered) I(state) - If there's no open (i.e. unresolved) incident with this key, a new one will be created. If there's already an open incident with a matching key, this event will be appended to that incident's log. The event key provides an easy way to "de-dup" problem reports.
-		// For C(acknowledged) or C(resolved) I(state) - This should be the incident_key you received back when the incident was first opened by a trigger event. Acknowledge events referencing resolved or nonexistent incidents will be discarded.
-
-		incident_key?: string
 
 		// The GUID of one of your "Generic API" services.
 		// This is the "integration key" listed on a "Integrations" tab of PagerDuty service.
 
 		integration_key: string
-
-		// PagerDuty unique subdomain. Obsolete. It is not used with PagerDuty REST v2 API.
-
-		name?: string
 
 		// ID of PagerDuty service when incidents will be triggered, acknowledged or resolved.
 
@@ -785,10 +820,13 @@ pagerduty_alert :: {
 
 		api_key: string
 
-		// For C(triggered) I(state) - Required. Short description of the problem that led to this trigger. This field (or a truncated version) will be used when generating phone calls, SMS messages and alert emails. It will also appear on the incidents tables in the PagerDuty UI. The maximum length is 1024 characters.
-		// For C(acknowledged) or C(resolved) I(state) - Text that will appear in the incident's log associated with this event.
+		// The name of the monitoring client that is triggering this event.
 
-		desc?: string
+		client?: string
+
+		// The URL of the monitoring client that is triggering this event.
+
+		client_url?: string
 
 		// The GUID of one of your "Generic API" services. Obsolete. Please use I(integration_key).
 
@@ -797,331 +835,29 @@ pagerduty_alert :: {
 		// Type of event to be sent.
 
 		state: string
-	}
-}
 
-pingdom :: {
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	when?: string
-	pingdom: {
-
-		// Pingdom ID of the check.
-
-		checkid: string
-
-		// Pingdom API key.
-
-		key: string
-
-		// Pingdom user password.
-
-		passwd: string
-
-		// Define whether or not the check should be running or paused.
-
-		state: string
-
-		// Pingdom user ID.
-
-		uid: string
-	}
-}
-
-statusio_maintenance :: {
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	when?: string
-	statusio_maintenance: {
-
-		// Message describing the maintenance window
+		// For C(triggered) I(state) - Required. Short description of the problem that led to this trigger. This field (or a truncated version) will be used when generating phone calls, SMS messages and alert emails. It will also appear on the incidents tables in the PagerDuty UI. The maximum length is 1024 characters.
+		// For C(acknowledged) or C(resolved) I(state) - Text that will appear in the incident's log associated with this event.
 
 		desc?: string
 
-		// The maintenance id number when deleting a maintenance window
+		// Identifies the incident to which this I(state) should be applied.
+		// For C(triggered) I(state) - If there's no open (i.e. unresolved) incident with this key, a new one will be created. If there's already an open incident with a matching key, this event will be appended to that incident's log. The event key provides an easy way to "de-dup" problem reports.
+		// For C(acknowledged) or C(resolved) I(state) - This should be the incident_key you received back when the incident was first opened by a trigger event. Acknowledge events referencing resolved or nonexistent incidents will be discarded.
 
-		maintenance_id?: string
+		incident_key?: string
 
-		// The length of time in UTC that the maintenance will run             (starting from playbook runtime)
+		// PagerDuty unique subdomain. Obsolete. It is not used with PagerDuty REST v2 API.
 
-		minutes?: string
-
-		// Notify subscribers 72 hours before maintenance start time
-
-		maintenance_notify_72_hr?: bool
-
-		// Notify subscribers now
-
-		maintenance_notify_now?: bool
-
-		// Date maintenance is expected to start (Month/Day/Year) (UTC)
-		// End Date is worked out from start_date + minutes
-
-		start_date?: string
-
-		// Desired state of the package.
-
-		state?: string
-
-		// If it affects all components and containers
-
-		all_infrastructure_affected?: bool
-
-		// Your unique API Key from status.io
-
-		api_key: string
-
-		// The given name of your container (data center)
-
-		containers?: string
-
-		// A descriptive title for the maintenance window
-
-		title?: string
-
-		// Automatically start and end the maintenance window
-
-		automation?: bool
-
-		// Time maintenance is expected to start (Hour:Minutes) (UTC)
-		// End Time is worked out from start_time + minutes
-
-		start_time?: string
-
-		// Your unique StatusPage ID from status.io
-
-		statuspage: string
-
-		// Notify subscribers 24 hours before maintenance start time
-
-		maintenance_notify_24_hr?: bool
-
-		// Status.io API URL. A private apiary can be used instead.
-
-		url?: string
-
-		// Your unique API ID from status.io
-
-		api_id: string
-
-		// The given name of your component (server name)
-
-		components?: string
-
-		// Notify subscribers 1 hour before maintenance start time
-
-		maintenance_notify_1_hr?: bool
-	}
-}
-
-circonus_annotation :: {
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	when?: string
-	circonus_annotation: {
-
-		// Annotation Category
-
-		category: string
-
-		// Description of annotation
-
-		description: string
-
-		// Duration in seconds of annotation
-
-		duration?: string
-
-		// Unix timestamp of event start
-
-		start?: string
-
-		// Unix timestamp of event end
-
-		stop?: string
-
-		// Title of annotation
-
-		title: string
-
-		// Circonus API key
-
-		api_key: string
-	}
-}
-
-logstash_plugin :: {
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	when?: string
-	logstash_plugin: {
-
-		// Proxy port to use during plugin installation.
-
-		proxy_port?: string
-
-		// Apply plugin state.
-
-		state?: string
-
-		// Specify plugin Version of the plugin to install. If plugin exists with previous version, it will NOT be updated.
-
-		version?: string
-
-		// Install plugin with that name.
-
-		name: string
-
-		// Specify logstash-plugin to use for plugin management.
-
-		plugin_bin?: string
-
-		// Proxy host to use during plugin installation.
-
-		proxy_host?: string
-	}
-}
-
-honeybadger_deployment :: {
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	when?: string
-	honeybadger_deployment: {
-
-		// The environment name, typically 'production', 'staging', etc.
-
-		environment: string
-
-		// URL of the project repository
-
-		repo?: string
-
-		// A hash, number, tag, or other identifier showing what revision was deployed
-
-		revision?: string
-
-		// API token.
-
-		token: string
-
-		// Optional URL to submit the notification to.
-
-		url?: string
-
-		// The username of the person doing the deployment
-
-		user?: string
-
-		// If C(no), SSL certificates for the target url will not be validated. This should only be used on personally controlled sites using self-signed certificates.
-
-		validate_certs?: bool
-	}
-}
-
-icinga2_feature :: {
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	when?: string
-	icinga2_feature: {
-
-		// This is the feature name to enable or disable.
-
-		name: string
-
-		// If set to C(present) and feature is disabled, then feature is enabled.
-		// If set to C(present) and feature is already enabled, then nothing is changed.
-		// If set to C(absent) and feature is enabled, then feature is disabled.
-		// If set to C(absent) and feature is already disabled, then nothing is changed.
-
-		state?: string
-	}
-}
-
-icinga2_host :: {
-	tags?: [...string]
-	notify?: string | [...string]
-	vars?: {...}
-	when?: string
-	icinga2_host: {
-
-		// Name used to create / delete the host. This does not need to be the FQDN, but does needs to be unique.
-
-		name: string
-
-		// Apply feature state.
-
-		state?: string
-
-		// The zone from where this host should be polled.
-
-		zone?: string
-
-		// If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
-
-		validate_certs?: bool
-
-		// List of variables.
-
-		variables?: string
-
-		// PEM formatted certificate chain file to be used for SSL client authentication. This file can also include the key as well, and if the key is included, C(client_key) is not required.
-
-		client_cert?: string
-
-		// The template used to define the host.
-		// Template cannot be modified after object creation.
-
-		template?: string
-
-		// The password for use in HTTP basic authentication.
-		// If the C(url_username) parameter is not specified, the C(url_password) parameter will not be used.
-
-		url_password?: string
-
-		// The username for use in HTTP basic authentication.
-		// This parameter can be used without C(url_password) for sites that allow empty passwords.
-
-		url_username?: string
-
-		// PEM formatted file that contains your private key to be used for SSL client authentication. If C(client_cert) contains both the certificate and key, this option is not required.
-
-		client_key?: string
-
-		// HTTP, HTTPS, or FTP URL in the form (http|https|ftp)://[user[:pass]]@host.domain[:port]/path
-
-		url: string
-
-		// If C(no), it will not use a proxy, even if one is defined in an environment variable on the target hosts.
-
-		use_proxy?: bool
-
-		// The command used to check if the host is alive.
-
-		check_command?: string
-
-		// The name used to display the host.
-
-		display_name?: string
-
-		// httplib2, the library used by the uri module only sends authentication information when a webservice responds to an initial request with a 401 status. Since some basic auth services do not properly send a 401, logins will fail. This option forces the sending of the Basic authentication header upon initial request.
-
-		force_basic_auth?: bool
-
-		// The IP address of the host.
-
-		ip: string
+		name?: string
 	}
 }
 
 logentries :: {
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	logentries: {
@@ -1146,7 +882,9 @@ logentries :: {
 
 nagios :: {
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	nagios: {
@@ -1159,9 +897,18 @@ nagios :: {
 
 		host?: string
 
+		// Minutes to schedule downtime for.
+		// Only usable with the C(downtime) action.
+
+		minutes?: int
+
 		// The Servicegroup we want to set downtimes/alerts for. B(Required) option when using the C(servicegroup_service_downtime) amd C(servicegroup_host_downtime).
 
 		servicegroup?: string
+
+		// What to manage downtime/alerts for. Separate multiple services with commas. C(service) is an alias for C(services). B(Required) option when using the C(downtime), C(enable_alerts), and C(disable_alerts) actions.
+
+		services: string
 
 		// Author to leave downtime comments as. Only usable with the C(downtime) action.
 
@@ -1170,15 +917,6 @@ nagios :: {
 		// The raw command to send to nagios, which should not include the submitted time header or the line-feed B(Required) option when using the C(command) action.
 
 		command: string
-
-		// Minutes to schedule downtime for.
-		// Only usable with the C(downtime) action.
-
-		minutes?: int
-
-		// What to manage downtime/alerts for. Separate multiple services with commas. C(service) is an alias for C(services). B(Required) option when using the C(downtime), C(enable_alerts), and C(disable_alerts) actions.
-
-		services: string
 
 		// Action to take.
 		// servicegroup options were added in 2.0.
@@ -1192,64 +930,115 @@ nagios :: {
 	}
 }
 
-spectrum_device :: {
+statusio_maintenance :: {
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
-	spectrum_device: {
+	statusio_maintenance: {
 
-		// UDP port used for SNMP discovery.
+		// Your unique API Key from status.io
 
-		agentport?: string
+		api_key: string
 
-		// HTTP, HTTPS URL of the Oneclick server in the form (http|https)://host.domain[:port]
+		// Automatically start and end the maintenance window
 
-		url: string
+		automation?: bool
 
-		// Oneclick user password.
+		// The given name of your component (server name)
 
-		url_password: string
+		components?: string
 
-		// Oneclick user name.
+		// Notify subscribers 24 hours before maintenance start time
 
-		url_username: string
+		maintenance_notify_24_hr?: bool
 
-		// If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
+		// Date maintenance is expected to start (Month/Day/Year) (UTC)
+		// End Date is worked out from start_date + minutes
 
-		validate_certs?: bool
+		start_date?: string
 
-		// SNMP community used for device discovery.
-		// Required when C(state=present).
+		// Your unique StatusPage ID from status.io
 
-		community?: string
+		statuspage: string
 
-		// IP address of the device.
-		// If a hostname is given, it will be resolved to the IP address.
+		// A descriptive title for the maintenance window
 
-		device: string
+		title?: string
 
-		// Landscape handle of the SpectroServer to which add or remove the device.
+		// If it affects all components and containers
 
-		landscape: string
+		all_infrastructure_affected?: bool
 
-		// On C(present) creates the device when it does not exist.
-		// On C(absent) removes the device when it exists.
+		// Message describing the maintenance window
+
+		desc?: string
+
+		// Notify subscribers 1 hour before maintenance start time
+
+		maintenance_notify_1_hr?: bool
+
+		// Notify subscribers 72 hours before maintenance start time
+
+		maintenance_notify_72_hr?: bool
+
+		// The length of time in UTC that the maintenance will run             (starting from playbook runtime)
+
+		minutes?: string
+
+		// Desired state of the package.
 
 		state?: string
 
-		// if C(no), it will not use a proxy, even if one is defined in an environment variable on the target hosts.
+		// Your unique API ID from status.io
 
-		use_proxy?: bool
+		api_id: string
+
+		// The given name of your container (data center)
+
+		containers?: string
+
+		// The maintenance id number when deleting a maintenance window
+
+		maintenance_id?: string
+
+		// Notify subscribers now
+
+		maintenance_notify_now?: bool
+
+		// Time maintenance is expected to start (Hour:Minutes) (UTC)
+		// End Time is worked out from start_time + minutes
+
+		start_time?: string
+
+		// Status.io API URL. A private apiary can be used instead.
+
+		url?: string
 	}
 }
 
 airbrake_deployment :: {
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	airbrake_deployment: {
+
+		// URL of the project repository
+
+		repo?: string
+
+		// A hash, number, tag, or other identifier showing what revision was deployed
+
+		revision?: string
+
+		// API token.
+
+		token: string
 
 		// Optional URL to submit the notification to. Use to send notifications to Airbrake-compliant tools like Errbit.
 
@@ -1266,36 +1055,288 @@ airbrake_deployment :: {
 		// The airbrake environment name, typically 'production', 'staging', etc.
 
 		environment: string
+	}
+}
 
-		// URL of the project repository
+grafana_dashboard :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	grafana_dashboard: {
 
-		repo?: string
+		// If C(no), SSL certificates will not be validated.
+		// This should only be used on personally controlled sites using self-signed certificates.
 
-		// A hash, number, tag, or other identifier showing what revision was deployed
+		validate_certs?: bool
 
-		revision?: string
+		// PEM formatted file that contains your private key to be used for SSL client
+		// authentication. If client_cert contains both the certificate and key, this option is not required
 
-		// API token.
+		client_key?: string
 
-		token: string
+		// The Grafana folder where this dashboard will be imported to.
+
+		folder?: string
+
+		// Override existing dashboard when state is present.
+
+		overwrite?: bool
+
+		// The path to the json file containing the Grafana dashboard to import or export.
+
+		path?: string
+
+		// The Grafana API password.
+
+		url_password?: string
+
+		// Boolean of whether or not to use proxy.
+
+		use_proxy?: bool
+
+		// The Grafana API key.
+		// If set, I(grafana_user) and I(grafana_password) will be ignored.
+
+		grafana_api_key?: string
+
+		// The Grafana Organisation ID where the dashboard will be imported / exported.
+		// Not used when I(grafana_api_key) is set, because the grafana_api_key only belongs to one organisation..
+
+		org_id?: string
+
+		// State of the dashboard.
+
+		state: string
+
+		// The Grafana URL.
+
+		url: string
+
+		// The Grafana API user.
+
+		url_username?: string
+
+		// PEM formatted certificate chain file to be used for SSL client authentication.
+		// This file can also include the key as well, and if the key is included, client_key is not required
+
+		client_cert?: string
+
+		// Set a commit message for the version history.
+		// Only used when C(state) is C(present).
+
+		message?: string
+
+		// Deprecated since Grafana 5. Use grafana dashboard uid instead.
+		// slug of the dashboard. It's the friendly url name of the dashboard.
+		// When C(state) is C(present), this parameter can override the slug in the meta section of the json file.
+		// If you want to import a json dashboard exported directly from the interface (not from the api), you have to specify the slug parameter because there is no meta section in the exported json.
+
+		slug?: string
+
+		// uid of the dashboard to export when C(state) is C(export) or C(absent).
+
+		uid?: string
+	}
+}
+
+grafana_datasource :: {
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	grafana_datasource: {
+
+		// Elasticsearch version (for C(ds_type = elasticsearch) only)
+		// Version 56 is for elasticsearch 5.6+ where you can specify the C(max_concurrent_shard_requests) option.
+
+		es_version?: string
+
+		// Make this datasource the default one.
+
+		is_default?: bool
+
+		// Name of the time field in elasticsearch ds.
+		// For example C(@timestamp)
+
+		time_field?: string
+
+		// The client TLS certificate.
+		// If C(tls_client_cert) and C(tls_client_key) are set, this will enable TLS authentication.
+		// Starts with ----- BEGIN CERTIFICATE -----
+
+		tls_client_cert?: string
+
+		// Use trends or not for zabbix datasource type
+
+		trends?: bool
+
+		// The Grafana API password.
+
+		url_password?: string
+
+		// Boolean of whether or not to use proxy.
+
+		use_proxy?: bool
+
+		// The access mode for this datasource.
+
+		access?: string
+
+		// The type of the datasource.
+
+		ds_type: string
+
+		// The Grafana API key.
+		// If set, C(grafana_user) and C(grafana_password) will be ignored.
+
+		grafana_api_key?: string
+
+		// The Grafana URL.
+
+		grafana_url: string
+
+		// The name of the datasource.
+
+		name: string
+
+		// The datasource password
+
+		password?: string
+
+		// Grafana Organisation ID in which the datasource should be created.
+		// Not used when C(grafana_api_key) is set, because the C(grafana_api_key) only belong to one organisation.
+
+		org_id?: string
+
+		// Minimum group by interval for C(influxdb) or C(elasticsearch) datasources.
+		// for example C(>10s)
+
+		time_interval?: string
+
+		// The TLS CA certificate for self signed certificates.
+		// Only used when C(tls_client_cert) and C(tls_client_key) are set.
+
+		tls_ca_cert?: string
+
+		// TLS certificate path used by ansible to query grafana api
+
+		client_cert?: string
+
+		// Name of the database for the datasource.
+		// This options is required when the C(ds_type) is C(influxdb), C(elasticsearch) (index name), C(mysql) or C(postgres).
+
+		database?: string
+
+		// Status of the datasource
+
+		state?: string
+
+		// The datasource login user for influxdb datasources.
+
+		user?: string
+
+		// Whether credentials such as cookies or auth headers should be sent with cross-site requests.
+
+		with_credentials?: bool
+
+		// Type for AWS authentication for CloudWatch datasource type (authType of grafana api)
+
+		aws_auth_type?: string
+
+		// Profile for AWS credentials for CloudWatch datasource type when C(aws_auth_type) is C(credentials)
+
+		aws_credentials_profile?: string
+
+		// Namespaces of Custom Metrics for CloudWatch datasource type
+
+		aws_custom_metrics_namespaces?: string
+
+		// TLS private key path used by ansible to query grafana api
+
+		client_key?: string
+
+		// AWS access key for CloudWatch datasource type when C(aws_auth_type) is C(keys)
+
+		aws_access_key?: string
+
+		// AWS IAM role arn to assume for CloudWatch datasource type when C(aws_auth_type) is C(arn)
+
+		aws_assume_role_arn?: string
+
+		// AWS default region for CloudWatch datasource type
+
+		aws_default_region?: string
+
+		// SSL mode for C(postgres) datasource type.
+
+		sslmode?: string
+
+		// The client TLS private key
+		// Starts with ----- BEGIN RSA PRIVATE KEY -----
+
+		tls_client_key?: string
+
+		// The URL of the datasource.
+
+		url: string
+
+		// Whether to validate the Grafana certificate.
+
+		validate_certs?: bool
+
+		// AWS secret key for CloudWatch datasource type when C(aws_auth_type) is C(keys)
+
+		aws_secret_key?: string
+
+		// The datasource basic auth password, when C(basic auth) is C(yes).
+
+		basic_auth_password?: string
+
+		// The datasource basic auth user.
+		// Setting this option with basic_auth_password will enable basic auth.
+
+		basic_auth_user?: string
+
+		// Skip the TLS datasource certificate verification.
+
+		tls_skip_verify?: bool
+
+		// The opentsdb time resolution.
+
+		tsdb_resolution?: string
+
+		// The Grafana API user.
+
+		url_username?: string
+
+		// For elasticsearch C(ds_type), this is the index pattern used.
+
+		interval?: string
+
+		// Starting with elasticsearch 5.6, you can specify the max concurrent shard per requests.
+
+		max_concurrent_shard_requests?: string
+
+		// The opentsdb version.
+		// Use C(1) for <=2.1, C(2) for ==2.2, C(3) for ==2.3.
+
+		tsdb_version?: string
 	}
 }
 
 grafana_plugin :: {
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	grafana_plugin: {
-
-		// Whether the plugin should be installed.
-
-		state?: string
-
-		// Version of the plugin to install.
-		// Defaults to C(latest).
-
-		version?: string
 
 		// Full URL to the plugin zip file instead of downloading the file from U(https://grafana.com/api/plugins).
 		// Requires grafana 4.6.x or later.
@@ -1315,5 +1356,14 @@ grafana_plugin :: {
 		// Name of the plugin.
 
 		name: string
+
+		// Whether the plugin should be installed.
+
+		state?: string
+
+		// Version of the plugin to install.
+		// Defaults to C(latest).
+
+		version?: string
 	}
 }

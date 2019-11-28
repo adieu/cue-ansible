@@ -1,23 +1,13 @@
 package atomic
 
 atomic_container :: {
-	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
 	atomic_container: {
-
-		// Define the backend to use for the container
-
-		backend: string
-
-		// The image to use to install the container
-
-		image: string
-
-		// Define if it is an user or a system container
-
-		mode: string
 
 		// Name of the container
 
@@ -34,14 +24,28 @@ atomic_container :: {
 		// Values for the installation of the container.  This option is permitted only with mode 'user' or 'system'. The values specified here will be used at installation time as --set arguments for atomic install.
 
 		values?: string
+
+		// Define the backend to use for the container
+
+		backend: string
+
+		// The image to use to install the container
+
+		image: string
+
+		// Define if it is an user or a system container
+
+		mode: string
 	}
 }
 
 atomic_host :: {
-	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
 	atomic_host: {
 
 		revision?: string
@@ -51,11 +55,17 @@ atomic_host :: {
 }
 
 atomic_image :: {
-	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
 	atomic_image: {
+
+		// Define the backend where the image is pulled.
+
+		backend?: string
 
 		// Name of the container image.
 
@@ -69,9 +79,5 @@ atomic_image :: {
 		// The state C(latest) will ensure container image is upgraded to the latest version and forcefully restart container, if running.
 
 		state?: string
-
-		// Define the backend where the image is pulled.
-
-		backend?: string
 	}
 }

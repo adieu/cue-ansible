@@ -1,10 +1,12 @@
 package helper
 
 meta :: {
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
+	name?:   string
 	meta: {
 
 		free_form: string

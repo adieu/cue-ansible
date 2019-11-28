@@ -1,15 +1,13 @@
 package clustering
 
 znode :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
 	znode: {
-
-		// The value assigned to the znode.
-
-		value?: string
 
 		// A list of ZooKeeper servers (format '[server]:[port]').
 
@@ -34,15 +32,34 @@ znode :: {
 		// The amount of time to wait for a node to appear.
 
 		timeout?: string
+
+		// The value assigned to the znode.
+
+		value?: string
 	}
 }
 
 etcd3 :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
 	etcd3: {
+
+		// The socket level timeout in seconds.
+
+		timeout?: string
+
+		// the port number used to connect to the cluster
+
+		port?: string
+
+		// the state of the value for the key.
+		// can be present or absent
+
+		state: string
 
 		// The Certificate Authority to use to verify the etcd host.
 		// Required if I(client_cert) and I(client_key) are defined.
@@ -59,18 +76,6 @@ etcd3 :: {
 
 		client_key?: string
 
-		// The socket level timeout in seconds.
-
-		timeout?: string
-
-		// the information stored
-
-		value: string
-
-		// The etcd user to authenticate with.
-
-		user?: string
-
 		// the IP address of the cluster
 
 		host?: string
@@ -84,18 +89,19 @@ etcd3 :: {
 
 		password?: string
 
-		// the port number used to connect to the cluster
+		// The etcd user to authenticate with.
 
-		port?: string
+		user?: string
 
-		// the state of the value for the key.
-		// can be present or absent
+		// the information stored
 
-		state: string
+		value: string
 	}
 }
 
 pacemaker_cluster :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]

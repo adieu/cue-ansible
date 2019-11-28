@@ -1,144 +1,13 @@
 package k8s
 
-k8s_info :: {
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	k8s_info: {
-
-		// List of field selectors to use to filter results
-
-		field_selectors?: string
-
-		// Use to specify an object model. Use in conjunction with I(api_version), I(name), and I(namespace) to identify a specific object.
-
-		kind: string
-
-		// List of label selectors to use to filter results
-
-		label_selectors?: string
-
-		// Use to specify an object name.  Use in conjunction with I(api_version), I(kind) and I(namespace) to identify a specific object.
-
-		name?: string
-
-		// Use to specify an object namespace. Use in conjunction with I(api_version), I(kind), and I(name) to identify a specific object.
-
-		namespace?: string
-
-		// Use to specify the API version. in conjunction with I(kind), I(name), and I(namespace) to identify a specific object.
-
-		api_version?: string
-	}
-}
-
-k8s_scale :: {
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	k8s_scale: {
-	}
-}
-
-k8s_service :: {
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	k8s_service: {
-
-		// Specifies the type of Service to create.
-		// See U(https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)
-
-		type?: string
-
-		// A list of ports to expose.
-		// U(https://kubernetes.io/docs/concepts/services-networking/service/#multi-port-services)
-
-		ports?: [...]
-
-		// Whether to override the default patch merge approach with a specific type. By default, the strategic merge will typically be used.
-		// For example, Custom Resource Definitions typically aren't updatable by the usual strategic merge. You may want to use C(merge) if you see "strategic merge patch format is not supported"
-		// See U(https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/#use-a-json-merge-patch-to-update-a-deployment)
-		// Requires openshift >= 0.6.2
-		// If more than one merge_type is given, the merge_types will be tried in order
-		// If openshift >= 0.6.2, this defaults to C(['strategic-merge', 'merge']), which is ideal for using the same parameters on resource kinds that combine Custom Resources and built-in resources. For openshift < 0.6.2, the default is simply C(strategic-merge).
-
-		merge_type?: [...]
-
-		// Use to specify a Service object name.
-
-		name: string
-
-		// Use to specify a Service object namespace.
-
-		namespace: string
-
-		// A partial YAML definition of the Service object being created/updated. Here you can define Kubernetes Service Resource parameters not covered by this module's parameters.
-		// NOTE: I(resource_definition) has lower priority than module parameters. If you try to define e.g. I(metadata.namespace) here, that value will be ignored and I(metadata) used instead.
-
-		resource_definition?: {...}
-
-		// Label selectors identify objects this Service should apply to.
-		// U(https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
-
-		selector?: {...}
-
-		// Determines if an object should be created, patched, or deleted. When set to C(present), an object will be created, if it does not already exist. If set to C(absent), an existing object will be deleted. If set to C(present), an existing object will be patched, if its attributes differ from those specified using module options and I(resource_definition).
-
-		state?: string
-
-		// If set to C(True), and I(state) is C(present), an existing object will be replaced.
-
-		force?: bool
-	}
-}
-
-pacemaker_cluster :: {
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	pacemaker_cluster: {
-
-		// Force the change of the cluster state
-
-		force?: bool
-
-		// Specify which node of the cluster you want to manage. None == the cluster status itself, 'all' == check the status of all nodes.
-
-		node?: string
-
-		// Indicate desired state of the cluster
-
-		state: string
-
-		// Timeout when the module should considered that the action has failed
-
-		timeout?: string
-	}
-}
-
 znode :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
 	znode: {
-
-		// The state to enforce. Mutually exclusive with op.
-
-		state?: string
-
-		// The amount of time to wait for a node to appear.
-
-		timeout?: string
-
-		// The value assigned to the znode.
-
-		value?: string
 
 		// A list of ZooKeeper servers (format '[server]:[port]').
 
@@ -155,20 +24,50 @@ znode :: {
 		// Recursively delete node and all its children.
 
 		recursive?: bool
+
+		// The state to enforce. Mutually exclusive with op.
+
+		state?: string
+
+		// The amount of time to wait for a node to appear.
+
+		timeout?: string
+
+		// The value assigned to the znode.
+
+		value?: string
 	}
 }
 
 etcd3 :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
 	etcd3: {
 
-		// PEM formatted file that contains your private key to be used for SSL client authentication.
-		// Required if I(client_cert) is defined.
+		// the port number used to connect to the cluster
 
-		client_key?: string
+		port?: string
+
+		// The etcd user to authenticate with.
+
+		user?: string
+
+		// the information stored
+
+		value: string
+
+		// The Certificate Authority to use to verify the etcd host.
+		// Required if I(client_cert) and I(client_key) are defined.
+
+		ca_cert?: string
+
+		// the IP address of the cluster
+
+		host?: string
 
 		// the key where the information is stored in the cluster
 
@@ -188,50 +87,26 @@ etcd3 :: {
 
 		timeout?: string
 
-		// The etcd user to authenticate with.
-
-		user?: string
-
-		// The Certificate Authority to use to verify the etcd host.
-		// Required if I(client_cert) and I(client_key) are defined.
-
-		ca_cert?: string
-
 		// PEM formatted certificate chain file to be used for SSL client authentication.
 		// Required if I(client_key) is defined.
 
 		client_cert?: string
 
-		// the information stored
+		// PEM formatted file that contains your private key to be used for SSL client authentication.
+		// Required if I(client_cert) is defined.
 
-		value: string
-
-		// the IP address of the cluster
-
-		host?: string
-
-		// the port number used to connect to the cluster
-
-		port?: string
+		client_key?: string
 	}
 }
 
 k8s :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
 	k8s: {
-
-		// Whether to override the default patch merge approach with a specific type. By default, the strategic merge will typically be used.
-		// For example, Custom Resource Definitions typically aren't updatable by the usual strategic merge. You may want to use C(merge) if you see "strategic merge patch format is not supported"
-		// See U(https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/#use-a-json-merge-patch-to-update-a-deployment)
-		// Requires openshift >= 0.6.2
-		// If more than one merge_type is given, the merge_types will be tried in order
-		// If openshift >= 0.6.2, this defaults to C(['strategic-merge', 'merge']), which is ideal for using the same parameters on resource kinds that combine Custom Resources and built-in resources. For openshift < 0.6.2, the default is simply C(strategic-merge).
-		// mutually exclusive with C(apply)
-
-		merge_type?: [...]
 
 		// how (if at all) to validate the resource definition against the kubernetes schema. Requires the kubernetes-validate python module
 
@@ -267,15 +142,35 @@ k8s :: {
 		// mutually exclusive with C(merge_type)
 
 		apply?: bool
+
+		// Whether to override the default patch merge approach with a specific type. By default, the strategic merge will typically be used.
+		// For example, Custom Resource Definitions typically aren't updatable by the usual strategic merge. You may want to use C(merge) if you see "strategic merge patch format is not supported"
+		// See U(https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/#use-a-json-merge-patch-to-update-a-deployment)
+		// Requires openshift >= 0.6.2
+		// If more than one merge_type is given, the merge_types will be tried in order
+		// If openshift >= 0.6.2, this defaults to C(['strategic-merge', 'merge']), which is ideal for using the same parameters on resource kinds that combine Custom Resources and built-in resources. For openshift < 0.6.2, the default is simply C(strategic-merge).
+		// mutually exclusive with C(apply)
+
+		merge_type?: [...]
 	}
 }
 
 k8s_auth :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
 	k8s_auth: {
+
+		// Whether or not to verify the API server's SSL certificates.
+
+		validate_certs?: bool
+
+		// When C(state) is set to I(absent), this specifies the token to revoke.
+
+		api_key?: string
 
 		// Path to a CA certificate file used to verify connection to the API server. The full certificate chain must be provided to avoid certificate validation errors.
 
@@ -297,13 +192,134 @@ k8s_auth :: {
 		// Provide a username for authenticating with the API server.
 
 		username?: string
+	}
+}
 
-		// Whether or not to verify the API server's SSL certificates.
+k8s_info :: {
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	k8s_info: {
 
-		validate_certs?: bool
+		// Use to specify an object name.  Use in conjunction with I(api_version), I(kind) and I(namespace) to identify a specific object.
 
-		// When C(state) is set to I(absent), this specifies the token to revoke.
+		name?: string
 
-		api_key?: string
+		// Use to specify an object namespace. Use in conjunction with I(api_version), I(kind), and I(name) to identify a specific object.
+
+		namespace?: string
+
+		// Use to specify the API version. in conjunction with I(kind), I(name), and I(namespace) to identify a specific object.
+
+		api_version?: string
+
+		// List of field selectors to use to filter results
+
+		field_selectors?: string
+
+		// Use to specify an object model. Use in conjunction with I(api_version), I(name), and I(namespace) to identify a specific object.
+
+		kind: string
+
+		// List of label selectors to use to filter results
+
+		label_selectors?: string
+	}
+}
+
+k8s_scale :: {
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	k8s_scale: {
+	}
+}
+
+k8s_service :: {
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	k8s_service: {
+
+		// Specifies the type of Service to create.
+		// See U(https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)
+
+		type?: string
+
+		// Whether to override the default patch merge approach with a specific type. By default, the strategic merge will typically be used.
+		// For example, Custom Resource Definitions typically aren't updatable by the usual strategic merge. You may want to use C(merge) if you see "strategic merge patch format is not supported"
+		// See U(https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/#use-a-json-merge-patch-to-update-a-deployment)
+		// Requires openshift >= 0.6.2
+		// If more than one merge_type is given, the merge_types will be tried in order
+		// If openshift >= 0.6.2, this defaults to C(['strategic-merge', 'merge']), which is ideal for using the same parameters on resource kinds that combine Custom Resources and built-in resources. For openshift < 0.6.2, the default is simply C(strategic-merge).
+
+		merge_type?: [...]
+
+		// A partial YAML definition of the Service object being created/updated. Here you can define Kubernetes Service Resource parameters not covered by this module's parameters.
+		// NOTE: I(resource_definition) has lower priority than module parameters. If you try to define e.g. I(metadata.namespace) here, that value will be ignored and I(metadata) used instead.
+
+		resource_definition?: {...}
+
+		// Use to specify a Service object namespace.
+
+		namespace: string
+
+		// A list of ports to expose.
+		// U(https://kubernetes.io/docs/concepts/services-networking/service/#multi-port-services)
+
+		ports?: [...]
+
+		// Label selectors identify objects this Service should apply to.
+		// U(https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
+
+		selector?: {...}
+
+		// Determines if an object should be created, patched, or deleted. When set to C(present), an object will be created, if it does not already exist. If set to C(absent), an existing object will be deleted. If set to C(present), an existing object will be patched, if its attributes differ from those specified using module options and I(resource_definition).
+
+		state?: string
+
+		// If set to C(True), and I(state) is C(present), an existing object will be replaced.
+
+		force?: bool
+
+		// Use to specify a Service object name.
+
+		name: string
+	}
+}
+
+pacemaker_cluster :: {
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	pacemaker_cluster: {
+
+		// Force the change of the cluster state
+
+		force?: bool
+
+		// Specify which node of the cluster you want to manage. None == the cluster status itself, 'all' == check the status of all nodes.
+
+		node?: string
+
+		// Indicate desired state of the cluster
+
+		state: string
+
+		// Timeout when the module should considered that the action has failed
+
+		timeout?: string
 	}
 }

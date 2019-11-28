@@ -1,106 +1,12 @@
 package opennebula
 
-one_host :: {
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	one_host: {
-
-		// Hostname of the machine to manage.
-
-		name: string
-
-		// Takes the host to the desired lifecycle state.
-		// If C(absent) the host will be deleted from the cluster.
-		// If C(present) the host will be created in the cluster (includes C(enabled), C(disabled) and C(offline) states).
-		// If C(enabled) the host is fully operational.
-		// C(disabled), e.g. to perform maintenance operations.
-		// C(offline), host is totally offline.
-
-		state?: string
-
-		// The template or attribute changes to merge into the host template.
-
-		template?: string
-
-		// The name of the virtual machine manager mad name, this values are taken from the oned.conf with the tag name VM_MAD (name)
-
-		vmm_mad_name?: string
-
-		// The cluster ID.
-
-		cluster_id?: string
-
-		// The cluster specified by name.
-
-		cluster_name?: string
-
-		// The name of the information manager, this values are taken from the oned.conf with the tag name IM_MAD (name)
-
-		im_mad_name?: string
-
-		// The labels for this host.
-
-		labels?: string
-	}
-}
-
-one_image :: {
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	one_image: {
-
-		// C(present) - state that is used to manage the image
-		// C(absent) - delete the image
-		// C(cloned) - clone the image
-		// C(renamed) - rename the image to the C(new_name)
-
-		state?: string
-
-		// Password of the user to login into OpenNebula RPC server. If not set
-		// then the value of the C(ONE_PASSWORD) environment variable is used.
-
-		api_password?: string
-
-		// URL of the OpenNebula RPC server.
-		// It is recommended to use HTTPS so that the username/password are not
-		// transferred over the network unencrypted.
-		// If not set then the value of the C(ONE_URL) environment variable is used.
-
-		api_url?: string
-
-		// Name of the user to login into the OpenNebula RPC server. If not set
-		// then the value of the C(ONE_USERNAME) environment variable is used.
-
-		api_username?: string
-
-		// Whether the image should be enabled or disabled.
-
-		enabled?: bool
-
-		// A C(id) of the image you would like to manage.
-
-		id?: string
-
-		// A C(name) of the image you would like to manage.
-
-		name?: string
-
-		// A name that will be assigned to the existing or new image.
-		// In the case of cloning, by default C(new_name) will take the name of the origin image with the prefix 'Copy of'.
-
-		new_name?: string
-	}
-}
-
 one_image_info :: {
-	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
 	one_image_info: {
 
 		// Name of the user to login into the OpenNebula RPC server. If not set
@@ -135,32 +41,35 @@ one_image_info :: {
 }
 
 one_service :: {
-	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
 	one_service: {
 
-		// Number of VMs for the specified role
+		// Password of the user to login into OpenNebula OneFlow API server. If not set then the value of the C(ONEFLOW_PASSWORD) environment variable is used.
 
-		cardinality?: string
+		api_password?: string
+
+		// URL of the OpenNebula OneFlow API server.
+		// It is recommended to use HTTPS so that the username/password are not transferred over the network unencrypted.
+		// If not set then the value of the ONEFLOW_URL environment variable is used.
+
+		api_url?: string
+
+		// Set permission mode of a service instance in octet format, e.g. C(600) to give owner C(use) and C(manage) and nothing to group and others.
+
+		mode?: string
 
 		// ID of a service instance that you would like to manage
 
 		service_id?: string
 
-		// Name of the role whose cardinality should be changed
+		// Name of a service instance that you would like to manage
 
-		role?: string
-
-		// Name of service template to use to create a new instance of a service
-
-		template_name?: string
-
-		// Setting C(unique=yes) will make sure that there is only one service instance running with a name set with C(service_name) when
-		// instantiating a service from a template specified with C(template_id)/C(template_name). Check examples below.
-
-		unique?: bool
+		service_name?: string
 
 		// Wait for the instance to reach RUNNING state after DEPLOYING or COOLDOWN state after SCALING
 
@@ -170,27 +79,39 @@ one_service :: {
 
 		api_username?: string
 
+		// C(present) - instantiate a service from a template specified with C(template_id)/C(template_name).
+		// C(absent) - terminate an instance of a service specified with C(service_id)/C(service_name).
+
+		state?: string
+
+		// Name of service template to use to create a new instance of a service
+
+		template_name?: string
+
+		// How long before wait gives up, in seconds
+
+		wait_timeout?: string
+
 		// ID of the group which will be set as the group of the service
 
 		group_id?: string
 
-		// ID of the user which will be set as the owner of the service
+		// Name of the role whose cardinality should be changed
 
-		owner_id?: string
-
-		// Set permission mode of a service instance in octet format, e.g. C(600) to give owner C(use) and C(manage) and nothing to group and others.
-
-		mode?: string
+		role?: string
 
 		// ID of a service template to use to create a new instance of a service
 
 		template_id?: string
 
-		// URL of the OpenNebula OneFlow API server.
-		// It is recommended to use HTTPS so that the username/password are not transferred over the network unencrypted.
-		// If not set then the value of the ONEFLOW_URL environment variable is used.
+		// Setting C(unique=yes) will make sure that there is only one service instance running with a name set with C(service_name) when
+		// instantiating a service from a template specified with C(template_id)/C(template_name). Check examples below.
 
-		api_url?: string
+		unique?: bool
+
+		// Number of VMs for the specified role
+
+		cardinality?: string
 
 		// Dictionary of key/value custom attributes which will be used when instantiating a new service.
 
@@ -200,31 +121,31 @@ one_service :: {
 
 		force?: bool
 
-		// How long before wait gives up, in seconds
+		// ID of the user which will be set as the owner of the service
 
-		wait_timeout?: string
-
-		// Password of the user to login into OpenNebula OneFlow API server. If not set then the value of the C(ONEFLOW_PASSWORD) environment variable is used.
-
-		api_password?: string
-
-		// Name of a service instance that you would like to manage
-
-		service_name?: string
-
-		// C(present) - instantiate a service from a template specified with C(template_id)/C(template_name).
-		// C(absent) - terminate an instance of a service specified with C(service_id)/C(service_name).
-
-		state?: string
+		owner_id?: string
 	}
 }
 
 one_vm :: {
-	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
 	one_vm: {
+
+		// URL of the OpenNebula RPC server.
+		// It is recommended to use HTTPS so that the username/password are not
+		// transferred over the network unencrypted.
+		// If not set then the value of the C(ONE_URL) environment variable is used.
+
+		api_url?: string
+
+		// Number of instances to launch
+
+		count?: string
 
 		// Creates an image from a VM disk.
 		// It is a dictionary where you have to specify C(name) of the new image.
@@ -235,10 +156,62 @@ one_vm :: {
 
 		disk_saveas?: string
 
+		// Reboot, power-off or terminate instances C(hard)
+
+		hard?: bool
+
+		// Percentage of CPU divided by 100 required for the new instance. Half a
+		// processor is written 0.5.
+
+		cpu?: string
+
+		// The size of the disk created for new instances (in MB, GB, TB,...).
+		// NOTE':' If The Template hats Multiple Disks the Order of the Sizes is
+		// matched against the order specified in C(template_id)/C(template_name).
+
+		disk_size?: string
+
+		// A list of labels to associate with new instances, or for setting
+		// C(state) of instances with these labels.
+
+		labels?: string
+
+		// Set permission mode of the instance in octet format, e.g. C(600) to give owner C(use) and C(manage) and nothing to group and others.
+
+		mode?: string
+
+		// How long before wait gives up, in seconds
+
+		wait_timeout?: string
+
 		// Name of the user to login into the OpenNebula RPC server. If not set
 		// then the value of the C(ONE_USERNAME) environment variable is used.
 
 		api_username?: string
+
+		// ID of the group which will be set as the group of the instance
+
+		group_id?: string
+
+		// The size of the memory for new instances (in MB, GB, ...)
+
+		memory?: string
+
+		// ID of a VM template to use to create a new instance
+
+		template_id?: string
+
+		// Name of VM template to use to create a new instace
+
+		template_name?: string
+
+		// Password of the user to login into OpenNebula RPC server. If not set
+		// then the value of the C(ONE_PASSWORD) environment variable is used.
+		// if both I(api_username) or I(api_password) are not set, then it will try
+		// authenticate with ONE auth file. Default path is "~/.one/one_auth".
+		// Set environment variable C(ONE_AUTH) to override this path.
+
+		api_password?: string
 
 		// A dictionary of key/value attributes to add to new instances, or for
 		// setting C(state) of instances with these attributes.
@@ -252,21 +225,13 @@ one_vm :: {
 
 		attributes?: string
 
-		// ID of the group which will be set as the group of the instance
+		// A list of instance ids used for states':' C(absent), C(running), C(rebooted), C(poweredoff)
 
-		group_id?: string
+		instance_ids?: string
 
-		// Create a private persistent copy of the template plus any image defined in DISK, and instantiate that copy.
+		// Number of CPUs (cores) new VM will have.
 
-		persistent?: bool
-
-		// C(present) - create instances from a template specified with C(template_id)/C(template_name).
-		// C(running) - run instances
-		// C(poweredoff) - power-off instances
-		// C(rebooted) - reboot instances
-		// C(absent) - terminate instances
-
-		state?: string
+		vcpu?: string
 
 		// A dictionary of key/value attributes that can only be used with
 		// C(exact_count) to determine how many nodes based on a specific
@@ -275,6 +240,10 @@ one_vm :: {
 
 		count_attributes?: string
 
+		// Name of Datastore to use to create a new instace
+
+		datastore_name?: string
+
 		// Indicates how many instances that match C(count_attributes) and
 		// C(count_labels) parameters should be deployed. Instances are either
 		// created or terminated based on this value.
@@ -282,88 +251,17 @@ one_vm :: {
 
 		exact_count?: string
 
-		// Number of CPUs (cores) new VM will have.
-
-		vcpu?: string
-
-		// Set permission mode of the instance in octet format, e.g. C(600) to give owner C(use) and C(manage) and nothing to group and others.
-
-		mode?: string
-
-		// ID of the user which will be set as the owner of the instance
-
-		owner_id?: string
-
-		// How long before wait gives up, in seconds
-
-		wait_timeout?: string
-
-		// Name of Datastore to use to create a new instace
-
-		datastore_id?: string
-
-		// The size of the memory for new instances (in MB, GB, ...)
-
-		memory?: string
-
 		// A list of dictionaries with network parameters. See examples for more details.
 
 		networks?: string
 
-		// Set to true to put vm on hold while creating
+		// C(present) - create instances from a template specified with C(template_id)/C(template_name).
+		// C(running) - run instances
+		// C(poweredoff) - power-off instances
+		// C(rebooted) - reboot instances
+		// C(absent) - terminate instances
 
-		vm_start_on_hold?: string
-
-		// The size of the disk created for new instances (in MB, GB, TB,...).
-		// NOTE':' If The Template hats Multiple Disks the Order of the Sizes is
-		// matched against the order specified in C(template_id)/C(template_name).
-
-		disk_size?: string
-
-		// A list of labels to associate with new instances, or for setting
-		// C(state) of instances with these labels.
-
-		labels?: string
-
-		// Name of Datastore to use to create a new instace
-
-		datastore_name?: string
-
-		// A list of instance ids used for states':' C(absent), C(running), C(rebooted), C(poweredoff)
-
-		instance_ids?: string
-
-		// Number of instances to launch
-
-		count?: string
-
-		// Percentage of CPU divided by 100 required for the new instance. Half a
-		// processor is written 0.5.
-
-		cpu?: string
-
-		// Reboot, power-off or terminate instances C(hard)
-
-		hard?: bool
-
-		// Password of the user to login into OpenNebula RPC server. If not set
-		// then the value of the C(ONE_PASSWORD) environment variable is used.
-		// if both I(api_username) or I(api_password) are not set, then it will try
-		// authenticate with ONE auth file. Default path is "~/.one/one_auth".
-		// Set environment variable C(ONE_AUTH) to override this path.
-
-		api_password?: string
-
-		// URL of the OpenNebula RPC server.
-		// It is recommended to use HTTPS so that the username/password are not
-		// transferred over the network unencrypted.
-		// If not set then the value of the C(ONE_URL) environment variable is used.
-
-		api_url?: string
-
-		// Name of VM template to use to create a new instace
-
-		template_name?: string
+		state?: string
 
 		// Wait for the instance to reach its desired state before returning. Keep
 		// in mind if you are waiting for instance to be in running state it
@@ -380,8 +278,120 @@ one_vm :: {
 
 		count_labels?: string
 
-		// ID of a VM template to use to create a new instance
+		// Name of Datastore to use to create a new instace
 
-		template_id?: string
+		datastore_id?: string
+
+		// ID of the user which will be set as the owner of the instance
+
+		owner_id?: string
+
+		// Create a private persistent copy of the template plus any image defined in DISK, and instantiate that copy.
+
+		persistent?: bool
+
+		// Set to true to put vm on hold while creating
+
+		vm_start_on_hold?: string
+	}
+}
+
+one_host :: {
+	when?: string
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	one_host: {
+
+		// The cluster specified by name.
+
+		cluster_name?: string
+
+		// The name of the information manager, this values are taken from the oned.conf with the tag name IM_MAD (name)
+
+		im_mad_name?: string
+
+		// The labels for this host.
+
+		labels?: string
+
+		// Hostname of the machine to manage.
+
+		name: string
+
+		// Takes the host to the desired lifecycle state.
+		// If C(absent) the host will be deleted from the cluster.
+		// If C(present) the host will be created in the cluster (includes C(enabled), C(disabled) and C(offline) states).
+		// If C(enabled) the host is fully operational.
+		// C(disabled), e.g. to perform maintenance operations.
+		// C(offline), host is totally offline.
+
+		state?: string
+
+		// The template or attribute changes to merge into the host template.
+
+		template?: string
+
+		// The name of the virtual machine manager mad name, this values are taken from the oned.conf with the tag name VM_MAD (name)
+
+		vmm_mad_name?: string
+
+		// The cluster ID.
+
+		cluster_id?: string
+	}
+}
+
+one_image :: {
+	when?: string
+	tags?: [...string]
+	notify?:   string | [...string]
+	name?:     string
+	register?: string
+	vars?: {...}
+	one_image: {
+
+		// URL of the OpenNebula RPC server.
+		// It is recommended to use HTTPS so that the username/password are not
+		// transferred over the network unencrypted.
+		// If not set then the value of the C(ONE_URL) environment variable is used.
+
+		api_url?: string
+
+		// Name of the user to login into the OpenNebula RPC server. If not set
+		// then the value of the C(ONE_USERNAME) environment variable is used.
+
+		api_username?: string
+
+		// Whether the image should be enabled or disabled.
+
+		enabled?: bool
+
+		// A C(id) of the image you would like to manage.
+
+		id?: string
+
+		// A C(name) of the image you would like to manage.
+
+		name?: string
+
+		// A name that will be assigned to the existing or new image.
+		// In the case of cloning, by default C(new_name) will take the name of the origin image with the prefix 'Copy of'.
+
+		new_name?: string
+
+		// C(present) - state that is used to manage the image
+		// C(absent) - delete the image
+		// C(cloned) - clone the image
+		// C(renamed) - rename the image to the C(new_name)
+
+		state?: string
+
+		// Password of the user to login into OpenNebula RPC server. If not set
+		// then the value of the C(ONE_PASSWORD) environment variable is used.
+
+		api_password?: string
 	}
 }

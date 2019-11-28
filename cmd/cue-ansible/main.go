@@ -27,10 +27,12 @@ var typeMap = map[string]string{
 }
 
 var baseFields = map[string]string{
-	"vars":   "{...}",
-	"when":   "string",
-	"tags":   "[...string]",
-	"notify": "string | [...string]",
+	"name":     "string",
+	"register": "string",
+	"vars":     "{...}",
+	"when":     "string",
+	"tags":     "[...string]",
+	"notify":   "string | [...string]",
 }
 
 type Option struct {

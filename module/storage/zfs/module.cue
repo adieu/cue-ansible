@@ -1,60 +1,8 @@
 package zfs
 
-zfs_facts :: {
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	zfs_facts: {
-
-		// Specifies which datasets types to display. Multiple values have to be provided in comma-separated form.
-
-		type?: string
-
-		// Specifies recursion depth.
-
-		depth?: string
-
-		// ZFS dataset name.
-
-		name: string
-
-		// Specifies if property values should be displayed in machine friendly format.
-
-		parsable?: bool
-
-		// Specifies which dataset properties should be queried in comma-separated format. For more information about dataset properties, check zfs(1M) man page.
-
-		properties?: string
-
-		// Specifies if properties for any children should be recursively displayed.
-
-		recurse?: bool
-	}
-}
-
-zpool_facts :: {
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	zpool_facts: {
-
-		// ZFS pool name.
-
-		name?: string
-
-		// Specifies if property values should be displayed in machine friendly format.
-
-		parsable?: bool
-
-		// Specifies which dataset properties should be queried in comma-separated format. For more information about dataset properties, check zpool(1M) man page.
-
-		properties?: string
-	}
-}
-
 zfs :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
@@ -81,11 +29,29 @@ zfs :: {
 }
 
 zfs_delegate_admin :: {
+	name?:     string
+	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
 	notify?: string | [...string]
 	zfs_delegate_admin: {
+
+		// The list of permission(s) to delegate (required if C(state) is C(present)).
+
+		permissions?: [...]
+
+		// Unallow permissions recursively (ignored when C(state) is C(present)).
+
+		recursive?: bool
+
+		// List of users to whom permission(s) should be granted.
+
+		users?: [...]
+
+		// Apply permissions to C(name)'s descendents (C(zfs allow -d)).
+
+		descendents?: bool
 
 		// Apply permissions to everyone.
 
@@ -103,26 +69,68 @@ zfs_delegate_admin :: {
 
 		name: string
 
-		// List of users to whom permission(s) should be granted.
-
-		users?: [...]
-
-		// Apply permissions to C(name)'s descendents (C(zfs allow -d)).
-
-		descendents?: bool
-
-		// The list of permission(s) to delegate (required if C(state) is C(present)).
-
-		permissions?: [...]
-
-		// Unallow permissions recursively (ignored when C(state) is C(present)).
-
-		recursive?: bool
-
 		// Whether to allow (C(present)), or unallow (C(absent)) a permission.
 		// When set to C(present), at least one "entity" param of I(users), I(groups), or I(everyone) are required.
 		// When set to C(absent), removes permissions from the specified entities, or removes all permissions if no entity params are specified.
 
 		state: string
+	}
+}
+
+zfs_facts :: {
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	zfs_facts: {
+
+		// Specifies recursion depth.
+
+		depth?: string
+
+		// ZFS dataset name.
+
+		name: string
+
+		// Specifies if property values should be displayed in machine friendly format.
+
+		parsable?: bool
+
+		// Specifies which dataset properties should be queried in comma-separated format. For more information about dataset properties, check zfs(1M) man page.
+
+		properties?: string
+
+		// Specifies if properties for any children should be recursively displayed.
+
+		recurse?: bool
+
+		// Specifies which datasets types to display. Multiple values have to be provided in comma-separated form.
+
+		type?: string
+	}
+}
+
+zpool_facts :: {
+	name?:     string
+	register?: string
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	notify?: string | [...string]
+	zpool_facts: {
+
+		// Specifies which dataset properties should be queried in comma-separated format. For more information about dataset properties, check zpool(1M) man page.
+
+		properties?: string
+
+		// ZFS pool name.
+
+		name?: string
+
+		// Specifies if property values should be displayed in machine friendly format.
+
+		parsable?: bool
 	}
 }
