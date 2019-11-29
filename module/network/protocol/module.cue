@@ -1,16 +1,16 @@
 package protocol
 
 net_lldp :: {
-	name?:     string
-	register?: string
-	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	with_items?: [...string]
+	register?: string
+	vars?: {...}
+	connection?: string
+	become?:     bool
+	name?:       string
+	notify?:     string | [...string]
 	net_lldp: {
-
 		state?: string
-
-		// State of the LLDP service configuration.
 	}
 }

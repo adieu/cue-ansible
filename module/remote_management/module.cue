@@ -1,24 +1,18 @@
 package remote_management
 
 wakeonlan :: {
+	name?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
 	register?: string
+	notify?:   string | [...string]
+	with_items?: [...string]
+	connection?: string
+	become?:     bool
 	wakeonlan: {
-
-		// Network broadcast address to use for broadcasting magic Wake-on-LAN packet.
-
+		port?:      string
 		broadcast?: string
-
-		// MAC address to send Wake-on-LAN broadcast packet for.
-
-		mac: string
-
-		// UDP port to use for magic Wake-on-LAN packet.
-
-		port?: string
+		mac:        string
 	}
 }

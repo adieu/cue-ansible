@@ -1,100 +1,82 @@
 package nso
 
-nso_show :: {
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
-	register?: string
-	nso_show: {
-
-		// Controls whether or not operational data is included in the result.
-
-		operational?: bool
-
-		// Path to NSO data.
-
-		path: string
-	}
-}
-
 nso_verify :: {
+	name?: string
 	vars?: {...}
-	when?: string
 	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
-	register?: string
+	notify?: string | [...string]
+	with_items?: [...string]
+	register?:   string
+	when?:       string
+	connection?: string
+	become?:     bool
 	nso_verify: {
-
 		data: string
-
-		// NSO data in format as C(| display json) converted to YAML. List entries can be annotated with a C(__state) entry. Set to in-sync/deep-in-sync for services to verify service is in sync with the network. Set to absent in list entries to ensure they are deleted if they exist in NSO.
 	}
 }
 
 nso_action :: {
+	name?: string
 	vars?: {...}
-	when?: string
 	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
-	register?: string
+	notify?: string | [...string]
+	with_items?: [...string]
+	register?:   string
+	when?:       string
+	connection?: string
+	become?:     bool
 	nso_action: {
-
-		// NSO action parameters.
-
-		input?: string
-
-		// List of result parameter names that will cause the task to fail if they are present.
-
-		output_invalid?: string
-
-		// Required output parameters.
-
+		input?:           string
+		output_invalid?:  string
 		output_required?: string
-
-		// Path to NSO action.
-
-		path: string
-
-		// If set to true, the task will fail if any output parameters not in output_required is present in the output.
-
+		path:             string
 		validate_strict?: bool
 	}
 }
 
 nso_config :: {
+	name?: string
 	vars?: {...}
-	when?: string
 	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
-	register?: string
+	notify?: string | [...string]
+	with_items?: [...string]
+	register?:   string
+	when?:       string
+	connection?: string
+	become?:     bool
 	nso_config: {
-
 		data: string
-
-		// NSO data in format as | display json converted to YAML. List entries can be annotated with a __state entry. Set to in-sync/deep-in-sync for services to verify service is in sync with the network. Set to absent in list entries to ensure they are deleted if they exist in NSO.
 	}
 }
 
 nso_query :: {
+	name?: string
 	vars?: {...}
-	when?: string
 	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
-	register?: string
+	notify?: string | [...string]
+	with_items?: [...string]
+	register?:   string
+	when?:       string
+	connection?: string
+	become?:     bool
 	nso_query: {
-
-		// List of fields to select from matching nodes.
-
 		fields: string
+		xpath:  string
+	}
+}
 
-		// XPath selection relative to the root.
-
-		xpath: string
+nso_show :: {
+	name?: string
+	vars?: {...}
+	tags?: [...string]
+	notify?: string | [...string]
+	with_items?: [...string]
+	register?:   string
+	when?:       string
+	connection?: string
+	become?:     bool
+	nso_show: {
+		path:         string
+		operational?: bool
 	}
 }

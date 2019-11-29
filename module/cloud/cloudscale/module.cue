@@ -1,199 +1,93 @@
 package cloudscale
 
-cloudscale_floating_ip :: {
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	cloudscale_floating_ip: {
-
-		// Floating IP address to change.
-		// Required to assign the IP to a different server or if I(state) is absent.
-
-		ip?: string
-
-		// IP protocol version of the floating IP.
-
-		ip_version?: int
-
-		// Only valid if I(ip_version) is 6.
-		// Prefix length for the IPv6 network. Currently only a prefix of /56 can be requested. If no I(prefix_length) is present, a single address is created.
-
-		prefix_length?: int
-
-		// Reverse PTR entry for this address.
-		// You cannot set a reverse PTR entry for IPv6 floating networks. Reverse PTR entries are only allowed for single addresses.
-
-		reverse_ptr?: string
-
-		// UUID of the server assigned to this floating IP.
-		// Required unless I(state) is absent.
-
-		server?: string
-
-		// State of the floating IP.
-
-		state?: string
-	}
-}
-
-cloudscale_server :: {
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	cloudscale_server: {
-
-		// Size of the root volume in GB.
-
-		volume_size_gb?: int
-
-		// Password for the server.
-
-		password?: string
-
-		// Tags assosiated with the servers. Set this to C({}) to clear any tags.
-
-		tags?: {...}
-
-		// Cloud-init configuration (cloud-config) data to use for the server.
-
-		user_data?: string
-
-		// UUID of the server.
-		// Either I(name) or I(uuid) are required.
-
-		uuid?:        string
-		api_timeout?: string
-
-		// Size of the bulk storage volume in GB.
-		// No bulk storage volume if not set.
-
-		bulk_volume_size_gb?: int
-
-		// State of the server.
-
-		state?: string
-
-		// Attach a private network interface to the server.
-
-		use_private_network?: bool
-
-		// Attach a public network interface to the server.
-
-		use_public_network?: bool
-
-		// UUID of another server to create an anti-affinity group with.
-		// Mutually exclusive with I(server_groups).
-		// Deprecated, removed in version 2.11.
-
-		anti_affinity_with?: string
-
-		// List of UUID or names of server groups.
-		// Mutually exclusive with I(anti_affinity_with).
-
-		server_groups?: [...]
-
-		// List of SSH public keys.
-		// Use the full content of your .pub file here.
-
-		ssh_keys?: [...]
-
-		// Enable IPv6 on the public network interface.
-
-		use_ipv6?: bool
-
-		// Flavor of the server.
-
-		flavor?: string
-
-		// Allow to stop the running server for updating if necessary.
-
-		force?: bool
-
-		// Image used to create the server.
-
-		image?: string
-
-		// Name of the Server.
-		// Either I(name) or I(uuid) are required.
-
-		name?: string
-	}
-}
-
 cloudscale_server_group :: {
-	name?:     string
-	register?: string
-	vars?: {...}
 	when?: string
 	tags?: [...string]
+	with_items?: [...string]
+	become?:     bool
+	name?:       string
+	register?:   string
+	connection?: string
+	vars?: {...}
 	notify?: string | [...string]
 	cloudscale_server_group: {
-
-		// Name of the server group.
-		// Either I(name) or I(uuid) is required. These options are mutually exclusive.
-
-		name?: string
-
-		// State of the server group.
-
+		name?:  string
 		state?: string
-
-		// Tags assosiated with the server groups. Set this to C({}) to clear any tags.
-
 		tags?: {...}
-
-		// Type of the server group.
-
 		type?: string
-
-		// UUID of the server group.
-		// Either I(name) or I(uuid) is required. These options are mutually exclusive.
-
 		uuid?: string
 	}
 }
 
 cloudscale_volume :: {
-	name?:     string
-	register?: string
-	vars?: {...}
 	when?: string
 	tags?: [...string]
+	with_items?: [...string]
+	become?:     bool
+	name?:       string
+	register?:   string
+	connection?: string
+	vars?: {...}
 	notify?: string | [...string]
 	cloudscale_volume: {
-
-		// UUIDs of the servers this volume is attached to. Set this to C([]) to detach the volume. Currently a volume can only be attached to a single server.
-
 		server_uuids?: [...]
-
-		// Size of the volume in GB.
-
 		size_gb?: int
-
-		// State of the volume.
-
-		state?: string
-
-		// Tags associated with the volume. Set this to C({}) to clear any tags.
-
+		state?:   string
 		tags?: {...}
-
-		// Type of the volume. Cannot be changed after creating the volume. Defaults to C(ssd) on volume creation.
-
 		type?: string
-
-		// UUID of the volume. Either name or UUID must be present to change an existing volume.
-
 		uuid?: string
-
-		// Name of the volume. Either name or UUID must be present to change an existing volume.
-
 		name?: string
+	}
+}
+
+cloudscale_floating_ip :: {
+	when?: string
+	tags?: [...string]
+	with_items?: [...string]
+	become?:     bool
+	name?:       string
+	register?:   string
+	connection?: string
+	vars?: {...}
+	notify?: string | [...string]
+	cloudscale_floating_ip: {
+		reverse_ptr?:   string
+		server?:        string
+		state?:         string
+		ip?:            string
+		ip_version?:    int
+		prefix_length?: int
+	}
+}
+
+cloudscale_server :: {
+	when?: string
+	tags?: [...string]
+	with_items?: [...string]
+	become?:     bool
+	name?:       string
+	register?:   string
+	connection?: string
+	vars?: {...}
+	notify?: string | [...string]
+	cloudscale_server: {
+		name?: string
+		server_groups?: [...]
+		user_data?:          string
+		anti_affinity_with?: string
+		force?:              bool
+		image?:              string
+		password?:           string
+		tags?: {...}
+		api_timeout?:         string
+		state?:               string
+		use_ipv6?:            bool
+		uuid?:                string
+		volume_size_gb?:      int
+		bulk_volume_size_gb?: int
+		flavor?:              string
+		ssh_keys?: [...]
+		use_private_network?: bool
+		use_public_network?:  bool
 	}
 }

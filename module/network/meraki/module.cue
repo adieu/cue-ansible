@@ -1,998 +1,452 @@
 package meraki
 
-meraki_malware :: {
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	meraki_malware: {
-
-		// Name of network which configuration is applied to.
-
-		net_name?: string
-
-		// Specifies whether object should be queried, created/modified, or removed.
-
-		state?: string
-
-		// List of files to whitelist.
-
-		allowed_files?: string
-
-		// List of URLs to whitelist.
-
-		allowed_urls?: string
-
-		// Enabled or disabled state of malware protection.
-
-		mode?: string
-
-		// ID of network which configuration is applied to.
-
-		net_id?: string
-	}
-}
-
-meraki_mr_l3_firewall :: {
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	meraki_mr_l3_firewall: {
-
-		// ID of network containing access points.
-
-		net_id?: string
-
-		// Name of network containing access points.
-
-		net_name?: string
-
-		// Number of SSID to apply firewall rule to.
-
-		number?: int
-
-		// List of firewall rules.
-
-		rules?: [...]
-
-		// Name of SSID to apply firewall rule to.
-
-		ssid_name?: string
-
-		// Create or modify an organization.
-
-		state?: string
-
-		// Sets whether devices can talk to other devices on the same LAN.
-
-		allow_lan_access?: bool
-	}
-}
-
-meraki_static_route :: {
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	meraki_static_route: {
-
-		// ID number of a network.
-
-		net_id?: string
-
-		// Name of a network.
-
-		net_name?: string
-
-		// Unique ID of static route.
-
-		route_id?: string
-
-		// CIDR notation based subnet for static route.
-
-		subnet?: string
-
-		// Descriptive name of the static route.
-
-		name?: string
-
-		// List of fixed MAC to IP bindings for DHCP.
-
-		fixed_ip_assignments?: [...]
-
-		// IP address of the gateway for the subnet.
-
-		gateway_ip?: string
-
-		// List of IP ranges reserved for static IP assignments.
-
-		reserved_ip_ranges?: [...]
-
-		// Create or modify an organization.
-
-		state?: string
-
-		// Indicates whether static route is enabled within a network.
-
-		enabled?: bool
-	}
-}
-
-meraki_webhook :: {
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	meraki_webhook: {
-
-		// ID of network which configuration is applied to.
-
-		net_id?: string
-
-		// Name of network which configuration is applied to.
-
-		net_name?: string
-
-		// Secret password to use when accessing webhook.
-
-		shared_secret?: string
-
-		// Specifies whether object should be queried, created/modified, or removed.
-
-		state?: string
-
-		// ID of webhook test query.
-
-		test_id?: string
-
-		// URL to access when calling webhook.
-
-		url?: string
-
-		// Unique ID of webhook.
-
-		webhook_id?: string
-
-		// Name of webhook.
-
-		name?: string
-
-		// Indicates whether to test or query status.
-
-		test?: string
-	}
-}
-
-meraki_device :: {
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	meraki_device: {
-
-		// Serial number of device to query uplink information from.
-
-		serial_uplink?: string
-
-		// Timespan, in seconds, used to query LLDP and CDP information.
-		// Must be less than 1 month.
-
-		lldp_cdp_timespan?: int
-
-		// Name of a network.
-
-		net_name?: string
-
-		// Informational notes about a device.
-		// Limited to 255 characters.
-
-		note?: string
-
-		// Serial number of a device to query.
-
-		serial?: string
-
-		// Serial number of device to query LLDP/CDP information from.
-
-		serial_lldp_cdp?: string
-
-		// Hostname of network device to search for.
-
-		hostname?: string
-
-		// Longitude of device's geographic location.
-		// Use negative number for western hemisphere.
-
-		lng?: float
-
-		// Whether or not to set the latitude and longitude of a device based on the new address.
-		// Only applies when C(lat) and C(lng) are not specified.
-
-		move_map_marker?: bool
-
-		// Query an organization.
-
-		state?: string
-
-		// Space delimited list of tags to assign to device.
-
-		tags?: string
-
-		// Model of network device to search for.
-
-		model?: string
-
-		// ID of a network.
-
-		net_id?: string
-
-		// Postal address of device's location.
-
-		address?: string
-
-		// Latitude of device's geographic location.
-		// Use negative number for southern hemisphere.
-
-		lat?: float
-	}
-}
-
-meraki_mx_l3_firewall :: {
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	meraki_mx_l3_firewall: {
-
-		// ID of network which MX firewall is in.
-
-		net_id?: string
-
-		// Name of network which MX firewall is in.
-
-		net_name?: string
-
-		// List of firewall rules.
-
-		rules?: string
-
-		// Create or modify an organization.
-
-		state?: string
-
-		// Whether to log hits against the default firewall rule.
-		// Only applicable if a syslog server is specified against the network.
-		// This is not shown in response from Meraki. Instead, refer to the C(syslog_enabled) value in the default rule.
-
-		syslog_default_rule?: bool
-	}
-}
-
-meraki_config_template :: {
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	meraki_config_template: {
-
-		// Optional boolean indicating whether the network's switches should automatically bind to profiles of the same model.
-		// This option only affects switch networks and switch templates.
-		// Auto-bind is not valid unless the switch template has at least one profile and has at most one profile per switch model.
-
-		auto_bind?: bool
-
-		// Name of the configuration template within an organization to manipulate.
-
-		config_template?: string
-
-		// ID of the network to bind or unbind configuration template to.
-
-		net_id?: string
-
-		// Name of the network to bind or unbind configuration template to.
-
-		net_name?: string
-
-		// ID of organization associated to a configuration template.
-
-		org_id?: string
-
-		// Name of organization containing the configuration template.
-
-		org_name?: string
-
-		// Specifies whether configuration template information should be queried, modified, or deleted.
-
-		state?: string
-	}
-}
-
 meraki_nat :: {
-	name?:     string
-	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
 	meraki_nat: {
-
-		// List of port forwarding rules.
-
-		port_forwarding?: [...]
-
-		// Create or modify an organization.
-
 		state?: string
-
-		// Specifies which NAT components to query.
-
 		subset?: [...]
-
-		// ID number of a network.
-
-		net_id?: string
-
-		// Name of a network.
-
+		net_id?:   string
 		net_name?: string
-
-		// List of 1:many NAT rules.
-
 		one_to_many?: [...]
-
-		// List of 1:1 NAT rules.
-
 		one_to_one?: [...]
-
-		// ID of organization associated to a network.
-
 		org_id?: string
-	}
-}
-
-meraki_network :: {
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	meraki_network: {
-
-		// - Enables the local device status pages (U[my.meraki.com](my.meraki.com), U[ap.meraki.com](ap.meraki.com), U[switch.meraki.com](switch.meraki.com), U[wired.meraki.com](wired.meraki.com)). - Ansible 2.7 had this parameter as C(disable_my_meraki).
-
-		enable_my_meraki?: bool
-
-		// Name of a network.
-
-		net_name?: string
-
-		// Create or modify an organization.
-
-		state?: string
-
-		// Timezone associated to network.
-		// See U(https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for a list of valid timezones.
-
-		timezone?: string
-
-		// Type of network device network manages.
-		// Required when creating a network.
-		// As of Ansible 2.8, C(combined) type is no longer accepted.
-		// As of Ansible 2.8, changes to this parameter are no longer idempotent.
-
-		type?: [...]
-
-		// - Disables the local device status pages (U[my.meraki.com](my.meraki.com), U[ap.meraki.com](ap.meraki.com), U[switch.meraki.com](switch.meraki.com), U[wired.meraki.com](wired.meraki.com)). - Mutually exclusive of C(enable_my_meraki). - Will be deprecated in Ansible 2.13 in favor of C(enable_my_meraki).
-
-		disable_my_meraki?: bool
-
-		// Boolean value specifying whether VLANs should be supported on a network.
-		// Requires C(net_name) or C(net_id) to be specified.
-
-		enable_vlans?: bool
-
-		// ID number of a network.
-
-		net_id?: string
-
-		// List of tags to assign to network.
-		// C(tags) name conflicts with the tags parameter in Ansible. Indentation problems may cause unexpected behaviors.
-		// Ansible 2.8 converts this to a list from a comma separated list.
-
-		tags?: [...]
-
-		// Enables access to the device status page (U(http://device LAN IP)).
-		// Can only be set if C(enable_my_meraki:) is set to C(yes).
-
-		enable_remote_status_page?: bool
+		port_forwarding?: [...]
 	}
 }
 
 meraki_organization :: {
-	name?:     string
-	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
 	meraki_organization: {
-
-		// ID of organization.
-
-		org_id?: string
-
-		// Name of organization.
-		// If C(clone) is specified, C(org_name) is the name of the new organization.
-
+		clone?:    string
+		org_id?:   string
 		org_name?: string
-
-		// Create or modify an organization.
-		// C(org_id) must be specified if multiple organizations of the same name exist.
-		// C(absent) WILL DELETE YOUR ENTIRE ORGANIZATION, AND ALL ASSOCIATED OBJECTS, WITHOUT CONFIRMATION. USE WITH CAUTION.
-
-		state?: string
-
-		// Organization to clone to a new organization.
-
-		clone?: string
-	}
-}
-
-meraki_vlan :: {
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	meraki_vlan: {
-
-		// ID of network which VLAN is in or should be in.
-
-		net_id?: string
-
-		// Name of network which VLAN is in or should be in.
-
-		net_name?: string
-
-		// IP address ranges which should be reserve and not distributed via DHCP.
-
-		reserved_ip_range?: [...]
-
-		// The translated VPN subnet if VPN and VPN subnet translation are enabled on the VLAN.
-
-		vpn_nat_subnet?: string
-
-		// IP address of appliance.
-		// Address must be within subnet specified in C(subnet) parameter.
-
-		appliance_ip?: string
-
-		// Semi-colon delimited list of DNS IP addresses.
-		// Specify one of the following options for preprogrammed DNS entries opendns, google_dns, upstream_dns
-
-		dns_nameservers?: string
-
-		// Static IP address assignments to be distributed via DHCP by MAC address.
-
-		fixed_ip_assignments?: [...]
-
-		// Name of VLAN.
-
-		name?: string
-
-		// Specifies whether object should be queried, created/modified, or removed.
-
-		state?: string
-
-		// CIDR notation of network subnet.
-
-		subnet?: string
-
-		// ID number of VLAN.
-		// ID should be between 1-4096.
-
-		vlan_id?: int
-	}
-}
-
-meraki_firewalled_services :: {
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	meraki_firewalled_services: {
-
-		// ID of organization associated to a network.
-
-		org_id?: string
-
-		// Network service to query or modify.
-
-		service?: string
-
-		// States that a policy should be created or modified.
-
-		state?: string
-
-		// List of IP addresses allowed to access a service.
-		// Only used when C(access) is set to restricted.
-
-		allowed_ips?: [...]
-
-		// Authentication key provided by the dashboard. Required if environmental variable MERAKI_KEY is not set.
-
-		auth_key?: string
-
-		// ID number of a network.
-
-		net_id?: string
-
-		// Name of a network.
-
-		net_name?: string
-
-		// Network service to query or modify.
-
-		access?: string
-
-		// Name of organization associated to a network.
-
-		org_name?: string
-	}
-}
-
-meraki_content_filtering :: {
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	meraki_content_filtering: {
-
-		// List of URL patterns which should be allowed.
-
-		allowed_urls?: [...]
-
-		// List of URL patterns which should be blocked.
-
-		blocked_urls?: [...]
-
-		// ID number of a network.
-
-		net_id?: string
-
-		// Name of a network.
-
-		net_name?: string
-
-		// Authentication key provided by the dashboard. Required if environmental variable MERAKI_KEY is not set.
-
-		auth_key?: string
-
-		// List of content categories which should be blocked.
-		// Use the C(meraki_content_filtering_facts) module for a full list of categories.
-
-		blocked_categories?: [...]
-
-		// Determines whether a network filters fo rall URLs in a category or only the list of top blocked sites.
-
-		category_list_size?: string
-
-		// States that a policy should be created or modified.
-
-		state?: string
-
-		// Display only certain facts.
-
-		subset?: string
-	}
-}
-
-meraki_mx_l7_firewall :: {
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	meraki_mx_l7_firewall: {
-
-		// When C(True), specifies that applications and application categories should be queried instead of firewall rules.
-
-		categories?: bool
-
-		// ID of network which MX firewall is in.
-
-		net_id?: string
-
-		// Name of network which MX firewall is in.
-
-		net_name?: string
-
-		// List of layer 7 firewall rules.
-
-		rules?: [...]
-
-		// Query or modify a firewall rule.
-
-		state?: string
+		state?:    string
 	}
 }
 
 meraki_snmp :: {
-	name?:     string
-	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
 	meraki_snmp: {
-
-		// Semi-colon delimited IP addresses which can perform SNMP queries.
-
-		peer_ips?: string
-
-		// Specifies whether SNMPv2c is enabled.
-
-		v2c_enabled?: bool
-
-		// Sets authentication mode for SNMPv3.
-
-		v3_auth_mode?: string
-
-		// Specifies whether SNMPv3 is enabled.
-
-		v3_enabled?: bool
-
-		// Type of SNMP access.
-
-		access?: string
-
-		// SNMP community string.
-		// Only relevant if C(access) is set to C(community).
-
+		v3_priv_mode?:     string
+		v3_priv_pass?:     string
 		community_string?: string
-
-		// ID of network.
-
-		net_id?: string
-
-		// Name of network.
-
-		net_name?: string
-
-		// Specifies whether SNMP information should be queried or modified.
-
-		state?: string
-
-		// Information about users with access to SNMP.
-		// Only relevant if C(access) is set to C(users).
-
+		peer_ips?:         string
+		v2c_enabled?:      bool
+		v3_auth_pass?:     string
+		v3_enabled?:       bool
+		v3_auth_mode?:     string
+		access?:           string
+		net_id?:           string
+		net_name?:         string
+		state?:            string
 		users?: [...]
-
-		// Authentication password for SNMPv3.
-		// Must be at least 8 characters long.
-
-		v3_auth_pass?: string
-
-		// Specifies privacy mode for SNMPv3.
-
-		v3_priv_mode?: string
-
-		// Privacy password for SNMPv3.
-		// Must be at least 8 characters long.
-
-		v3_priv_pass?: string
 	}
 }
 
 meraki_ssid :: {
-	name?:     string
-	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
 	meraki_ssid: {
-
-		// Set authentication mode of network.
-
-		auth_mode?: string
-
-		// Method of which SSID uses to assign IP addresses.
-
-		ip_assignment_mode?: string
-
-		// Default VLAN ID.
-		// Requires C(ip_assignment_mode) to be C(Bridge mode) or C(Layer 3 roaming).
-
-		default_vlan_id?: string
-
-		// Maximum bandwidth in Mbps devices on SSID can download.
-
-		per_client_bandwidth_limit_down?: int
-
-		// List of RADIUS servers.
-
-		radius_servers?: [...]
-
-		// Set band selection mode.
-
-		band_selection?: string
-
-		// Set encryption mode of network.
-
-		encryption_mode?: string
-
-		// List of RADIUS servers for RADIUS accounting.
-
-		radius_accounting_servers?: [...]
-
-		// Minimum bitrate (Mbps) allowed on SSID.
-
-		min_bitrate?: float
-
-		// Name of SSID.
-
-		name?: string
-
-		// Set whether to use VLAN tagging.
-		// Requires C(default_vlan_id) to be set.
-
-		use_vlan_tagging?: bool
-
-		// Enable or disable walled garden functionality.
-
+		encryption_mode?:       string
+		net_name?:              string
 		walled_garden_enabled?: bool
-
-		// The concentrator to use for 'Layer 3 roaming with a concentrator' or 'VPN'.
-
-		concentrator_network_id?: string
-
-		// Set client access policy in case RADIUS servers aren't available.
-
-		radius_failover_policy?: string
-
-		// Set load balancing policy when multiple RADIUS servers are specified.
-
-		radius_load_balancing_policy?: string
-
-		// ID number of VLAN on SSID.
-		// Requires C(ip_assignment_mode) to be C(ayer 3 roaming with a concentrator) or C(VPN).
-
-		vlan_id?: int
-
-		// ID of network.
-
-		net_id?: string
-
-		// SSID number within network.
-
-		number?: int
-
-		// Maximum bandwidth in Mbps devices on SSID can upload.
-
-		per_client_bandwidth_limit_up?: int
-
-		// Name of network.
-
-		net_name?: string
-
-		// Password for wireless network.
-		// Requires auth_mode to be set to psk.
-
-		psk?: string
-
-		// Enable or disable RADIUS accounting.
-
-		radius_accounting_enabled?: bool
-
-		// Set to enable splash page and specify type of splash.
-
-		splash_page?: string
-
-		// Specifies whether SNMP information should be queried or modified.
-
-		state?: string
-
-		// List of walled garden ranges.
-
-		walled_garden_ranges?: [...]
-
-		// Encryption mode within WPA2 specification.
-
-		wpa_encryption_mode?: string
-
-		// List of VLAN tags.
-		// Requires C(ip_assignment_mode) to be C(Bridge mode) or C(Layer 3 roaming).
-		// Requires C(use_vlan_tagging) to be C(True).
-
 		ap_tags_vlan_ids?: [...]
-
-		// Enable or disable SSID network.
-
-		enabled?: bool
-
-		// Enable or disable RADIUS CoA (Change of Authorization) on SSID.
-
-		radius_coa_enabled?: bool
+		auth_mode?:   string
+		min_bitrate?: float
+		number?:      int
+		walled_garden_ranges?: [...]
+		radius_failover_policy?: string
+		radius_servers?: [...]
+		use_vlan_tagging?:    bool
+		wpa_encryption_mode?: string
+		name?:                string
+		psk?:                 string
+		radius_accounting_servers?: [...]
+		radius_load_balancing_policy?:    string
+		net_id?:                          string
+		per_client_bandwidth_limit_up?:   int
+		default_vlan_id?:                 string
+		per_client_bandwidth_limit_down?: int
+		radius_accounting_enabled?:       bool
+		radius_coa_enabled?:              bool
+		state?:                           string
+		vlan_id?:                         int
+		band_selection?:                  string
+		concentrator_network_id?:         string
+		splash_page?:                     string
+		enabled?:                         bool
+		ip_assignment_mode?:              string
 	}
 }
 
 meraki_switchport :: {
-	name?:     string
-	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
 	meraki_switchport: {
-
-		// Serial nubmer of the switch.
-
-		serial?: string
-
-		// Number of the access policy to apply.
-		// Only applicable to access port types.
-
+		allowed_vlans?:        string
+		link_negotiation?:     string
+		stp_guard?:            string
+		tags?:                 string
+		vlan?:                 string
 		access_policy_number?: string
-
-		// Enable or disable Power Over Ethernet on a port.
-
-		poe_enabled?: bool
-
-		// Enable or disable Rapid Spanning Tree Protocol on a port.
-
-		rstp_enabled?: bool
-
-		// Whether a switchport should be enabled or disabled.
-
-		enabled?: bool
-
-		// Switchport description.
-
-		name?: string
-
-		// Port number.
-
-		number?: string
-
-		// Isolation status of switchport.
-
-		isolation_enabled?: bool
-
-		// Set state of STP guard.
-
-		stp_guard?: string
-
-		// Space delimited list of tags to assign to a port.
-
-		tags?: string
-
-		// Set port type.
-
-		type?: string
-
-		// VLAN number assigned to port.
-		// If a port is of type trunk, the specified VLAN is the native VLAN.
-
-		vlan?: string
-
-		// VLAN number assigned to a port for voice traffic.
-		// Only applicable to access port type.
-
-		voice_vlan?: string
-
-		// List of VLAN numbers to be allowed on switchport.
-
-		allowed_vlans?: string
-
-		// Link speed for the switchport.
-
-		link_negotiation?: string
-
-		// Specifies whether a switchport should be queried or modified.
-
-		state?: string
-	}
-}
-
-meraki_syslog :: {
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	tags?: [...string]
-	notify?: string | [...string]
-	meraki_syslog: {
-
-		// List of syslog server settings
-
-		servers?: string
-
-		// Query or edit syslog servers
-		// To delete a syslog server, do not include server in list of servers
-
-		state?: string
-
-		// Authentication key provided by the dashboard. Required if environmental variable MERAKI_KEY is not set.
-
-		auth_key?: string
-
-		// ID number of a network.
-
-		net_id?: string
-
-		// Name of a network.
-
-		net_name?: string
+		serial?:               string
+		type?:                 string
+		isolation_enabled?:    bool
+		number?:               string
+		rstp_enabled?:         bool
+		state?:                string
+		voice_vlan?:           string
+		enabled?:              bool
+		name?:                 string
+		poe_enabled?:          bool
 	}
 }
 
 meraki_admin :: {
-	name?:     string
-	register?: string
 	vars?: {...}
 	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
 	meraki_admin: {
-
-		// Tags the administrator has privileges on.
-		// When creating a new administrator, C(org_name), C(network), or C(tags) must be specified.
-		// If C(none) is specified, C(network) or C(tags) must be specified.
-
-		tags?: string
-
-		// Email address for the dashboard administrator.
-		// Email cannot be updated.
-		// Required when creating or editing an administrator.
-
-		email?: string
-
-		// Name of the dashboard administrator.
-		// Required when creating a new administrator.
-
-		name?: string
-
-		// List of networks the administrator has privileges on.
-		// When creating a new administrator, C(org_name), C(network), or C(tags) must be specified.
-
-		networks?: string
-
-		// Privileges assigned to the administrator in the organization.
-
+		email?:      string
+		name?:       string
+		networks?:   string
 		org_access?: string
+		org_name?:   string
+		state:       string
+		tags?:       string
+	}
+}
 
-		// Name of organization.
-		// Used when C(name) should refer to another object.
-		// When creating a new administrator, C(org_name), C(network), or C(tags) must be specified.
+meraki_content_filtering :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
+	meraki_content_filtering: {
+		auth_key?: string
+		blocked_urls?: [...]
+		net_id?:   string
+		net_name?: string
+		subset?:   string
+		allowed_urls?: [...]
+		blocked_categories?: [...]
+		category_list_size?: string
+		state?:              string
+	}
+}
 
+meraki_device :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
+	meraki_device: {
+		net_name?:          string
+		net_id?:            string
+		note?:              string
+		state?:             string
+		address?:           string
+		move_map_marker?:   bool
+		serial_lldp_cdp?:   string
+		serial_uplink?:     string
+		model?:             string
+		lat?:               float
+		lldp_cdp_timespan?: int
+		lng?:               float
+		serial?:            string
+		tags?:              string
+		hostname?:          string
+	}
+}
+
+meraki_firewalled_services :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
+	meraki_firewalled_services: {
+		allowed_ips?: [...]
+		auth_key?: string
+		net_id?:   string
+		net_name?: string
+		org_id?:   string
+		state?:    string
+		access?:   string
+		service?:  string
 		org_name?: string
+	}
+}
 
-		// Create or modify, or delete an organization
-		// If C(state) is C(absent), name takes priority over email if both are specified.
+meraki_mx_l7_firewall :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
+	meraki_mx_l7_firewall: {
+		rules?: [...]
+		state?:      string
+		categories?: bool
+		net_id?:     string
+		net_name?:   string
+	}
+}
 
-		state: string
+meraki_config_template :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
+	meraki_config_template: {
+		org_id?:          string
+		org_name?:        string
+		state?:           string
+		auto_bind?:       bool
+		config_template?: string
+		net_id?:          string
+		net_name?:        string
+	}
+}
+
+meraki_malware :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
+	meraki_malware: {
+		state?:         string
+		allowed_files?: string
+		allowed_urls?:  string
+		mode?:          string
+		net_id?:        string
+		net_name?:      string
+	}
+}
+
+meraki_mr_l3_firewall :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
+	meraki_mr_l3_firewall: {
+		allow_lan_access?: bool
+		net_id?:           string
+		net_name?:         string
+		number?:           int
+		rules?: [...]
+		ssid_name?: string
+		state?:     string
+	}
+}
+
+meraki_vlan :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
+	meraki_vlan: {
+		subnet?:         string
+		vlan_id?:        int
+		vpn_nat_subnet?: string
+		appliance_ip?:   string
+		net_id?:         string
+		state?:          string
+		net_name?:       string
+		reserved_ip_range?: [...]
+		dns_nameservers?: string
+		fixed_ip_assignments?: [...]
+		name?: string
+	}
+}
+
+meraki_webhook :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
+	meraki_webhook: {
+		net_id?:        string
+		test_id?:       string
+		webhook_id?:    string
+		url?:           string
+		name?:          string
+		net_name?:      string
+		shared_secret?: string
+		state?:         string
+		test?:          string
+	}
+}
+
+meraki_mx_l3_firewall :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
+	meraki_mx_l3_firewall: {
+		rules?:               string
+		state?:               string
+		syslog_default_rule?: bool
+		net_id?:              string
+		net_name?:            string
+	}
+}
+
+meraki_network :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
+	meraki_network: {
+		enable_vlans?: bool
+		net_id?:       string
+		net_name?:     string
+		state?:        string
+		tags?: [...]
+		disable_my_meraki?:         bool
+		enable_my_meraki?:          bool
+		enable_remote_status_page?: bool
+		timezone?:                  string
+		type?: [...]
+	}
+}
+
+meraki_static_route :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
+	meraki_static_route: {
+		reserved_ip_ranges?: [...]
+		subnet?: string
+		fixed_ip_assignments?: [...]
+		gateway_ip?: string
+		name?:       string
+		net_id?:     string
+		net_name?:   string
+		route_id?:   string
+		state?:      string
+		enabled?:    bool
+	}
+}
+
+meraki_syslog :: {
+	vars?: {...}
+	when?: string
+	tags?: [...string]
+	with_items?: [...string]
+	connection?: string
+	name?:       string
+	register?:   string
+	notify?:     string | [...string]
+	become?:     bool
+	meraki_syslog: {
+		state?:    string
+		auth_key?: string
+		net_id?:   string
+		net_name?: string
+		servers?:  string
 	}
 }

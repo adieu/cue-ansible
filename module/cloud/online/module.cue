@@ -1,45 +1,57 @@
 package online
 
-online_server_info :: {
-	when?: string
-	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
+online_server_facts :: {
+	name?:   string
+	when?:   string
+	notify?: string | [...string]
+	with_items?: [...string]
+	become?:   bool
 	register?: string
 	vars?: {...}
+	tags?: [...string]
+	connection?: string
+	online_server_facts: {
+	}
+}
+
+online_server_info :: {
+	name?:   string
+	when?:   string
+	notify?: string | [...string]
+	with_items?: [...string]
+	become?:   bool
+	register?: string
+	vars?: {...}
+	tags?: [...string]
+	connection?: string
 	online_server_info: {
 	}
 }
 
 online_user_facts :: {
-	when?: string
-	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
+	name?:   string
+	when?:   string
+	notify?: string | [...string]
+	with_items?: [...string]
+	become?:   bool
 	register?: string
 	vars?: {...}
+	tags?: [...string]
+	connection?: string
 	online_user_facts: {
 	}
 }
 
 online_user_info :: {
-	when?: string
-	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
+	name?:   string
+	when?:   string
+	notify?: string | [...string]
+	with_items?: [...string]
+	become?:   bool
 	register?: string
 	vars?: {...}
+	tags?: [...string]
+	connection?: string
 	online_user_info: {
-	}
-}
-
-online_server_facts :: {
-	when?: string
-	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
-	register?: string
-	vars?: {...}
-	online_server_facts: {
 	}
 }

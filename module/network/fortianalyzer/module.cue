@@ -1,64 +1,28 @@
 package fortianalyzer
 
 faz_device :: {
-	name?:     string
 	register?: string
-	vars?: {...}
-	when?: string
 	tags?: [...string]
+	connection?: string
+	become?:     bool
+	name?:       string
+	vars?: {...}
+	when?:   string
 	notify?: string | [...string]
+	with_items?: [...string]
 	faz_device: {
-
-		// The IP of the device being added to FortiAnalyzer.
-
-		device_ip?: string
-
-		// The serial number of the device being added to FortiAnalyzer.
-
-		device_serial?: string
-
-		// The desired "friendly" name of the device being added to FortiAnalyzer.
-
 		device_unique_name?: string
-
-		// Management Mode of the device you are adding.
-
-		mgmt_mode: string
-
-		// Required for determine the platform for VM platforms. ie FortiGate-VM64
-
-		platform_str?: string
-
-		// The ADOM the configuration should belong to.
-
-		adom: string
-
-		// The username of the device being added to FortiAnalyzer.
-
-		device_username?: string
-
-		// Specifies the quota for the device in FAZ
-
-		faz_quota?: string
-
-		// Add or delete devices. Or promote unregistered devices that are in the FortiAnalyzer "waiting pool"
-
-		mode?: string
-
-		// Minor OS rev of the device.
-
-		os_minor_vers: string
-
-		// The os type of the device being added (default 0).
-
-		os_type: string
-
-		// Major OS rev of the device
-
-		os_ver: string
-
-		// The password of the device being added to FortiAnalyzer.
-
-		device_password?: string
+		faz_quota?:          string
+		os_ver:              string
+		platform_str?:       string
+		mode?:               string
+		os_minor_vers:       string
+		adom:                string
+		device_ip?:          string
+		device_password?:    string
+		device_serial?:      string
+		device_username?:    string
+		mgmt_mode:           string
+		os_type:             string
 	}
 }

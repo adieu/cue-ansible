@@ -1,366 +1,216 @@
 package illumos
 
-dladm_linkprop :: {
+dladm_iptun :: {
 	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
-	register?: string
+	notify?: string | [...string]
+	with_items?: [...string]
+	become?: bool
+	name?:   string
 	vars?: {...}
-	when?: string
-	dladm_linkprop: {
-
-		// Specifies the name of the property we want to manage.
-
-		property: string
-
-		// Set or reset the property value.
-
-		state?: string
-
-		// Specifies that lin property configuration is temporary. Temporary link property configuration does not persist across reboots.
-
-		temporary?: bool
-
-		// Specifies the value we want to set for the link property.
-
-		value?: string
-
-		// Link interface name.
-
-		link: string
-	}
-}
-
-flowadm :: {
-	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	flowadm: {
-
-		// - Identifies the 8-bit differentiated services field (as defined in RFC 2474). The optional dsfield_mask is used to state the bits of interest in the differentiated services field when comparing with the dsfield value. Both values must be in hexadecimal.
-
-		dsfield?: string
-
-		// Sets the relative priority for the flow.
-
-		priority?: string
-
-		// Identifies a network flow by the remote IP address.
-
-		remote_ip?: string
-
-		// Create/delete/enable/disable an IP address on the network interface.
-
-		state?: string
-
-		// Specifies that the configured flow is temporary. Temporary flows do not persist across reboots.
-
-		temporary?: bool
-
-		// - Specifies a Layer 4 protocol to be used. It is typically used in combination with I(local_port) to identify the service that needs special attention.
-
-		transport?: string
-
-		// Specifiies a link to configure flow on.
-
-		link?: string
-
-		// Identifies a network flow by the local IP address.
-
-		local_ip?: string
-
-		// Identifies a service specified by the local port.
-
-		local_port?: string
-
-		// - Sets the full duplex bandwidth for the flow. The bandwidth is specified as an integer with one of the scale suffixes(K, M, or G for Kbps, Mbps, and Gbps). If no units are specified, the input value will be read as Mbps.
-
-		maxbw?: string
-
-		// - A flow is defined as a set of attributes based on Layer 3 and Layer 4 headers, which can be used to identify a protocol, service, or a zone.
-
-		name: string
-	}
-}
-
-ipadm_addrprop :: {
-	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	ipadm_addrprop: {
-
-		// Specifies the name of the address property we want to manage.
-
-		property: string
-
-		// Set or reset the property value.
-
-		state?: string
-
-		// Specifies that the address property value is temporary. Temporary values do not persist across reboots.
-
-		temporary?: bool
-
-		// Specifies the value we want to set for the address property.
-
-		value?: string
-
-		// Specifies the address object we want to manage.
-
-		addrobj: string
-	}
-}
-
-ipadm_prop :: {
-	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	ipadm_prop: {
-
-		// Set or reset the property value.
-
-		state?: string
-
-		// Specifies that the property value is temporary. Temporary property values do not persist across reboots.
-
-		temporary?: bool
-
-		// Specifies the value we want to set for the property.
-
-		value?: string
-
-		// Specifies the name of property we want to manage.
-
-		property: string
-
-		// Specifies the protocol for which we want to manage properties.
-
-		protocol: string
-	}
-}
-
-dladm_etherstub :: {
-	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	dladm_etherstub: {
-
-		// Etherstub name.
-
-		name: string
-
-		// Create or delete Solaris/illumos etherstub.
-
-		state?: string
-
-		// Specifies that the etherstub is temporary. Temporary etherstubs do not persist across reboots.
-
-		temporary?: bool
-	}
-}
-
-dladm_vlan :: {
-	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	dladm_vlan: {
-
-		// VLAN underlying link name.
-
-		link: string
-
-		// VLAN interface name.
-
-		name: string
-
-		// Create or delete Solaris/illumos VNIC.
-
-		state?: string
-
-		// Specifies that the VLAN interface is temporary. Temporary VLANs do not persist across reboots.
-
-		temporary?: bool
-
-		// VLAN ID value for VLAN interface.
-
-		vlan_id?: string
-	}
-}
-
-dladm_vnic :: {
-	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
-	register?: string
-	vars?: {...}
-	when?: string
-	dladm_vnic: {
-
-		// VNIC underlying link name.
-
-		link: string
-
-		// Sets the VNIC's MAC address. Must be valid unicast MAC address.
-
-		mac?: string
-
-		// VNIC name.
-
-		name: string
-
-		// Create or delete Solaris/illumos VNIC.
-
-		state?: string
-
-		// Specifies that the VNIC is temporary. Temporary VNICs do not persist across reboots.
-
-		temporary?: bool
-
-		// Enable VLAN tagging for this VNIC. The VLAN tag will have id I(vlan).
-
-		vlan?: string
+	connection?: string
+	register?:   string
+	when?:       string
+	dladm_iptun: {
+		remote_address?: string
+		state?:          string
+		temporary?:      bool
+		type?:           string
+		local_address?:  string
+		name:            string
 	}
 }
 
 ipadm_addr :: {
 	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
-	register?: string
+	notify?: string | [...string]
+	with_items?: [...string]
+	become?: bool
+	name?:   string
 	vars?: {...}
-	when?: string
+	connection?: string
+	register?:   string
+	when?:       string
 	ipadm_addr: {
-
-		// Specifiies an IP address to configure in CIDR notation.
-
-		address?: string
-
-		// Specifies an unique IP address on the system.
-
-		addrobj: string
-
-		// Specifiies a type of IP address to configure.
-
-		addrtype?: string
-
-		// Create/delete/enable/disable an IP address on the network interface.
-
-		state?: string
-
-		// Specifies that the configured IP address is temporary. Temporary IP addresses do not persist across reboots.
-
+		addrtype?:  string
+		state?:     string
 		temporary?: bool
+		wait?:      string
+		address?:   string
+		addrobj:    string
+	}
+}
 
-		// Specifies the time in seconds we wait for obtaining address via DHCP.
-
-		wait?: string
+ipadm_addrprop :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	with_items?: [...string]
+	become?: bool
+	name?:   string
+	vars?: {...}
+	connection?: string
+	register?:   string
+	when?:       string
+	ipadm_addrprop: {
+		addrobj:    string
+		property:   string
+		state?:     string
+		temporary?: bool
+		value?:     string
 	}
 }
 
 ipadm_if :: {
 	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
-	register?: string
+	notify?: string | [...string]
+	with_items?: [...string]
+	become?: bool
+	name?:   string
 	vars?: {...}
-	when?: string
+	connection?: string
+	register?:   string
+	when?:       string
 	ipadm_if: {
-
-		// IP interface name.
-
-		name: string
-
-		// Create or delete Solaris/illumos IP interfaces.
-
-		state?: string
-
-		// Specifies that the IP interface is temporary. Temporary IP interfaces do not persist across reboots.
-
+		state?:     string
 		temporary?: bool
+		name:       string
+	}
+}
+
+dladm_etherstub :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	with_items?: [...string]
+	become?: bool
+	name?:   string
+	vars?: {...}
+	connection?: string
+	register?:   string
+	when?:       string
+	dladm_etherstub: {
+		name:       string
+		state?:     string
+		temporary?: bool
+	}
+}
+
+dladm_linkprop :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	with_items?: [...string]
+	become?: bool
+	name?:   string
+	vars?: {...}
+	connection?: string
+	register?:   string
+	when?:       string
+	dladm_linkprop: {
+		link:       string
+		property:   string
+		state?:     string
+		temporary?: bool
+		value?:     string
+	}
+}
+
+dladm_vlan :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	with_items?: [...string]
+	become?: bool
+	name?:   string
+	vars?: {...}
+	connection?: string
+	register?:   string
+	when?:       string
+	dladm_vlan: {
+		link:       string
+		name:       string
+		state?:     string
+		temporary?: bool
+		vlan_id?:   string
+	}
+}
+
+dladm_vnic :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	with_items?: [...string]
+	become?: bool
+	name?:   string
+	vars?: {...}
+	connection?: string
+	register?:   string
+	when?:       string
+	dladm_vnic: {
+		mac?:       string
+		name:       string
+		state?:     string
+		temporary?: bool
+		vlan?:      string
+		link:       string
+	}
+}
+
+flowadm :: {
+	tags?: [...string]
+	notify?: string | [...string]
+	with_items?: [...string]
+	become?: bool
+	name?:   string
+	vars?: {...}
+	connection?: string
+	register?:   string
+	when?:       string
+	flowadm: {
+		maxbw?:      string
+		name:        string
+		state?:      string
+		temporary?:  bool
+		dsfield?:    string
+		link?:       string
+		local_port?: string
+		transport?:  string
+		local_ip?:   string
+		priority?:   string
+		remote_ip?:  string
 	}
 }
 
 ipadm_ifprop :: {
 	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
-	register?: string
+	notify?: string | [...string]
+	with_items?: [...string]
+	become?: bool
+	name?:   string
 	vars?: {...}
-	when?: string
+	connection?: string
+	register?:   string
+	when?:       string
 	ipadm_ifprop: {
-
-		// Set or reset the property value.
-
-		state?: string
-
-		// Specifies that the property value is temporary. Temporary property values do not persist across reboots.
-
 		temporary?: bool
-
-		// Specifies the value we want to set for the property.
-
-		value?: string
-
-		// Specifies the IP interface we want to manage.
-
-		interface: string
-
-		// Specifies the name of the property we want to manage.
-
-		property: string
-
-		// Specifies the protocol for which we want to manage properties.
-
-		protocol: string
+		value?:     string
+		interface:  string
+		property:   string
+		protocol:   string
+		state?:     string
 	}
 }
 
-dladm_iptun :: {
+ipadm_prop :: {
 	tags?: [...string]
-	notify?:   string | [...string]
-	name?:     string
-	register?: string
+	notify?: string | [...string]
+	with_items?: [...string]
+	become?: bool
+	name?:   string
 	vars?: {...}
-	when?: string
-	dladm_iptun: {
-
-		// Literal IP address or hostname corresponding to the tunnel source.
-
-		local_address?: string
-
-		// IP tunnel interface name.
-
-		name: string
-
-		// Literal IP address or hostname corresponding to the tunnel destination.
-
-		remote_address?: string
-
-		// Create or delete Solaris/illumos VNIC.
-
-		state?: string
-
-		// Specifies that the IP tunnel interface is temporary. Temporary IP tunnel interfaces do not persist across reboots.
-
+	connection?: string
+	register?:   string
+	when?:       string
+	ipadm_prop: {
+		property:   string
+		protocol:   string
+		state?:     string
 		temporary?: bool
-
-		// Specifies the type of tunnel to be created.
-
-		type?: string
+		value?:     string
 	}
 }

@@ -1,87 +1,45 @@
 package ingate
 
 ig_config :: {
-	name?:     string
-	register?: string
+	name?: string
 	vars?: {...}
-	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	become?:   bool
+	register?: string
+	when?:     string
+	with_items?: [...string]
+	connection?: string
 	ig_config: {
-
-		// Delete all rows in a table or a specific row.
-
-		delete?: bool
-
-		// Expect no response when storing the preliminary configuration. Refer to the C(store) option.
-
-		no_response?: bool
-
-		// Reset the preliminary configuration.
-
-		revert?: bool
-
-		// A row id.
-
-		rowid?: int
-
-		// The name of the table.
-
-		table?: string
-
-		// Get rowid(s) from a table where the columns match.
-
-		return_rowid?: bool
-
-		// A dict containing column names/values.
-
-		columns?: string
-
-		// Download the configuration database from the unit.
-
-		download?: bool
-
-		// The name of the file to store the downloaded configuration in. Refer to the C(download) option.
-
-		filename?: string
-
-		// Return all rows in a table or a specific row.
-
-		get?: bool
-
-		// Where in the filesystem to store the downloaded configuration. Refer to the C(download) option.
-
-		path?: string
-
-		// Add a row to a table.
-
-		add?: bool
-
-		// Reset the preliminary configuration to its factory defaults.
-
-		factory?: bool
-
-		// Modify a row in a table.
-
-		modify?: bool
-
-		// Store the preliminary configuration.
-
-		store?: bool
-
-		// If the downloaded configuration should be stored on disk. Refer to the C(download) option.
-
+		add?:            bool
+		download?:       bool
+		get?:            bool
+		filename?:       string
+		modify?:         bool
+		return_rowid?:   bool
+		revert?:         bool
+		factory?:        bool
+		path?:           string
+		store?:          bool
 		store_download?: bool
+		columns?:        string
+		delete?:         bool
+		no_response?:    bool
+		rowid?:          int
+		table?:          string
 	}
 }
 
 ig_unit_information :: {
-	name?:     string
-	register?: string
+	name?: string
 	vars?: {...}
-	when?: string
 	tags?: [...string]
-	notify?: string | [...string]
+	notify?:   string | [...string]
+	become?:   bool
+	register?: string
+	when?:     string
+	with_items?: [...string]
+	connection?: string
 	ig_unit_information: {
 	}
 }

@@ -27,12 +27,15 @@ var typeMap = map[string]string{
 }
 
 var baseFields = map[string]string{
-	"name":     "string",
-	"register": "string",
-	"vars":     "{...}",
-	"when":     "string",
-	"tags":     "[...string]",
-	"notify":   "string | [...string]",
+	"name":       "string",
+	"register":   "string",
+	"vars":       "{...}",
+	"when":       "string",
+	"tags":       "[...string]",
+	"notify":     "string | [...string]",
+	"with_items": "[...string]",
+	"connection": "string",
+	"become":     "bool",
 }
 
 type Option struct {
@@ -101,7 +104,8 @@ func (m Module) CueField(label string) *ast.Field {
 		// Field comment
 		c := o.CueComment()
 		if c != nil {
-			i.Elts = append(i.Elts, c)
+			// Disable comment before fixing the module schema
+			// i.Elts = append(i.Elts, c)
 		}
 		// Field
 		f := o.CueField(label)
