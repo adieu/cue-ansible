@@ -50,6 +50,8 @@ copy :: {
 		remote_src?:     bool
 		checksum?:       string
 		dest:            string
+		owner?:          string
+		group?:          string
 	}
 }
 
